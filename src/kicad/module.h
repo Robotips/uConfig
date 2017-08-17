@@ -1,7 +1,9 @@
 #ifndef MODULE_H
 #define MODULE_H
 
-class Module
+#include "kicad_global.h"
+
+class KICADSHARED_EXPORT Module
 {
 public:
     Module();

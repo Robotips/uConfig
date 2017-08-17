@@ -1,11 +1,13 @@
 #ifndef PINCLASSIFIER_H
 #define PINCLASSIFIER_H
 
+#include "kicad_global.h"
+
 #include "component.h"
 
 class QDebug;
 
-class PinClassifier
+class KICADSHARED_EXPORT PinClassifier
 {
 public:
     PinClassifier(const Component &component);

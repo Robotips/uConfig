@@ -1,11 +1,13 @@
 #ifndef PIN_H
 #define PIN_H
 
+#include "kicad_global.h"
+
 #include <QString>
 #include <QPoint>
 #include <QTextStream>
 
-class Pin
+class KICADSHARED_EXPORT Pin
 {
 public:
     explicit Pin();

@@ -1,7 +1,9 @@
 #ifndef LIBMODULE_H
 #define LIBMODULE_H
 
-class LibModule
+#include "kicad_global.h"
+
+class KICADSHARED_EXPORT LibModule
 {
 public:
     LibModule();

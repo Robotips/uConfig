@@ -1,12 +1,14 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
+#include "kicad_global.h"
+
 #include <QList>
 #include <QString>
 #include <QStringList>
 #include "pin.h"
 
-class Component
+class KICADSHARED_EXPORT Component
 {
 public:
     Component(const QString &name=QString());
@@ -14,7 +16,8 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QList<Pin> pins() const;
+    QList<Pin> &pins();
+    const QList<Pin> &pins() const;
     void addPin(const Pin &pin);
 
     QString prefixe() const;
@@ -26,10 +29,14 @@ public:
     const QStringList &footPrints() const;
     void addFootPrints(const QString &footprint);
 
+    void sort();
     void reorganizeToPackageStyle();
     void reorganizeUnderRules(const QList<QRegExp> &rules);
 
-    friend QTextStream& operator<<(QTextStream &stream, const Component &component);
+    friend QTextStream &operator<<(QTextStream &stream, const Component &component);
+    friend QTextStream &operator>>(QTextStream &stream, Component &component);
+
+    bool isValid() const;
 
 private:
     QList<Pin> _pins;
@@ -37,6 +44,7 @@ private:
     QString _prefixe;
     QStringList _alias;
     QStringList _footPrints;
+    bool _valid;
 };
 
 #endif // COMPONENT_H

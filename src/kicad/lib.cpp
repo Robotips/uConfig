@@ -2,6 +2,7 @@
 
 #include <QDateTime>
 #include <QFile>
+#include <QDebug>
 
 Lib::Lib()
 {
@@ -39,6 +40,22 @@ bool Lib::saveTo(const QString &fileName)
     return true;
 }
 
+bool Lib::readFrom(const QString &fileName)
+{
+    QFile input(fileName);
+    if(!input.open(QIODevice::ReadOnly | QIODevice::Text)) return false;
+    QTextStream stream(&input);
+
+    do
+    {
+        Component comp;
+        stream >> comp;
+        qDebug() << comp.isValid() << "ENDCOMP";
+    } while (!stream.atEnd());
+
+    return true;
+}
+
 QTextStream& operator<<(QTextStream &stream, const Lib &lib)
 {
     // header
@@ -56,4 +73,9 @@ QTextStream& operator<<(QTextStream &stream, const Lib &lib)
     stream << "#End Library";
 
     return stream;
+}
+
+QTextStream &operator>>(QTextStream &stream, Lib &lib)
+{
+
 }

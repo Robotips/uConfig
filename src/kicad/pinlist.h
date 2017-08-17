@@ -1,11 +1,13 @@
 #ifndef PINLIST_H
 #define PINLIST_H
 
+#include "kicad_global.h"
+
 #include "pin.h"
 
 #include <QList>
 
-class PinList
+class KICADSHARED_EXPORT PinList
 {
 public:
     PinList();

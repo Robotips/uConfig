@@ -6,6 +6,7 @@ Component::Component(const QString &name)
     : _name(name),
       _prefixe("U")
 {
+    _valid = true;
 }
 
 QString Component::name() const
@@ -18,7 +19,12 @@ void Component::setName(const QString &name)
     _name = name;
 }
 
-QList<Pin> Component::pins() const
+QList<Pin> &Component::pins()
+{
+    return _pins;
+}
+
+const QList<Pin> &Component::pins() const
 {
     return _pins;
 }
@@ -58,6 +64,11 @@ void Component::addFootPrints(const QString &footprint)
     _footPrints.append(footprint);
 }
 
+void Component::sort()
+{
+    qSort(_pins);
+}
+
 void Component::reorganizeToPackageStyle()
 {
     qSort(_pins);
@@ -93,6 +104,52 @@ void Component::reorganizeToPackageStyle()
 void Component::reorganizeUnderRules(const QList<QRegExp> &rules)
 {
 
+}
+
+bool Component::isValid() const
+{
+    return _valid;
+}
+
+QTextStream &operator>>(QTextStream &stream, Component &component)
+{
+    QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) ([A-Z]) ([A-Z]) ([A-Z]) ([A-Z]+)$");
+    bool draw = false;
+    do
+    {
+        QString line = stream.readLine();
+        if(line.startsWith("DEF"))
+        {
+        }
+        else if(regexp.indexIn(line)>-1)
+        {
+            qDebug() << regexp.cap(1) << regexp.cap(2) << regexp.cap(3) << regexp.cap(4) << regexp.cap(5);
+        }
+        else if(line.startsWith("DRAW"))
+        {
+            draw = true;
+        }
+        else if(line.startsWith("ENDDRAW"))
+        {
+            draw = false;
+        }
+        else if(line.startsWith("ENDDEF"))
+        {
+            component._valid = true;
+            qDebug()<<line;
+            return stream;
+        }
+        else
+        {
+            if(draw)
+            {
+                // stream >>
+            }
+        }
+    } while (!stream.atEnd());
+
+    component._valid = false;
+    return stream;
 }
 
 QTextStream& operator<<(QTextStream &stream, const Component &component)

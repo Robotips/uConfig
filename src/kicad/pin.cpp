@@ -12,6 +12,7 @@ Pin::Pin(const QString &name, const QString &padName)
     : _name(name),
       _padname(padName),
       _direction(Pin::Right),
+      _pinType(Pin::Normal),
       _electricalType(Pin::Input)
 {
     _layer = 1;

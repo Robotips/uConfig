@@ -1,12 +1,14 @@
 #ifndef PAD_H
 #define PAD_H
 
+#include "kicad_global.h"
+
 #include <QString>
 #include <QPointF>
 #include <QSizeF>
 #include <QTextStream>
 
-class Pad
+class KICADSHARED_EXPORT Pad
 {
 public:
     Pad();
