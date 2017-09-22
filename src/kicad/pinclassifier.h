@@ -19,7 +19,7 @@ private:
 class PinCompare
 {
 public:
-    PinCompare(const QString &name, bool number=false);
+    PinCompare(const QString &name, bool number = false);
 
     QString internalName() const;
     void setInternalName(const QString &internalName);
@@ -37,4 +37,4 @@ private:
     QString _internalName;
 };
 
-#endif // PINCLASSIFIER_H
+#endif  // PINCLASSIFIER_H

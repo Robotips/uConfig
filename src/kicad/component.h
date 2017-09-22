@@ -11,7 +11,7 @@
 class KICADSHARED_EXPORT Component
 {
 public:
-    Component(const QString &name=QString());
+    Component(const QString &name = QString());
 
     QString name() const;
     void setName(const QString &name);
@@ -33,7 +33,8 @@ public:
     void reorganizeToPackageStyle();
     void reorganizeUnderRules(const QList<QRegExp> &rules);
 
-    friend QTextStream &operator<<(QTextStream &stream, const Component &component);
+    friend QTextStream &operator<<(QTextStream &stream,
+                                   const Component &component);
     friend QTextStream &operator>>(QTextStream &stream, Component &component);
 
     bool isValid() const;
@@ -47,4 +48,4 @@ private:
     bool _valid;
 };
 
-#endif // COMPONENT_H
+#endif  // COMPONENT_H

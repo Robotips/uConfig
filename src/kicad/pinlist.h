@@ -23,4 +23,4 @@ private:
     QList<Pin> _pins;
 };
 
-#endif // PINLIST_H
+#endif  // PINLIST_H

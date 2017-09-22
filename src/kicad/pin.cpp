@@ -9,11 +9,8 @@ Pin::Pin()
 }
 
 Pin::Pin(const QString &name, const QString &padName)
-    : _name(name),
-      _padname(padName),
-      _direction(Pin::Right),
-      _pinType(Pin::Normal),
-      _electricalType(Pin::Input)
+    : _name(name), _padname(padName), _direction(Pin::Right),
+      _pinType(Pin::Normal), _electricalType(Pin::Input)
 {
     _layer = 1;
 }
@@ -174,30 +171,29 @@ QTextStream &operator<<(QTextStream &stream, const Pin &pin)
 {
     // http://en.wikibooks.org/wiki/Kicad/file_formats#X_record_.28Pin.29
 
-    // X PIN_NAME PAD_NAME X_POS Y_POS LINE_WIDTH DIRECTION NAME_TEXT_SIZE LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
-    stream << "X "
-           << pin._name << " "
-           << pin._padname << " "
-           << pin._pos.x() << " "
-           << pin._pos.y() << " "
-           << "300" << " "
-           << pin.directionString() << " "
-           << "50" << " "
-           << "50" << " "
-           << pin._layer << " "
-           << "1" << " "
-           << pin.electricalTypeString() << " "
-           << pin.pinTypeString();
+    // X PIN_NAME PAD_NAME X_POS Y_POS LINE_WIDTH DIRECTION NAME_TEXT_SIZE
+    // LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
+    stream << "X " << pin._name << " " << pin._padname << " " << pin._pos.x()
+           << " " << pin._pos.y() << " "
+           << "300"
+           << " " << pin.directionString() << " "
+           << "50"
+           << " "
+           << "50"
+           << " " << pin._layer << " "
+           << "1"
+           << " " << pin.electricalTypeString() << " " << pin.pinTypeString();
 
     return stream;
 }
 
 bool operator<(const Pin &pin1, const Pin &pin2)
 {
-    return (pin1._padname.rightJustified(4,'0') < pin2._padname.rightJustified(4,'0'));
+    return (pin1._padname.rightJustified(4, '0') <
+            pin2._padname.rightJustified(4, '0'));
 }
 
 bool operator==(const Pin &pin1, const Pin &pin2)
 {
-    return (pin1._padname==pin2._padname && pin1._name==pin2._name);
+    return (pin1._padname == pin2._padname && pin1._name == pin2._name);
 }

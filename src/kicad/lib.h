@@ -23,9 +23,10 @@ public:
 
     friend QTextStream &operator<<(QTextStream &stream, const Lib &lib);
     friend QTextStream &operator>>(QTextStream &stream, Lib &lib);
+
 private:
     QList<Component> _components;
     QString _name;
 };
 
-#endif // LIB_H
+#endif  // LIB_H

@@ -16,7 +16,8 @@ QList<Pin> &PinList::pins()
 
 bool PinList::addPin(const Pin &pin)
 {
-    if(existPin(pin)) return false;
+    if (existPin(pin))
+        return false;
     _pins.append(pin);
     return true;
 }
@@ -24,9 +25,10 @@ bool PinList::addPin(const Pin &pin)
 bool PinList::removePin(const Pin &pin)
 {
     QList<Pin>::iterator it;
-    for(it=_pins.begin(); it!=_pins.end(); ++it)
+    for (it = _pins.begin(); it != _pins.end(); ++it)
     {
-        if(pin==*it) _pins.erase(it);
+        if (pin == *it)
+            _pins.erase(it);
     }
     return true;
 }
@@ -35,7 +37,8 @@ bool PinList::existPin(const Pin &newpin)
 {
     foreach (const Pin &pin, _pins)
     {
-        if(newpin==pin) return true;
+        if (newpin == pin)
+            return true;
     }
     return false;
 }

@@ -4,9 +4,9 @@
 #include <QtCore/qglobal.h>
 
 #if defined(KICAD_LIBRARY)
-#  define KICADSHARED_EXPORT Q_DECL_EXPORT
+ #define KICADSHARED_EXPORT Q_DECL_EXPORT
 #else
-#  define KICADSHARED_EXPORT Q_DECL_IMPORT
+ #define KICADSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
 #endif // KICAD_GLOBAL_H

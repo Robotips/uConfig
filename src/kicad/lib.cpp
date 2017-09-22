@@ -31,7 +31,8 @@ void Lib::addComponent(const Component &component)
 bool Lib::saveTo(const QString &fileName)
 {
     QFile output(fileName);
-    if(!output.open(QIODevice::WriteOnly | QIODevice::Text)) return false;
+    if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
+        return false;
 
     QTextStream stream(&output);
     stream << *this;
@@ -43,7 +44,8 @@ bool Lib::saveTo(const QString &fileName)
 bool Lib::readFrom(const QString &fileName)
 {
     QFile input(fileName);
-    if(!input.open(QIODevice::ReadOnly | QIODevice::Text)) return false;
+    if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
+        return false;
     QTextStream stream(&input);
 
     do
@@ -56,10 +58,12 @@ bool Lib::readFrom(const QString &fileName)
     return true;
 }
 
-QTextStream& operator<<(QTextStream &stream, const Lib &lib)
+QTextStream &operator<<(QTextStream &stream, const Lib &lib)
 {
     // header
-    stream << "EESchema-LIBRARY Version 2.3  Date: " << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss") << endl;
+    stream << "EESchema-LIBRARY Version 2.3  Date: "
+           << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss")
+           << endl;
     stream << "#encoding utf-8" << endl;
 
     // components
@@ -77,5 +81,4 @@ QTextStream& operator<<(QTextStream &stream, const Lib &lib)
 
 QTextStream &operator>>(QTextStream &stream, Lib &lib)
 {
-
 }

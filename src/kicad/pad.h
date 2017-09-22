@@ -13,50 +13,53 @@ class KICADSHARED_EXPORT Pad
 public:
     Pad();
 
-    enum Shape {
+    enum Shape
+    {
         Rect,
         Circle,
         Ovate,
         Trapezoidal
     };
 
-    enum Type {
+    enum Type
+    {
         Std,
         Smd,
         Conn,
         Hole
     };
 
-    enum Layer {
-        BackSolder  	 = 0x00000001,
-        Inner14          = 0x00000002,
-        Inner13          = 0x00000004,
-        Inner12          = 0x00000008,
-        Inner11     	 = 0x00000010,
-        Inner10          = 0x00000020,
-        Inner9           = 0x00000040,
-        Inner8           = 0x00000080,
-        Inner7           = 0x00000100,
-        Inner6      	 = 0x00000200,
-        Inner5      	 = 0x00000400,
-        Inner4      	 = 0x00000800,
-        Inner3           = 0x00001000,
-        Inner2           = 0x00002000,
-        Inner1           = 0x00004000,
-        FrontComponent   = 0x00008000,
-        GlueBack         = 0x00010000,
-        GlueFront        = 0x00020000,
-        SolderPasteBack  = 0x00040000,
+    enum Layer
+    {
+        BackSolder = 0x00000001,
+        Inner14 = 0x00000002,
+        Inner13 = 0x00000004,
+        Inner12 = 0x00000008,
+        Inner11 = 0x00000010,
+        Inner10 = 0x00000020,
+        Inner9 = 0x00000040,
+        Inner8 = 0x00000080,
+        Inner7 = 0x00000100,
+        Inner6 = 0x00000200,
+        Inner5 = 0x00000400,
+        Inner4 = 0x00000800,
+        Inner3 = 0x00001000,
+        Inner2 = 0x00002000,
+        Inner1 = 0x00004000,
+        FrontComponent = 0x00008000,
+        GlueBack = 0x00010000,
+        GlueFront = 0x00020000,
+        SolderPasteBack = 0x00040000,
         SolderPasteFront = 0x00080000,
-        SilkScreenBack 	 = 0x00100000,
-        SilkScreenFront  = 0x00200000,
-        SolderMaskBack 	 = 0x00400000,
-        SolderMaskFront  = 0x00800000,
-        Drawings 		 = 0x01000000,
-        Comments 		 = 0x02000000,
-        ECO1        	 = 0x04000000,
-        ECO2        	 = 0x08000000,
-        EdgeCuts 		 = 0x10000000
+        SilkScreenBack = 0x00100000,
+        SilkScreenFront = 0x00200000,
+        SolderMaskBack = 0x00400000,
+        SolderMaskFront = 0x00800000,
+        Drawings = 0x01000000,
+        Comments = 0x02000000,
+        ECO1 = 0x04000000,
+        ECO2 = 0x08000000,
+        EdgeCuts = 0x10000000
     };
 
     QString name() const;
@@ -91,7 +94,7 @@ public:
     QString typeString() const;
     void setType(const Type &type);
 
-    friend QTextStream& operator<<(QTextStream &stream, const Pad &pad);
+    friend QTextStream &operator<<(QTextStream &stream, const Pad &pad);
 
 private:
     QString _name;
@@ -110,7 +113,6 @@ private:
     // attributes
     Type _type;
     int _layers;
-
 };
 
-#endif // PAD_H
+#endif  // PAD_H

@@ -11,17 +11,19 @@ class KICADSHARED_EXPORT Pin
 {
 public:
     explicit Pin();
-    Pin(const QString &name, const QString &padName=QString());
+    Pin(const QString &name, const QString &padName = QString());
     Pin(const QString &name, const int padnumber);
 
-    enum Direction {
+    enum Direction
+    {
         Up,
         Left,
         Down,
         Right
     };
 
-    enum ElectricalType {
+    enum ElectricalType
+    {
         Input,
         Output,
         Bidir,
@@ -35,7 +37,8 @@ public:
         NotConnected
     };
 
-    enum PinType {
+    enum PinType
+    {
         NotVisible,
         Invert,
         Clock,
@@ -75,7 +78,7 @@ public:
     friend bool operator<(const Pin &pin1, const Pin &pin);
     friend bool operator==(const Pin &pin1, const Pin &pin2);
 
-    friend QTextStream& operator<<(QTextStream &stream, const Pin &pin);
+    friend QTextStream &operator<<(QTextStream &stream, const Pin &pin);
 
 private:
     QString _name;
@@ -87,5 +90,4 @@ private:
     int _layer;
 };
 
-
-#endif // PIN_H
+#endif  // PIN_H

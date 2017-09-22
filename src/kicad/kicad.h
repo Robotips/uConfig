@@ -10,4 +10,4 @@ public:
     Kicad();
 };
 
-#endif // KICAD_H
+#endif  // KICAD_H
