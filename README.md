@@ -7,3 +7,4 @@ Needs a lot of refactoring.
 Will be done in few weeks.
 
 
+sudo apt install libpoppler-qt5-dev

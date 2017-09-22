@@ -4,6 +4,7 @@
 #include <QPainter>
 #include <QFile>
 #include <QDomNamedNodeMap>
+#include <QDir>
 #include "kicadexport.h"
 
 using namespace Poppler;
@@ -18,12 +19,12 @@ Datasheet::~Datasheet()
     close();
 }
 
-void Datasheet::open(int dsid)
+bool Datasheet::open(int dsid)
 {
     open(QString("edc/doc/%1g.pdf").arg(dsid));
 }
 
-void Datasheet::open(QString fileName)
+bool Datasheet::open(QString fileName)
 {
     close();
     _doc = Poppler::Document::load(fileName);
@@ -48,12 +49,13 @@ void Datasheet::open(QString fileName)
         child = child.nextSibling().toElement();
     }*/
 
+    return _doc != NULL;
 }
 
 void Datasheet::close()
 {
     delete _doc;
-    foreach(Package *package, _packages)
+    foreach(DatasheetPackage *package, _packages)
     {
         delete package;
     }
@@ -62,22 +64,22 @@ void Datasheet::close()
 
 void Datasheet::pinSearch(int numPage)
 {
-    QList<Box> numbers;
-    QList<Box> labels;
-    QList<Box> proc_labels;
-    QList<Box> pack_labels;
-    QList<Pin> pins;
-    QList<Package*> packages;
+    QList<DatasheetBox> numbers;
+    QList<DatasheetBox> labels;
+    QList<DatasheetBox> proc_labels;
+    QList<DatasheetBox> pack_labels;
+    QList<DatasheetPin> pins;
+    QList<DatasheetPackage*> packages;
 
     qDebug()<<"+page: "<<numPage;
     if(_doc==NULL) {qDebug()<<"can not open"; return;}
     if(_doc->numPages()<1) {qDebug()<<"no page"; return;}
 
     Poppler::Page *page=_doc->page(numPage);
-    //QRectF posPinDiagram=page->search("Pin Diagrams", Poppler::Page::CaseInsensitive).first();
+    //QRectF posPinDiagram=page->search("Pin Diagrams", Poppler::Page::IgnoreCase).first();
 
     bool prev=false;
-    Box box;
+    DatasheetBox box;
     foreach (TextBox *textBox, page->textList())
     {
         bool okNumber;
@@ -99,8 +101,10 @@ void Datasheet::pinSearch(int numPage)
             }
             else
             {
-                if(textBox->text().startsWith("•")) box.text = textBox->text().mid(1);
-                else box.text = textBox->text();
+                if(textBox->text().startsWith("•"))
+                    box.text = textBox->text().mid(1);
+                else
+                    box.text = textBox->text();
                 box.pos = textBox->boundingBox();
                 prev=false;
                 if(okNumber)
@@ -108,10 +112,13 @@ void Datasheet::pinSearch(int numPage)
                     numbers.push_back(box);
                 }
             }
+            box.text.replace(QRegExp("\\([0-9]+\\)"), "");
 
             if(!okNumber || prev)
             {
-                if(box.text.contains("Note",Qt::CaseInsensitive))
+                if(box.text.isEmpty() ||
+                   box.text.contains("Note",Qt::CaseInsensitive) ||
+                   box.text.contains(QRegExp("^\\([0-9]+\\)$")))
                 {
                     // none
                 }
@@ -150,16 +157,16 @@ void Datasheet::pinSearch(int numPage)
     }
 
     // pairing label and number to pin
-    foreach (Box number, numbers)
+    foreach (DatasheetBox number, numbers)
     {
-        Pin pin;
+        DatasheetPin pin;
         qreal dist=999999999999;
         QPointF center=number.pos.center();
-        Box assoc;
+        DatasheetBox assoc;
         int near=0;
         for(int i=0;i<labels.count();i++)
         {
-            Box label=labels[i];
+            DatasheetBox label=labels[i];
             if(!isAlign(label, number)) continue;
             qreal newdist=(center-label.pos.center()).manhattanLength();
             if(newdist<dist)
@@ -203,12 +210,12 @@ void Datasheet::pinSearch(int numPage)
     }
 
     // painring pin to find package
-    foreach (Pin pin, pins)
+    foreach (DatasheetPin pin, pins)
     {
         if(pin.pin==1)
         {
-            Package *package;
-            package = new Package();
+            DatasheetPackage *package;
+            package = new DatasheetPackage();
             package->pins.push_back(pin);
             packages.push_back(package);
         }
@@ -217,15 +224,15 @@ void Datasheet::pinSearch(int numPage)
     {
         for(int i=0;i<pins.count();i++)
         {
-            Pin pin=pins.at(i);
+            DatasheetPin pin=pins.at(i);
             if(pin.pin==pinNumber)
             {
-                Package *nearPackage=NULL;
+                DatasheetPackage *nearPackage=NULL;
                 qreal dist=99999999999999;
                 QPointF center=pin.numPos.center();
-                foreach(Package *package, packages)
+                foreach(DatasheetPackage *package, packages)
                 {
-                    Pin lastpin=package->pins.last();
+                    DatasheetPin lastpin=package->pins.last();
                     //qDebug()<<dist<<pin.name<<pin.pin<<pin.pos<<lastpin.name;
                     if(lastpin.pin==pin.pin || lastpin.pin+4<pin.pin) continue;
                     qreal newdist=(center-(lastpin.numPos.bottomLeft())).manhattanLength();
@@ -262,11 +269,11 @@ void Datasheet::pinSearch(int numPage)
     }
 
     // ajust size of package
-    foreach(Package *package, packages)
+    foreach(DatasheetPackage *package, packages)
     {
         QRectF rect;
         QRectF rectNum;
-        foreach (Pin pin, package->pins)
+        foreach (DatasheetPin pin, package->pins)
         {
             rect = rect.united(pin.pos);
             rectNum = rectNum.united(pin.numPos);
@@ -279,7 +286,7 @@ void Datasheet::pinSearch(int numPage)
     float res=8;
     int dec=5;
     //_package.clear();
-    foreach(Package *package, packages)
+    foreach(DatasheetPackage *package, packages)
     {
         if(package->pins.count()<5)
         {
@@ -296,35 +303,37 @@ void Datasheet::pinSearch(int numPage)
         QPainter painter(&package->image);
         qDebug()<<"==============================";
         pac++;
+        QDir dir;
+        dir.mkdir("img");
         QFile file(QString("img/p%1_pack%2.txt").arg(numPage+1).arg(pac));
         file.open(QIODevice::WriteOnly | QIODevice::Text);
         qDebug()<<QString("img/p%1_pack%2.txt").arg(numPage+1).arg(pac);
         QTextStream textStream(&file);
 
         textStream<<"Proc: ";
-        foreach (Box proc, proc_labels)
+        foreach (DatasheetBox proc, proc_labels)
         {
             textStream<<proc.text<<"-";
         }
         textStream<<endl<<"Package: ";
-        foreach (Box pack, pack_labels)
+        foreach (DatasheetBox pack, pack_labels)
         {
             textStream<<pack.text<<"-";
         }
         textStream<<endl;
 
-        painter.setPen(QPen(Qt::yellow,5));
-        foreach (Box number, numbers)
+        painter.setPen(QPen(Qt::yellow,5,Qt::DotLine));
+        foreach (DatasheetBox number, numbers)
         {
             painter.drawRect(QRect((number.pos.topLeft()-rect.topLeft()).toPoint()*res, number.pos.size().toSize()*res));
         }
-        painter.setPen(QPen(Qt::blue,5));
-        foreach (Box label, labels)
+        painter.setPen(QPen(Qt::blue,5,Qt::DotLine));
+        foreach (DatasheetBox label, labels)
         {
             painter.drawRect(QRect((label.pos.topLeft()-rect.topLeft()).toPoint()*res, label.pos.size().toSize()*res));
         }
-        painter.setPen(QPen(Qt::red,5));
-        foreach (Pin pin, package->pins)
+        painter.setPen(QPen(Qt::red,5,Qt::DotLine));
+        foreach (DatasheetPin pin, package->pins)
         {
             textStream<<pin.pin<<"\t"<<pin.name<<endl;
             painter.drawRect(QRect((pin.pos.topLeft()-rect.topLeft()).toPoint()*res, pin.pos.size().toSize()*res));
@@ -336,17 +345,18 @@ void Datasheet::pinSearch(int numPage)
         KicadExport kicad;
         kicad.exportPack(package, QString("img/p%1_pack%2.lib").arg(numPage+1).arg(pac));
         //qDebug()<<_packages.count();
+        exit(0);
     }
 }
 
 void Datasheet::pinSearchBGA(int numPage)
 {
-    QList<Box> numbers;
-    QList<Box> labels;
-    QList<Box> proc_labels;
-    QList<Box> pack_labels;
-    QList<Pin> pins;
-    QList<Package*> packages;
+    QList<DatasheetBox> numbers;
+    QList<DatasheetBox> labels;
+    QList<DatasheetBox> proc_labels;
+    QList<DatasheetBox> pack_labels;
+    QList<DatasheetPin> pins;
+    QList<DatasheetPackage*> packages;
 
     qDebug()<<"+pageBGA: "<<numPage;
     if(_doc==NULL) {qDebug()<<"can not open"; return;}
@@ -355,7 +365,7 @@ void Datasheet::pinSearchBGA(int numPage)
     Poppler::Page *page=_doc->page(numPage);
 
     bool prev=false;
-    Box box;
+    DatasheetBox box;
     foreach (TextBox *textBox, page->textList())
     {
         bool okNumber;
@@ -425,16 +435,16 @@ void Datasheet::pinSearchBGA(int numPage)
     }
 
     // pairing label and number to pin
-    foreach (Box number, numbers)
+    foreach (DatasheetBox number, numbers)
     {
-        Pin pin;
+        DatasheetPin pin;
         qreal dist=999999999999;
         QPointF center=number.pos.center();
-        Box assoc;
+        DatasheetBox assoc;
         int near=0;
         for(int i=0;i<labels.count();i++)
         {
-            Box label=labels[i];
+            DatasheetBox label=labels[i];
             if(!isAlign(label, number)) continue;
             qreal newdist=(center-label.pos.center()).manhattanLength();
             if(newdist<dist)
@@ -478,12 +488,12 @@ void Datasheet::pinSearchBGA(int numPage)
     }
 
     // painring pin to find package
-    foreach (Pin pin, pins)
+    foreach (DatasheetPin pin, pins)
     {
         if(pin.pin==1)
         {
-            Package *package;
-            package = new Package();
+            DatasheetPackage *package;
+            package = new DatasheetPackage();
             package->pins.push_back(pin);
             packages.push_back(package);
         }
@@ -492,15 +502,15 @@ void Datasheet::pinSearchBGA(int numPage)
     {
         for(int i=0;i<pins.count();i++)
         {
-            Pin pin=pins.at(i);
+            DatasheetPin pin=pins.at(i);
             if(pin.pin==pinNumber)
             {
-                Package *nearPackage=NULL;
+                DatasheetPackage *nearPackage=NULL;
                 qreal dist=99999999999999;
                 QPointF center=pin.numPos.center();
-                foreach(Package *package, packages)
+                foreach(DatasheetPackage *package, packages)
                 {
-                    Pin lastpin=package->pins.last();
+                    DatasheetPin lastpin=package->pins.last();
                     //qDebug()<<dist<<pin.name<<pin.pin<<pin.pos<<lastpin.name;
                     if(lastpin.pin==pin.pin || lastpin.pin+4<pin.pin) continue;
                     qreal newdist=(center-(lastpin.numPos.bottomLeft())).manhattanLength();
@@ -537,11 +547,11 @@ void Datasheet::pinSearchBGA(int numPage)
     }
 
     // ajust size of package
-    foreach(Package *package, packages)
+    foreach(DatasheetPackage *package, packages)
     {
         QRectF rect;
         QRectF rectNum;
-        foreach (Pin pin, package->pins)
+        foreach (DatasheetPin pin, package->pins)
         {
             rect = rect.united(pin.pos);
             rectNum = rectNum.united(pin.numPos);
@@ -554,7 +564,7 @@ void Datasheet::pinSearchBGA(int numPage)
     float res=8;
     int dec=5;
     //_package.clear();
-    foreach(Package *package, packages)
+    foreach(DatasheetPackage *package, packages)
     {
         if(package->pins.count()<5)
         {
@@ -576,29 +586,29 @@ void Datasheet::pinSearchBGA(int numPage)
         QTextStream textStream(&file);
 
         textStream<<"Proc: ";
-        foreach (Box proc, proc_labels)
+        foreach (DatasheetBox proc, proc_labels)
         {
             textStream<<proc.text<<"-";
         }
         textStream<<endl<<"Package: ";
-        foreach (Box pack, pack_labels)
+        foreach (DatasheetBox pack, pack_labels)
         {
             textStream<<pack.text<<"-";
         }
         textStream<<endl;
 
         painter.setPen(QPen(Qt::yellow,5));
-        foreach (Box number, numbers)
+        foreach (DatasheetBox number, numbers)
         {
             painter.drawRect(QRect((number.pos.topLeft()-rect.topLeft()).toPoint()*res, number.pos.size().toSize()*res));
         }
         painter.setPen(QPen(Qt::blue,5));
-        foreach (Box label, labels)
+        foreach (DatasheetBox label, labels)
         {
             painter.drawRect(QRect((label.pos.topLeft()-rect.topLeft()).toPoint()*res, label.pos.size().toSize()*res));
         }
         painter.setPen(QPen(Qt::red,5));
-        foreach (Pin pin, package->pins)
+        foreach (DatasheetPin pin, package->pins)
         {
             textStream<<pin.pin<<"\t"<<pin.name<<endl;
             painter.drawRect(QRect((pin.pos.topLeft()-rect.topLeft()).toPoint()*res, pin.pos.size().toSize()*res));
@@ -622,36 +632,36 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
         QList<QRectF> result;
         Poppler::Page *page=_doc->page(i);
         if(page==NULL) continue;
-        result=page->search("vss", Poppler::Page::CaseInsensitive);         // All
+        result=page->search("vss", Poppler::Page::IgnoreCase);         // All
         if(result.isEmpty())
         {
-            result=page->search("vdd", Poppler::Page::CaseInsensitive);         // All
+            result=page->search("vdd", Poppler::Page::IgnoreCase);         // All
             if(result.isEmpty())
             {
-                result=page->search("gnd", Poppler::Page::CaseInsensitive);         // All
+                result=page->search("gnd", Poppler::Page::IgnoreCase);         // All
                 if(result.isEmpty()) continue;
             }
         }
-        result=page->search("BGA", Poppler::Page::CaseInsensitive);         // All
+        result=page->search("BGA", Poppler::Page::IgnoreCase);         // All
         //if(result.isEmpty()) *bgaStyle=false; else *bgaStyle=true;
         *bgaStyle=false;
-        result=page->search("Pin Diagram", Poppler::Page::CaseInsensitive);         // Microchip
+        result=page->search("Pin Diagram", Poppler::Page::IgnoreCase);         // Microchip
         if(!result.isEmpty()) return i;
-        result=page->search("Device Pin Tables", Poppler::Page::CaseInsensitive);         // Microchip
+        result=page->search("Device Pin Tables", Poppler::Page::IgnoreCase);         // Microchip
         if(!result.isEmpty()) return i;
-        result=page->search("Pin Diagram", Poppler::Page::CaseInsensitive);         // Microchip
+        result=page->search("Pin Diagram", Poppler::Page::IgnoreCase);         // Microchip
         if(!result.isEmpty()) return i;
-        result=page->search("PIN DESCRIPTION", Poppler::Page::CaseInsensitive);         // Microchip
+        result=page->search("PIN DESCRIPTION", Poppler::Page::IgnoreCase);         // Microchip
         if(!result.isEmpty()) return i;
-        result=page->search("PIN NAMES", Poppler::Page::CaseInsensitive);         // Microchip
+        result=page->search("PIN NAMES", Poppler::Page::IgnoreCase);         // Microchip
         if(!result.isEmpty()) return i;
-        result=page->search("Pin Assignment", Poppler::Page::CaseInsensitive);      // Renesas
+        result=page->search("Pin Assignment", Poppler::Page::IgnoreCase);      // Renesas
         if(!result.isEmpty()) return i;
-        result=page->search("PIN CONFIGURATION", Poppler::Page::CaseInsensitive);   // Maxim
+        result=page->search("PIN CONFIGURATION", Poppler::Page::IgnoreCase);   // Maxim
         if(!result.isEmpty()) return i;
-        result=page->search("PACKAGE", Poppler::Page::CaseInsensitive);   // Linear tech
+        result=page->search("PACKAGE", Poppler::Page::IgnoreCase);   // Linear tech
         if(!result.isEmpty()) return i;
-        result=page->search("Interface pin description", Poppler::Page::CaseInsensitive);   // Divers
+        result=page->search("Interface pin description", Poppler::Page::IgnoreCase);   // Divers
         if(!result.isEmpty()) return i;
     }
     return -1;
@@ -663,12 +673,14 @@ void Datasheet::analyse()
     bool bgaStyle;
     while((page=pagePinDiagram(page+1, &bgaStyle))!=-1)
     {
-        if(bgaStyle) pinSearchBGA(page);
-        else pinSearch(page);
+        if(bgaStyle)
+            pinSearchBGA(page);
+        else
+            pinSearch(page);
     }
 }
 
-bool Datasheet::isAlign(Box &label, Box &number)
+bool Datasheet::isAlign(DatasheetBox &label, DatasheetBox &number)
 {
     if(label.pos.width()>label.pos.height())    // Horizontal
     {
@@ -684,17 +696,17 @@ bool Datasheet::isAlign(Box &label, Box &number)
     }
 }
 
-const QList<Package *> &Datasheet::packages() const
+const QList<DatasheetPackage *> &Datasheet::packages() const
 {
     return _packages;
 }
 
-Package::Package()
+DatasheetPackage::DatasheetPackage()
 {
 
 }
 
-Package::~Package()
+DatasheetPackage::~DatasheetPackage()
 {
 
 }

@@ -7,7 +7,7 @@ KicadExport::KicadExport()
 {
 }
 
-bool KicadExport::exportPack(Package *pack, QString fileName)
+bool KicadExport::exportPack(DatasheetPackage *pack, QString fileName)
 {
     QFile output(fileName);
     if(!output.open(QIODevice::WriteOnly | QIODevice::Text)) return false;
@@ -28,7 +28,7 @@ bool KicadExport::exportPack(Package *pack, QString fileName)
 
     int pinCount=0;
     int y=-100*(pack->pins.count()/4), x=-1100, orientation=0;
-    foreach (Pin pin, pack->pins)
+    foreach (DatasheetPin pin, pack->pins)
     {
         exportPin(pin, x, y, orientation);
         pinCount++;
@@ -51,7 +51,7 @@ bool KicadExport::exportPack(Package *pack, QString fileName)
     return true;
 }
 
-void KicadExport::exportPin(Pin pin, int x, int y, int orientation)
+void KicadExport::exportPin(DatasheetPin pin, int x, int y, int orientation)
 {
     QString orientation_str;
     switch (orientation)

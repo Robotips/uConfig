@@ -8,6 +8,7 @@
 
 TARGET = kicad
 TEMPLATE = lib
+DESTDIR = $$PWD/../../bin/
 
 DEFINES += KICAD_LIBRARY
 

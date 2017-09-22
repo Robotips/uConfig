@@ -1,17 +1,10 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
 #include "lib.h"
 
 #include <QFile>
 #include <QDebug>
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+void test_libkicad()
 {
-    ui->setupUi(this);
-
     QFile file("C:/Users/seb/Seafile/projects/SwarmTips/elec/4-top/b-fpga-vision/doc/max10/pinout.csv");
     file.open(QIODevice::ReadOnly|QIODevice::Text);
     QTextStream stream(&file);
@@ -80,10 +73,4 @@ MainWindow::MainWindow(QWidget *parent) :
 
     lib.addComponent(*component);
     lib.saveTo("C:/Users/seb/Seafile/projects/maxcam/elec/max102.lib");
-
-}
-
-MainWindow::~MainWindow()
-{
-    delete ui;
 }

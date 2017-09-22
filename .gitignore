@@ -2,3 +2,4 @@ build/*
 bin/*
 lib/*
 *.user
+src/bin/

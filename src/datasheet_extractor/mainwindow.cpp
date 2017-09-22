@@ -34,7 +34,7 @@ void MainWindow::open(QString file)
     data.open(file);
     data.analyse();
     ui->listWidget->clear();
-    foreach(Package *package, data.packages())
+    foreach(DatasheetPackage *package, data.packages())
     {
         ui->listWidget->addItem(package->name);
     }
@@ -71,11 +71,11 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_listWidget_activated(const QModelIndex &index)
 {
-    Package *package=data.packages().at(index.row());
+    DatasheetPackage *package=data.packages().at(index.row());
 
     ui->textBrowser->clear();
     ui->label->setPixmap(QPixmap::fromImage(package->image));
-    foreach(Pin pin, package->pins)
+    foreach(DatasheetPin pin, package->pins)
     {
         ui->textBrowser->append(QString("%1\t%2").arg(pin.pin).arg(pin.name));
     }

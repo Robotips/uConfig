@@ -9,16 +9,13 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = test
 TEMPLATE = app
+DESTDIR = $$PWD/../../bin/
 
-SOURCES += main.cpp\
-        mainwindow.cpp
+SOURCES += main.cpp \
+    test_libkicad.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  +=
 
-FORMS    += mainwindow.ui
-
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../kicad/release/ -lkicad
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../kicad/debug/ -lkicad
-else:unix: LIBS += -L$$OUT_PWD/../kicad/ -lkicad
+LIBS += -L$$PWD/../../bin/ -lkicad -ldatasheet_extractor
 INCLUDEPATH += $$PWD/../kicad
 DEPENDPATH += $$PWD/../kicad

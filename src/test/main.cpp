@@ -1,11 +1,12 @@
-#include "mainwindow.h"
-#include <QApplication>
+#include <QDebug>
 
-int main(int argc, char *argv[])
+#include "../datasheet_extractor/datasheet.h"
+
+int main()
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
-
-    return a.exec();
+    Datasheet datasheet;
+    qDebug()<<datasheet.open("/home/seb/Seafile/projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
+    datasheet.analyse();
+    foreach(DatasheetPackage *package, datasheet.packages())
+        qDebug()<<package->name;
 }

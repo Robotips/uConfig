@@ -9,12 +9,12 @@ class KicadExport
 public:
     KicadExport();
 
-    bool exportPack(Package *pack, QString fileName);
+    bool exportPack(DatasheetPackage *pack, QString fileName);
 
 private:
     QTextStream _out;
 
-    void exportPin(Pin pin, int x, int y, int orientation);
+    void exportPin(DatasheetPin pin, int x, int y, int orientation);
 };
 
 #endif // KICADEXPORT_H
