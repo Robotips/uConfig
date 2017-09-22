@@ -17,4 +17,4 @@ private:
     void exportPin(DatasheetPin pin, int x, int y, int orientation);
 };
 
-#endif // KICADEXPORT_H
+#endif  // KICADEXPORT_H

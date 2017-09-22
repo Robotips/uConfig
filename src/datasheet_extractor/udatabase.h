@@ -15,11 +15,10 @@ public:
     void insertField(QString fieldName);
     void updateDatabase();
 
-
 private:
     QSqlDatabase *_db;
 
     void createDB();
 };
 
-#endif // UDATABASE_H
+#endif  // UDATABASE_H

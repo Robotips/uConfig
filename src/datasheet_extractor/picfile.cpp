@@ -11,7 +11,8 @@ PicFile::PicFile()
 bool PicFile::open(QString file)
 {
     _file.setFileName(file);
-    if(!_file.open(QIODevice::ReadOnly)) return false;
+    if (!_file.open(QIODevice::ReadOnly))
+        return false;
 
     /*QXmlStreamReader reader(&_file);
     while(reader.readNextStartElement())
@@ -32,10 +33,10 @@ bool PicFile::open(QString file)
     QDomDocument doc;
     doc.setContent(&_file);
     _file.close();
-    QDomElement root=doc.documentElement();
+    QDomElement root = doc.documentElement();
 
-    _dsid=root.attribute("edc:dsid").toInt();
-    _psid=root.attribute("edc:psid").toInt();
+    _dsid = root.attribute("edc:dsid").toInt();
+    _psid = root.attribute("edc:psid").toInt();
 
     /*QDomElement child=root.firstChild().toElement();
     while(!child.isNull())
@@ -49,6 +50,7 @@ bool PicFile::open(QString file)
         }
         child = child.nextSibling().toElement();
     }*/
+    return true;
 }
 
 int PicFile::dsid()

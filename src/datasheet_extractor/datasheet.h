@@ -47,7 +47,7 @@ public:
 
     void analyse();
 
-    const QList<DatasheetPackage *> &packages()const;
+    const QList<DatasheetPackage *> &packages() const;
 
 private:
     int pagePinDiagram(int pageStart, bool *bgaStyle);
@@ -58,7 +58,7 @@ private:
     Poppler::Document *_doc;
 
     bool isAlign(DatasheetBox &label, DatasheetBox &number);
-    QList<DatasheetPackage*> _packages;
+    QList<DatasheetPackage *> _packages;
 };
 
-#endif // DATASHEET_H
+#endif  // DATASHEET_H

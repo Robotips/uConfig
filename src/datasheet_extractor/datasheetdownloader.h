@@ -22,7 +22,6 @@ private slots:
 
 private:
     QNetworkAccessManager *_manager;
-
 };
 
-#endif // DATASHEETDOWNLOADER_H
+#endif  // DATASHEETDOWNLOADER_H

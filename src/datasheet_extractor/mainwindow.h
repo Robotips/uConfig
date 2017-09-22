@@ -7,14 +7,15 @@
 #include "datasheetdownloader.h"
 #include "datasheet.h"
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
-    
+
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
@@ -24,7 +25,7 @@ public:
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
-    
+
 private slots:
     void on_pushButton_clicked();
 
@@ -38,4 +39,4 @@ private:
     Datasheet data;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

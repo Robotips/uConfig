@@ -10,9 +10,8 @@
 
 #include "picfile.h"
 
-MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow)
+MainWindow::MainWindow(QWidget *parent)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setAcceptDrops(true);
@@ -34,7 +33,7 @@ void MainWindow::open(QString file)
     data.open(file);
     data.analyse();
     ui->listWidget->clear();
-    foreach(DatasheetPackage *package, data.packages())
+    foreach (DatasheetPackage *package, data.packages())
     {
         ui->listWidget->addItem(package->name);
     }
@@ -42,7 +41,8 @@ void MainWindow::open(QString file)
 
 void MainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-    if(event->mimeData()->hasUrls()) event->accept();
+    if (event->mimeData()->hasUrls())
+        event->accept();
 }
 
 void MainWindow::dropEvent(QDropEvent *event)
@@ -68,14 +68,13 @@ void MainWindow::on_pushButton_clicked()
     db->updateDatabase();
 }
 
-
 void MainWindow::on_listWidget_activated(const QModelIndex &index)
 {
-    DatasheetPackage *package=data.packages().at(index.row());
+    DatasheetPackage *package = data.packages().at(index.row());
 
     ui->textBrowser->clear();
     ui->label->setPixmap(QPixmap::fromImage(package->image));
-    foreach(DatasheetPin pin, package->pins)
+    foreach (DatasheetPin pin, package->pins)
     {
         ui->textBrowser->append(QString("%1\t%2").arg(pin.pin).arg(pin.name));
     }

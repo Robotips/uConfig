@@ -20,4 +20,4 @@ private:
     int _dsid, _psid;
 };
 
-#endif // PICFILE_H
+#endif  // PICFILE_H
