@@ -16,7 +16,10 @@ SOURCES += \
     $$PWD/picfile.cpp \
     $$PWD/datasheetdownloader.cpp \
     $$PWD/datasheet.cpp \
-    $$PWD/kicadexport.cpp
+    $$PWD/kicadexport.cpp \
+    datasheetpackage.cpp \
+    datasheetpin.cpp \
+    datasheetbox.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
@@ -25,7 +28,10 @@ HEADERS += \
     $$PWD/datasheetdownloader.h \
     $$PWD/datasheet.h \
     $$PWD/kicadexport.h \
-    datasheet_extractor_common.h
+    datasheet_extractor_common.h \
+    datasheetpackage.h \
+    datasheetpin.h \
+    datasheetbox.h
 
 FORMS += $$PWD/mainwindow.ui
 

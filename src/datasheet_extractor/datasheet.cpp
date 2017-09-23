@@ -87,8 +87,6 @@ void Datasheet::pinSearch(int numPage)
     }
 
     Poppler::Page *page = _doc->page(numPage);
-    // QRectF posPinDiagram=page->search("Pin Diagrams",
-    // Poppler::Page::IgnoreCase).first();
 
     bool prev = false;
     DatasheetBox box;
@@ -174,7 +172,7 @@ void Datasheet::pinSearch(int numPage)
     }
 
     // pairing label and number to pin
-    foreach (DatasheetBox number, numbers)
+    foreach (const DatasheetBox &number, numbers)
     {
         DatasheetPin pin;
         qreal dist = 999999999999;
@@ -183,34 +181,11 @@ void Datasheet::pinSearch(int numPage)
         int near = 0;
         for (int i = 0; i < labels.count(); i++)
         {
-            DatasheetBox label = labels.at(i);
-            if (!isAlign(label, number))
+            const DatasheetBox &label = labels.at(i);
+            if (!DatasheetBox::isAlign(label, number))
                 continue;
-            qreal newdist = (center - label.pos.center()).manhattanLength();
-            if (newdist < dist)
-            {
-                dist = newdist;
-                near = i;
-            }
-            newdist = (center - label.pos.bottomLeft()).manhattanLength();
-            if (newdist < dist)
-            {
-                dist = newdist;
-                near = i;
-            }
-            newdist = (center - label.pos.topRight()).manhattanLength();
-            if (newdist < dist)
-            {
-                dist = newdist;
-                near = i;
-            }
-            newdist = (center - label.pos.bottomRight()).manhattanLength();
-            if (newdist < dist)
-            {
-                dist = newdist;
-                near = i;
-            }
-            newdist = (center - label.pos.topLeft()).manhattanLength();
+
+            qreal newdist = label.distanceToPoint(center);
             if (newdist < dist)
             {
                 dist = newdist;
@@ -242,7 +217,7 @@ void Datasheet::pinSearch(int numPage)
     {
         for (int i = 0; i < pins.count(); i++)
         {
-            DatasheetPin pin = pins.at(i);
+            const DatasheetPin &pin = pins.at(i);
             if (pin.pin == pinNumber)
             {
                 DatasheetPackage *nearPackage = NULL;
@@ -250,8 +225,7 @@ void Datasheet::pinSearch(int numPage)
                 QPointF center = pin.numPos.center();
                 foreach (DatasheetPackage *package, packages)
                 {
-                    DatasheetPin lastpin = package->pins.last();
-                    // qDebug()<<dist<<pin.name<<pin.pin<<pin.pos<<lastpin.name;
+                    const DatasheetPin &lastpin = package->pins.last();
                     if (lastpin.pin == pin.pin || lastpin.pin + 4 < pin.pin)
                         continue;
                     qreal newdist = (center - (lastpin.numPos.bottomLeft()))
@@ -426,9 +400,9 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
                 vssOk = true;
             if (text.contains("vdd", Qt::CaseInsensitive))
                 vddOk = true;
-            // if(text.contains("bga", Qt::CaseInsensitive)) *bgaStyle=true;
-
-            // if(i==6) qDebug()<<text<<labelOk<<vssOk<<vddOk;
+            /* if(text.contains("bga", Qt::CaseInsensitive))
+                *bgaStyle=true;*/
+            *bgaStyle = false;
 
             foreach (QString keyWord, keyWords)
             {
@@ -453,59 +427,11 @@ void Datasheet::analyse()
             pinSearchBGA(page);
         else */
             pinSearch(page);
-        // return;
-    }
-}
-
-bool Datasheet::isAlign(DatasheetBox &label, DatasheetBox &number)
-{
-    if (label.pos.width() > label.pos.height())  // Horizontal
-    {
-        qreal marge = label.pos.height();
-        if (label.pos.top() - marge < number.pos.top() &&
-            label.pos.bottom() + marge > number.pos.bottom())
-            return true;
-        else
-            return false;
-    }
-    else  // Vertical
-    {
-        qreal marge = label.pos.width();
-        if (label.pos.left() - marge < number.pos.left() &&
-            label.pos.right() + marge > number.pos.right())
-            return true;
-        else
-            return false;
+        return;
     }
 }
 
 const QList<DatasheetPackage *> &Datasheet::packages() const
 {
     return _packages;
-}
-
-DatasheetPackage::DatasheetPackage()
-{
-}
-
-DatasheetPackage::~DatasheetPackage()
-{
-}
-
-Component DatasheetPackage::toComponent() const
-{
-    Component comp;
-    if (!icname.isEmpty())
-        comp.setName(icname.first());
-    for (int i = 1; i < icname.count(); i++) comp.addAlias(icname.at(i));
-
-    foreach (DatasheetPin dpin, pins)
-    {
-        Pin pin;
-        pin.setName(dpin.name);
-        pin.setPadname(QString::number(dpin.pin));
-        comp.addPin(pin);
-    }
-
-    return comp;
 }
