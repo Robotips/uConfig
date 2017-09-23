@@ -1,11 +1,15 @@
 #ifndef DATASHEET_H
 #define DATASHEET_H
 
-#include <poppler/qt5/poppler-qt5.h>
-#include <poppler/qt5/poppler-form.h>
+#include "datasheet_extractor_common.h"
+
 #include <QImage>
 
-#include "datasheet_extractor_common.h"
+#include "../kicad/component.h"
+
+namespace Poppler {
+    class Document;
+}
 
 struct DATASHEET_EXTRACTOR_EXPORT DatasheetBox
 {
@@ -27,8 +31,12 @@ public:
     DatasheetPackage();
     ~DatasheetPackage();
 
+    Component toComponent() const;
+
 public:
     QString name;
+    QString packName;
+    QStringList icname;
     QRectF rect;
     QRectF rectNum;
     QList<DatasheetPin> pins;

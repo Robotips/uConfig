@@ -33,4 +33,5 @@ FORMS += $$PWD/mainwindow.ui
 include(manufacturers/manufacturers.pri)
 
 LIBS += -L$$PWD/../../bin -lpoppler-qt5
-#INCLUDEPATH += "E:\soft\qt\poppler\poppler-0.24.1\qt5\src"
+INCLUDEPATH += $$PWD/../../
+LIBS += -lkicad
