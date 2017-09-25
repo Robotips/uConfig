@@ -1,7 +1,7 @@
 #ifndef DATASHEETPIN_H
 #define DATASHEETPIN_H
 
-#include "datasheet_extractor_common.h"
+#include "pdf_extract_common.h"
 
 #include "datasheetbox.h"
 

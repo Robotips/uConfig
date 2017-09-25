@@ -8,15 +8,12 @@
 #include <QDropEvent>
 #include <QMimeData>
 
-#include "picfile.h"
-
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setAcceptDrops(true);
 
-    db = new UDataBase();
     download = new DatasheetDownloader();
 }
 
@@ -65,7 +62,8 @@ void MainWindow::on_pushButton_clicked()
     data.open(61156);
     //data.open("edc/doc/61156g.pdf");
     data.pinSearch(data.pagePinDiagram());*/
-    db->updateDatabase();
+
+    //db->updateDatabase();
 }
 
 void MainWindow::on_listWidget_activated(const QModelIndex &index)

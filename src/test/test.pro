@@ -16,6 +16,6 @@ SOURCES += main.cpp \
 
 HEADERS  +=
 
-LIBS += -L$$PWD/../../bin/ -lkicad -ldatasheet_extractor
+LIBS += -L$$PWD/../../bin/ -lkicad -lpdf_extract
 INCLUDEPATH += $$PWD/../kicad
 DEPENDPATH += $$PWD/../kicad

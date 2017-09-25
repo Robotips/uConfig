@@ -1,11 +1,13 @@
 #ifndef DATASHEETDOWNLOADER_H
 #define DATASHEETDOWNLOADER_H
 
+#include "pdf_extract_common.h"
+
 #include <QObject>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 
-class DatasheetDownloader : public QObject
+class DATASHEET_EXTRACTOR_EXPORT DatasheetDownloader : public QObject
 {
     Q_OBJECT
 public:

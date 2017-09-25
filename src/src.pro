@@ -3,5 +3,5 @@ CONFIG += ordered
 
 SUBDIRS += \
     kicad \
-    datasheet_extractor \
+    pdf_extract \
     test

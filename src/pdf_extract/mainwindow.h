@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 
-#include "udatabase.h"
 #include "datasheetdownloader.h"
 #include "datasheet.h"
 
@@ -34,7 +33,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    UDataBase *db;
     DatasheetDownloader *download;
     Datasheet data;
 };

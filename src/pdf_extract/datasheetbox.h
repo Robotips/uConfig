@@ -1,7 +1,7 @@
 #ifndef DATASHEETBOX_H
 #define DATASHEETBOX_H
 
-#include "datasheet_extractor_common.h"
+#include "pdf_extract_common.h"
 
 #include <QRectF>
 #include <QString>

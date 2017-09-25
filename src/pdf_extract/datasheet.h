@@ -1,7 +1,7 @@
 #ifndef DATASHEET_H
 #define DATASHEET_H
 
-#include "datasheet_extractor_common.h"
+#include "pdf_extract_common.h"
 
 #include "datasheetpackage.h"
 #include "datasheetbox.h"

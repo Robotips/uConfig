@@ -1,7 +1,7 @@
 #ifndef DATASHEETPACKAGE_H
 #define DATASHEETPACKAGE_H
 
-#include "datasheet_extractor_common.h"
+#include "pdf_extract_common.h"
 
 #include "datasheetpin.h"
 #include "../kicad/component.h"

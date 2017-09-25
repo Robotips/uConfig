@@ -1,5 +1,5 @@
 
-TARGET = datasheet_extractor
+TARGET = pdf_extract
 TEMPLATE = lib
 DEFINES += DATASHEET_EXTRACTOR_EXPORT_LIB
 DESTDIR = $$PWD/../../bin/
@@ -30,8 +30,6 @@ HEADERS += \
     $$PWD/datasheetbox.h
 
 FORMS += $$PWD/mainwindow.ui
-
-include(manufacturers/manufacturers.pri)
 
 LIBS += -L$$PWD/../../bin -lpoppler-qt5
 INCLUDEPATH += $$PWD/../../
