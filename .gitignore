@@ -1,5 +1,5 @@
-build/*
-bin/*
+build*/*
+bin*/*
 lib/*
-*.user
+*.user*
 src/bin/
