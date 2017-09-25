@@ -275,7 +275,7 @@ void Datasheet::pinSearch(int numPage)
             delete package;
             continue;
         }
-        QRect rect = package->rect.toRect();
+        QRect rect = package->rect.toRect().adjusted(-50, -50, 50, 50);
         rect.adjust(-dec, -dec, dec, dec);
         package->image = _doc->page(numPage)->renderToImage(
             72.0 * res, 72.0 * res, rect.x() * res, rect.y() * res,
@@ -291,33 +291,35 @@ void Datasheet::pinSearch(int numPage)
         QTextStream textStream(&file);
 
         textStream << "Proc: ";
-        foreach (DatasheetBox proc, proc_labels)
+        foreach (const DatasheetBox &proc, proc_labels)
         {
             textStream << proc.text << "-";
         }
         textStream << endl << "Package: ";
-        foreach (DatasheetBox pack, pack_labels)
+        foreach (const DatasheetBox &pack, pack_labels)
         {
             textStream << pack.text << "-";
         }
         textStream << endl;
 
         painter.setPen(QPen(Qt::yellow, 5, Qt::DotLine));
-        foreach (DatasheetBox number, numbers)
+        foreach (const DatasheetBox &number, numbers)
         {
             painter.drawRect(
                 QRect((number.pos.topLeft() - rect.topLeft()).toPoint() * res,
                       number.pos.size().toSize() * res));
         }
         painter.setPen(QPen(Qt::blue, 5, Qt::DotLine));
-        foreach (DatasheetBox label, labels)
+        foreach (const DatasheetBox &label, labels)
         {
             painter.drawRect(
                 QRect((label.pos.topLeft() - rect.topLeft()).toPoint() * res,
                       label.pos.size().toSize() * res).adjusted(-2,-2,2,2));
+
+            //if (label.)
         }
         painter.setPen(QPen(Qt::red, 5, Qt::DotLine));
-        foreach (DatasheetPin pin, package->pins)
+        foreach (const DatasheetPin &pin, package->pins)
         {
             textStream << pin.pin << "\t" << pin.name << endl;
             painter.drawRect(

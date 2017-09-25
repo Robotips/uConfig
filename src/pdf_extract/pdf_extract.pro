@@ -2,12 +2,14 @@
 TARGET = pdf_extract
 TEMPLATE = lib
 DEFINES += DATASHEET_EXTRACTOR_EXPORT_LIB
-DESTDIR = $$PWD/../../bin/
+DESTDIR = "$$PWD/../../bin-$$QMAKE_PLATFORM"
+
+CONFIG += optimize_full
 
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QT       += sql xml network
+QT       += xml network
 
 SOURCES += \
     $$PWD/main.cpp\
@@ -31,6 +33,7 @@ HEADERS += \
 
 FORMS += $$PWD/mainwindow.ui
 
-LIBS += -L$$PWD/../../bin -lpoppler-qt5
+LIBS += -L"$$PWD/../../bin-$$QMAKE_PLATFORM"
+LIBS += -lpoppler-qt5
 INCLUDEPATH += $$PWD/../../
 LIBS += -lkicad

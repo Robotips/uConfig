@@ -2,7 +2,6 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
-#include <QSqlQuery>
 
 #include <QDragEnterEvent>
 #include <QDropEvent>
