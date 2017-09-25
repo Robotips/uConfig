@@ -11,10 +11,11 @@ class DATASHEET_EXTRACTOR_EXPORT DatasheetBox
 public:
     DatasheetBox();
 
+    qreal distanceToPoint(const QPointF &center) const;
+
     QString text;
     QRectF pos;
-
-    qreal distanceToPoint(const QPointF &center) const;
+    bool associated;
 
     static bool isAlign(const DatasheetBox &label, const DatasheetBox &number);
 };

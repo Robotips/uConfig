@@ -177,11 +177,13 @@ void Datasheet::pinSearch(int numPage)
         DatasheetPin pin;
         qreal dist = 999999999999;
         QPointF center = number.pos.center();
-        DatasheetBox assoc;
         int near = 0;
         for (int i = 0; i < labels.count(); i++)
         {
             const DatasheetBox &label = labels.at(i);
+            if (label.associated)
+                continue;
+
             if (!DatasheetBox::isAlign(label, number))
                 continue;
 
@@ -192,13 +194,17 @@ void Datasheet::pinSearch(int numPage)
                 near = i;
             }
         }
-        assoc = labels.at(near);
-        labels.removeAt(near);
+
+        DatasheetBox &assoc = labels[near];
+        assoc.associated = true;
+
+        pin.pin = number.text.toInt();
+        pin.numPos = number.pos;
+        pin.numberBox = number;
+        pin.pos = number.pos.united(assoc.pos);
 
         pin.name = assoc.text.remove(QRegExp("\\([0-9]+\\)"));
-        pin.pin = number.text.toInt();
-        pin.pos = number.pos.united(assoc.pos);
-        pin.numPos = number.pos;
+        pin.nameBox = assoc;
         pins.push_back(pin);
     }
 
@@ -228,29 +234,8 @@ void Datasheet::pinSearch(int numPage)
                     const DatasheetPin &lastpin = package->pins.last();
                     if (lastpin.pin == pin.pin || lastpin.pin + 4 < pin.pin)
                         continue;
-                    qreal newdist = (center - (lastpin.numPos.bottomLeft()))
-                                        .manhattanLength();
-                    if (newdist < dist)
-                    {
-                        dist = newdist;
-                        nearPackage = package;
-                    }
-                    newdist =
-                        (center - lastpin.numPos.topRight()).manhattanLength();
-                    if (newdist < dist)
-                    {
-                        dist = newdist;
-                        nearPackage = package;
-                    }
-                    newdist = (center - lastpin.numPos.bottomRight())
-                                  .manhattanLength();
-                    if (newdist < dist)
-                    {
-                        dist = newdist;
-                        nearPackage = package;
-                    }
-                    newdist =
-                        (center - lastpin.numPos.topLeft()).manhattanLength();
+
+                    qreal newdist = lastpin.distanceToPoint(center);
                     if (newdist < dist)
                     {
                         dist = newdist;
@@ -329,7 +314,7 @@ void Datasheet::pinSearch(int numPage)
         {
             painter.drawRect(
                 QRect((label.pos.topLeft() - rect.topLeft()).toPoint() * res,
-                      label.pos.size().toSize() * res));
+                      label.pos.size().toSize() * res).adjusted(-2,-2,2,2));
         }
         painter.setPen(QPen(Qt::red, 5, Qt::DotLine));
         foreach (DatasheetPin pin, package->pins)
@@ -345,6 +330,7 @@ void Datasheet::pinSearch(int numPage)
         package->name =
             QString("Package p.%1 pack.%2").arg(numPage + 1).arg(pac);
         _packages.push_back(package);
+
         KicadExport kicad;
         kicad.exportPack(
             package, QString("img/p%1_pack%2.lib").arg(numPage + 1).arg(pac));

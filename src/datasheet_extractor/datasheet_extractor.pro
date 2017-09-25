@@ -12,29 +12,24 @@ QT       += sql xml network
 SOURCES += \
     $$PWD/main.cpp\
     $$PWD/mainwindow.cpp \
-    $$PWD/udatabase.cpp \
-    $$PWD/picfile.cpp \
     $$PWD/datasheetdownloader.cpp \
     $$PWD/datasheet.cpp \
     $$PWD/kicadexport.cpp \
-    datasheetpackage.cpp \
-    datasheetpin.cpp \
-    datasheetbox.cpp
+    $$PWD/datasheetpackage.cpp \
+    $$PWD/datasheetpin.cpp \
+    $$PWD/datasheetbox.cpp
 
 HEADERS += \
     $$PWD/mainwindow.h \
-    $$PWD/udatabase.h \
-    $$PWD/picfile.h \
     $$PWD/datasheetdownloader.h \
     $$PWD/datasheet.h \
     $$PWD/kicadexport.h \
-    datasheet_extractor_common.h \
-    datasheetpackage.h \
-    datasheetpin.h \
-    datasheetbox.h
+    $$PWD/datasheet_extractor_common.h \
+    $$PWD/datasheetpackage.h \
+    $$PWD/datasheetpin.h \
+    $$PWD/datasheetbox.h
 
 FORMS += $$PWD/mainwindow.ui
-
 
 include(manufacturers/manufacturers.pri)
 

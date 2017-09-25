@@ -1,6 +1,7 @@
 #include "datasheetbox.h"
 
 DatasheetBox::DatasheetBox()
+    : associated(false)
 {
 }
 
