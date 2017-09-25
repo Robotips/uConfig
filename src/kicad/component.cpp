@@ -17,17 +17,17 @@ void Component::setName(const QString &name)
     _name = name;
 }
 
-QList<Pin> &Component::pins()
+QList<Pin *> Component::pins()
 {
     return _pins;
 }
 
-const QList<Pin> &Component::pins() const
+const QList<Pin *> Component::pins() const
 {
     return _pins;
 }
 
-void Component::addPin(const Pin &pin)
+void Component::addPin(Pin *pin)
 {
     _pins.append(pin);
 }
@@ -69,32 +69,32 @@ void Component::sort()
 
 void Component::reorganizeToPackageStyle()
 {
-    qSort(_pins);
+    //qSort(_pins);
 
-    short rightCount = _pins.count() / 2;
-    short leftCount = _pins.count() - rightCount;
+    int rightCount = _pins.count() / 2;
+    int leftCount = _pins.count() - rightCount;
 
-    short leftOffset = leftCount * 100 / 2 - 50;
-    short rightOffset = rightCount * 100 / 2 - 50;
+    int leftOffset = leftCount * 100 / 2 - 50;
+    int rightOffset = rightCount * 100 / 2 - 50;
 
     QPoint pos(-1600, -leftOffset);
     int i;
     for (i = 0; i < leftCount; i++)
     {
-        Pin &pin = _pins[i];
+        Pin *pin = _pins[i];
 
-        pin.setDirection(Pin::Right);
-        pin.setPos(pos);
+        pin->setDirection(Pin::Right);
+        pin->setPos(pos);
         pos += QPoint(0, 100);
     }
 
     pos = QPoint(1600, rightOffset);
     for (; i < leftCount + rightCount; i++)
     {
-        Pin &pin = _pins[i];
+        Pin *pin = _pins[i];
 
-        pin.setDirection(Pin::Left);
-        pin.setPos(pos);
+        pin->setDirection(Pin::Left);
+        pin->setPos(pos);
         pos += QPoint(0, -100);
     }
 }
@@ -184,9 +184,9 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
 
     stream << "DRAW" << endl;
     // pins
-    foreach (Pin pin, component._pins)
+    foreach (Pin *pin, component._pins)
     {
-        stream << pin << endl;
+        stream << *pin << endl;
     }
 
     // end

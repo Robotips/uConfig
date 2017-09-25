@@ -8,7 +8,7 @@
 #include <QStringList>
 #include "pin.h"
 
-class KICADSHARED_EXPORT Component
+class KICAD_EXPORT Component
 {
 public:
     Component(const QString &name = QString());
@@ -16,9 +16,9 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QList<Pin> &pins();
-    const QList<Pin> &pins() const;
-    void addPin(const Pin &pin);
+    QList<Pin *> pins();
+    const QList<Pin *> pins() const;
+    void addPin(Pin *pin);
 
     QString prefixe() const;
     void setPrefixe(const QString &prefixe);
@@ -40,7 +40,7 @@ public:
     bool isValid() const;
 
 private:
-    QList<Pin> _pins;
+    QList<Pin *> _pins;
     QString _name;
     QString _prefixe;
     QStringList _alias;

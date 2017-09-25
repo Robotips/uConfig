@@ -3,9 +3,8 @@
 
 #include "kicad_global.h"
 
-class KICADSHARED_EXPORT Kicad
+class KICAD_EXPORT Kicad
 {
-
 public:
     Kicad();
 };

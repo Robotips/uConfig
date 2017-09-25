@@ -6,9 +6,9 @@
 PinClassifier::PinClassifier(const Component &component) : _component(component)
 {
     QList<PinCompare> pins;
-    foreach (Pin pin, component.pins())
+    foreach (Pin *pin, component.pins())
     {
-        foreach (QString pinName, pin.name().split('/'))
+        foreach (QString pinName, pin->name().split('/'))
         {
             pins.append(PinCompare(pinName));
             qDebug() << pinName << pins.last().internalName();
@@ -17,7 +17,7 @@ PinClassifier::PinClassifier(const Component &component) : _component(component)
     qSort(pins);
 
     int lastCompare = 0;
-    QList<QList<PinCompare>> categ;
+    QList<QList<PinCompare> > categ;
     categ.append(QList<PinCompare>() << PinCompare(pins[0].name(), true));
     for (int i = 1; i < pins.count(); i++)
     {

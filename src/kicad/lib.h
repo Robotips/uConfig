@@ -7,7 +7,7 @@
 #include <QString>
 #include "component.h"
 
-class KICADSHARED_EXPORT Lib
+class KICAD_EXPORT Lib
 {
 public:
     Lib();

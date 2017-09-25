@@ -7,7 +7,7 @@
 
 class QDebug;
 
-class KICADSHARED_EXPORT PinClassifier
+class KICAD_EXPORT PinClassifier
 {
 public:
     PinClassifier(const Component &component);

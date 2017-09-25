@@ -20,6 +20,18 @@ Pin::Pin(const QString &name, const int padnumber)
     Pin(name, QString::number(padnumber));
 }
 
+Pin::Pin(const Pin &other)
+{
+    _name = other._name;
+    _pos = other._pos;
+    _padname = other._padname;
+    _direction = other._direction;
+    _pinType = other._pinType;
+    _electricalType = other._electricalType;
+    _layer = other._layer;
+    qDebug()<<"copy pin";
+}
+
 QString Pin::name() const
 {
     return _name;

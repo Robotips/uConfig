@@ -8,7 +8,7 @@
 #include <QSizeF>
 #include <QTextStream>
 
-class KICADSHARED_EXPORT Pad
+class KICAD_EXPORT Pad
 {
 public:
     Pad();

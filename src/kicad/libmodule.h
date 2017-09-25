@@ -3,7 +3,7 @@
 
 #include "kicad_global.h"
 
-class KICADSHARED_EXPORT LibModule
+class KICAD_EXPORT LibModule
 {
 public:
     LibModule();

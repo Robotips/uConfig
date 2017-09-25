@@ -7,7 +7,7 @@
 
 #include <QList>
 
-class KICADSHARED_EXPORT PinList
+class KICAD_EXPORT PinList
 {
 public:
     PinList();

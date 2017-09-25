@@ -7,12 +7,13 @@
 #include <QPoint>
 #include <QTextStream>
 
-class KICADSHARED_EXPORT Pin
+class KICAD_EXPORT Pin
 {
 public:
     explicit Pin();
     Pin(const QString &name, const QString &padName = QString());
     Pin(const QString &name, const int padnumber);
+    Pin(const Pin &other);
 
     enum Direction
     {
