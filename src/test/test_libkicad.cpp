@@ -33,7 +33,7 @@ void test_libkicad()
 
         if(items.count()>1)
         {
-            component->addPin(Pin(name, items.at(0)));
+            component->addPin(new Pin(name, items.at(0)));
         }
     }
     component->sort();
@@ -46,26 +46,26 @@ void test_libkicad()
 
     for(int i=0;i<component->pins().size();i++)
     {
-        Pin &pin = component->pins()[i];
-        if(pin.name()=="GND")
+        Pin *pin = component->pins()[i];
+        if(pin->name()=="GND")
         {
-            pin.setPos(gndpos);
-            pin.setDirection(Pin::Left);
+            pin->setPos(gndpos);
+            pin->setDirection(Pin::Left);
             gndpos+=QPoint(0,100);
         }
-        else if(pin.name().startsWith("VCC"))
+        else if(pin->name().startsWith("VCC"))
         {
-            pin.setPos(vccpos);
-            pin.setDirection(Pin::Left);
+            pin->setPos(vccpos);
+            pin->setDirection(Pin::Left);
             vccpos+=QPoint(0,100);
         }
         else
         {
-            int bank = pin.name().at(0).toLatin1()-'0'-1;
+            int bank = pin->name().at(0).toLatin1()-'0'-1;
             if(bank>=0 && bank<8)
             {
-                pin.setPos(points[bank]);
-                pin.setDirection(Pin::Left);
+                pin->setPos(points[bank]);
+                pin->setDirection(Pin::Left);
                 points[bank]+=QPoint(0,100);
             }
         }
