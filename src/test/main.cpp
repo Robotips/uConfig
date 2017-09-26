@@ -16,7 +16,7 @@ int main(int argc, char *argv[])
     qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
 
     qint64 d = QDateTime::currentMSecsSinceEpoch();
-    datasheet.analyse();
+    datasheet.analyse(3);
     foreach(DatasheetPackage *package, datasheet.packages())
         qDebug()<<package->name;
     qDebug()<<QDateTime::currentMSecsSinceEpoch() - d;

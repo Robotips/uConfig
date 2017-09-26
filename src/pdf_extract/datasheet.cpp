@@ -253,6 +253,36 @@ void Datasheet::pinSearch(int numPage)
         }
     }
 
+    // unasociated label
+    foreach (DatasheetBox *label, labels)
+    {
+        if (label->associated == false)
+        {
+            DatasheetPin *nearPin = NULL;
+            qreal dist = 99999999999999;
+            qDebug()<<"+ unasociated label"<<label->text;
+            for (int i = 0; i < pins.count(); i++)
+            {
+                DatasheetPin *pin = pins[i];
+                if (pin->name.endsWith("/"))
+                {
+                    qreal newdist = label->distanceToPoint(pin->nameBox->pos.bottomLeft());
+                    if (newdist < dist)
+                    {
+                        dist = newdist;
+                        nearPin = pin;
+                    }
+                }
+            }
+            if (nearPin != NULL && dist < nearPin->numPos.height()*2)
+            {
+                qDebug()<<"  > pin"<<nearPin->name<<nearPin->numberBox->text<<dist;
+                nearPin->name += label->text;
+                label->associated = true;
+            }
+        }
+    }
+
     // ajust size of package
     foreach (DatasheetPackage *package, packages)
     {
@@ -410,17 +440,25 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
     return -1;
 }
 
-void Datasheet::analyse()
+void Datasheet::analyse(int pageBegin, int pageEnd)
 {
-    int page = -1;
+    int page = pageBegin;
     bool bgaStyle;
+
+    if (pageBegin != -1 && pageEnd == -1) // search in one page
+    {
+        pinSearch(pageBegin);
+        return;
+    }
+
     while ((page = pagePinDiagram(page + 1, &bgaStyle)) != -1)
     {
+        if (pageEnd != -1 && page >= pageEnd)
+            return;
         /*if(bgaStyle)
             pinSearchBGA(page);
         else */
             pinSearch(page);
-        //return;
     }
 }
 

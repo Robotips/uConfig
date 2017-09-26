@@ -7,8 +7,9 @@
 #include "datasheetbox.h"
 #include "../kicad/component.h"
 
-namespace Poppler {
-    class Document;
+namespace Poppler
+{
+class Document;
 }
 
 class DATASHEET_EXTRACTOR_EXPORT Datasheet
@@ -21,7 +22,7 @@ public:
     bool open(QString fileName);
     void close();
 
-    void analyse();
+    void analyse(int pageBegin = -1, int pageEnd = -1);
 
     const QList<DatasheetPackage *> &packages() const;
 
