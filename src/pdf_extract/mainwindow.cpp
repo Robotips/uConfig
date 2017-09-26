@@ -71,8 +71,8 @@ void MainWindow::on_listWidget_activated(const QModelIndex &index)
 
     ui->textBrowser->clear();
     ui->label->setPixmap(QPixmap::fromImage(package->image));
-    foreach (DatasheetPin pin, package->pins)
+    foreach (DatasheetPin *pin, package->pins)
     {
-        ui->textBrowser->append(QString("%1\t%2").arg(pin.pin).arg(pin.name));
+        ui->textBrowser->append(QString("%1\t%2").arg(pin->pin).arg(pin->name));
     }
 }

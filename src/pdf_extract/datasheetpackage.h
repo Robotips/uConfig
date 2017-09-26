@@ -26,7 +26,7 @@ public:
     QStringList icname;
     QRectF rect;
     QRectF rectNum;
-    QList<DatasheetPin> pins;
+    QList<DatasheetPin *> pins;
     QImage image;
 };
 

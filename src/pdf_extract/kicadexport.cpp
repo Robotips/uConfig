@@ -31,9 +31,9 @@ bool KicadExport::exportPack(DatasheetPackage *pack, QString fileName)
 
     int pinCount = 0;
     int y = -100 * (pack->pins.count() / 4), x = -1100, orientation = 0;
-    foreach (DatasheetPin pin, pack->pins)
+    foreach (DatasheetPin *pin, pack->pins)
     {
-        exportPin(pin, x, y, orientation);
+        exportPin(*pin, x, y, orientation);
         pinCount++;
 
         if (pinCount == pack->pins.count() / 2)

@@ -1,6 +1,7 @@
 #include <QDebug>
 #include <QApplication>
 #include <QDateTime>
+#include <QScreen>
 
 #include "../pdf_extract/datasheet.h"
 
@@ -22,10 +23,11 @@ int main(int argc, char *argv[])
     //exit(0);
 
     ComponentViewer viewer;
-    Component component = datasheet.packages()[0]->toComponent();
+    Component component = datasheet.packages()[1]->toComponent();
     component.reorganizeToPackageStyle();
     viewer.setComponent(&component);
     viewer.show();
+    viewer.resize(QApplication::primaryScreen()->size()*.7);
 
     return a.exec();
 }

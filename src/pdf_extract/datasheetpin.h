@@ -20,8 +20,8 @@ public:
     QRectF pos;
     QRectF numPos;
 
-    DatasheetBox numberBox;
-    DatasheetBox nameBox;
+    DatasheetBox *numberBox;
+    DatasheetBox *nameBox;
 };
 
 #endif // DATASHEETPIN_H

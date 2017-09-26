@@ -18,6 +18,9 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
     newdist = (center - pos.topRight()).manhattanLength();
     if (newdist < dist)
         dist = newdist;
+    newdist = (center - QPointF(pos.left(), pos.center().y())).manhattanLength();
+    if (newdist < dist)
+        dist = newdist;
 
     newdist = (center - pos.bottomRight()).manhattanLength();
     if (newdist < dist)

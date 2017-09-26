@@ -77,7 +77,7 @@ void Component::reorganizeToPackageStyle()
     int leftOffset = leftCount * 100 / 2 - 50;
     int rightOffset = rightCount * 100 / 2 - 50;
 
-    QPoint pos(-1600, -leftOffset);
+    QPoint pos(-2500, -leftOffset);
     int i;
     for (i = 0; i < leftCount; i++)
     {
@@ -88,7 +88,7 @@ void Component::reorganizeToPackageStyle()
         pos += QPoint(0, 100);
     }
 
-    pos = QPoint(1600, rightOffset);
+    pos = QPoint(2500, rightOffset);
     for (; i < leftCount + rightCount; i++)
     {
         Pin *pin = _pins[i];
