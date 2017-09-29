@@ -31,6 +31,7 @@ bool Datasheet::open(QString fileName)
 {
     close();
     _doc = Poppler::Document::load(fileName);
+    _name = QFileInfo(fileName).baseName();
 
     /*QDomElement child=_doc->toc()->firstChild().toElement();
     while(!child.isNull())
@@ -93,7 +94,7 @@ void Datasheet::pinSearch(int numPage)
     foreach (TextBox *textBox, page->textList())
     {
         bool okNumber;
-        // if(textBox->boundingBox().top()<posPinDiagram.top()) continue;
+
         if (textBox->text().startsWith("•"))
             textBox->text().mid(1).toInt(&okNumber);
         else
@@ -108,24 +109,42 @@ void Datasheet::pinSearch(int numPage)
         }
         else
         {
-            if (prev)
+            if (prev && !okNumber)
             {
                 box->text = box->text + textBox->text();
                 box->pos = textBox->boundingBox().united(box->pos);
             }
             else
             {
-                if (textBox->text().startsWith("•"))
-                    box->text = textBox->text().mid(1);
-                else
-                    box->text = textBox->text();
-                box->pos = textBox->boundingBox();
-                prev = false;
+                if (!prev)
+                {
+                    if (textBox->text().startsWith("•"))
+                        box->text = textBox->text().mid(1);
+                    else
+                        box->text = textBox->text();
+                    box->pos = textBox->boundingBox();
+                }
+
                 if (okNumber)
                 {
-                    numbers.push_back(box);
-                    box = new DatasheetBox();
+                    if (!prev)
+                    {
+                        numbers.push_back(box);
+                        box = new DatasheetBox();
+                    }
+                    else
+                    {
+                        DatasheetBox *nbox = new DatasheetBox();
+                        if (textBox->text().startsWith("•"))
+                            nbox->text = textBox->text().mid(1);
+                        else
+                            nbox->text = textBox->text();
+                        nbox->pos = textBox->boundingBox();
+                        numbers.push_back(nbox);
+                        okNumber = false;
+                    }
                 }
+                prev = false;
             }
 
             box->text.replace(QRegExp("\\([0-9]+\\)"), "");
@@ -260,7 +279,7 @@ void Datasheet::pinSearch(int numPage)
         {
             DatasheetPin *nearPin = NULL;
             qreal dist = 99999999999999;
-            qDebug()<<"+ unasociated label"<<label->text;
+            //qDebug()<<"+ unasociated label"<<label->text;
             for (int i = 0; i < pins.count(); i++)
             {
                 DatasheetPin *pin = pins[i];
@@ -276,7 +295,7 @@ void Datasheet::pinSearch(int numPage)
             }
             if (nearPin != NULL && dist < nearPin->numPos.height()*2)
             {
-                qDebug()<<"  > pin"<<nearPin->name<<nearPin->numberBox->text<<dist;
+                //qDebug()<<"  > pin"<<nearPin->name<<nearPin->numberBox->text<<dist;
                 nearPin->name += label->text;
                 label->associated = true;
             }
@@ -317,10 +336,10 @@ void Datasheet::pinSearch(int numPage)
         qDebug() << "==============================";
         pac++;
         QDir dir;
-        dir.mkdir("img");
-        QFile file(QString("img/p%1_pack%2.txt").arg(numPage + 1).arg(pac));
+        dir.mkdir(_name);
+        QFile file(_name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac));
         file.open(QIODevice::WriteOnly | QIODevice::Text);
-        qDebug() << QString("img/p%1_pack%2.txt").arg(numPage + 1).arg(pac);
+        qDebug() << _name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac);
         QTextStream textStream(&file);
 
         textStream << "Proc: ";
@@ -362,7 +381,7 @@ void Datasheet::pinSearch(int numPage)
                       pin->pos.size().toSize() * res));
         }
         package->image.save(
-            QString("img/p%1_pack%2.png").arg(numPage + 1).arg(pac));
+            _name+QString("/p%1_pack%2.png").arg(numPage + 1).arg(pac));
         file.close();
         package->name =
             QString("Package p.%1 pack->%2").arg(numPage + 1).arg(pac);
@@ -370,9 +389,14 @@ void Datasheet::pinSearch(int numPage)
 
         KicadExport kicad;
         kicad.exportPack(
-            package, QString("img/p%1_pack%2.lib").arg(numPage + 1).arg(pac));
+            package, _name+QString("/p%1_pack%2.lib").arg(numPage + 1).arg(pac));
         // qDebug()<<_packages.count();
     }
+}
+
+QString Datasheet::name() const
+{
+    return _name;
 }
 
 int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
@@ -447,7 +471,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
 
     if (pageBegin != -1 && pageEnd == -1) // search in one page
     {
-        pinSearch(pageBegin);
+        pinSearch(pageBegin-1);
         return;
     }
 

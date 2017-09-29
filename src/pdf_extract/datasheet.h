@@ -26,6 +26,8 @@ public:
 
     const QList<DatasheetPackage *> &packages() const;
 
+    QString name() const;
+
 private:
     int pagePinDiagram(int pageStart, bool *bgaStyle);
 
@@ -33,6 +35,7 @@ private:
     void pinSearch(int numPage);
 
     Poppler::Document *_doc;
+    QString _name;
 
     QList<DatasheetPackage *> _packages;
 };
