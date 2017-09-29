@@ -163,7 +163,6 @@ void Datasheet::pinSearch(int numPage)
                 {
                     proc_labels.push_back(box);
                     box = new DatasheetBox();
-                    qDebug() << "proc_labels" << box->text;
                 }
                 else if (box->text.contains("DIP", Qt::CaseInsensitive) ||
                          box->text.contains("SOIC", Qt::CaseInsensitive) ||
@@ -176,7 +175,6 @@ void Datasheet::pinSearch(int numPage)
                 {
                     pack_labels.push_back(box);
                     box = new DatasheetBox();
-                    qDebug() << "pack_labels" << box->text;
                 }
                 else if (box->text.size() > 10 && !box->text.contains("/"))
                 {
@@ -199,7 +197,7 @@ void Datasheet::pinSearch(int numPage)
         DatasheetPin *pin = new DatasheetPin();
         qreal dist = 999999999999;
         QPointF center = number->pos.center();
-        int near = 0;
+        DatasheetBox *assocLabel = NULL;
         for (int i = 0; i < labels.count(); i++)
         {
             DatasheetBox *label = labels[i];
@@ -213,21 +211,27 @@ void Datasheet::pinSearch(int numPage)
             if (newdist < dist)
             {
                 dist = newdist;
-                near = i;
+                assocLabel = label;
             }
         }
 
-        DatasheetBox *assoc = labels[near];
-        assoc->associated = true;
+        if (assocLabel)
+        {
+            assocLabel->associated = true;
 
-        pin->pin = number->text.toInt();
-        pin->numPos = number->pos;
-        pin->numberBox = number;
-        pin->pos = number->pos.united(assoc->pos);
+            pin->pin = number->text.toInt();
+            pin->numPos = number->pos;
+            pin->numberBox = number;
 
-        pin->name = assoc->text.remove(QRegExp("\\([0-9]+\\)"));
-        pin->nameBox = assoc;
-        pins.push_back(pin);
+            pin->name = assocLabel->text;
+            pin->name.remove(QRegExp("\\([0-9]+\\)"));
+            pin->name.remove(QRegExp(" +"));
+            pin->nameBox = assocLabel;
+
+            pin->pos = number->pos.united(assocLabel->pos);
+
+            pins.push_back(pin);
+        }
     }
 
     // painring pin to find package
@@ -317,7 +321,7 @@ void Datasheet::pinSearch(int numPage)
     }
 
     int pac = 0;
-    int res = 8;
+    int res = 4;
     int dec = 5;
     //_package.clear();
     foreach (DatasheetPackage *package, packages)
@@ -354,7 +358,7 @@ void Datasheet::pinSearch(int numPage)
         }
         textStream << endl;
 
-        painter.setPen(QPen(Qt::yellow, 5, Qt::DotLine));
+        painter.setPen(QPen(Qt::yellow, 2, Qt::DotLine));
         foreach (DatasheetBox *number, numbers)
         {
             painter.drawRect(
@@ -364,15 +368,15 @@ void Datasheet::pinSearch(int numPage)
         foreach (DatasheetBox *label, labels)
         {
             if (label->associated == false)
-                painter.setPen(QPen(Qt::green, 5, Qt::DotLine));
+                painter.setPen(QPen(Qt::green, 2, Qt::DotLine));
             else
-                painter.setPen(QPen(Qt::blue, 5, Qt::DotLine));
+                painter.setPen(QPen(Qt::blue, 2, Qt::DotLine));
             painter.drawRect(
                 QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res,
                       label->pos.size().toSize() * res).adjusted(-2,-2,2,2));
 
         }
-        painter.setPen(QPen(Qt::red, 5, Qt::DotLine));
+        painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
         foreach (DatasheetPin *pin, package->pins)
         {
             textStream << pin->pin << "\t" << pin->name << endl;
@@ -386,11 +390,6 @@ void Datasheet::pinSearch(int numPage)
         package->name =
             QString("Package p.%1 pack->%2").arg(numPage + 1).arg(pac);
         _packages.push_back(package);
-
-        KicadExport kicad;
-        kicad.exportPack(
-            package, _name+QString("/p%1_pack%2.lib").arg(numPage + 1).arg(pac));
-        // qDebug()<<_packages.count();
     }
 }
 
