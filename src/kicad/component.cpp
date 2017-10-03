@@ -1,6 +1,7 @@
 #include "component.h"
 
 #include <QDebug>
+#include <QFontMetrics>
 
 Component::Component(const QString &name) : _name(name), _prefixe("U")
 {
@@ -69,7 +70,8 @@ void Component::sort()
 
 void Component::reorganizeToPackageStyle()
 {
-    //qSort(_pins);
+    QPoint pos;
+    int i;
 
     int rightCount = _pins.count() / 2;
     int leftCount = _pins.count() - rightCount;
@@ -77,8 +79,23 @@ void Component::reorganizeToPackageStyle()
     int leftOffset = leftCount * 100 / 2 - 50;
     int rightOffset = rightCount * 100 / 2 - 50;
 
-    QPoint pos(-2500, -leftOffset);
-    int i;
+    int margin = 0;
+
+    // compute leftMargin and rightMargin
+    QFont font("monospace");
+    font.setPixelSize(12);
+    font.setStyleHint(QFont::Monospace);
+    QFontMetrics metrics(font);
+    for (i = 0; i < _pins.count(); i++)
+    {
+        Pin *pin = _pins[i];
+        int width = metrics.width(pin->name()) + 300/5 + 14;
+        if (width*5 > margin)
+            margin = width*5;
+    }
+
+    // place pins
+    pos = QPoint(-margin, -leftOffset);
     for (i = 0; i < leftCount; i++)
     {
         Pin *pin = _pins[i];
@@ -87,8 +104,7 @@ void Component::reorganizeToPackageStyle()
         pin->setPos(pos);
         pos += QPoint(0, 100);
     }
-
-    pos = QPoint(2500, rightOffset);
+    pos = QPoint(margin, rightOffset);
     for (; i < leftCount + rightCount; i++)
     {
         Pin *pin = _pins[i];
