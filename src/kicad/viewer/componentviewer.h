@@ -15,12 +15,12 @@ public:
     Component *component() const;
     void setComponent(Component *component);
 
-signals:
-
-public slots:
+protected:
+    void wheelEvent(QWheelEvent *event);
 
 protected:
     Component *_component;
+    double _currentZoomLevel;
 };
 
 #endif // MODULEVIEWER_H

@@ -2,7 +2,7 @@
 
 #include <QPainter>
 
-const int ratio=5;
+const int PinItem::ratio=5;
 
 PinItem::PinItem(Pin *pin)
 {
@@ -11,14 +11,13 @@ PinItem::PinItem(Pin *pin)
 
 void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    painter->setPen(Qt::red);
+    painter->setPen(QColor(132, 0, 0));
     painter->drawEllipse(-3, -3, 6, 6);
 
     QFont font("monospace");
     font.setStyleHint(QFont::Monospace);
-    font.setPixelSize(12);
+    font.setPointSizeF(12);
     painter->setFont(font);
-    QFontMetrics metrics(font);
 
     QString name = _pin->name();
     bool line=false;
@@ -31,26 +30,26 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     switch (_pin->direction())
     {
     case Pin::Left:
-        painter->drawLine(-3, 0, -300/ratio, 0);
-        painter->drawText(QRect(0, 0, -300/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
-        painter->setPen(Qt::blue);
-        painter->drawText(QRect(-300/ratio-10, -painter->fontMetrics().height()/2, -painter->fontMetrics().width(name), painter->fontMetrics().height()).normalized(), Qt::AlignCenter, name);
+        painter->drawLine(-3, 0, -_pin->length()/ratio, 0);
+        painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
+        painter->setPen(QColor(0, 132, 132));
+        painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
         if(line)
-            painter->drawLine(-300/ratio-10, -painter->fontMetrics().height()/2, -300/ratio-10-painter->fontMetrics().width(name), -painter->fontMetrics().height()/2);
+            painter->drawLine(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -_pin->length()/ratio-10-name.count()*50/ratio, -painter->fontMetrics().height()/2);
         break;
     case Pin::Right:
-        painter->drawLine(3, 0, 300/ratio, 0);
-        painter->drawText(QRect(0, 0, 300/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
-        painter->setPen(Qt::blue);
-        painter->drawText(QRect(300/ratio+10, -painter->fontMetrics().height()/2, painter->fontMetrics().width(name), painter->fontMetrics().height()).normalized(), Qt::AlignCenter, name);
+        painter->drawLine(3, 0, _pin->length()/ratio, 0);
+        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
+        painter->setPen(QColor(0, 132, 132));
+        painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         if(line)
-            painter->drawLine(300/ratio+10, -painter->fontMetrics().height()/2, 300/ratio+10+painter->fontMetrics().width(name), -painter->fontMetrics().height()/2);
+            painter->drawLine(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, _pin->length()/ratio+10+name.count()*50/ratio, -painter->fontMetrics().height()/2);
         break;
     case Pin::Down:
-        painter->drawLine(0, -3, 0, -300/ratio);
+        painter->drawLine(0, -3, 0, -_pin->length()/ratio);
         break;
     case Pin::Up:
-        painter->drawLine(0, 3, 0, 300/ratio);
+        painter->drawLine(0, 3, 0, _pin->length()/ratio);
         break;
     }
 }
@@ -60,23 +59,23 @@ QRectF PinItem::boundingRect() const
     QRectF rect;
     QString name = _pin->name();
     QFont font("monospace");
-    font.setPixelSize(12);
+    font.setPointSizeF(12);
     font.setStyleHint(QFont::Monospace);
     QFontMetrics metrics(font);
 
     switch (_pin->direction())
     {
     case Pin::Left:
-        rect = QRect(4, -metrics.height()/2, -metrics.width(name) - 300/ratio - 14, metrics.height());
+        rect = QRect(4, -metrics.height(), -name.count()*50/ratio - _pin->length()/ratio - 14, metrics.height()*3/2);
         break;
     case Pin::Right:
-        rect = QRect(-4, -metrics.height()/2, metrics.width(name) + 300/ratio + 14, metrics.height());
+        rect = QRect(-4, -metrics.height(), name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height()*3/2);
         break;
     case Pin::Down:
-        rect = QRect(-metrics.height()/2, 0, metrics.height(), -metrics.width(name) - 300/ratio);
+        rect = QRect(-metrics.height()/2, 0, name.count()*50/ratio, -metrics.width(name) - _pin->length()/ratio);
         break;
     case Pin::Up:
-        rect = QRect(-metrics.height()/2, 0, metrics.height(), metrics.width(name) + 300/ratio);
+        rect = QRect(-metrics.height()/2, 0, name.count()*50/ratio, metrics.width(name) + _pin->length()/ratio);
         break;
     }
     return rect.normalized();
@@ -87,14 +86,15 @@ QPointF PinItem::base()
     switch (_pin->direction())
     {
     case Pin::Left:
-        return _pin->pos() + QPointF(-300, 0);
+        return _pin->pos() + QPointF(-_pin->length(), 0);
     case Pin::Right:
-        return _pin->pos() + QPointF(300, 0);
+        return _pin->pos() + QPointF(_pin->length(), 0);
     case Pin::Down:
-        return _pin->pos() + QPointF(0, -300);
+        return _pin->pos() + QPointF(0, -_pin->length());
     case Pin::Up:
-        return _pin->pos() + QPointF(0, 300);
+        return _pin->pos() + QPointF(0, _pin->length());
     }
+    return QPointF();
 }
 
 Pin *PinItem::pin() const

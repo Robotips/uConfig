@@ -17,6 +17,8 @@ public:
     Pin *pin() const;
     void setPin(Pin *pin);
 
+    static const int ratio;
+
 private:
     Pin *_pin;
 };

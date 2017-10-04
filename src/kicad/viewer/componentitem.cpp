@@ -3,16 +3,16 @@
 #include <QPainter>
 #include <QDebug>
 
-const int ratio=5;
-
 ComponentItem::ComponentItem(Component *component)
 {
     setComponent(component);
 }
 
-void ComponentItem::paint(QPainter *painter, const QStyleOptionGraphicsItem */*option*/, QWidget */*widget*/)
+void ComponentItem::paint(QPainter *painter,
+                          const QStyleOptionGraphicsItem * /*option*/,
+                          QWidget * /*widget*/)
 {
-    painter->setPen(Qt::red);
+    painter->setPen(QColor(132, 0, 0));
     painter->drawRect(_numRect);
 }
 
@@ -29,15 +29,15 @@ Component *ComponentItem::component() const
 void ComponentItem::setComponent(Component *component)
 {
     _component = component;
-    _numRect = QRectF(0,0,0,0);
+    _numRect = QRectF(0, 0, 0, 0);
 
     foreach (Pin *pin, component->pins())
     {
         PinItem *item = new PinItem(pin);
         item->setParentItem(this);
-        _numRect = _numRect.united(QRectF(item->base()/ratio, QSize(1,1)));
+        _numRect = _numRect.united(QRectF(item->base() / PinItem::ratio, QSize(1, 1)));
     }
-    _numRect.adjust(0,-30,0,30);
+    _numRect.adjust(1, -20, -2, 20);
 
     update();
 }
