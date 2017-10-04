@@ -81,19 +81,23 @@ void Component::reorganizeToPackageStyle()
     int rightOffset = rightCount * 100 / 2 - 50;
 
     int margin = 0;
-
+    int leftMargin = 0, rightMargin = 0;
     // compute leftMargin and rightMargin
-    QFont font("monospace");
-    font.setPixelSize(12);
-    font.setStyleHint(QFont::Monospace);
-    QFontMetrics metrics(font);
-    for (i = 0; i < _pins.count(); i++)
+    for (i = 0; i < leftCount; i++)
     {
         Pin *pin = _pins[i];
-        int width = metrics.width(pin->name()) + 300/5 + 14;
-        if (width*5 > margin)
-            margin = width*5;
+        int width = pin->name().count()*50+350;
+        if (width > leftMargin)
+            leftMargin = width;
     }
+    for (; i < leftCount + rightCount; i++)
+    {
+        Pin *pin = _pins[i];
+        int width = pin->name().count()*50+350;
+        if (width > rightMargin)
+            rightMargin = width;
+    }
+    margin = (leftMargin + rightMargin) / 2;
 
     // place pins
     pos = QPoint(-margin, -leftOffset);

@@ -14,9 +14,9 @@
 int main(int argc, char *argv[])
 {
     QTextStream out(stdout);
-    QApplication app(argc, argv);
-    QApplication::setApplicationName("uconfig");
-    QApplication::setApplicationVersion("1.0");
+    QCoreApplication app(argc, argv);
+    QCoreApplication::setApplicationName("uconfig");
+    QCoreApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
     parser.setApplicationDescription("Test helper");
