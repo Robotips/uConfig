@@ -2,4 +2,4 @@ build*/*
 bin*/*
 lib/*
 *.user*
-src/bin/
+src/bin*/
