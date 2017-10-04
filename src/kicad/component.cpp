@@ -118,6 +118,9 @@ void Component::reorganizeToPackageStyle()
         pin->setPos(pos);
         pos += QPoint(0, -100);
     }
+
+    _rect = QRect(QPoint(-margin+300, -leftOffset-100),
+                  QPoint(margin-300, rightOffset+100));
 }
 
 void Component::reorganizeUnderRules(const QList<QRegExp> &rules)
@@ -180,10 +183,8 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
     stream << "#" << '\n' << "# " << component._name << '\n' << "#" << '\n';
 
     // def
-    stream << "DEF " << component._name << " " << component._prefixe
-           << " 0 40 Y Y 1 F N" << '\n';
-    stream << "F0 \"" << component._prefixe << "\" 750 -1100 50 H V C CNN"
-           << '\n';
+    stream << "DEF " << component._name << " " << component._prefixe << " 0 40 Y Y 1 F N" << '\n';
+    stream << "F0 \"" << component._prefixe << "\" " << component._rect.right()-50 << " " << -component._rect.bottom()-50 << " 50 H V C CNN" << '\n';
     stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << '\n';
     stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
     stream << "F3 \"~\" 0 0 50 H I C CNN" << '\n';
@@ -208,6 +209,17 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
     foreach (Pin *pin, component._pins)
     {
         stream << *pin << '\n';
+    }
+
+    // rect
+    if (component._rect.isValid())
+    {
+        stream << "S "
+               << component._rect.left() << " "
+               << component._rect.top() << " "
+               << component._rect.right() << " "
+               << component._rect.bottom() << " "
+               << "0 1 0 N" << '\n';
     }
 
     // end

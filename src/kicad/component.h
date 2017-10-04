@@ -5,6 +5,7 @@
 
 #include <QList>
 #include <QString>
+#include <QRect>
 #include <QStringList>
 #include "pin.h"
 
@@ -45,6 +46,7 @@ private:
     QString _prefixe;
     QStringList _alias;
     QStringList _footPrints;
+    QRect _rect;
     bool _valid;
 };
 
