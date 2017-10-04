@@ -71,6 +71,6 @@ void test_libkicad()
         }
     }
 
-    lib.addComponent(*component);
+    lib.addComponent(component);
     lib.saveTo("C:/Users/seb/Seafile/projects/maxcam/elec/max102.lib");
 }

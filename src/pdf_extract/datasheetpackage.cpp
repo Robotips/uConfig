@@ -8,19 +8,23 @@ DatasheetPackage::~DatasheetPackage()
 {
 }
 
-Component DatasheetPackage::toComponent() const
+Component *DatasheetPackage::toComponent() const
 {
-    Component comp;
+    Component *comp = new Component();
     if (!icname.isEmpty())
-        comp.setName(icname.first());
-    for (int i = 1; i < icname.count(); i++) comp.addAlias(icname.at(i));
+        comp->setName(icname.first());
+    else
+        comp->setName(name);
+
+    for (int i = 1; i < icname.count(); i++)
+        comp->addAlias(icname.at(i));
 
     foreach (DatasheetPin *dpin, pins)
     {
         Pin *pin = new Pin();
         pin->setName(dpin->name);
         pin->setPadname(QString::number(dpin->pin));
-        comp.addPin(pin);
+        comp->addPin(pin);
     }
 
     return comp;

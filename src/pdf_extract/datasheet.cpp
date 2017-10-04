@@ -75,7 +75,8 @@ void Datasheet::pinSearch(int numPage)
     QList<DatasheetPin *> pins;
     QList<DatasheetPackage *> packages;
 
-    qDebug() << "+page: " << numPage;
+    qDebug() << "==============================";
+    qDebug() << "+ page:" << numPage;
     if (_doc == NULL)
     {
         qDebug() << "can not open";
@@ -337,7 +338,6 @@ void Datasheet::pinSearch(int numPage)
             72.0 * res, 72.0 * res, rect.x() * res, rect.y() * res,
             rect.width() * res, rect.height() * res);
         QPainter painter(&package->image);
-        qDebug() << "==============================";
         pac++;
         QDir dir;
         dir.mkdir(_name);

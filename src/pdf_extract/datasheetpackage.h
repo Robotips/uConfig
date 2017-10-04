@@ -18,7 +18,7 @@ public:
     DatasheetPackage();
     ~DatasheetPackage();
 
-    Component toComponent() const;
+    Component *toComponent() const;
 
 public:
     QString name;
