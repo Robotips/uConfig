@@ -28,6 +28,9 @@ public:
 
     QString name() const;
 
+    bool debugEnabled() const;
+    void setDebugEnabled(bool debug);
+
 private:
     int pagePinDiagram(int pageStart, bool *bgaStyle);
 
@@ -38,6 +41,7 @@ private:
     QString _name;
 
     QList<DatasheetPackage *> _packages;
+    bool _debug;
 };
 
 #endif  // DATASHEET_H

@@ -15,6 +15,7 @@ using namespace Poppler;
 Datasheet::Datasheet()
 {
     _doc = NULL;
+    _debug = false;
 }
 
 Datasheet::~Datasheet()
@@ -76,7 +77,7 @@ void Datasheet::pinSearch(int numPage)
     QList<DatasheetPackage *> packages;
 
     qDebug() << "==============================";
-    qDebug() << "+ page:" << numPage;
+    qDebug() << "+ page:" << numPage+1;
     if (_doc == NULL)
     {
         qDebug() << "can not open";
@@ -177,11 +178,11 @@ void Datasheet::pinSearch(int numPage)
                     pack_labels.push_back(box);
                     box = new DatasheetBox();
                 }
-                else if (box->text.size() > 10 && !box->text.contains("/"))
+                /*else if (box->text.size() > 10 && !box->text.contains("/"))
                 {
                     delete box;
                     box = new DatasheetBox();
-                }
+                }*/
                 else
                 {
                     labels.push_back(box);
@@ -327,11 +328,26 @@ void Datasheet::pinSearch(int numPage)
     //_package.clear();
     foreach (DatasheetPackage *package, packages)
     {
+        // package with less than 5 pin are deleted
         if (package->pins.count() < 5)
         {
             delete package;
             continue;
         }
+        // package pin 1 very far to pin 2 are deleted
+        QPointF p1center = package->pins[1]->numberBox->pos.center();
+        if (package->pins[0]->numberBox->distanceToPoint(p1center) > 50)
+        {
+            delete package;
+            continue;
+        }
+
+        package->name = QString("Package p.%1 pack->%2").arg(numPage + 1).arg(pac);
+        _packages.push_back(package);
+
+        if (!_debug)
+            continue;
+
         QRect rect = package->rect.toRect().adjusted(-50, -50, 50, 50);
         rect.adjust(-dec, -dec, dec, dec);
         package->image = _doc->page(numPage)->renderToImage(
@@ -373,7 +389,7 @@ void Datasheet::pinSearch(int numPage)
                 painter.setPen(QPen(Qt::blue, 2, Qt::DotLine));
             painter.drawRect(
                 QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res,
-                      label->pos.size().toSize() * res).adjusted(-2,-2,2,2));
+                      label->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
 
         }
         painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
@@ -387,10 +403,17 @@ void Datasheet::pinSearch(int numPage)
         package->image.save(
             _name+QString("/p%1_pack%2.png").arg(numPage + 1).arg(pac));
         file.close();
-        package->name =
-            QString("Package p.%1 pack->%2").arg(numPage + 1).arg(pac);
-        _packages.push_back(package);
     }
+}
+
+bool Datasheet::debugEnabled() const
+{
+    return _debug;
+}
+
+void Datasheet::setDebugEnabled(bool debug)
+{
+    _debug = debug;
 }
 
 QString Datasheet::name() const
@@ -406,6 +429,7 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
              << "PIN NAMES"
              << "Pin Assignment"
              << "PIN CONFIGURATION"
+             << "Pinouts"
              << "PACKAGE"
              << "Interface pin description";
 
@@ -442,9 +466,11 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
                 text.append(textBox->nextWord()->text());
             }
 
-            if (text.contains("vss", Qt::CaseInsensitive))
+            if (text.contains("vss", Qt::CaseInsensitive)
+             || text.contains("gnd", Qt::CaseInsensitive))
                 vssOk = true;
-            if (text.contains("vdd", Qt::CaseInsensitive))
+            if (text.contains("vdd", Qt::CaseInsensitive)
+             || text.contains("vcc", Qt::CaseInsensitive))
                 vddOk = true;
             /* if(text.contains("bga", Qt::CaseInsensitive))
                 *bgaStyle=true;*/
@@ -453,7 +479,10 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
             foreach (QString keyWord, keyWords)
             {
                 if (text.contains(keyWord, Qt::CaseInsensitive))
+                {
                     labelOk = true;
+                    break;
+                }
             }
 
             if (labelOk && vssOk && vddOk)
@@ -470,7 +499,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
 
     if (pageBegin != -1 && pageEnd == -1) // search in one page
     {
-        pinSearch(pageBegin-1);
+        pinSearch(pageBegin);
         return;
     }
 

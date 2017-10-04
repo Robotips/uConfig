@@ -28,11 +28,9 @@ int main(int argc, char *argv[])
                                  "Outpout file with pin list", "out");
     parser.addOption(outOption);
 
-    /* TODO implement debug option
     QCommandLineOption debugOption(QStringList() << "d" << "debug",
                                    "Debug option to view intermediate steps");
     parser.addOption(debugOption);
-    */
 
     /* TODO implement range page option
     QCommandLineOption rangeOption(QStringList() << "p" << "page",
@@ -52,6 +50,7 @@ int main(int argc, char *argv[])
     const QString &file = files.at(0);
 
     Datasheet datasheet;
+    datasheet.setDebugEnabled(parser.isSet(debugOption));
     bool opened = datasheet.open(file);
     if (!opened)
     {
