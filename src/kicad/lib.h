@@ -15,8 +15,8 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QList<Component> components() const;
-    void addComponent(const Component &component);
+    QList<Component *> components() const;
+    void addComponent(Component *component);
 
     bool saveTo(const QString &fileName);
     bool readFrom(const QString &fileName);
@@ -25,7 +25,7 @@ public:
     friend QTextStream &operator>>(QTextStream &stream, Lib &lib);
 
 private:
-    QList<Component> _components;
+    QList<Component *> _components;
     QString _name;
 };
 

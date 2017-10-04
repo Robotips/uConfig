@@ -18,12 +18,12 @@ void Lib::setName(const QString &name)
     _name = name;
 }
 
-QList<Component> Lib::components() const
+QList<Component *> Lib::components() const
 {
     return _components;
 }
 
-void Lib::addComponent(const Component &component)
+void Lib::addComponent(Component *component)
 {
     _components.append(component);
 }
@@ -63,17 +63,17 @@ QTextStream &operator<<(QTextStream &stream, const Lib &lib)
     // header
     stream << "EESchema-LIBRARY Version 2.3  Date: "
            << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss")
-           << endl;
-    stream << "#encoding utf-8" << endl;
+           << '\n';
+    stream << "#encoding utf-8" << '\n';
 
     // components
-    foreach (Component component, lib._components)
+    foreach (Component *component, lib._components)
     {
-        stream << component << endl;
+        stream << *component << '\n';
     }
 
     // footer
-    stream << "#" << endl;
+    stream << "#" << '\n';
     stream << "#End Library";
 
     return stream;

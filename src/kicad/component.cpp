@@ -16,6 +16,7 @@ QString Component::name() const
 void Component::setName(const QString &name)
 {
     _name = name;
+    _name.replace(" ","_");
 }
 
 QList<Pin *> Component::pins()
@@ -172,41 +173,41 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
     // http://en.wikibooks.org/wiki/Kicad/file_formats#Description_of_a_component_2
 
     // comments
-    stream << "#" << endl << "# " << component._name << endl << "#" << endl;
+    stream << "#" << '\n' << "# " << component._name << '\n' << "#" << '\n';
 
     // def
     stream << "DEF " << component._name << " " << component._prefixe
-           << " 0 40 Y Y 1 F N" << endl;
+           << " 0 40 Y Y 1 F N" << '\n';
     stream << "F0 \"" << component._prefixe << "\" 750 -1100 50 H V C CNN"
-           << endl;
-    stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << endl;
-    stream << "F2 \"~\" 0 0 50 H I C CNN" << endl;
-    stream << "F3 \"~\" 0 0 50 H I C CNN" << endl;
+           << '\n';
+    stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << '\n';
+    stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
+    stream << "F3 \"~\" 0 0 50 H I C CNN" << '\n';
 
     // footprints
     if (!component._footPrints.isEmpty())
     {
-        stream << "$FPLIST" << endl;
+        stream << "$FPLIST" << '\n';
         foreach (QString footPrint, component._footPrints)
         {
-            stream << " " << footPrint << endl;
+            stream << " " << footPrint << '\n';
         }
-        stream << "$ENDFPLIST" << endl;
+        stream << "$ENDFPLIST" << '\n';
     }
 
     // alias
     if (!component._alias.isEmpty())
-        stream << "ALIAS " << component._alias.join(" ") << endl;
+        stream << "ALIAS " << component._alias.join(" ") << '\n';
 
-    stream << "DRAW" << endl;
+    stream << "DRAW" << '\n';
     // pins
     foreach (Pin *pin, component._pins)
     {
-        stream << *pin << endl;
+        stream << *pin << '\n';
     }
 
     // end
-    stream << "ENDDRAW" << endl;
+    stream << "ENDDRAW" << '\n';
     stream << "ENDDEF";
 
     return stream;

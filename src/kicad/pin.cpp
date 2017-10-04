@@ -29,7 +29,6 @@ Pin::Pin(const Pin &other)
     _pinType = other._pinType;
     _electricalType = other._electricalType;
     _layer = other._layer;
-    qDebug()<<"copy pin";
 }
 
 QString Pin::name() const
@@ -79,9 +78,8 @@ QString Pin::directionString() const
         return "U";
     case Pin::Right:
         return "R";
-    default:
-        return "R";
     }
+    return "R";
 }
 
 void Pin::setDirection(const Pin::Direction &direction)
@@ -98,28 +96,28 @@ QString Pin::pinTypeString() const
 {
     switch (_pinType)
     {
-    case NotVisible:
-        return "N";
-    case Invert:
-        return "I";
-    case Clock:
+    case Pin::Normal:
         return "C";
-    case InvertedClock:
+    case Pin::NotVisible:
+        return "N";
+    case Pin::Invert:
+        return "I";
+    case Pin::Clock:
+        return "C";
+    case Pin::InvertedClock:
         return "IC";
-    case LowIn:
+    case Pin::LowIn:
         return "L";
-    case ClockLow:
+    case Pin::ClockLow:
         return "CL";
-    case LowOut:
+    case Pin::LowOut:
         return "V";
-    case FallingEdge:
+    case Pin::FallingEdge:
         return "F";
-    case NonLogic:
+    case Pin::NonLogic:
         return "NX";
-    default:
-        return "";
-        break;
     }
+    return "";
 }
 
 void Pin::setPinType(const Pin::PinType &pinType)
@@ -136,32 +134,30 @@ QString Pin::electricalTypeString() const
 {
     switch (_electricalType)
     {
-    case Input:
+    case Pin::Input:
         return "I";
-    case Output:
+    case Pin::Output:
         return "O";
-    case Bidir:
+    case Pin::Bidir:
         return "B";
-    case Tristate:
+    case Pin::Tristate:
         return "T";
-    case Passive:
+    case Pin::Passive:
         return "P";
-    case Unspecified:
+    case Pin::Unspecified:
         return "U";
-    case PowerIn:
+    case Pin::PowerIn:
         return "W";
-    case PowerOut:
+    case Pin::PowerOut:
         return "w";
-    case OpenCollector:
+    case Pin::OpenCollector:
         return "C";
-    case OpenEmitter:
+    case Pin::OpenEmitter:
         return "E";
-    case NotConnected:
+    case Pin::NotConnected:
         return "N";
-    default:
-        return "I";
-        break;
     }
+    return "I";
 }
 
 void Pin::setElectricalType(const ElectricalType &electricalType)
@@ -185,16 +181,18 @@ QTextStream &operator<<(QTextStream &stream, const Pin &pin)
 
     // X PIN_NAME PAD_NAME X_POS Y_POS LINE_WIDTH DIRECTION NAME_TEXT_SIZE
     // LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
-    stream << "X " << pin._name << " " << pin._padname << " " << pin._pos.x()
-           << " " << pin._pos.y() << " "
-           << "300"
-           << " " << pin.directionString() << " "
-           << "50"
-           << " "
-           << "50"
-           << " " << pin._layer << " "
-           << "1"
-           << " " << pin.electricalTypeString() << " " << pin.pinTypeString();
+    stream << "X " << pin._name << " "                      // pin name
+           << pin._padname << " "                           // pad name
+           << pin._pos.x() << " " << pin._pos.y() << " "    // x y position
+           << "300" << " "                                  // lenght
+           << pin.directionString() << " "                  // pin direction (up/down/left/right)
+           << "50" << " "                                   // name text size
+           << "50" << " "                                   // pad name text size
+           << pin._layer << " "
+           << "1" << " "
+           << pin.electricalTypeString();
+    if (pin._pinType != Pin::Normal)
+        stream << " " << pin.pinTypeString();
 
     return stream;
 }
