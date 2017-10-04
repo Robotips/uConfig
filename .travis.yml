@@ -25,5 +25,5 @@ install: true
 script:
   - mkdir build/
   - cd build/
-  - qmake ../src/src.pro
+  - qmake ../src/uConfig.pro
   - make -j2
