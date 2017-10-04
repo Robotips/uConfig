@@ -6,6 +6,7 @@ Pin::Pin()
     : _direction(Pin::Right), _pinType(Pin::Normal), _electricalType(Pin::Input)
 {
     _layer = 1;
+    _length = 300;
 }
 
 Pin::Pin(const QString &name, const QString &padName)
@@ -13,6 +14,7 @@ Pin::Pin(const QString &name, const QString &padName)
       _pinType(Pin::Normal), _electricalType(Pin::Input)
 {
     _layer = 1;
+    _length = 300;
 }
 
 Pin::Pin(const QString &name, const int padnumber)
@@ -175,6 +177,16 @@ void Pin::setLayer(int layer)
     _layer = layer;
 }
 
+int Pin::length() const
+{
+    return _length;
+}
+
+void Pin::setLength(int length)
+{
+    _length = length;
+}
+
 QTextStream &operator<<(QTextStream &stream, const Pin &pin)
 {
     // http://en.wikibooks.org/wiki/Kicad/file_formats#X_record_.28Pin.29
@@ -184,7 +196,7 @@ QTextStream &operator<<(QTextStream &stream, const Pin &pin)
     stream << "X " << pin._name << " "                      // pin name
            << pin._padname << " "                           // pad name
            << pin._pos.x() << " " << -pin._pos.y() << " "    // x y position
-           << "300" << " "                                  // lenght
+           << pin._length << " "                                  // lenght
            << pin.directionString() << " "                  // pin direction (up/down/left/right)
            << "50" << " "                                   // name text size
            << "50" << " "                                   // pad name text size

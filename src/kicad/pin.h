@@ -76,6 +76,9 @@ public:
     int layer() const;
     void setLayer(int layer);
 
+    int length() const;
+    void setLength(int length);
+
     friend bool operator<(const Pin &pin1, const Pin &pin);
     friend bool operator==(const Pin &pin1, const Pin &pin2);
 
@@ -89,6 +92,7 @@ private:
     PinType _pinType;
     ElectricalType _electricalType;
     int _layer;
+    int _length;
 };
 
 #endif  // PIN_H
