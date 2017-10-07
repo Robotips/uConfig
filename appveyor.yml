@@ -1,7 +1,8 @@
 version: 0.{build}
 
-global:
-  QTDIR: C:\Qt\5.9.1\mingw53_32
+environment:
+  global:
+    QTDIR: C:\Qt\5.9.1\mingw53_32
 
 clone_folder: c:\dev\uconfig
 clone_depth: 5
