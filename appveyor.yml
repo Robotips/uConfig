@@ -34,6 +34,7 @@ build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - mingw32-make.exe -j2
   - cd ..
+  - 7z a uconfig-v0.zip "%APPVEYOR_BUILD_FOLDER%\bin-win32 mingw\*"
   - ls *
 
 test: off
@@ -44,7 +45,7 @@ deploy:
   provider: GitHub
   auth_token:
     secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
-  artifact: 'bin-win32 mingw/.*'
+  file: uconfig-v0.zip
   draft: true
   prerelease: true
   on:
