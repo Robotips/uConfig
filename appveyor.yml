@@ -41,14 +41,18 @@ build_script:
 
 test: off
 
+artifacts:
+  - path: uconfig-v0.zip
+    name: uconfig
+
 deploy:
-  release: uconfig-v0.{build}
+  release: uconfig-v0
   description: 'Beta build for win32'
   provider: GitHub
   auth_token:
     secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
   file: uconfig-v0.zip
-  artifacts: '.*\.zip'
+  artifacts: ''
   draft: true
   prerelease: true
   force_update: true
