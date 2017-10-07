@@ -18,10 +18,12 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%\
   - curl -fsS -o include-poppler.tar.gz http://robotips.fr/data/include-poppler.tar.gz
   - mkdir poppler
-  - tar zxvf include-poppler.tar.gz poppler
+  - cd poppler
+  - tar zxvf include-poppler.tar.gz
   - curl -fsS -o include-poppler.tar.gz http://robotips.fr/data/bin-poppler-win32.tar.gz
   - mkdir 'bin-win32 mingw'
-  - tar zxvf include-poppler.tar.gz 'bin-win32 mingw'
+  - cd 'bin-win32 mingw'
+  - tar zxvf include-poppler.tar.gz
 
 before_build:
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
