@@ -35,14 +35,16 @@ build_script:
   - mingw32-make.exe -j2
   - cd %QTDIR%\bin
   - cp libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll Qt5Xml.dll %APPVEYOR_BUILD_FOLDER%\bin\
+  - cd %APPVEYOR_BUILD_FOLDER%\bin\
+  - mkdir platforms
+  - cp %QTDIR%\plugins\platforms\qwindows.dll platforms\
   - cd %APPVEYOR_BUILD_FOLDER%
-  - 7z a uconfig-v0.zip "%APPVEYOR_BUILD_FOLDER%\bin\*"
-  - ls *
+  - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\*" -xr!build
 
 test: off
 
 artifacts:
-  - path: uconfig-v0.zip
+  - path: uconfig-win32-v0.zip
     name: uconfig
 
 deploy:
@@ -51,10 +53,11 @@ deploy:
   provider: GitHub
   auth_token:
     secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
-  file: uconfig-v0.zip
+  file: uconfig-win32-v0.zip
   artifacts: ''
-  draft: true
-  prerelease: true
   force_update: true
+  draft: false
+  prerelease: false
   on:
     branch: master
+    appveyor_repo_tag: true

@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     setAcceptDrops(true);
-
-    download = new DatasheetDownloader();
 }
 
 MainWindow::~MainWindow()

@@ -9,12 +9,11 @@ CONFIG += optimize_full
 QT       += core gui
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-QT       += xml network
+QT       += xml
 
 SOURCES += \
     $$PWD/main.cpp\
     $$PWD/mainwindow.cpp \
-    $$PWD/datasheetdownloader.cpp \
     $$PWD/datasheet.cpp \
     $$PWD/kicadexport.cpp \
     $$PWD/datasheetpackage.cpp \
@@ -23,7 +22,6 @@ SOURCES += \
 
 HEADERS += \
     $$PWD/mainwindow.h \
-    $$PWD/datasheetdownloader.h \
     $$PWD/datasheet.h \
     $$PWD/kicadexport.h \
     $$PWD/datasheet_extractor_common.h \

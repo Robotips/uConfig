@@ -3,7 +3,6 @@
 
 #include <QMainWindow>
 
-#include "datasheetdownloader.h"
 #include "datasheet.h"
 
 namespace Ui
@@ -33,7 +32,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
 
-    DatasheetDownloader *download;
     Datasheet data;
 };
 
