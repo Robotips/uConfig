@@ -14,13 +14,12 @@ install:
   - git submodule update --init --recursive
   - '%QTDIR%\bin\qtenv2.bat'
   - qmake -v
-  - set ARCH=x86
   - g++ --version
 
 before_build:
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
   - cd %APPVEYOR_BUILD_FOLDER%\build
-  - qmake ..\src\rtide.pro -r -Wall CONFIG+=release
+  - qmake ..\src\uConfig.pro -r -Wall CONFIG+=release
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
