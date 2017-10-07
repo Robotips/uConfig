@@ -17,15 +17,15 @@ install:
   - g++ --version
   - cd %APPVEYOR_BUILD_FOLDER%\
   - mkdir poppler
-  - curl -fsSL -o include-poppler.tar.gz http://robotips.fr/data/include-poppler.tar.gz
   - cd poppler
+  - curl -fsSL -o include-poppler.tar.gz http://robotips.fr/data/include-poppler.tar.gz
   - tar -zxvf include-poppler.tar.gz
   - rm include-poppler.tar.gz
   - ls
   - cd ..
   - mkdir 'bin-win32 mingw'
-  - curl -fsSL -o bin-poppler-win32.tar.gz http://robotips.fr/data/bin-poppler-win32.tar.gz
   - cd 'bin-win32 mingw'
+  - curl -fsSL -o bin-poppler-win32.tar.gz http://robotips.fr/data/bin-poppler-win32.tar.gz
   - tar -zxvf bin-poppler-win32.tar.gz
   - rm bin-poppler-win32.tar.gz
   - ls
