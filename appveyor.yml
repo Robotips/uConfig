@@ -16,8 +16,6 @@ install:
   - qmake -v
   - set ARCH=x86
   - g++ --version
-  - set make=mingw32-make.exe
-  - %make% --version
 
 before_build:
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
@@ -26,6 +24,6 @@ before_build:
 
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
-  - %make% -j2
+  - mingw32-make.exe -j2
 
 test: off
