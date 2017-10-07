@@ -24,7 +24,6 @@ install:
   - tar -zxvf bin-poppler-win32.tar.gz
   - rm bin-poppler-win32.tar.gz
   - ls bin*
-  - cd ..
 
 before_build:
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
@@ -34,5 +33,19 @@ before_build:
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - mingw32-make.exe -j2
+  - cd ..
+  - ls *
 
 test: off
+
+deploy:
+  release: uconfig-v0
+  description: 'Beta build for win32'
+  provider: GitHub
+  auth_token:
+    secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
+  artifact: 'bin-win32 mingw/.*'
+  draft: true
+  prerelease: true
+  on:
+    branch: master
