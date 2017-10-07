@@ -5,15 +5,15 @@ CONFIG += optimize_full
 
 TARGET = uconfig
 TEMPLATE = app
-DESTDIR = "$$PWD/../../bin-$$QMAKE_PLATFORM"
+DESTDIR = "$$PWD/../../bin"
 
-SOURCES += uconfig.cpp
+SOURCES += $$PWD/uconfig.cpp
 
 HEADERS  +=
 
 LIBS += -Wl,-R.
 
-LIBS += -L"$$PWD/../../bin-$$QMAKE_PLATFORM"
+LIBS += -L"$$PWD/../../bin"
 LIBS += -lkicad -lpdf_extract
 INCLUDEPATH += $$PWD/../kicad
 DEPENDPATH += $$PWD/../kicad

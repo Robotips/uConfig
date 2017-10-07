@@ -9,7 +9,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = kicad
 TEMPLATE = lib
-DESTDIR = "$$PWD/../../bin-$$QMAKE_PLATFORM"
+DESTDIR = "$$PWD/../../bin"
 
 DEFINES += KICAD_EXPORT_LIB
 

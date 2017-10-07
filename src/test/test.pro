@@ -11,14 +11,14 @@ CONFIG += optimize_full
 
 TARGET = test
 TEMPLATE = app
-DESTDIR = "$$PWD/../../bin-$$QMAKE_PLATFORM"
+DESTDIR = "$$PWD/../../bin"
 
-SOURCES += main.cpp \
-    test_libkicad.cpp
+SOURCES += $$PWD/main.cpp \
+    $$PWD/test_libkicad.cpp
 
 HEADERS  +=
 
-LIBS += -L"$$PWD/../../bin-$$QMAKE_PLATFORM"
+LIBS += -L"$$PWD/../../bin"
 LIBS += -lkicad -lpdf_extract
 INCLUDEPATH += $$PWD/../kicad
 DEPENDPATH += $$PWD/../kicad
