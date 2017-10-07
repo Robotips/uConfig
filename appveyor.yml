@@ -19,13 +19,11 @@ install:
   - curl -fsSL -o include-poppler.tar.gz http://robotips.fr/data/include-poppler.tar.gz
   - tar -zxvf include-poppler.tar.gz
   - rm include-poppler.tar.gz
-  - ls
   - mkdir bin
   - cd bin
   - curl -fsSL -o bin-poppler-win32.tar.gz http://robotips.fr/data/bin-poppler-win32.tar.gz
   - tar -zxvf bin-poppler-win32.tar.gz
   - rm bin-poppler-win32.tar.gz
-  - ls
 
 before_build:
   - mkdir %APPVEYOR_BUILD_FOLDER%\build
@@ -36,7 +34,7 @@ build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - mingw32-make.exe -j2
   - cd %QTDIR%\bin
-  - cp libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll Qt5Xml.dll '%APPVEYOR_BUILD_FOLDER%\bin\'
+  - copy libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll Qt5Xml.dll '%APPVEYOR_BUILD_FOLDER%\bin\'
   - cd %APPVEYOR_BUILD_FOLDER%
   - 7z a uconfig-v0.zip "%APPVEYOR_BUILD_FOLDER%\bin\*"
   - ls *
