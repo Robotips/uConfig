@@ -49,8 +49,8 @@ deploy:
     secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
   file: uconfig-v0.zip
   artifacts:
-  - path: uconfig-v0.zip
-    name: win32-builb
+    - path: uconfig-v0.zip
+      name: win32-builb
   draft: true
   prerelease: true
   force_update: true
