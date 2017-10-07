@@ -33,7 +33,9 @@ before_build:
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - mingw32-make.exe -j2
-  - cd ..
+  - cd %QTDIR%\bin
+  - cp libgcc_s_dw2-1.dll libstdc++-6.dll libwinpthread-1.dll Qt5Core.dll Qt5Gui.dll Qt5Widgets.dll Qt5Xml.dll "%APPVEYOR_BUILD_FOLDER%\bin-win32 mingw\*"
+  - cd %APPVEYOR_BUILD_FOLDER%
   - 7z a uconfig-v0.zip "%APPVEYOR_BUILD_FOLDER%\bin-win32 mingw\*"
   - ls *
 
@@ -46,7 +48,11 @@ deploy:
   auth_token:
     secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
   file: uconfig-v0.zip
+  artifacts:
+  - path: uconfig-v0.zip
+    name: win32-builb
   draft: true
   prerelease: true
+  force_update: true
   on:
     branch: master
