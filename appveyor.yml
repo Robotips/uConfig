@@ -48,7 +48,7 @@ deploy:
   auth_token:
     secure: NUubM/JkcsfgUG/w6aXNplWvl4NJ7OeEUqsZsZP5Krfsa5XyPgv/vu8rLzuh5lNg
   file: uconfig-v0.zip
-  artifacts: 'uconfig-v0.zip'
+  artifacts: '.*\.zip'
   draft: true
   prerelease: true
   force_update: true
