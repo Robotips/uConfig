@@ -42,7 +42,7 @@ build_script:
 test: off
 
 deploy:
-  release: uconfig-v0
+  release: uconfig-v0.{build}
   description: 'Beta build for win32'
   provider: GitHub
   auth_token:
