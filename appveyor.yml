@@ -39,7 +39,7 @@ build_script:
   - mkdir platforms
   - cp %QTDIR%\plugins\platforms\qwindows.dll platforms\
   - cd %APPVEYOR_BUILD_FOLDER%
-  - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\*" -xr!build
+  - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\*" -xr!build -xr!.git
 
 test: off
 

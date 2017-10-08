@@ -3,3 +3,4 @@ bin*/*
 lib/*
 *.user*
 src/bin*/
+poppler/*

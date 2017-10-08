@@ -25,7 +25,8 @@ SOURCES += \
     $$PWD/pinclassifier.cpp \
     $$PWD/viewer/componentviewer.cpp \
     $$PWD/viewer/componentitem.cpp \
-    $$PWD/viewer/pinitem.cpp
+    $$PWD/viewer/pinitem.cpp \
+    $$PWD/pinruler/rulesparser.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -40,7 +41,8 @@ HEADERS += \
     $$PWD/pinclassifier.h \
     $$PWD/viewer/componentviewer.h \
     $$PWD/viewer/componentitem.h \
-    $$PWD/viewer/pinitem.h
+    $$PWD/viewer/pinitem.h \
+    $$PWD/pinruler/rulesparser.h
 
 unix {
     target.path = /usr/lib
