@@ -1,5 +1,7 @@
 #include "componentlibtreeview.h"
 
+#include <QMouseEvent>
+
 ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent) :
     QTreeView(parent)
 {

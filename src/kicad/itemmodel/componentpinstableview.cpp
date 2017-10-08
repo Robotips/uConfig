@@ -1,6 +1,6 @@
 #include "componentpinstableview.h"
 
-#include <QDebug>
+#include <QMouseEvent>
 
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
     : QTableView(parent)
