@@ -9,12 +9,14 @@ DESTDIR = "$$PWD/../../bin"
 
 SOURCES += \
         $$PWD/uconfig_gui.cpp \
+        $$PWD/uconfigmainwindow.cpp \
         $$PWD/importer/pinlistimporter.cpp \
         $$PWD/importer/startwizardpage.cpp \
         $$PWD/importer/filepage.cpp \
         $$PWD/importer/datasheetresultspage.cpp
 
 HEADERS  += \
+        $$PWD/uconfigmainwindow.h \
         $$PWD/importer/pinlistimporter.h \
         $$PWD/importer/startwizardpage.h \
         $$PWD/importer/filepage.h \

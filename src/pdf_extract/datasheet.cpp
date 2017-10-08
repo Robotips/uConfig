@@ -342,7 +342,7 @@ void Datasheet::pinSearch(int numPage)
             continue;
         }
 
-        package->name = QString("Package p.%1 pack->%2").arg(numPage + 1).arg(pac);
+        package->name = QString("p.%1_pack%2").arg(numPage + 1).arg(pac);
         _packages.push_back(package);
 
         if (!_debug)

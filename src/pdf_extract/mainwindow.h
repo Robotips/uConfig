@@ -25,8 +25,6 @@ protected:
     void dropEvent(QDropEvent *event);
 
 private slots:
-    void on_pushButton_clicked();
-
     void on_listWidget_activated(const QModelIndex &index);
 
 private:

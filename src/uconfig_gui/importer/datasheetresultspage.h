@@ -2,7 +2,7 @@
 #define DATASHEETRESULTSPAGE_H
 
 #include <QWizardPage>
-#include <QLineEdit>
+#include <QLabel>
 
 #include "../pdf_extract/datasheet.h"
 
@@ -20,21 +20,9 @@ public:
 
     Datasheet *datasheet();
 
-private slots:
-    void fileExplore();
-    void checkEntry(const QString &text);
-
 private:
-    bool _complete;
-    QString _file;
-    QString _fileTitle;
-    QLineEdit *fileEdit;
-    int _type;
-    QStringList _suffixes;
-
     Datasheet _datasheet;
-
-    void setFile(const QString &file);
+    QLabel *_resultLabel;
 };
 
 #endif // DATASHEETRESULTSPAGE_H

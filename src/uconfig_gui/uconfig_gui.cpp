@@ -1,15 +1,15 @@
 #include <QDebug>
 #include <QApplication>
 
-#include "importer/pinlistimporter.h"
+#include "uconfigmainwindow.h"
 
 int main(int argc, char *argv[])
 {
     QTextStream out(stdout);
     QApplication app(argc, argv);
 
-    PinListImporter importer;
-    importer.show();
+    UConfigMainWindow mainWindow;
+    mainWindow.show();
 
     return app.exec();
 }

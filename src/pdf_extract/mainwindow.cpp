@@ -45,24 +45,6 @@ void MainWindow::dropEvent(QDropEvent *event)
     open(event->mimeData()->urls().first().path().mid(1));
 }
 
-void MainWindow::on_pushButton_clicked()
-{
-    /*QSqlQuery querry;
-    querry.exec(QString("SELECT DISTINCT dsid FROM UPROC"));
-    while(querry.next())
-    {
-        int dsid=querry.value(0).toInt();
-        download->download(dsid);
-    }*/
-
-    /*Datasheet data;
-    data.open(61156);
-    //data.open("edc/doc/61156g.pdf");
-    data.pinSearch(data.pagePinDiagram());*/
-
-    //db->updateDatabase();
-}
-
 void MainWindow::on_listWidget_activated(const QModelIndex &index)
 {
     DatasheetPackage *package = data.packages().at(index.row());
