@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>img/application-pdf.png</file>
+        <file>img/application-x-applix-spreadsheet.png</file>
+        <file>img/text-csv.png</file>
+        <file>img/kicad-lib.png</file>
+    </qresource>
+</RCC>

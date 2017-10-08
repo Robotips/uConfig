@@ -5,4 +5,5 @@ SUBDIRS += \
     kicad \
     pdf_extract \
     uconfig \
+    uconfig_gui \
     test
