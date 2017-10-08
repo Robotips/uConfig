@@ -1,6 +1,8 @@
 #ifndef MODULEVIEWER_H
 #define MODULEVIEWER_H
 
+#include "kicad_global.h"
+
 #include <QGraphicsView>
 #include <QGraphicsScene>
 

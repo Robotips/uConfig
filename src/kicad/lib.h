@@ -15,7 +15,7 @@ public:
     QString name() const;
     void setName(const QString &name);
 
-    QList<Component *> components() const;
+    const QList<Component *> &components() const;
     void addComponent(Component *component);
 
     bool saveTo(const QString &fileName);

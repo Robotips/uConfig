@@ -1,10 +1,12 @@
 #ifndef PINITEM_H
 #define PINITEM_H
 
+#include "kicad_global.h"
+
 #include <QGraphicsItem>
 #include "pin.h"
 
-class PinItem : public QGraphicsItem
+class KICAD_EXPORT PinItem : public QGraphicsItem
 {
 public:
     PinItem(Pin *pin);

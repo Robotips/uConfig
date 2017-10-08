@@ -18,7 +18,7 @@ void Lib::setName(const QString &name)
     _name = name;
 }
 
-QList<Component *> Lib::components() const
+const QList<Component *> &Lib::components() const
 {
     return _components;
 }

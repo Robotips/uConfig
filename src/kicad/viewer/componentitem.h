@@ -1,11 +1,14 @@
 #ifndef COMPONENTITEM_H
 #define COMPONENTITEM_H
 
+#include "kicad_global.h"
+
 #include <QGraphicsItem>
+
 #include "component.h"
 #include "pinitem.h"
 
-class ComponentItem : public QGraphicsItem
+class KICAD_EXPORT ComponentItem : public QGraphicsItem
 {
 public:
     ComponentItem(Component *component = NULL);
