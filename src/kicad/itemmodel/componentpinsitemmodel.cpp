@@ -23,6 +23,21 @@ void ComponentPinsItemModel::setComponent(Component *component)
     emit layoutChanged();
 }
 
+Pin *ComponentPinsItemModel::pin(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Q_NULLPTR;
+    return static_cast<Pin*>(index.internalPointer());
+}
+
+QModelIndex ComponentPinsItemModel::index(Pin *pin) const
+{
+    QModelIndexList list = match(this->index(0,0), ComponentPinsItemModel::PinNumber, pin->padname(), -1, Qt::MatchRecursive);
+    if (list.isEmpty())
+        return QModelIndex();
+    return list.first();
+}
+
 int ComponentPinsItemModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
@@ -39,7 +54,7 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
         switch (section)
         {
         case PinNumber:
-            return QVariant("Pin number");
+            return QVariant("#");
         case PinName:
             return QVariant("Pin name");
         }
@@ -69,7 +84,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return createIndex(row, column);
+    return createIndex(row, column, _component->pins()[row]);
 }
 
 QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const

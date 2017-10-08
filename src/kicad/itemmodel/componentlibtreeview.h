@@ -4,6 +4,7 @@
 #include "kicad_global.h"
 
 #include <QTreeView>
+#include <QSortFilterProxyModel>
 
 #include "componentlibitemmodel.h"
 
@@ -19,8 +20,15 @@ public:
     void addComponent(Component *component);
     QList<Component *> components() const;
 
+signals:
+    void openedComponent(Component * component);
+
+protected:
+    virtual void mouseDoubleClickEvent(QMouseEvent *event);
+
 protected:
     ComponentLibItemModel *_model;
+    QSortFilterProxyModel *_sortProxy;
 };
 
 #endif // COMPONENTLIBTREEVIEW_H

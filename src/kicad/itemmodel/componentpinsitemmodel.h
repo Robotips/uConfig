@@ -16,6 +16,9 @@ public:
     Component *component() const;
     void setComponent(Component *component);
 
+    Pin *pin(const QModelIndex &index) const;
+    QModelIndex index(Pin *pin) const;
+
     enum Column {
         PinNumber,
         PinName,
@@ -25,7 +28,7 @@ public:
     int columnCount(const QModelIndex &parent) const;
     QVariant headerData(int section, Qt::Orientation orientation, int role) const;
     QVariant data(const QModelIndex &index, int role) const;
-    QModelIndex index(int row, int column, const QModelIndex &parent) const;
+    QModelIndex index(int row, int column, const QModelIndex &parent = QModelIndex()) const;
     QModelIndex parent(const QModelIndex &child) const;
     int rowCount(const QModelIndex &parent) const;
 

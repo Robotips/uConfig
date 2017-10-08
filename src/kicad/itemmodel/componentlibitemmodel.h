@@ -19,6 +19,8 @@ public:
     void addComponent(Component *component);
     QList<Component *> components() const;
 
+    Component *component(const QModelIndex &index) const;
+
     enum Column {
         Name,
         Package,

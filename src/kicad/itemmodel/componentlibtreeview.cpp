@@ -7,7 +7,12 @@ ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent) :
         _model = new ComponentLibItemModel(lib);
     else
         _model = new ComponentLibItemModel(new Lib());
-    setModel(_model);
+
+    _sortProxy = new QSortFilterProxyModel();
+    _sortProxy->setSourceModel(_model);
+    setModel(_sortProxy);
+
+    setSortingEnabled(true);
 }
 
 Lib *ComponentLibTreeView::lib() const
@@ -28,4 +33,19 @@ void ComponentLibTreeView::addComponent(Component *component)
 QList<Component *> ComponentLibTreeView::components() const
 {
     return _model->components();
+}
+
+void ComponentLibTreeView::mouseDoubleClickEvent(QMouseEvent *event)
+{
+    QTreeView::mouseDoubleClickEvent(event);
+
+    if (!event->buttons().testFlag(Qt::LeftButton))
+        return;
+
+    const QPersistentModelIndex index = indexAt(event->pos());
+    if (!index.isValid())
+        return;
+
+    const QModelIndex &indexComponent = _sortProxy->mapToSource(index);
+    emit openedComponent(_model->component(indexComponent));
 }

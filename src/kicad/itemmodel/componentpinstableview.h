@@ -4,6 +4,7 @@
 #include "kicad_global.h"
 
 #include <QTableView>
+#include <QSortFilterProxyModel>
 
 #include "componentpinsitemmodel.h"
 
@@ -11,13 +12,23 @@ class KICAD_EXPORT ComponentPinsTableView : public QTableView
 {
     Q_OBJECT
 public:
-    ComponentPinsTableView(Component *component, QWidget *parent = Q_NULLPTR);
+    ComponentPinsTableView(Component *component = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
 
     Component *component() const;
     void setComponent(Component *component);
 
+public slots:
+    void selectPin(Pin *pin);
+
+signals:
+    void pinSelected(Pin *pin);
+
+protected:
+    virtual void mouseReleaseEvent(QMouseEvent *event);
+
 protected:
     ComponentPinsItemModel *_model;
+    QSortFilterProxyModel *_sortProxy;
 };
 
 #endif // COMPONENTPINSTABLEVIEW_H

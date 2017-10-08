@@ -42,16 +42,19 @@ void ComponentViewer::setComponent(Component *component)
 
 void ComponentViewer::selectPin(Pin *pin)
 {
+    blockSignals(true);
     scene()->clearSelection();
     if (!pin)
         return;
     PinItem *pinItem = _componentItem->pinItem(pin);
     if (pinItem)
         pinItem->setSelected(true);
+    blockSignals(false);
 }
 
 void ComponentViewer::selectPins(QList<Pin *> pins)
 {
+    blockSignals(true);
     scene()->clearSelection();
     foreach (Pin *pin, pins)
     {
@@ -59,6 +62,7 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
         if (pinItem)
             pinItem->setSelected(true);
     }
+    blockSignals(false);
 }
 
 void ComponentViewer::wheelEvent(QWheelEvent *event)

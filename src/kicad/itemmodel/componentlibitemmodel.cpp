@@ -33,6 +33,13 @@ QList<Component *> ComponentLibItemModel::components() const
     return _lib->components();
 }
 
+Component *ComponentLibItemModel::component(const QModelIndex &index) const
+{
+    if (!index.isValid())
+        return Q_NULLPTR;
+    return static_cast<Component*>(index.internalPointer());
+}
+
 int ComponentLibItemModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
@@ -72,7 +79,7 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
         case Name:
             return QVariant(component->name());
         case Package:
-            return QVariant(component->prefixe());
+            return QVariant(component->footPrints().join(';'));
         case PinCount:
             return QVariant(component->pins().count());
         }
@@ -83,7 +90,7 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
 QModelIndex ComponentLibItemModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    return createIndex(row, column);
+    return createIndex(row, column, _lib->components()[row]);
 }
 
 QModelIndex ComponentLibItemModel::parent(const QModelIndex &child) const
