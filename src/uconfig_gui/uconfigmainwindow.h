@@ -16,7 +16,7 @@ class UConfigMainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    explicit UConfigMainWindow(QWidget *parent = nullptr);
+    UConfigMainWindow(QWidget *parent = Q_NULLPTR);
 
 protected slots:
     void importComponents();
