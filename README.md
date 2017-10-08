@@ -16,7 +16,7 @@ The extraction of pin mapping from PDF files is done by parsing datasheet. Poppl
 it sorts the pin numbers and pin labels. Labels and numbers are associated by most relevant pair to create pins. Then, the list of pins is
 also sorted and associated by packages. This list of package could be save as a kicad library.
 
-Actually, it exists a command line tool to do that :
+Actually, it exists a command line tool to extract components from datasheet :
 
 ```bash
 uconfig.exe datasheet.pdf -o lib1.lib
@@ -24,9 +24,10 @@ uconfig.exe datasheet.pdf -o lib1.lib
 
 It will be save in `lib1.lib` all the schematics of components found in `datasheet.pdf`.
 
+A minimalist GUI interface is also available, called uconfig_gui.
+
 ## TODO
 
-- GUI interface
 - rules to organize pins on schematics
 - non regression tests
 - BGA footprint
