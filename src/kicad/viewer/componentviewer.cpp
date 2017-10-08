@@ -4,15 +4,18 @@
 
 #include <QDebug>
 #include <QWheelEvent>
+#include <QGraphicsScene>
 #include <qmath.h>
 
 ComponentViewer::ComponentViewer(QWidget *parent)
     : QGraphicsView(parent)
 {
     setScene(new QGraphicsScene());
+    connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
     scale(0.835, 0.835);
     _currentZoomLevel = 1;
     setDragMode(QGraphicsView::ScrollHandDrag);
+    setCursor(Qt::ArrowCursor);
 
     setResizeAnchor(QGraphicsView::AnchorUnderMouse);
     setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
@@ -28,10 +31,34 @@ Component *ComponentViewer::component() const
 
 void ComponentViewer::setComponent(Component *component)
 {
+    scene()->clear();
     _component = component;
 
-    ComponentItem *componentItem = new ComponentItem(component);
-    scene()->addItem(componentItem);
+    _componentItem = new ComponentItem(component);
+    scene()->addItem(_componentItem);
+    scene()->setSceneRect(_componentItem->boundingRect());
+    fitInView(_componentItem, Qt::KeepAspectRatio);
+}
+
+void ComponentViewer::selectPin(Pin *pin)
+{
+    scene()->clearSelection();
+    if (!pin)
+        return;
+    PinItem *pinItem = _componentItem->pinItem(pin);
+    if (pinItem)
+        pinItem->setSelected(true);
+}
+
+void ComponentViewer::selectPins(QList<Pin *> pins)
+{
+    scene()->clearSelection();
+    foreach (Pin *pin, pins)
+    {
+        PinItem *pinItem = _componentItem->pinItem(pin);
+        if (pinItem)
+            pinItem->setSelected(true);
+    }
 }
 
 void ComponentViewer::wheelEvent(QWheelEvent *event)
@@ -42,4 +69,18 @@ void ComponentViewer::wheelEvent(QWheelEvent *event)
     double mscale = qPow(1.25,numSteps);
     _currentZoomLevel *= mscale;
     scale(mscale, mscale);
+}
+
+void ComponentViewer::selectedItem()
+{
+    Pin *pin;
+    if (scene()->selectedItems().isEmpty())
+        pin = Q_NULLPTR;
+    else
+    {
+        PinItem *pinItem = qgraphicsitem_cast<PinItem *>(scene()->selectedItems().at(0));
+        pin = pinItem->pin();
+    }
+
+    emit pinSelected(pin);
 }

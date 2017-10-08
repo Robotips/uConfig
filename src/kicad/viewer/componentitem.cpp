@@ -18,7 +18,7 @@ void ComponentItem::paint(QPainter *painter,
 
 QRectF ComponentItem::boundingRect() const
 {
-    return _numRect;
+    return _numRect.adjusted(-80, -80, 80, 80);
 }
 
 Component *ComponentItem::component() const
@@ -29,15 +29,25 @@ Component *ComponentItem::component() const
 void ComponentItem::setComponent(Component *component)
 {
     _component = component;
+    _pinItemMap.clear();
     _numRect = QRectF(0, 0, 0, 0);
 
     foreach (Pin *pin, component->pins())
     {
-        PinItem *item = new PinItem(pin);
-        item->setParentItem(this);
-        _numRect = _numRect.united(QRectF(item->base() / PinItem::ratio, QSize(1, 1)));
+        PinItem *pinItem = new PinItem(pin);
+        pinItem->setParentItem(this);
+        _numRect = _numRect.united(QRectF(pinItem->base() / PinItem::ratio, QSize(1, 1)));
+        _pinItemMap.insert(pin, pinItem);
     }
     _numRect.adjust(1, -20, -2, 20);
 
     update();
+}
+
+PinItem *ComponentItem::pinItem(Pin *pin)
+{
+    QMap<Pin*, PinItem* >::const_iterator pinIt = _pinItemMap.constFind(pin);
+    if (pinIt != _pinItemMap.cend())
+        return *pinIt;
+    return Q_NULLPTR;
 }

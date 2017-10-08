@@ -1,5 +1,6 @@
 #include "pinitem.h"
 
+#include <QCursor>
 #include <QPainter>
 
 const int PinItem::ratio=5;
@@ -7,6 +8,8 @@ const int PinItem::ratio=5;
 PinItem::PinItem(Pin *pin)
 {
     setPin(pin);
+    setFlag(QGraphicsItem::ItemIsSelectable);
+    setCursor(Qt::CrossCursor);
 }
 
 void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -17,6 +20,8 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     QFont font("monospace");
     font.setStyleHint(QFont::Monospace);
     font.setPointSizeF(12);
+    if (isSelected())
+        font.setBold(true);
     painter->setFont(font);
 
     QString name = _pin->name();
@@ -79,6 +84,36 @@ QRectF PinItem::boundingRect() const
         break;
     }
     return rect.normalized();
+}
+
+QPainterPath PinItem::shape() const
+{
+    QRectF rect;
+    QString name = _pin->name();
+    QFont font("monospace");
+    font.setPointSizeF(12);
+    font.setStyleHint(QFont::Monospace);
+    QFontMetrics metrics(font);
+
+    switch (_pin->direction())
+    {
+    case Pin::Left:
+        rect = QRect(4, -metrics.height()/2, -name.count()*50/ratio - _pin->length()/ratio - 14, metrics.height());
+        break;
+    case Pin::Right:
+        rect = QRect(-4, -metrics.height()/2, name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height());
+        break;
+    case Pin::Down:
+        rect = QRect(-metrics.height()/2, 0, name.count()*50/ratio, -metrics.width(name) - _pin->length()/ratio);
+        break;
+    case Pin::Up:
+        rect = QRect(-metrics.height()/2, 0, name.count()*50/ratio, metrics.width(name) + _pin->length()/ratio);
+        break;
+    }
+
+    QPainterPath path;
+    path.addRect(rect.normalized());
+    return path;
 }
 
 QPointF PinItem::base()
