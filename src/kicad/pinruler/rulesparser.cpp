@@ -36,7 +36,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
             _errorLine = _line;
             return false; // error
         }
-        qDebug()<<"> "<<selector<<lineSelector;
+        //qDebug()<<"> "<<selector<<lineSelector;
 
         if (selector.startsWith('.'))
             rule = new ClassRule(selector.mid(1));
@@ -52,8 +52,8 @@ bool RulesParser::parse(RulesSet *ruleSet)
         while (!propertyName.isEmpty())
         {
             propertyValue = getPropertyValue();
-            bool ok = rule->setProperty(propertyName, propertyValue);
-            qDebug()<<propertyName<<"="<<propertyValue<<ok;
+            rule->setProperty(propertyName, propertyValue);
+            //qDebug()<<propertyName<<"="<<propertyValue;
             skipSpaceAndComments();
 
             propertyName = getPropertyName();
@@ -161,7 +161,7 @@ QString RulesParser::getPropertyName()
 
 QString RulesParser::getPropertyValue()
 {
-    QRegularExpression rule("\"?([a-zA-Z0-9\\_\\-\\+]*)\"?;?", QRegularExpression::MultilineOption
+    QRegularExpression rule("\"?([a-zA-Z0-9\\_\\-\\+\\\\]*)\"?;?", QRegularExpression::MultilineOption
                                     | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)

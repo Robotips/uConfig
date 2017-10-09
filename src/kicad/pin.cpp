@@ -31,6 +31,7 @@ Pin::Pin(const Pin &other)
     _pinType = other._pinType;
     _electricalType = other._electricalType;
     _layer = other._layer;
+    _length = other._length;
 }
 
 QString Pin::name() const
@@ -195,8 +196,8 @@ QTextStream &operator<<(QTextStream &stream, const Pin &pin)
     // LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
     stream << "X " << pin._name << " "                      // pin name
            << pin._padname << " "                           // pad name
-           << pin._pos.x() << " " << -pin._pos.y() << " "    // x y position
-           << pin._length << " "                                  // lenght
+           << pin._pos.x() << " " << -pin._pos.y() << " "   // x y position
+           << pin._length << " "                            // lenght
            << pin.directionString() << " "                  // pin direction (up/down/left/right)
            << "50" << " "                                   // name text size
            << "50" << " "                                   // pad name text size

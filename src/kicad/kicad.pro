@@ -35,7 +35,8 @@ SOURCES += \
     $$PWD/pinruler/pinrule.cpp \
     $$PWD/pinruler/classrule.cpp \
     $$PWD/pinruler/rulesset.cpp \
-    $$PWD/pinruler/pinclass.cpp
+    $$PWD/pinruler/pinclass.cpp \
+    $$PWD/pinruler/pinruler.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -60,7 +61,8 @@ HEADERS += \
     $$PWD/pinruler/pinrule.h \
     $$PWD/pinruler/classrule.h \
     $$PWD/pinruler/rulesset.h \
-    $$PWD/pinruler/pinclass.h
+    $$PWD/pinruler/pinclass.h \
+    $$PWD/pinruler/pinruler.h
 
 unix {
     target.path = /usr/lib

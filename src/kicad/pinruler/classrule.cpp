@@ -7,6 +7,8 @@ QStringList ClassRule::propsName = QStringList()
 ClassRule::ClassRule(const QString &selector)
     : Rule(selector)
 {
+    _position = PositionLeft;
+    _positionSet = false;
 }
 
 Rule::Type ClassRule::type() const
@@ -22,4 +24,27 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
         return false;
 
     return true;
+}
+
+ClassRule::Position ClassRule::position() const
+{
+    return _position;
+}
+
+bool ClassRule::isPositionSet() const
+{
+    return _positionSet;
+}
+
+void ClassRule::setPosition(const ClassRule::Position &position)
+{
+    _positionSet = true;
+    _position = position;
+}
+
+void ClassRule::setPosition(const QString &position)
+{
+    QStringList propsValue = QStringList()<<"top"<<"bottom"<<"left"<<"right"<<"aside";
+
+    setPosition((ClassRule::Position)(propsValue.indexOf(position)));
 }

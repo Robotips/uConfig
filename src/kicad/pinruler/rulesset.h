@@ -18,8 +18,8 @@ public:
 
     void addRule(Rule *rule);
 
-    ClassRule *ruleForClass(const QString &className);
-    PinRule *ruleForPin(const QString &pinName);
+    QList<ClassRule*> rulesForClass(const QString &className);
+    QList<PinRule*> rulesForPin(const QString &pinName);
 
 protected:
     QList<ClassRule *> _classRules;

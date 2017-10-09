@@ -17,7 +17,23 @@ public:
 
     virtual bool setProperty(const QString &name, const QString &value);
 
+    enum Position {
+        PositionTop,
+        PositionBottom,
+        PositionLeft,
+        PositionRight,
+        PositionASide
+    };
+    Position position() const;
+    bool isPositionSet() const;
+    void setPosition(const Position &position);
+    void setPosition(const QString &position);
+
     static QStringList propsName;
+
+protected:
+    Position _position;
+    bool _positionSet;
 };
 
 #endif // CLASSRULE_H

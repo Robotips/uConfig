@@ -17,7 +17,7 @@ public:
 
     virtual bool setProperty(const QString &name, const QString &value);
 
-    QString className() const;
+    QString className(const QString &pinName = QString()) const;
     void setClassName(const QString &className);
 
     static QStringList propsName;

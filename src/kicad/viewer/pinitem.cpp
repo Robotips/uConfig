@@ -14,7 +14,16 @@ PinItem::PinItem(Pin *pin)
 
 void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
-    painter->setPen(QColor(132, 0, 0));
+    QColor drawColor = QColor(132, 0, 0);
+    QColor textColor = QColor(0, 132, 132);
+
+    if (_pin->pinType() == Pin::NotVisible)
+    {
+        drawColor = QColor(132, 132, 132);
+        textColor = QColor(132, 132, 132);
+    }
+
+    painter->setPen(drawColor);
     painter->drawEllipse(-3, -3, 6, 6);
 
     QFont font("monospace");
@@ -37,7 +46,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     case Pin::Left:
         painter->drawLine(-3, 0, -_pin->length()/ratio, 0);
         painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
-        painter->setPen(QColor(0, 132, 132));
+        painter->setPen(textColor);
         painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
         if(line)
             painter->drawLine(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -_pin->length()/ratio-10-name.count()*50/ratio, -painter->fontMetrics().height()/2);
@@ -45,7 +54,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     case Pin::Right:
         painter->drawLine(3, 0, _pin->length()/ratio, 0);
         painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
-        painter->setPen(QColor(0, 132, 132));
+        painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         if(line)
             painter->drawLine(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, _pin->length()/ratio+10+name.count()*50/ratio, -painter->fontMetrics().height()/2);
