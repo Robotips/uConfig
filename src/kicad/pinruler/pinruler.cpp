@@ -9,6 +9,7 @@ PinRuler::PinRuler(RulesSet *ruleSet)
 
 void PinRuler::organize(Component *component)
 {
+    int x, y;
     PinClass *defaultClass = pinClass("default");
     foreach (Pin *pin, component->pins())
     {
@@ -26,38 +27,128 @@ void PinRuler::organize(Component *component)
         }
     }
 
+    // sideSize computation and side class list assignment
+    QList<PinClass *> topSide, bottomSide;
+    QList<PinClass *> leftSide, rightSide;
+    QList<PinClass *> aSide; // last assign
+    QSize topSize = QSize(0, 0), bottomSize = QSize(0, 0);
+    QSize leftSize = QSize(0, 0), rightSize = QSize(0, 0);
     foreach (PinClass *mpinClass, _pinClasses)
     {
-        foreach (Pin *pin, mpinClass->pins())
+        QRect rect = mpinClass->rect();
+        switch (mpinClass->positionValue())
         {
-            Pin::Direction direction;
-            switch (mpinClass->positionValue()) {
-            case ClassRule::PositionTop:
-                direction = Pin::Down;
-                break;
-            case ClassRule::PositionBottom:
-                direction = Pin::Up;
-                break;
-            case ClassRule::PositionLeft:
-                direction = Pin::Left;
-                break;
-            case ClassRule::PositionRight:
-                direction = Pin::Right;
-                break;
-            case ClassRule::PositionASide:
-                direction = Pin::Left;
-                break;
-            }
-            pin->setDirection(direction);
+        case ClassRule::PositionTop:
+            topSide.append(mpinClass);
+            topSize.rwidth() += rect.width();
+            if (rect.height() > topSize.height())
+                topSize.setHeight(rect.height());
+            break;
+        case ClassRule::PositionBottom:
+            bottomSide.append(mpinClass);
+            bottomSize.rwidth() += rect.width();
+            if (rect.height() > bottomSize.height())
+                bottomSize.setHeight(rect.height());
+            break;
+        case ClassRule::PositionLeft:
+            leftSide.append(mpinClass);
+            leftSize.rheight() += rect.height();
+            if (rect.width() > leftSize.width())
+                leftSize.setWidth(rect.width());
+            break;
+        case ClassRule::PositionRight:
+            rightSide.append(mpinClass);
+            rightSize.rheight() += rect.height();
+            if (rect.width() > rightSize.width())
+                rightSize.setWidth(rect.width());
+            break;
+        case ClassRule::PositionASide:
+            aSide.append(mpinClass);
+            break;
         }
-        mpinClass->sortPins();
     }
+
+    // aside list assignment and right and left sides updates
+    foreach (PinClass *mpinClass, aSide)
+    {
+        QRect rect = mpinClass->rect();
+        if (leftSize.height() < rightSize.height())
+        {
+            mpinClass->setPosition(ClassRule::PositionLeft);
+            leftSide.append(mpinClass);
+            leftSize.rheight() += rect.height();
+            if (rect.width() > leftSize.width())
+                leftSize.setWidth(rect.width());
+        }
+        else
+        {
+            mpinClass->setPosition(ClassRule::PositionRight);
+            rightSide.append(mpinClass);
+            rightSize.rheight() += rect.height();
+            if (rect.width() > rightSize.width())
+                rightSize.setWidth(rect.width());
+        }
+    }
+
+    // margins
+    leftSize.rheight() += (leftSide.size() - 1) * 100;
+    rightSize.rheight() += (rightSide.size() - 1) * 100;
+
+    // placement
+    int sideX = (leftSize.width() + rightSize.width()) / 2 + 350;
+    int sideY = qMax(leftSize.height(), rightSize.height()) / 2;
+
+    x = -sideX;
+    y = -sideY;
+    if (leftSize.height() < rightSize.height())
+        y += (rightSize.height() - leftSize.height()) / 2;
+    y = (y / 100) * 100; // grid align
+    foreach (PinClass *mpinClass, leftSide)
+    {
+        qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
+        mpinClass->placePins(QPoint(x, y));
+        y += mpinClass->rect().height() + 100;
+    }
+
+    x = sideX;
+    y = -sideY;
+    if (rightSize.height() < leftSize.height())
+        y += (leftSize.height() - rightSize.height()) / 2;
+    y = (y / 100) * 100; // grid align
+    foreach (PinClass *mpinClass, rightSide)
+    {
+        qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
+        mpinClass->placePins(QPoint(x, y));
+        y += mpinClass->rect().height() + 100;
+    }
+
+    x = -topSize.width() / 2;
+    y = -sideY - 350;
+    foreach (PinClass *mpinClass, topSide)
+    {
+        mpinClass->placePins(QPoint(x, y));
+        x += mpinClass->rect().width() + 100;
+    }
+
+    x = -bottomSize.width() / 2;
+    y = sideY + 350;
+    foreach (PinClass *mpinClass, bottomSide)
+    {
+        mpinClass->placePins(QPoint(x, y));
+        x += mpinClass->rect().width() + 100;
+    }
+
+    // debug
+    qDebug()<<"";
+    qDebug()<<sideX<<sideY;
+    qDebug()<<topSize<<bottomSize;
+    qDebug()<<leftSize<<rightSize;
     foreach (PinClass *mpinClass, _pinClasses)
     {
-        qDebug()<<">"<<mpinClass->className()<<mpinClass->positionStr()<<mpinClass->sortStr()<<mpinClass->sortPattern();
+        qDebug()<<">"<<mpinClass->className()<<mpinClass->positionStr()<<mpinClass->sortStr()<<mpinClass->sortPattern()<<mpinClass->rect();
         foreach (Pin *pin, mpinClass->pins())
         {
-            qDebug()<<" - "<<pin->name();
+            //qDebug()<<" - "<<pin->name()<<pin->pos();
         }
     }
 }

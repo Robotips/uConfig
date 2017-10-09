@@ -39,7 +39,7 @@ void ComponentItem::setComponent(Component *component)
         _numRect = _numRect.united(QRectF(pinItem->base() / PinItem::ratio, QSize(1, 1)));
         _pinItemMap.insert(pin, pinItem);
     }
-    _numRect.adjust(1, -20, -2, 20);
+    _numRect.adjust(0, 0, -1, -1);
 
     update();
 }

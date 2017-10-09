@@ -9,6 +9,12 @@
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QStatusBar>
+#include <QPushButton>
+
+#include "pinruler/pinruler.h"
+#include "pinruler/rulesparser.h"
+#include "pinruler/rulesset.h"
 
 UConfigMainWindow::UConfigMainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -42,7 +48,7 @@ void UConfigMainWindow::importComponents()
     PinListImporter importer;
     importer.exec();
 
-    _splitter->setSizes(QList<int>()<<_splitter->geometry().width()/2<<_splitter->geometry().width()/2);
+
     foreach (DatasheetPackage *package, importer.datasheet()->packages())
     {
         Component *component = package->toComponent();
@@ -53,6 +59,8 @@ void UConfigMainWindow::importComponents()
     {
         selectComponent(_componentsTreeView->lib()->components()[0]);
     }
+    _componentsTreeView->resizeColumnToContents(0);
+    _componentsTreeView->resizeColumnToContents(1);
 }
 
 void UConfigMainWindow::saveLib()
@@ -92,6 +100,20 @@ void UConfigMainWindow::selectComponent(Component *component)
     _componentViewer->setComponent(component);
 }
 
+void UConfigMainWindow::organize()
+{
+
+    RulesSet ruleSet;
+    RulesParser parser("../rules/tst.rule");
+    parser.parse(&ruleSet);
+
+    PinRuler ruler(&ruleSet);
+    Component *component = _componentViewer->component();
+    _componentViewer->scene()->clear();
+    ruler.organize(component);
+    _componentViewer->setComponent(component);
+}
+
 void UConfigMainWindow::createWidgets()
 {
     _componentViewer = new ComponentViewer();
@@ -101,11 +123,21 @@ void UConfigMainWindow::createWidgets()
     connect(_componentViewer, &ComponentViewer::pinSelected, _componentsPinTableView, &ComponentPinsTableView::selectPin);
     connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected, _componentViewer, &ComponentViewer::selectPin);
 
+    QWidget *viewerContentLayout = new QWidget();
+    QVBoxLayout *viewerLayout = new QVBoxLayout();
+    QPushButton *button = new QPushButton("organize");
+    connect(button, &QPushButton::clicked, this, &UConfigMainWindow::organize);
+    viewerLayout->addWidget(button);
+    viewerLayout->addWidget(_componentViewer);
+    viewerContentLayout->setLayout(viewerLayout);
+
     _splitter = new QSplitter();
     _splitter->addWidget(_componentsPinTableView);
-    _splitter->addWidget(_componentViewer);
+    _splitter->addWidget(viewerContentLayout);
+    _splitter->setSizes(QList<int>()<<200<<200);
 
     setCentralWidget(_splitter);
+    setStatusBar(new QStatusBar());
 }
 
 void UConfigMainWindow::createDocks()

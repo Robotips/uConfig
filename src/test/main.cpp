@@ -6,15 +6,14 @@
 #include "../pdf_extract/datasheet.h"
 
 #include "../kicad/viewer/componentviewer.h"
-#include "../kicad/pinclassifier.h"
 
+#include "../kicad/pinruler/pinruler.h"
 #include "../kicad/pinruler/rulesparser.h"
 
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    Datasheet datasheet;
     //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
     //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPL_revB.pdf");
     //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MZ EF.pdf");
@@ -38,9 +37,26 @@ int main(int argc, char *argv[])
     else
         return 0;*/
 
-    RulesParser parser("../tst.rule");
+    Datasheet datasheet;
+    datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
+    datasheet.analyse(3);
+    if (datasheet.packages().empty())
+        return 0;
 
-    return 0;
+    Component *component = datasheet.packages()[0]->toComponent();
+    //component->reorganizeToPackageStyle();
+
+    RulesSet ruleSet;
+    RulesParser parser("../rules/tst.rule");
+    parser.parse(&ruleSet);
+
+    PinRuler ruler(&ruleSet);
+    ruler.organize(component);
+
+    ComponentViewer viewer;
+    viewer.setComponent(component);
+    viewer.show();
+    viewer.resize(QApplication::primaryScreen()->size()*.7);
 
     return a.exec();
 }

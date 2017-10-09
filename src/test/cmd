@@ -1,0 +1,1 @@
+pdfjam PIC32MK_revD.pdf 3-8 PIC32MM_GPL_revB.pdf 3-8 PIC32MM_GPM_revC.pdf 3-10 PIC32MX1x1-5-2x4-5_revA.pdf 3-14 "PIC32MX1xx-2xx 28-36-44pins_revJ.pdf" 4-15 PIC32MX1xx-2xx-5xx-64-100pins_revD.pdf 3-8 "PIC32MZ EC.pdf" 4-6 -o out.pdf

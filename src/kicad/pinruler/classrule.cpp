@@ -20,9 +20,9 @@ QStringList ClassRule::sortEnumStr = QStringList()
 ClassRule::ClassRule(const QString &selector)
     : Rule(selector)
 {
-    _position = PositionLeft;
+    _position = PositionASide;
     _positionSet = false;
-    _sort = SortNone;
+    _sort = SortAsc;
     _sortSet = false;
     _sortPattern = ".*";
     _sortPatternSet = false;

@@ -22,6 +22,10 @@ public:
     static bool pinPatterLessThan(QPair<QString, Pin *> pin1, QPair<QString, Pin *> pin2);
     void sortPins();
 
+    void placePins(const QPoint &pos);
+
+    QRect rect() const;
+
     ClassRule::Position positionValue() const;
     QString positionStr() const;
     void setPosition(const ClassRule::Position &position);

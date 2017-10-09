@@ -24,6 +24,7 @@ protected slots:
     void saveLibAs(const QString &fileName = QString());
 
     void selectComponent(Component *component);
+    void organize();
 
     void about();
 protected:

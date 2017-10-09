@@ -6,9 +6,9 @@ PinClass::PinClass(const QString &className)
     : _className(className)
 {
     // properties default values
-    _position = ClassRule::PositionLeft;
+    _position = ClassRule::PositionASide;
     _positionSet = false;
-    _sort = ClassRule::SortNone;
+    _sort = ClassRule::SortAsc;
     _sortSet = false;
     _sortPattern = ".*";
     _sortPatternSet = false;
@@ -80,6 +80,69 @@ void PinClass::sortPins()
                 _pins.append(pins[i].second);
     }
 
+}
+
+void PinClass::placePins(const QPoint &basePos)
+{
+    QPoint pos = basePos;
+    QPoint offset;
+    Pin::Direction direction;
+
+    switch (_position)
+    {
+    case ClassRule::PositionTop:
+        direction = Pin::Up;
+        offset = QPoint(100, 0);
+        break;
+    case ClassRule::PositionBottom:
+        direction = Pin::Down;
+        offset = QPoint(100, 0);
+        break;
+    case ClassRule::PositionLeft:
+        direction = Pin::Right;
+        offset = QPoint(0, 100);
+        break;
+    case ClassRule::PositionRight:
+        direction = Pin::Left;
+        offset = QPoint(0, 100);
+        break;
+    case ClassRule::PositionASide:
+        direction = Pin::Left;
+        offset = QPoint(0, 100);
+        break;
+    }
+    sortPins();
+    foreach (Pin *pin, _pins)
+    {
+        pin->setDirection(direction);
+        pin->setPos(pos);
+        pos += offset;
+    }
+}
+
+QRect PinClass::rect() const
+{
+    QRect rect;
+    int maxLenght = 0;
+    foreach (Pin *pin, _pins)
+    {
+        if (pin->name().size() > maxLenght)
+            maxLenght = pin->name().size();
+    }
+
+    switch (_position)
+    {
+    case ClassRule::PositionTop:
+    case ClassRule::PositionBottom:
+        rect = QRect(0, 0, _pins.size() * 100, maxLenght*50);
+        break;
+    case ClassRule::PositionLeft:
+    case ClassRule::PositionRight:
+    case ClassRule::PositionASide:
+        rect = QRect(0, 0, maxLenght*50, _pins.size() * 100);
+        break;
+    }
+    return rect;
 }
 
 ClassRule::Position PinClass::positionValue() const

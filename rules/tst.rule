@@ -1,0 +1,48 @@
+
+/* pins */
+V(CC|DD) {
+    elec_type: "power";
+    class: "power+"
+}
+(VSS|GDD) {
+    elec_type: "power";
+    class: "power-"
+}
+
+(MCLR|VCAP|OSC.*) {
+    class: "special"
+}
+R([A-L])[0-9]+ {
+    class: "gpio\1"
+}
+
+/* classes */
+.special {
+    position: left;
+}
+.power\+
+{
+    position: top;
+}
+.power\-
+{
+    position: bottom;
+}
+
+.gpioA {
+    position: left;
+}
+.gpioB {
+    position: right;
+}
+
+.gpio[A-L] {
+    sort: asc;
+    sortpattern: "R[A-L][0-9]+"
+}
+
+.signals{
+    position: top;
+}
+
+.others{position: top;}
