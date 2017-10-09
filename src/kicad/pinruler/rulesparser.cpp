@@ -8,20 +8,22 @@
 
 RulesParser::RulesParser(const QString &fileName)
 {
+    _fileName = fileName;
     QFile file(fileName);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
 
     QTextStream stream(&file);
     _data = stream.readAll();
     file.close();
-    _id = 0;
-    _line = 1;
-
-    parse();
 }
 
-bool RulesParser::parse()
+bool RulesParser::parse(RulesSet *ruleSet)
 {
+    _id = 0;
+    _line = 1;
+    _errorLine = -1;
+    Rule *rule;
+
     skipSpaceAndComments();
     int lineSelector;
     QString selector = getSelector();
@@ -31,10 +33,17 @@ bool RulesParser::parse()
         skipSpaceAndComments();
         if (_data[_id] != '{') // start of rule
         {
-            qDebug()<<"error at line"<<_line;
+            _errorLine = _line;
             return false; // error
         }
         qDebug()<<"> "<<selector<<lineSelector;
+
+        if (selector.startsWith('.'))
+            rule = new ClassRule(selector.mid(1));
+        else
+            rule = new PinRule(selector);
+        rule->setFile(_fileName);
+        rule->setLine(lineSelector);
         _id ++;
         skipSpaceAndComments();
 
@@ -43,13 +52,16 @@ bool RulesParser::parse()
         while (!propertyName.isEmpty())
         {
             propertyValue = getPropertyValue();
-            qDebug()<<propertyName<<"="<<propertyValue;
+            bool ok = rule->setProperty(propertyName, propertyValue);
+            qDebug()<<propertyName<<"="<<propertyValue<<ok;
             skipSpaceAndComments();
+
             propertyName = getPropertyName();
         }
         skipSpaceAndComments();
         if (_data[_id] == '}') // end of rule
         {
+            ruleSet->addRule(rule);
             _id++;
             skipSpaceAndComments();
         }
@@ -107,7 +119,7 @@ void RulesParser::skipSpaceAndComments()
 
 QString RulesParser::getSelector()
 {
-    QRegularExpression rule("(\\.?[a-zA-Z][a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|]*)", QRegularExpression::MultilineOption
+    QRegularExpression rule("(\\.?[a-zA-Z\\(][a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|\\\\]*)", QRegularExpression::MultilineOption
                                     | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
@@ -156,4 +168,9 @@ QString RulesParser::getPropertyValue()
         return QString();
     _id += ruleMath.capturedEnd();
     return  ruleMath.captured(1);
+}
+
+int RulesParser::getErrorLine() const
+{
+    return _errorLine;
 }

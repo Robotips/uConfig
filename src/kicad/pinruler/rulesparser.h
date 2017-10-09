@@ -6,14 +6,18 @@
 #include <QString>
 #include <QStringList>
 
+#include "rulesset.h"
+
 class KICAD_EXPORT RulesParser
 {
 public:
     RulesParser(const QString &fileName);
 
-protected:
-    bool parse();
+    bool parse(RulesSet *ruleSet);
 
+    int getErrorLine() const;
+
+protected:
     void skipSpace();
     bool skipComments();
     void skipSpaceAndComments();
@@ -23,9 +27,11 @@ protected:
     QString getPropertyValue();
 
 private:
+    QString _fileName;
     QString _data;
     int _id;
     int _line;
+    int _errorLine;
 };
 
 #endif // RULESPARSER_H
