@@ -119,7 +119,7 @@ void RulesParser::skipSpaceAndComments()
 
 QString RulesParser::getSelector()
 {
-    QRegularExpression rule("(\\.?[a-zA-Z\\(][a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|\\\\\\*\\.]*)", QRegularExpression::MultilineOption
+    QRegularExpression rule("(\\.?[a-zA-Z\\(][/a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|\\\\\\*\\.]*)", QRegularExpression::MultilineOption
                                     | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)

@@ -35,8 +35,8 @@ bool Rule::matchWithName(const QString &name) const
     if (!_selector.isValid())
         return false;
 
-    QRegularExpressionMatch match = _selector.match(name, 0, QRegularExpression::NormalMatch, QRegularExpression::AnchoredMatchOption);
-    return (match.hasMatch() && match.capturedEnd() == name.size());
+    QRegularExpressionMatch match = _selector.match(name, 0, QRegularExpression::NormalMatch);
+    return (match.hasMatch() /*&& match.capturedEnd() == name.size()*/);
 }
 
 bool Rule::isEnabled() const

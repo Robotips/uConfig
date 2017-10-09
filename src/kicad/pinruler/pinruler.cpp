@@ -23,6 +23,7 @@ void PinRuler::organize(Component *component)
         {
             QString className = rules.first()->className(pin->name());
             PinClass *mpinClass = pinClass(className);
+            pin->setPinType(Pin::Normal);
             mpinClass->addPin(pin);
         }
     }
@@ -93,16 +94,18 @@ void PinRuler::organize(Component *component)
     // margins
     leftSize.rheight() += (leftSide.size() - 1) * 100;
     rightSize.rheight() += (rightSide.size() - 1) * 100;
+    leftSize.rwidth() += 100;
+    rightSize.rwidth() += 100;
 
     // placement
     int sideX = (leftSize.width() + rightSize.width()) / 2 + 350;
     int sideY = qMax(leftSize.height(), rightSize.height()) / 2;
 
     x = -sideX;
-    y = -sideY;
+    y = -sideY+50;
     if (leftSize.height() < rightSize.height())
         y += (rightSize.height() - leftSize.height()) / 2;
-    y = (y / 100) * 100; // grid align
+    //y = (y / 100) * 100; // grid align
     foreach (PinClass *mpinClass, leftSide)
     {
         qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
@@ -111,10 +114,10 @@ void PinRuler::organize(Component *component)
     }
 
     x = sideX;
-    y = -sideY;
+    y = -sideY+50;
     if (rightSize.height() < leftSize.height())
         y += (leftSize.height() - rightSize.height()) / 2;
-    y = (y / 100) * 100; // grid align
+    //y = (y / 100) * 100; // grid align
     foreach (PinClass *mpinClass, rightSide)
     {
         qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
@@ -122,7 +125,7 @@ void PinRuler::organize(Component *component)
         y += mpinClass->rect().height() + 100;
     }
 
-    x = -topSize.width() / 2;
+    x = -topSize.width() / 2 + 50;
     y = -sideY - 350;
     foreach (PinClass *mpinClass, topSide)
     {
@@ -130,7 +133,7 @@ void PinRuler::organize(Component *component)
         x += mpinClass->rect().width() + 100;
     }
 
-    x = -bottomSize.width() / 2;
+    x = -bottomSize.width() / 2 + 50;
     y = sideY + 350;
     foreach (PinClass *mpinClass, bottomSide)
     {
@@ -139,7 +142,7 @@ void PinRuler::organize(Component *component)
     }
 
     // debug
-    qDebug()<<"";
+    /*qDebug()<<"";
     qDebug()<<sideX<<sideY;
     qDebug()<<topSize<<bottomSize;
     qDebug()<<leftSize<<rightSize;
@@ -150,7 +153,7 @@ void PinRuler::organize(Component *component)
         {
             //qDebug()<<" - "<<pin->name()<<pin->pos();
         }
-    }
+    }*/
 }
 
 PinClass *PinRuler::addClass(const QString &className)

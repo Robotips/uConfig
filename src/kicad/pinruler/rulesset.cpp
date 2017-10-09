@@ -48,10 +48,10 @@ QList<PinRule*> RulesSet::rulesForPin(const QString &pinName)
     QList<PinRule*> rules;
     for(int i=0; i<_pinRules.size(); i++)
     {
-        const QStringList &vpins = pinName.split('/');
-        foreach (const QString &vpin, vpins)
+        //const QStringList &vpins = pinName.split('/');
+        //foreach (const QString &vpin, vpins)
         {
-            if (_pinRules[i]->matchWithName(vpin))
+            if (_pinRules[i]->matchWithName(pinName))
             {
                 rules.append(_pinRules[i]);
             }
