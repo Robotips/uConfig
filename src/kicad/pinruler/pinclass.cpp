@@ -69,14 +69,15 @@ void PinClass::sortPins()
         }
 
         pins.append(qMakePair(sortPatern, pin));
-        if (_sort == ClassRule::SortAsc)
-            qSort(pins.begin(), pins.end(), PinClass::pinPatterLessThan);
-        if (_sort == ClassRule::SortDesc)
-            qSort(pins.rbegin(), pins.rend(), PinClass::pinPatterLessThan);
+        qSort(pins.begin(), pins.end(), PinClass::pinPatterLessThan);
 
         _pins.clear();
-        for (int i=0; i<pins.size(); i++)
-            _pins.append(pins[i].second);
+        if (_sort == ClassRule::SortAsc)
+            for (int i=0; i<pins.size(); i++)
+                _pins.append(pins[i].second);
+        if (_sort == ClassRule::SortDesc)
+            for (int i=pins.size()-1; i>=0; i--)
+                _pins.append(pins[i].second);
     }
 
 }
