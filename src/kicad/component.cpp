@@ -3,9 +3,29 @@
 #include <QDebug>
 #include <QFontMetrics>
 
-Component::Component(const QString &name) : _name(name), _prefixe("U")
+Component::Component(const QString &name)
+    : _name(name), _prefixe("U")
 {
     _valid = true;
+}
+
+Component::Component(const Component &other)
+{
+    _name = other._name;
+    _prefixe = other._prefixe;
+    _alias = other._alias;
+    _footPrints = other._footPrints;
+    _rect = other._rect;
+    _valid = other._valid;
+
+    for(int i=0; i<other._pins.size(); i++)
+        addPin(new Pin(*other._pins[i]));
+}
+
+Component::~Component()
+{
+    for(int i=0; i<_pins.size(); i++)
+        delete _pins[i];
 }
 
 QString Component::name() const
@@ -121,10 +141,6 @@ void Component::reorganizeToPackageStyle()
 
     _rect = QRect(QPoint(-margin+300, -leftOffset-100),
                   QPoint(margin-300, rightOffset+100));
-}
-
-void Component::reorganizeUnderRules(const QList<QRegExp> &rules)
-{
 }
 
 bool Component::isValid() const

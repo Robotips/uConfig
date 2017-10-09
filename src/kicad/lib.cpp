@@ -81,4 +81,8 @@ QTextStream &operator<<(QTextStream &stream, const Lib &lib)
 
 QTextStream &operator>>(QTextStream &stream, Lib &lib)
 {
+    Q_UNUSED(stream)
+    Q_UNUSED(lib)
+    // TODO implement me
+    return stream;
 }

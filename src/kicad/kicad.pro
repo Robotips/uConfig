@@ -26,11 +26,11 @@ SOURCES += \
     $$PWD/viewer/componentviewer.cpp \
     $$PWD/viewer/componentitem.cpp \
     $$PWD/viewer/pinitem.cpp \
-    $$PWD/pinruler/rulesparser.cpp \
     $$PWD/itemmodel/componentlibitemmodel.cpp \
     $$PWD/itemmodel/componentpinsitemmodel.cpp \
     $$PWD/itemmodel/componentlibtreeview.cpp \
-    $$PWD/itemmodel/componentpinstableview.cpp
+    $$PWD/itemmodel/componentpinstableview.cpp \
+    $$PWD/pinruler/rulesparser.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -46,11 +46,11 @@ HEADERS += \
     $$PWD/viewer/componentviewer.h \
     $$PWD/viewer/componentitem.h \
     $$PWD/viewer/pinitem.h \
-    $$PWD/pinruler/rulesparser.h \
     $$PWD/itemmodel/componentlibitemmodel.h \
     $$PWD/itemmodel/componentpinsitemmodel.h \
     $$PWD/itemmodel/componentlibtreeview.h \
-    $$PWD/itemmodel/componentpinstableview.h
+    $$PWD/itemmodel/componentpinstableview.h \
+    $$PWD/pinruler/rulesparser.h
 
 unix {
     target.path = /usr/lib

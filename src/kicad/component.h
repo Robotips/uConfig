@@ -13,6 +13,8 @@ class KICAD_EXPORT Component
 {
 public:
     Component(const QString &name = QString());
+    Component(const Component &other);
+    ~Component();
 
     QString name() const;
     void setName(const QString &name);
@@ -32,7 +34,6 @@ public:
 
     void sort();
     void reorganizeToPackageStyle();
-    void reorganizeUnderRules(const QList<QRegExp> &rules);
 
     friend QTextStream &operator<<(QTextStream &stream,
                                    const Component &component);

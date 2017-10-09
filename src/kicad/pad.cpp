@@ -54,9 +54,8 @@ QString Pad::shapeString() const
         return "O";
     case Pad::Trapezoidal:
         return "T";
-    default:
-        return "R";
     }
+    return "R";
 }
 
 void Pad::setShape(const Shape &shape)
@@ -111,9 +110,8 @@ QString Pad::typeString() const
         return "CONN";
     case Pad::Hole:
         return "HOLE";
-    default:
-        return "STD";
     }
+    return "STD";
 }
 
 void Pad::setType(const Type &type)
