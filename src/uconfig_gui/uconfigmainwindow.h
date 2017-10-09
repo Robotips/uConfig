@@ -7,6 +7,7 @@
 #include <QTableView>
 #include <QSplitter>
 #include <QDockWidget>
+#include <QComboBox>
 
 #include "viewer/componentviewer.h"
 #include "itemmodel/componentlibtreeview.h"
@@ -24,7 +25,9 @@ protected slots:
     void saveLibAs(const QString &fileName = QString());
 
     void selectComponent(Component *component);
-    void organize();
+
+    void organize(QString ruleSetName);
+    void reloadRuleSetList();
 
     void about();
 protected:
@@ -33,6 +36,7 @@ protected:
     ComponentLibTreeView *_componentsTreeView;
     ComponentPinsTableView *_componentsPinTableView;
     ComponentViewer *_componentViewer;
+    QComboBox *_ruleComboBox;
 
     void createDocks();
     QDockWidget *_componentsListDock;

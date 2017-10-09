@@ -22,6 +22,8 @@ ComponentViewer::ComponentViewer(QWidget *parent)
     setRenderHint(QPainter::Antialiasing, true);
     setRenderHint(QPainter::SmoothPixmapTransform, true);
     setRenderHint(QPainter::TextAntialiasing, true);
+
+    _component = Q_NULLPTR;
 }
 
 Component *ComponentViewer::component() const

@@ -106,6 +106,7 @@ void Component::reorganizeToPackageStyle()
     for (i = 0; i < leftCount; i++)
     {
         Pin *pin = _pins[i];
+        pin->setPinType(Pin::Normal);
         int width = pin->name().count()*50+350;
         if (width > leftMargin)
             leftMargin = width;
@@ -113,6 +114,7 @@ void Component::reorganizeToPackageStyle()
     for (; i < leftCount + rightCount; i++)
     {
         Pin *pin = _pins[i];
+        pin->setPinType(Pin::Normal);
         int width = pin->name().count()*50+350;
         if (width > rightMargin)
             rightMargin = width;

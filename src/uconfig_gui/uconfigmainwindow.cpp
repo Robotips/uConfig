@@ -6,11 +6,12 @@
 #include <QScreen>
 #include <QMenuBar>
 #include <QToolBar>
+#include <QWidgetAction>
 #include <QVBoxLayout>
 #include <QMessageBox>
 #include <QFileDialog>
 #include <QStatusBar>
-#include <QPushButton>
+#include <QDir>
 
 #include "pinruler/pinruler.h"
 #include "pinruler/rulesparser.h"
@@ -23,12 +24,13 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
     createDocks();
     createToolbarsMenus();
     setWindowTitle("uConfig");
+    reloadRuleSetList();
 
     resize(QApplication::primaryScreen()->size()*.7);
 
-#if 0
+#if 1
     Datasheet datasheet;
-    datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
+    datasheet.open("../../../projects/DataSheets/mem/IS61WV25616BLL.pdf");
     datasheet.analyse(0, 12);
     foreach (DatasheetPackage *package, datasheet.packages())
     {
@@ -100,11 +102,20 @@ void UConfigMainWindow::selectComponent(Component *component)
     _componentViewer->setComponent(component);
 }
 
-void UConfigMainWindow::organize()
+void UConfigMainWindow::organize(QString ruleSetName)
 {
-
+    if (!_componentViewer->component())
+        return;
+    if (ruleSetName == "package")
+    {
+        Component *component = _componentViewer->component();
+        _componentViewer->scene()->clear();
+        component->reorganizeToPackageStyle();
+        _componentViewer->setComponent(component);
+        return;
+    }
     RulesSet ruleSet;
-    RulesParser parser("../rules/tst.rule");
+    RulesParser parser(QString("../rules/%1.rule").arg(ruleSetName));
     parser.parse(&ruleSet);
 
     PinRuler ruler(&ruleSet);
@@ -114,30 +125,35 @@ void UConfigMainWindow::organize()
     _componentViewer->setComponent(component);
 }
 
+void UConfigMainWindow::reloadRuleSetList()
+{
+    _ruleComboBox->clear();
+    _ruleComboBox->addItem("package");
+    QDir dir("../rules/");
+    foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList()<<"*.rule", QDir::NoDotAndDotDot | QDir::Files))
+    {
+        _ruleComboBox->addItem(ruleInfo.baseName());
+    }
+}
+
 void UConfigMainWindow::createWidgets()
 {
-    _componentViewer = new ComponentViewer();
-
     _componentsPinTableView = new ComponentPinsTableView();
 
-    connect(_componentViewer, &ComponentViewer::pinSelected, _componentsPinTableView, &ComponentPinsTableView::selectPin);
-    connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected, _componentViewer, &ComponentViewer::selectPin);
-
-    QWidget *viewerContentLayout = new QWidget();
-    QVBoxLayout *viewerLayout = new QVBoxLayout();
-    QPushButton *button = new QPushButton("organize");
-    connect(button, &QPushButton::clicked, this, &UConfigMainWindow::organize);
-    viewerLayout->addWidget(button);
-    viewerLayout->addWidget(_componentViewer);
-    viewerContentLayout->setLayout(viewerLayout);
+    _componentViewer = new ComponentViewer();
 
     _splitter = new QSplitter();
     _splitter->addWidget(_componentsPinTableView);
-    _splitter->addWidget(viewerContentLayout);
+    _splitter->addWidget(_componentViewer);
     _splitter->setSizes(QList<int>()<<200<<200);
 
     setCentralWidget(_splitter);
     setStatusBar(new QStatusBar());
+
+    connect(_componentViewer, &ComponentViewer::pinSelected,
+            _componentsPinTableView, &ComponentPinsTableView::selectPin);
+    connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected,
+            _componentViewer, &ComponentViewer::selectPin);
 }
 
 void UConfigMainWindow::createDocks()
@@ -145,6 +161,7 @@ void UConfigMainWindow::createDocks()
     _componentsListDock = new QDockWidget(tr("Components list"), this);
     QWidget *componentsListContent = new QWidget(_componentsListDock);
     QLayout *componentsListLayout = new QVBoxLayout();
+    componentsListLayout->setContentsMargins(5, 5, 5, 5);
     _componentsTreeView = new ComponentLibTreeView();
     connect(_componentsTreeView, &ComponentLibTreeView::openedComponent, this, &UConfigMainWindow::selectComponent);
     componentsListLayout->addWidget(_componentsTreeView);
@@ -192,6 +209,12 @@ void UConfigMainWindow::createToolbarsMenus()
     exitAction->setShortcut(QKeySequence::Quit);
     fileMenu->addAction(exitAction);
     connect(exitAction, &QAction::triggered, this, &QMainWindow::close);
+
+    // rules
+    toolBar->addSeparator();
+    _ruleComboBox = new QComboBox();
+    connect(_ruleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(organize(QString)));
+    QAction *actionRuleCombo = toolBar->addWidget(_ruleComboBox);
 
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
