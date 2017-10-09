@@ -21,8 +21,6 @@ SOURCES += \
     $$PWD/libmodule.cpp \
     $$PWD/module.cpp \
     $$PWD/pad.cpp \
-    $$PWD/pinlist.cpp \
-    $$PWD/pinclassifier.cpp \
     $$PWD/viewer/componentviewer.cpp \
     $$PWD/viewer/componentitem.cpp \
     $$PWD/viewer/pinitem.cpp \
@@ -47,8 +45,6 @@ HEADERS += \
     $$PWD/libmodule.h \
     $$PWD/module.h \
     $$PWD/pad.h \
-    $$PWD/pinlist.h \
-    $$PWD/pinclassifier.h \
     $$PWD/viewer/componentviewer.h \
     $$PWD/viewer/componentitem.h \
     $$PWD/viewer/pinitem.h \
