@@ -28,7 +28,33 @@ void PinRuler::organize(Component *component)
 
     foreach (PinClass *mpinClass, _pinClasses)
     {
-        qDebug()<<">"<<mpinClass->className()<<mpinClass->position();
+        foreach (Pin *pin, mpinClass->pins())
+        {
+            Pin::Direction direction;
+            switch (mpinClass->positionValue()) {
+            case ClassRule::PositionTop:
+                direction = Pin::Down;
+                break;
+            case ClassRule::PositionBottom:
+                direction = Pin::Up;
+                break;
+            case ClassRule::PositionLeft:
+                direction = Pin::Left;
+                break;
+            case ClassRule::PositionRight:
+                direction = Pin::Right;
+                break;
+            case ClassRule::PositionASide:
+                direction = Pin::Left;
+                break;
+            }
+            pin->setDirection(direction);
+        }
+        mpinClass->sortPins();
+    }
+    foreach (PinClass *mpinClass, _pinClasses)
+    {
+        qDebug()<<">"<<mpinClass->className()<<mpinClass->positionStr()<<mpinClass->sortStr()<<mpinClass->sortPattern();
         foreach (Pin *pin, mpinClass->pins())
         {
             qDebug()<<" - "<<pin->name();
