@@ -5,6 +5,7 @@
 
 #include <QString>
 #include <QList>
+#include <QRect>
 
 #include "pin.h"
 #include "classrule.h"
