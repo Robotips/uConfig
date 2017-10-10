@@ -12,6 +12,7 @@ class DATASHEET_EXTRACTOR_EXPORT DatasheetPin
 {
 public:
     DatasheetPin();
+    ~DatasheetPin();
 
     qreal distanceToPoint(const QPointF &center) const;
 

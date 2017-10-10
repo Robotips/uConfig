@@ -6,6 +6,8 @@ DatasheetPackage::DatasheetPackage()
 
 DatasheetPackage::~DatasheetPackage()
 {
+    for (int i=0; i<pins.size(); i++)
+        delete pins[i];
 }
 
 Component *DatasheetPackage::toComponent() const

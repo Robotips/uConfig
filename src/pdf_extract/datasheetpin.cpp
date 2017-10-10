@@ -4,6 +4,12 @@ DatasheetPin::DatasheetPin()
 {
 }
 
+DatasheetPin::~DatasheetPin()
+{
+    delete numberBox;
+    delete nameBox;
+}
+
 qreal DatasheetPin::distanceToPoint(const QPointF &center) const
 {
     qreal dist, newdist;
