@@ -14,6 +14,9 @@
 #include <QDir>
 #include <QMimeData>
 #include <QUrl>
+#include <QDragEnterEvent>
+#include <QDropEvent>
+
 #include <QDebug>
 
 #include "pinruler/pinruler.h"
