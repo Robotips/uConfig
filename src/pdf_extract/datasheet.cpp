@@ -450,7 +450,11 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
              << "PIN CONFIGURATION"
              << "Pinouts"
              << "PACKAGE"
-             << "Interface pin description";
+             << "TQFP"
+             << "MLF"
+             << "DIP"
+             << "PLCC"
+             << "SOIC";
 
     if (_doc == NULL)
     {
