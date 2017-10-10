@@ -10,11 +10,10 @@ public:
     explicit StartWizardPage(QWidget *parent = 0);
 
     bool isComplete() const;
-
-    Q_PROPERTY(int type READ type WRITE setType)
-
     int type();
     void setType(int type);
+
+    Q_PROPERTY(int type READ type WRITE setType)
 
     int nextId() const;
 

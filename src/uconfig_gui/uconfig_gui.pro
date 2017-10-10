@@ -13,14 +13,18 @@ SOURCES += \
         $$PWD/importer/pinlistimporter.cpp \
         $$PWD/importer/startwizardpage.cpp \
         $$PWD/importer/filepage.cpp \
-        $$PWD/importer/datasheetresultspage.cpp
+        $$PWD/importer/datasheetresultspage.cpp \
+        $$PWD/importer/datasheetprocesspage.cpp \
+        $$PWD/importer/datasheetthread.cpp
 
 HEADERS  += \
         $$PWD/uconfigmainwindow.h \
         $$PWD/importer/pinlistimporter.h \
         $$PWD/importer/startwizardpage.h \
         $$PWD/importer/filepage.h \
-        $$PWD/importer/datasheetresultspage.h
+        $$PWD/importer/datasheetresultspage.h \
+        $$PWD/importer/datasheetprocesspage.h \
+        $$PWD/importer/datasheetthread.h
 
 RESOURCES += \
         $$PWD/img.qrc

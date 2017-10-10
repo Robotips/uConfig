@@ -11,13 +11,11 @@ public:
     explicit FilePage(const int type);
 
     bool isComplete() const;
+    int nextId() const;
+    void initializePage();
 
     Q_PROPERTY(QString file READ file)
     QString file() const;
-
-    int nextId() const;
-
-    void initializePage();
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);

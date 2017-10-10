@@ -2,6 +2,7 @@
 
 #include "startwizardpage.h"
 #include "filepage.h"
+#include "datasheetresultspage.h"
 
 PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     QWizard(parent)
@@ -10,8 +11,9 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     //setPage(PageCSVFile, new FilePage(CSV));
 
     setPage(PagePDFFile, new FilePage(PDF));
-    datasheetResult = new DatasheetResultsPage();
-    setPage(PagePDFResults, datasheetResult);
+    datasheetProcess = new DatasheetProcessPage();
+    setPage(PagePDFProcess, datasheetProcess);
+    setPage(PagePDFResults, new DatasheetResultsPage(datasheetProcess->datasheet()));
 
     //setPage(PageTableFile, new FilePage(Table));
 
@@ -28,5 +30,5 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
 
 Datasheet *PinListImporter::datasheet()
 {
-    return datasheetResult->datasheet();
+    return datasheetProcess->datasheet();
 }

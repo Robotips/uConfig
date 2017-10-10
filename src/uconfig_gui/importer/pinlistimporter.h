@@ -3,7 +3,7 @@
 
 #include <QWizard>
 
-#include "datasheetresultspage.h"
+#include "datasheetprocesspage.h"
 
 class PinListImporter : public QWizard
 {
@@ -22,7 +22,7 @@ public:
     {
         PageStart,
         PageCSVFile,
-        PagePDFFile, PagePDFResults,
+        PagePDFFile, PagePDFProcess, PagePDFResults,
         PageTableFile
     };
 
@@ -31,7 +31,7 @@ public:
     Datasheet *datasheet();
 
 private:
-    DatasheetResultsPage *datasheetResult;
+    DatasheetProcessPage *datasheetProcess;
 };
 
 #endif // PINLISTIMPORTER_H

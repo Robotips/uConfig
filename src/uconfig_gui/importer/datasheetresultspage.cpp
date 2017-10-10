@@ -7,9 +7,11 @@
 
 #include "pinlistimporter.h"
 
-DatasheetResultsPage::DatasheetResultsPage() : QWizardPage(0)
+DatasheetResultsPage::DatasheetResultsPage(Datasheet *datasheet)
+    : QWizardPage(0)
 {
     QVBoxLayout *layout = new QVBoxLayout;
+    _datasheet = datasheet;
     _resultLabel = new QLabel();
     layout->addWidget(_resultLabel);
     layout->addSpacerItem(new QSpacerItem(10, 30,
@@ -28,14 +30,10 @@ void DatasheetResultsPage::initializePage()
     QString filepdf = field("file").toString();
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
+    setTitle(QString("Extracted packages in %1").arg(fileName.right(30)));
 
-    _datasheet.setDebugEnabled(true);
-    _datasheet.open(filepdf);
-    setTitle(QString("Extracted packages in %1").arg(fileName));
-    _datasheet.analyse();
-
-    QString resText = QString("Extracted packages in %1:").arg(fileName);
-    foreach (DatasheetPackage *pack, _datasheet.packages())
+    QString resText = QString("Packages found:");
+    foreach (DatasheetPackage *pack, _datasheet->packages())
     {
         resText.append(QString("\n - %1 with %2 pins")
                            .arg(pack->name)
@@ -46,7 +44,7 @@ void DatasheetResultsPage::initializePage()
 
 Datasheet *DatasheetResultsPage::datasheet()
 {
-    return &_datasheet;
+    return _datasheet;
 }
 
 bool DatasheetResultsPage::isComplete() const

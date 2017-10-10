@@ -38,7 +38,7 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
 
     resize(QApplication::primaryScreen()->size()*.7);
 
-#if 1
+#if 0
     Datasheet datasheet;
     //datasheet.open("../../../projects/DataSheets/mem/IS61WV25616BLL.pdf");
     datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");

@@ -76,8 +76,8 @@ void Datasheet::pinSearch(int numPage)
     QList<DatasheetPin *> pins;
     QList<DatasheetPackage *> packages;
 
-    qDebug() << "==============================";
-    qDebug() << "+ page:" << numPage+1;
+    emit log("==============================");
+    emit log(QString("+ possible components at page: %1").arg(numPage + 1));
     if (_doc == NULL)
     {
         qDebug() << "can not open";
@@ -91,6 +91,7 @@ void Datasheet::pinSearch(int numPage)
 
     Poppler::Page *page = _doc->page(numPage);
 
+    // extracting text boxes and sort it by possible usage
     bool prev = false;
     DatasheetBox *box = new DatasheetBox();
     foreach (TextBox *textBox, page->textList())
@@ -327,12 +328,15 @@ void Datasheet::pinSearch(int numPage)
     int pac = 0;
     int res = 4;
     int dec = 5;
+    int count = 0;
+    int badcount = 0;
     //_package.clear();
     foreach (DatasheetPackage *package, packages)
     {
         // package with less than 5 pin are deleted
         if (package->pins.count() < 5)
         {
+            badcount++;
             delete package;
             continue;
         }
@@ -340,9 +344,11 @@ void Datasheet::pinSearch(int numPage)
         QPointF p1center = package->pins[1]->numberBox->pos.center();
         if (package->pins[0]->numberBox->distanceToPoint(p1center) > 50)
         {
+            badcount++;
             delete package;
             continue;
         }
+        count++;
 
         package->name = QString("p.%1_pack%2").arg(numPage + 1).arg(pac);
         _packages.push_back(package);
@@ -361,7 +367,7 @@ void Datasheet::pinSearch(int numPage)
         dir.mkdir(_name);
         QFile file(_name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac));
         file.open(QIODevice::WriteOnly | QIODevice::Text);
-        qDebug() << _name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac);
+        //qDebug() << _name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac);
         QTextStream textStream(&file);
 
         textStream << "Proc: ";
@@ -407,6 +413,9 @@ void Datasheet::pinSearch(int numPage)
         file.close();
         QCoreApplication::processEvents();
     }
+
+    emit log(QString("%1 package%2 deleted").arg(badcount).arg(badcount>1 ? "s" : ""));
+    emit log(QString("%1 package%2 found").arg(count).arg(count>1 ? "s" : ""));
 }
 
 bool Datasheet::debugEnabled() const

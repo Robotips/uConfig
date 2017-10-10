@@ -10,18 +10,16 @@ class DatasheetResultsPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit DatasheetResultsPage();
+    explicit DatasheetResultsPage(Datasheet *datasheet);
 
     bool isComplete() const;
-
     int nextId() const;
-
     void initializePage();
 
     Datasheet *datasheet();
 
 private:
-    Datasheet _datasheet;
+    Datasheet *_datasheet;
     QLabel *_resultLabel;
 };
 

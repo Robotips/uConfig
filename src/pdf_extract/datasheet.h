@@ -38,6 +38,7 @@ public:
 
 signals:
     void pageChanged(int page);
+    void log(QString txt);
 
 private:
     int pagePinDiagram(int pageStart, bool *bgaStyle);

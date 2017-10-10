@@ -67,13 +67,13 @@ int FilePage::nextId() const
     switch (_type)
     {
     case PinListImporter::CSV:
-        return PinListImporter::PagePDFResults;
+        return PinListImporter::PagePDFProcess;
     case PinListImporter::PDF:
-        return PinListImporter::PagePDFResults;
+        return PinListImporter::PagePDFProcess;
     case PinListImporter::Table:
-        return PinListImporter::PagePDFResults;
+        return PinListImporter::PagePDFProcess;
     default:
-        return PinListImporter::PagePDFResults;
+        return PinListImporter::PagePDFProcess;
     }
 }
 
