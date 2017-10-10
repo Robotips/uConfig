@@ -12,6 +12,9 @@
 #include <QFileDialog>
 #include <QStatusBar>
 #include <QDir>
+#include <QMimeData>
+#include <QUrl>
+#include <QDebug>
 
 #include "pinruler/pinruler.h"
 #include "pinruler/rulesparser.h"
@@ -25,6 +28,7 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
     createToolbarsMenus();
     setWindowTitle("uConfig");
     reloadRuleSetList();
+    setAcceptDrops(true);
 
     resize(QApplication::primaryScreen()->size()*.7);
 
@@ -46,9 +50,26 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
 #endif
 }
 
-void UConfigMainWindow::importComponents()
+void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
-    PinListImporter importer;
+    if (!event->mimeData()->hasUrls())
+        return;
+
+    QString fileName = event->mimeData()->urls().first().fileName();
+    if (fileName.endsWith("pdf"))
+        event->accept();
+}
+
+void UConfigMainWindow::dropEvent(QDropEvent *event)
+{
+    event->accept();
+    QString fileName = event->mimeData()->urls().first().path();
+    importComponents(fileName);
+}
+
+void UConfigMainWindow::importComponents(const QString &fileName)
+{
+    PinListImporter importer(fileName);
     importer.exec();
 
     foreach (DatasheetPackage *package, importer.datasheet()->packages())
@@ -187,7 +208,7 @@ void UConfigMainWindow::createToolbarsMenus()
     openFileAction->setIcon(QIcon(":/icons/img/import"));
     fileMenu->addAction(openFileAction);
     toolBar->addAction(openFileAction);
-    connect(openFileAction, &QAction::triggered, this, &UConfigMainWindow::importComponents);
+    connect(openFileAction, SIGNAL(triggered()), this, SLOT(importComponents()));
 
     QAction *saveFileAction = new QAction(tr("&Save lib"),this);
     saveFileAction->setStatusTip(tr("Save to Kicad components lib"));

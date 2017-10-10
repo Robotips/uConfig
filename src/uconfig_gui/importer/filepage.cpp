@@ -59,18 +59,7 @@ FilePage::FilePage(const int type) :
     layout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
     setLayout(layout);
 
-    switch (_type)
-    {
-    case PinListImporter::CSV:
-        registerField("filecsv", fileEdit);
-        break;
-    case PinListImporter::PDF:
-        registerField("filepdf", fileEdit);
-        break;
-    case PinListImporter::Table:
-        registerField("filetable", fileEdit);
-        break;
-    }
+    registerField("file", fileEdit);
 }
 
 int FilePage::nextId() const
@@ -86,6 +75,12 @@ int FilePage::nextId() const
     default:
         return PinListImporter::PagePDFResults;
     }
+}
+
+void FilePage::initializePage()
+{
+    /*if (!field("file").toString().isEmpty())
+        setFile(field("file").toString());*/
 }
 
 void FilePage::dragEnterEvent(QDragEnterEvent *event)

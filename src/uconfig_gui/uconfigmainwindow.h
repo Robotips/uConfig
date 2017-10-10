@@ -20,7 +20,7 @@ public:
     UConfigMainWindow(QWidget *parent = Q_NULLPTR);
 
 protected slots:
-    void importComponents();
+    void importComponents(const QString &fileName = QString());
     void saveLib();
     void saveLibAs(const QString &fileName = QString());
 
@@ -30,6 +30,7 @@ protected slots:
     void reloadRuleSetList();
 
     void about();
+
 protected:
     void createWidgets();
     QSplitter *_splitter;
@@ -44,6 +45,10 @@ protected:
     void createToolbarsMenus();
 
     QString _pathLib;
+
+protected:
+    void dragEnterEvent(QDragEnterEvent *event);
+    void dropEvent(QDropEvent *event);
 };
 
 #endif // UCONFIGMAINWINDOW_H

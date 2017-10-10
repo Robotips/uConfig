@@ -26,7 +26,7 @@ public:
         PageTableFile
     };
 
-    explicit PinListImporter(QWidget *parent = 0);
+    PinListImporter(const QString &fileName, QWidget *parent = 0);
 
     Datasheet *datasheet();
 

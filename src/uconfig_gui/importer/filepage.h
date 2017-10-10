@@ -17,6 +17,8 @@ public:
 
     int nextId() const;
 
+    void initializePage();
+
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);

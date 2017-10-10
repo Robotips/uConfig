@@ -25,7 +25,7 @@ int DatasheetResultsPage::nextId() const
 
 void DatasheetResultsPage::initializePage()
 {
-    QString filepdf = field("filepdf").toString();
+    QString filepdf = field("file").toString();
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
 
