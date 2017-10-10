@@ -7,29 +7,21 @@ DESTDIR = "$$PWD/../../bin"
 CONFIG += optimize_full
 
 QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 QT       += xml
 
 SOURCES += \
-    $$PWD/main.cpp\
-    $$PWD/mainwindow.cpp \
     $$PWD/datasheet.cpp \
-    $$PWD/kicadexport.cpp \
     $$PWD/datasheetpackage.cpp \
     $$PWD/datasheetpin.cpp \
     $$PWD/datasheetbox.cpp
 
 HEADERS += \
-    $$PWD/mainwindow.h \
-    $$PWD/datasheet.h \
-    $$PWD/kicadexport.h \
     $$PWD/datasheet_extractor_common.h \
+    $$PWD/datasheet.h \
     $$PWD/datasheetpackage.h \
     $$PWD/datasheetpin.h \
     $$PWD/datasheetbox.h
-
-FORMS += $$PWD/mainwindow.ui
 
 LIBS += -L"$$PWD/../../bin"
 LIBS += -lpoppler-qt5

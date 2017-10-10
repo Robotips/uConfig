@@ -5,7 +5,6 @@
 #include <QFile>
 #include <QDomNamedNodeMap>
 #include <QDir>
-#include "kicadexport.h"
 
 #include <poppler/qt5/poppler-qt5.h>
 #include <poppler/qt5/poppler-form.h>
