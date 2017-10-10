@@ -16,6 +16,9 @@
 #include <QUrl>
 #include <QDragEnterEvent>
 #include <QDropEvent>
+#include <QTabWidget>
+#include <QPixmap>
+#include <QScrollArea>
 
 #include <QDebug>
 
@@ -35,10 +38,11 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
 
     resize(QApplication::primaryScreen()->size()*.7);
 
-#if 0
+#if 1
     Datasheet datasheet;
     //datasheet.open("../../../projects/DataSheets/mem/IS61WV25616BLL.pdf");
     datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
+    datasheet.setDebugEnabled(true);
     datasheet.analyse(0, 12);
     foreach (DatasheetPackage *package, datasheet.packages())
     {
@@ -125,6 +129,12 @@ void UConfigMainWindow::selectComponent(Component *component)
     _componentsPinTableView->setComponent(component);
     _componentViewer->setComponent(component);
     organize(_ruleComboBox->currentText());
+    if (!component->debugInfo().isNull())
+    {
+        QImage image = component->debugInfo();
+        image = image.scaledToHeight(QApplication::primaryScreen()->size().height());
+        _pdfDebug->setPixmap(QPixmap::fromImage(image));
+    }
 }
 
 void UConfigMainWindow::organize(QString ruleSetName)
@@ -165,11 +175,20 @@ void UConfigMainWindow::createWidgets()
 {
     _componentsPinTableView = new ComponentPinsTableView();
 
+    QTabWidget *tabWidget = new QTabWidget();
     _componentViewer = new ComponentViewer();
+    _pdfDebug = new QLabel();
+    _pdfDebug->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
+    _pdfDebug->setScaledContents(true);
+    QScrollArea *pdfDebugArea = new QScrollArea();
+    pdfDebugArea->setWidget(_pdfDebug);
+    pdfDebugArea->setWidgetResizable(true);
+    tabWidget->addTab(_componentViewer, "component");
+    tabWidget->addTab(pdfDebugArea, "pdf debugger");
 
     _splitter = new QSplitter();
     _splitter->addWidget(_componentsPinTableView);
-    _splitter->addWidget(_componentViewer);
+    _splitter->addWidget(tabWidget);
     _splitter->setSizes(QList<int>()<<200<<200);
 
     setCentralWidget(_splitter);

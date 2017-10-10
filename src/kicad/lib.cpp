@@ -65,6 +65,8 @@ QTextStream &operator<<(QTextStream &stream, const Lib &lib)
            << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss")
            << '\n';
     stream << "#encoding utf-8" << '\n';
+    stream << "#created with uConfig by Sebastien CAUX (sebcaux)" << '\n';
+    stream << "#https://github.com/Robotips/uConfig" << '\n';
 
     // components
     foreach (Component *component, lib._components)

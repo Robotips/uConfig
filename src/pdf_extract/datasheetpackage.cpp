@@ -28,6 +28,7 @@ Component *DatasheetPackage::toComponent() const
         pin->setPadname(QString::number(dpin->pin));
         comp->addPin(pin);
     }
+    comp->setDebugInfo(image);
 
     return comp;
 }

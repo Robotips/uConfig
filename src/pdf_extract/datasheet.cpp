@@ -1,5 +1,6 @@
 #include "datasheet.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QPainter>
 #include <QFile>
@@ -191,6 +192,7 @@ void Datasheet::pinSearch(int numPage)
             prev = false;
         }
     }
+    QCoreApplication::processEvents();
 
     // pairing label and number to pin
     foreach (DatasheetBox *number, numbers)
@@ -276,6 +278,7 @@ void Datasheet::pinSearch(int numPage)
             }
         }
     }
+    QCoreApplication::processEvents();
 
     // unasociated label
     foreach (DatasheetBox *label, labels)
@@ -402,6 +405,7 @@ void Datasheet::pinSearch(int numPage)
         package->image.save(
             _name+QString("/p%1_pack%2.png").arg(numPage + 1).arg(pac));
         file.close();
+        QCoreApplication::processEvents();
     }
 }
 
@@ -413,6 +417,13 @@ bool Datasheet::debugEnabled() const
 void Datasheet::setDebugEnabled(bool debug)
 {
     _debug = debug;
+}
+
+int Datasheet::pageCount() const
+{
+    if (_doc == NULL)
+        return 0;
+    return _doc->numPages();
 }
 
 QString Datasheet::name() const
@@ -452,6 +463,8 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
         if (page == NULL)
             continue;
 
+        emit pageChanged(i+1);
+
         bool vssOk = false;
         bool vddOk = false;
         bool labelOk = false;
@@ -487,6 +500,7 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
             if (labelOk && vssOk && vddOk)
                 return i;
         }
+        QCoreApplication::processEvents();
     }
     return -1;
 }

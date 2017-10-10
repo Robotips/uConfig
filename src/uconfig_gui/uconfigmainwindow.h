@@ -8,6 +8,7 @@
 #include <QSplitter>
 #include <QDockWidget>
 #include <QComboBox>
+#include <QLabel>
 
 #include "viewer/componentviewer.h"
 #include "itemmodel/componentlibtreeview.h"
@@ -38,6 +39,7 @@ protected:
     ComponentPinsTableView *_componentsPinTableView;
     ComponentViewer *_componentViewer;
     QComboBox *_ruleComboBox;
+    QLabel *_pdfDebug;
 
     void createDocks();
     QDockWidget *_componentsListDock;

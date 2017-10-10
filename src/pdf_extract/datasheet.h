@@ -3,6 +3,8 @@
 
 #include "pdf_extract_common.h"
 
+#include <QObject>
+
 #include "datasheetpackage.h"
 #include "datasheetbox.h"
 #include "../kicad/component.h"
@@ -12,8 +14,9 @@ namespace Poppler
 class Document;
 }
 
-class DATASHEET_EXTRACTOR_EXPORT Datasheet
+class DATASHEET_EXTRACTOR_EXPORT Datasheet : public QObject
 {
+    Q_OBJECT
 public:
     Datasheet();
     ~Datasheet();
@@ -30,6 +33,11 @@ public:
 
     bool debugEnabled() const;
     void setDebugEnabled(bool debug);
+
+    int pageCount() const;
+
+signals:
+    void pageChanged(int page);
 
 private:
     int pagePinDiagram(int pageStart, bool *bgaStyle);

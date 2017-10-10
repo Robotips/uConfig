@@ -7,6 +7,7 @@
 #include <QString>
 #include <QRect>
 #include <QStringList>
+#include <QImage>
 #include "pin.h"
 
 class KICAD_EXPORT Component
@@ -35,6 +36,9 @@ public:
     void sort();
     void reorganizeToPackageStyle();
 
+    QImage debugInfo() const;
+    void setDebugInfo(const QImage &debugInfo);
+
     friend QTextStream &operator<<(QTextStream &stream,
                                    const Component &component);
     friend QTextStream &operator>>(QTextStream &stream, Component &component);
@@ -49,6 +53,7 @@ private:
     QStringList _footPrints;
     QRect _rect;
     bool _valid;
+    QImage _debugInfo;
 };
 
 #endif  // COMPONENT_H

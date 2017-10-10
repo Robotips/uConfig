@@ -150,6 +150,16 @@ bool Component::isValid() const
     return _valid;
 }
 
+QImage Component::debugInfo() const
+{
+    return _debugInfo;
+}
+
+void Component::setDebugInfo(const QImage &debugInfo)
+{
+    _debugInfo = debugInfo;
+}
+
 QTextStream &operator>>(QTextStream &stream, Component &component)
 {
     QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) "
