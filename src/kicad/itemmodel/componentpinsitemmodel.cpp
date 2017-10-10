@@ -32,7 +32,7 @@ Pin *ComponentPinsItemModel::pin(const QModelIndex &index) const
 
 QModelIndex ComponentPinsItemModel::index(Pin *pin) const
 {
-    QModelIndexList list = match(this->index(0,0), ComponentPinsItemModel::PinNumber, pin->padname(), -1, Qt::MatchRecursive);
+    QModelIndexList list = match(this->index(0, 0), ComponentPinsItemModel::PinNumber, pin->padname(), -1, Qt::MatchRecursive);
     if (list.isEmpty())
         return QModelIndex();
     return list.first();
@@ -46,7 +46,7 @@ int ComponentPinsItemModel::columnCount(const QModelIndex &parent) const
 
 QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(orientation==Qt::Vertical)
+    if (orientation==Qt::Vertical)
         return QVariant();
     switch (role)
     {

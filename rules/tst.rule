@@ -1,48 +1,73 @@
 
 /* pins */
-V(CC|DD) {
-    elec_type: "power";
-    class: "power+"
+(A?)(VCC|VDD) {
+    class: "\1power+"
 }
-(VSS|GDD) {
-    elec_type: "power";
-    class: "power-"
+(A?)(VSS|GND) {
+    class: "\1power-"
 }
 
-(MCLR|VCAP|OSC.*) {
+(D[0-9]?\+|D[0-9]?\-|VUSB.*|VBUS) {
+    class: "USB\1"
+}
+
+(MCLR|VCAP|OSC[1-2]) {
     class: "special"
 }
 R([A-L])[0-9]+ {
     class: "gpio\1"
 }
 
+A[0-9]+ {
+    class: "address"
+}
+I/O[0-9]+ {
+    class: "data"
+}
+(CE|LB|OE|UB|WE) {
+    class: "control"
+}
+
 /* classes */
 .special {
     position: left;
 }
-.power\+
-{
+.power\+ {
+    sort: asc;
     position: top;
 }
-.power\-
-{
+.power\- {
+    sort: asc;
     position: bottom;
 }
 
-.gpioA {
+/*.gpioA {
     position: left;
 }
 .gpioB {
     position: right;
-}
+}*/
 
 .gpio[A-L] {
     sort: asc;
     sortpattern: "R[A-L][0-9]+"
 }
-
-.signals{
-    position: top;
+.USB {
+    position: left;
+    sort: asc;
+    sortpattern: "R[A-L][0-9]+"
 }
 
-.others{position: top;}
+.address {
+    position: left;
+}
+.data {
+    position: right;
+}
+.control {
+    position: left;
+}
+
+.others {
+    position: top;
+}

@@ -28,9 +28,10 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
 
     resize(QApplication::primaryScreen()->size()*.7);
 
-#if 1
+#if 0
     Datasheet datasheet;
-    datasheet.open("../../../projects/DataSheets/mem/IS61WV25616BLL.pdf");
+    //datasheet.open("../../../projects/DataSheets/mem/IS61WV25616BLL.pdf");
+    datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
     datasheet.analyse(0, 12);
     foreach (DatasheetPackage *package, datasheet.packages())
     {
@@ -49,7 +50,6 @@ void UConfigMainWindow::importComponents()
 {
     PinListImporter importer;
     importer.exec();
-
 
     foreach (DatasheetPackage *package, importer.datasheet()->packages())
     {
@@ -74,7 +74,7 @@ void UConfigMainWindow::saveLibAs(const QString &fileName)
 {
     QString libFileName;
 
-    if(fileName.isEmpty())
+    if (fileName.isEmpty())
     {
         QFileDialog fileDialog(this);
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
@@ -83,13 +83,13 @@ void UConfigMainWindow::saveLibAs(const QString &fileName)
         fileDialog.setWindowTitle(tr("Save Kicad library"));
         if (fileDialog.exec())
             libFileName = fileDialog.selectedFiles().first();
-        if(fileName.isEmpty())
+        if (fileName.isEmpty())
             return;
     }
     else
         libFileName = fileName;
 
-    if(!libFileName.endsWith(".lib"))
+    if (!libFileName.endsWith(".lib"))
         libFileName.append(".lib");
     _pathLib = libFileName;
 
@@ -100,6 +100,7 @@ void UConfigMainWindow::selectComponent(Component *component)
 {
     _componentsPinTableView->setComponent(component);
     _componentViewer->setComponent(component);
+    organize(_ruleComboBox->currentText());
 }
 
 void UConfigMainWindow::organize(QString ruleSetName)
@@ -230,7 +231,7 @@ void UConfigMainWindow::createToolbarsMenus()
 
 void UConfigMainWindow::about()
 {
-    QMessageBox::about(this,"uConfig v0", QString("Copyright (C) 2017 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
+    QMessageBox::about(this, "uConfig v0", QString("Copyright (C) 2017 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
 <br>\
 This sofware is part of uConfig distribution. To check for new version, please visit <a href=\"https://github.com/Robotips/uConfig\">github.com/Robotips/uConfig</a><br>\
 <br>\

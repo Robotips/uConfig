@@ -56,7 +56,7 @@ FilePage::FilePage(const int type) :
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addLayout(hlayout);
-    layout->addSpacerItem(new QSpacerItem(10,30,QSizePolicy::Expanding,QSizePolicy::Expanding));
+    layout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
     setLayout(layout);
 
     switch (_type)
@@ -90,7 +90,8 @@ int FilePage::nextId() const
 
 void FilePage::dragEnterEvent(QDragEnterEvent *event)
 {
-    if (event->mimeData()->hasUrls()) event->accept();
+    if (event->mimeData()->hasUrls())
+        event->accept();
 }
 
 void FilePage::dropEvent(QDropEvent *event)
@@ -100,7 +101,8 @@ void FilePage::dropEvent(QDropEvent *event)
 
 void FilePage::fileExplore()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, QString("Choose a %1 file").arg(_fileTitle), QString(), QString("%1 (%2)").arg(_fileTitle).arg("*."+_suffixes.join(" *.")));
+    QString fileName = QFileDialog::getOpenFileName(this, QString("Choose a %1 file").arg(_fileTitle), QString(),
+                                                    QString("%1 (%2)").arg(_fileTitle).arg("*."+_suffixes.join(" *.")));
     if (!fileName.isEmpty())
     {
         setFile(fileName);

@@ -67,6 +67,12 @@ void PinClass::sortPins()
             QRegularExpressionMatch numMatch = numMatchIt.next();
             sortPatern.append(numMatch.captured(1) + QString('0').repeated(5-numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
         }
+        QRegularExpressionMatchIterator padMatchIt = numPattern.globalMatch(pin->padname());
+        while (padMatchIt.hasNext())
+        {
+            QRegularExpressionMatch padMatch = padMatchIt.next();
+            sortPatern.append(padMatch.captured(1) + QString('0').repeated(5-padMatch.captured(2).size()) + padMatch.captured(2) + padMatch.captured(3));
+        }
 
         pins.append(qMakePair(sortPatern, pin));
         qSort(pins.begin(), pins.end(), PinClass::pinPatterLessThan);

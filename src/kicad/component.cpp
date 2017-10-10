@@ -18,13 +18,13 @@ Component::Component(const Component &other)
     _rect = other._rect;
     _valid = other._valid;
 
-    for(int i=0; i<other._pins.size(); i++)
+    for (int i=0; i<other._pins.size(); i++)
         addPin(new Pin(*other._pins[i]));
 }
 
 Component::~Component()
 {
-    for(int i=0; i<_pins.size(); i++)
+    for (int i=0; i<_pins.size(); i++)
         delete _pins[i];
 }
 

@@ -48,7 +48,7 @@ int ComponentLibItemModel::columnCount(const QModelIndex &parent) const
 
 QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if(orientation==Qt::Vertical)
+    if (orientation==Qt::Vertical)
         return QVariant();
     switch (role)
     {

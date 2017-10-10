@@ -472,7 +472,7 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
             if (text.contains("vdd", Qt::CaseInsensitive)
              || text.contains("vcc", Qt::CaseInsensitive))
                 vddOk = true;
-            /* if(text.contains("bga", Qt::CaseInsensitive))
+            /* if (text.contains("bga", Qt::CaseInsensitive))
                 *bgaStyle=true;*/
             *bgaStyle = false;
 
@@ -507,7 +507,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
     {
         if (pageEnd != -1 && page >= pageEnd)
             return;
-        /*if(bgaStyle)
+        /*if (bgaStyle)
             pinSearchBGA(page);
         else */
             pinSearch(page);
