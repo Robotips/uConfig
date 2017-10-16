@@ -10,9 +10,11 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
     else
         _model = new ComponentPinsItemModel(new Component());
 
-    _sortProxy = new QSortFilterProxyModel();
+    _sortProxy = new NumericalSortFilterProxyModel();
     _sortProxy->setSourceModel(_model);
     setModel(_sortProxy);
+
+    sortByColumn(0, Qt::AscendingOrder);
 
     setSortingEnabled(true);
 }

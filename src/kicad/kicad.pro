@@ -34,7 +34,8 @@ SOURCES += \
     $$PWD/pinruler/classrule.cpp \
     $$PWD/pinruler/rulesset.cpp \
     $$PWD/pinruler/pinclass.cpp \
-    $$PWD/pinruler/pinruler.cpp
+    $$PWD/pinruler/pinruler.cpp \
+    itemmodel/numericalsortfilterproxymodel.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -58,7 +59,8 @@ HEADERS += \
     $$PWD/pinruler/classrule.h \
     $$PWD/pinruler/rulesset.h \
     $$PWD/pinruler/pinclass.h \
-    $$PWD/pinruler/pinruler.h
+    $$PWD/pinruler/pinruler.h \
+    itemmodel/numericalsortfilterproxymodel.h
 
 unix {
     target.path = /usr/lib

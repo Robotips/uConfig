@@ -4,7 +4,7 @@
 #include "kicad_global.h"
 
 #include <QTreeView>
-#include <QSortFilterProxyModel>
+#include "numericalsortfilterproxymodel.h"
 
 #include "componentlibitemmodel.h"
 
@@ -28,7 +28,7 @@ protected:
 
 protected:
     ComponentLibItemModel *_model;
-    QSortFilterProxyModel *_sortProxy;
+    NumericalSortFilterProxyModel *_sortProxy;
 };
 
 #endif // COMPONENTLIBTREEVIEW_H

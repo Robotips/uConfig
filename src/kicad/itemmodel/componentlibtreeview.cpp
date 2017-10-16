@@ -10,9 +10,11 @@ ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent) :
     else
         _model = new ComponentLibItemModel(new Lib());
 
-    _sortProxy = new QSortFilterProxyModel();
+    _sortProxy = new NumericalSortFilterProxyModel();
     _sortProxy->setSourceModel(_model);
     setModel(_sortProxy);
+
+    sortByColumn(0, Qt::AscendingOrder);
 
     setSortingEnabled(true);
 }

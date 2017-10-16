@@ -4,8 +4,8 @@
 #include "kicad_global.h"
 
 #include <QTableView>
-#include <QSortFilterProxyModel>
 
+#include "numericalsortfilterproxymodel.h"
 #include "componentpinsitemmodel.h"
 
 class KICAD_EXPORT ComponentPinsTableView : public QTableView
@@ -28,7 +28,7 @@ protected:
 
 protected:
     ComponentPinsItemModel *_model;
-    QSortFilterProxyModel *_sortProxy;
+    NumericalSortFilterProxyModel *_sortProxy;
 };
 
 #endif // COMPONENTPINSTABLEVIEW_H
