@@ -62,7 +62,7 @@ void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
     if (!event->mimeData()->hasUrls())
         return;
 
-    QString fileName = event->mimeData()->urls().first().fileName();
+    QString fileName = event->mimeData()->urls().first().toLocalFile();
     if (fileName.endsWith("pdf"))
         event->accept();
 }
@@ -70,7 +70,7 @@ void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
 void UConfigMainWindow::dropEvent(QDropEvent *event)
 {
     event->accept();
-    QString fileName = event->mimeData()->urls().first().path();
+    QString fileName = event->mimeData()->urls().first().toLocalFile();
     importComponents(fileName);
 }
 
@@ -107,11 +107,11 @@ void UConfigMainWindow::saveLibAs(const QString &fileName)
         QFileDialog fileDialog(this);
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
         fileDialog.setDefaultSuffix(".lib");
-        fileDialog.setNameFilter(tr("Node project (*.lib)"));
+        fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
         fileDialog.setWindowTitle(tr("Save Kicad library"));
         if (fileDialog.exec())
             libFileName = fileDialog.selectedFiles().first();
-        if (fileName.isEmpty())
+        if (libFileName.isEmpty())
             return;
     }
     else
@@ -194,6 +194,9 @@ void UConfigMainWindow::createWidgets()
     setCentralWidget(_splitter);
     setStatusBar(new QStatusBar());
 
+    connect(_componentViewer, &ComponentViewer::droppedFile,
+            this, &UConfigMainWindow::importComponents);
+
     connect(_componentViewer, &ComponentViewer::pinSelected,
             _componentsPinTableView, &ComponentPinsTableView::selectPin);
     connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected,
@@ -258,7 +261,9 @@ void UConfigMainWindow::createToolbarsMenus()
     toolBar->addSeparator();
     _ruleComboBox = new QComboBox();
     connect(_ruleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(organize(QString)));
-    QAction *actionRuleCombo = toolBar->addWidget(_ruleComboBox);
+    toolBar->addWidget(new QLabel("pin ruler: "));
+    QAction *actionRuleCombox = toolBar->addWidget(_ruleComboBox);
+    actionRuleCombox->setStatusTip(tr("Change the rule for pin organisation"));
 
     // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");

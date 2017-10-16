@@ -26,6 +26,7 @@ public slots:
 
 signals:
     void pinSelected(Pin *pin);
+    void droppedFile(QString fileName);
 
 protected:
     void wheelEvent(QWheelEvent *event);
@@ -37,6 +38,12 @@ protected:
     Component *_component;
     ComponentItem *_componentItem;
     double _currentZoomLevel;
+
+    // QWidget interface
+protected:
+    virtual void dragEnterEvent(QDragEnterEvent *event);
+    virtual void dragMoveEvent(QDragMoveEvent *event);
+    virtual void dropEvent(QDropEvent *event);
 };
 
 #endif // MODULEVIEWER_H

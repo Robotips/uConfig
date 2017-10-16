@@ -5,6 +5,10 @@
 #include <QDebug>
 #include <QWheelEvent>
 #include <QGraphicsScene>
+#include <QMimeData>
+#include <QUrl>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <qmath.h>
 
 ComponentViewer::ComponentViewer(QWidget *parent)
@@ -89,4 +93,26 @@ void ComponentViewer::selectedItem()
     }
 
     emit pinSelected(pin);
+}
+
+void ComponentViewer::dragEnterEvent(QDragEnterEvent *event)
+{
+    if (!event->mimeData()->hasUrls())
+        return;
+
+    QString fileName = event->mimeData()->urls().first().toLocalFile();
+    if (fileName.endsWith("pdf"))
+        event->accept();
+}
+
+void ComponentViewer::dragMoveEvent(QDragMoveEvent *event)
+{
+    event->accept();
+}
+
+void ComponentViewer::dropEvent(QDropEvent *event)
+{
+    event->accept();
+    QString fileName = event->mimeData()->urls().first().toLocalFile();
+    emit droppedFile(fileName);
 }
