@@ -30,16 +30,14 @@ void ComponentItem::setComponent(Component *component)
 {
     _component = component;
     _pinItemMap.clear();
-    _numRect = QRectF(0, 0, 0, 0);
 
     foreach (Pin *pin, component->pins())
     {
         PinItem *pinItem = new PinItem(pin);
         pinItem->setParentItem(this);
-        _numRect = _numRect.united(QRectF(pinItem->base() / PinItem::ratio, QSize(1, 1)));
         _pinItemMap.insert(pin, pinItem);
     }
-    _numRect.adjust(0, 0, -1, -1);
+    _numRect = QRect(_component->rect().topLeft() / PinItem::ratio, _component->rect().size() / PinItem::ratio);
 
     update();
 }

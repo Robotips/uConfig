@@ -41,7 +41,6 @@ QString NumericalSortFilterProxyModel::toNumeric(const QString &str) const
         QRegularExpressionMatch numMatch = numMatchIt.next();
         sortPatern.append(numMatch.captured(1) + QString('0').repeated(5-numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
     }
-    qDebug()<<str<<sortPatern;
 
     return sortPatern;
 }

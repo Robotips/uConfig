@@ -108,7 +108,7 @@ void PinRuler::organize(Component *component)
     //y = (y / 100) * 100; // grid align
     foreach (PinClass *mpinClass, leftSide)
     {
-        qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
+        //qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
         mpinClass->placePins(QPoint(x, y));
         y += mpinClass->rect().height() + 100;
     }
@@ -120,7 +120,7 @@ void PinRuler::organize(Component *component)
     //y = (y / 100) * 100; // grid align
     foreach (PinClass *mpinClass, rightSide)
     {
-        qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
+        //qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
         mpinClass->placePins(QPoint(x, y));
         y += mpinClass->rect().height() + 100;
     }

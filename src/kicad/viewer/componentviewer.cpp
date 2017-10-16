@@ -107,11 +107,13 @@ void ComponentViewer::dragEnterEvent(QDragEnterEvent *event)
 
 void ComponentViewer::dragMoveEvent(QDragMoveEvent *event)
 {
+    QGraphicsView::dragMoveEvent(event);
     event->accept();
 }
 
 void ComponentViewer::dropEvent(QDropEvent *event)
 {
+    QGraphicsView::dropEvent(event);
     event->accept();
     QString fileName = event->mimeData()->urls().first().toLocalFile();
     emit droppedFile(fileName);
