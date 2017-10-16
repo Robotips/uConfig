@@ -97,11 +97,11 @@ void PinClass::placePins(const QPoint &basePos)
     switch (_position)
     {
     case ClassRule::PositionTop:
-        direction = Pin::Up;
+        direction = Pin::Down;
         offset = QPoint(100, 0);
         break;
     case ClassRule::PositionBottom:
-        direction = Pin::Down;
+        direction = Pin::Up;
         offset = QPoint(100, 0);
         break;
     case ClassRule::PositionLeft:

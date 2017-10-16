@@ -84,6 +84,16 @@ void Component::addFootPrints(const QString &footprint)
     _footPrints.append(footprint);
 }
 
+QRect Component::rect() const
+{
+    return _rect;
+}
+
+void Component::setRect(const QRect &rect)
+{
+    _rect = rect;
+}
+
 void Component::sort()
 {
     qSort(_pins);

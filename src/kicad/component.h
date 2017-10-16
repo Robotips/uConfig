@@ -33,6 +33,9 @@ public:
     const QStringList &footPrints() const;
     void addFootPrints(const QString &footprint);
 
+    QRect rect() const;
+    void setRect(const QRect &rect);
+
     void sort();
     void reorganizeToPackageStyle();
 

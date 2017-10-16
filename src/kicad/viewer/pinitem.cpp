@@ -55,7 +55,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         break;
-    case Pin::Down:
+    case Pin::Up:
         painter->drawLine(0, -3, 0, -_pin->length()/ratio);
         painter->rotate(-90);
         painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
@@ -63,7 +63,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         painter->rotate(90);
         break;
-    case Pin::Up:
+    case Pin::Down:
         painter->drawLine(0, 3, 0, _pin->length()/ratio);
         painter->rotate(90);
         painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
@@ -91,10 +91,10 @@ QRectF PinItem::boundingRect() const
     case Pin::Right:
         rect = QRect(-4, -metrics.height(), name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height()*3/2);
         break;
-    case Pin::Down:
+    case Pin::Up:
         rect = QRect(-metrics.height(), 4, metrics.height()*3/2, -name.count()*50/ratio - _pin->length()/ratio - 14);
         break;
-    case Pin::Up:
+    case Pin::Down:
         rect = QRect(-metrics.height()/2, -4, metrics.height()*3/2, name.count()*50/ratio + _pin->length()/ratio + 14);
         break;
     }
@@ -118,10 +118,10 @@ QPainterPath PinItem::shape() const
     case Pin::Right:
         rect = QRect(-4, -metrics.height()/2, name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height());
         break;
-    case Pin::Down:
+    case Pin::Up:
         rect = QRect(-metrics.height()/2, 0, metrics.height(), -name.count()*50/ratio - _pin->length()/ratio - 14);
         break;
-    case Pin::Up:
+    case Pin::Down:
         rect = QRect(-metrics.height()/2, 0, metrics.height(), name.count()*50/ratio + _pin->length()/ratio + 14);
         break;
     }
@@ -139,9 +139,9 @@ QPointF PinItem::base()
         return _pin->pos() + QPointF(-_pin->length(), 0);
     case Pin::Right:
         return _pin->pos() + QPointF(_pin->length(), 0);
-    case Pin::Down:
-        return _pin->pos() + QPointF(0, -_pin->length());
     case Pin::Up:
+        return _pin->pos() + QPointF(0, -_pin->length());
+    case Pin::Down:
         return _pin->pos() + QPointF(0, _pin->length());
     }
     return QPointF();

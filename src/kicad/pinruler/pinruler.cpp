@@ -141,6 +141,16 @@ void PinRuler::organize(Component *component)
         x += mpinClass->rect().width() + 100;
     }
 
+    // rect compute
+    // TODO review this part
+    QRect rect;
+    int pinLenght = component->pins()[0]->length();
+    rect.setLeft(-sideX + pinLenght);
+    rect.setWidth(sideX * 2 - pinLenght * 2);
+    rect.setTop(-sideY - 50);
+    rect.setHeight(sideY * 2 + 100);
+    component->setRect(rect);
+
     // debug
     /*qDebug()<<"";
     qDebug()<<sideX<<sideY;
