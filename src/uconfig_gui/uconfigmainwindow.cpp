@@ -150,7 +150,7 @@ void UConfigMainWindow::organize(QString ruleSetName)
         return;
     }
     RulesSet ruleSet;
-    RulesParser parser(QString("../rules/%1.rule").arg(ruleSetName));
+    RulesParser parser(QString("../rules/%1.kss").arg(ruleSetName));
     parser.parse(&ruleSet);
 
     PinRuler ruler(&ruleSet);
@@ -165,7 +165,7 @@ void UConfigMainWindow::reloadRuleSetList()
     _ruleComboBox->clear();
     _ruleComboBox->addItem("package");
     QDir dir("../rules/");
-    foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList()<<"*.rule", QDir::NoDotAndDotDot | QDir::Files))
+    foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList()<<"*.kss", QDir::NoDotAndDotDot | QDir::Files))
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
     }
@@ -261,7 +261,7 @@ void UConfigMainWindow::createToolbarsMenus()
     toolBar->addSeparator();
     _ruleComboBox = new QComboBox();
     connect(_ruleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(organize(QString)));
-    toolBar->addWidget(new QLabel("pin ruler: "));
+    toolBar->addWidget(new QLabel(tr(" pin ruler: ")));
     QAction *actionRuleCombox = toolBar->addWidget(_ruleComboBox);
     actionRuleCombox->setStatusTip(tr("Change the rule for pin organisation"));
 

@@ -50,7 +50,7 @@ I/O[0-9]+ {
 
 .gpio[A-L] {
     sort: asc;
-    sortpattern: "R[A-L][0-9]+"
+    sortpattern: "P[A-L][0-9]+"
 }
 .USB {
     position: left;
