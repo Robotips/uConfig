@@ -343,8 +343,7 @@ QTextStream &operator>>(QTextStream &stream, Pin &pin)
     pin.setElectricalType(elec_type);
 
     // pin type
-    QString pinType;
-    stream.readLineInto(&pinType);
+    QString pinType = stream.readLine();
     pin.setPinType(pinType.trimmed());
 
     pin._valid = true;
