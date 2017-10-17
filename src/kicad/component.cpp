@@ -3,6 +3,8 @@
 #include <QDebug>
 #include <QFontMetrics>
 
+#include <tgmath.h>
+
 Component::Component(const QString &name)
     : _name(name), _prefixe("U")
 {
