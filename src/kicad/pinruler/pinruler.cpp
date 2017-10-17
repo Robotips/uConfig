@@ -164,6 +164,21 @@ void PinRuler::organize(Component *component)
             //qDebug()<<" - "<<pin->name()<<pin->pos();
         }
     }*/
+
+    foreach (PinClass *mpinClass, _pinClasses)
+        delete mpinClass;
+    _pinClasses.clear();
+}
+
+RulesSet *PinRuler::ruleSet() const
+{
+    return _ruleSet;
+}
+
+void PinRuler::setRuleSet(RulesSet *ruleSet)
+{
+    delete _ruleSet;
+    _ruleSet = ruleSet;
 }
 
 PinClass *PinRuler::addClass(const QString &className)

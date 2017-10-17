@@ -170,7 +170,7 @@ QString RulesParser::getPropertyValue()
     return  ruleMath.captured(1);
 }
 
-int RulesParser::getErrorLine() const
+int RulesParser::errorLine() const
 {
     return _errorLine;
 }

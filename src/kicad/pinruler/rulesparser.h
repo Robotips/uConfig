@@ -15,7 +15,7 @@ public:
 
     bool parse(RulesSet *ruleSet);
 
-    int getErrorLine() const;
+    int errorLine() const;
 
 protected:
     void skipSpace();

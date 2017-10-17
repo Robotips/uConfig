@@ -11,6 +11,9 @@
 #include "../kicad/viewer/componentviewer.h"
 #include "../kicad/lib.h"
 
+#include "../kicad/pinruler/pinruler.h"
+#include "../kicad/pinruler/rulesparser.h"
+
 int main(int argc, char *argv[])
 {
     QTextStream out(stdout);
@@ -25,12 +28,18 @@ int main(int argc, char *argv[])
     parser.addPositionalArgument("file", "Source file to extract pins (pdf).", "file");
 
     QCommandLineOption outOption(QStringList() << "o" << "out",
-                                 "Outpout file with pin list", "out");
+                                 "Outpout file with pin list",
+                                 "out");
     parser.addOption(outOption);
 
     QCommandLineOption debugOption(QStringList() << "d" << "debug",
                                    "Debug option to view intermediate steps");
     parser.addOption(debugOption);
+
+    QCommandLineOption kssOption(QStringList() << "r" << "rule",
+                                 "KSS rule file to organize component",
+                                 "rule");
+    parser.addOption(kssOption);
 
     /* TODO implement range page option
     QCommandLineOption rangeOption(QStringList() << "p" << "page",
@@ -40,6 +49,37 @@ int main(int argc, char *argv[])
     */
 
     parser.process(app);
+
+    QString ruleFile = parser.value("rule");
+    if (!ruleFile.isEmpty())
+    {
+        if (!ruleFile.endsWith(".kss"))
+            ruleFile.append(".kss");
+        if (!QFileInfo(ruleFile).exists())
+        {
+            if (QFileInfo("../rules/"+ruleFile).exists())
+            {
+                ruleFile = "../rules/"+ruleFile;
+            }
+            else
+            {
+                out << "error (3): ruleFile '" << parser.value("rule") << "' does not exist" << endl;
+                return -3;
+            }
+        }
+    }
+    RulesSet ruleSet;
+    PinRuler ruler;
+    if (!ruleFile.isEmpty())
+    {
+        RulesParser ruleParser(ruleFile);
+        if (!ruleParser.parse(&ruleSet))
+        {
+            out << "error (4): error when parsing ruleFile '" << parser.value("rule") << "' at line " << ruleParser.errorLine() << endl;
+            return -4;
+        }
+        ruler.setRuleSet(&ruleSet);
+    }
 
     const QStringList files = parser.positionalArguments();
     if (files.isEmpty())
@@ -69,7 +109,11 @@ int main(int argc, char *argv[])
     foreach(DatasheetPackage *package, datasheet.packages())
     {
         Component *component = package->toComponent();
-        component->reorganizeToPackageStyle();
+
+        if (ruleFile.isEmpty())
+            component->reorganizeToPackageStyle();
+        else
+            ruler.organize(component);
         lib.addComponent(component);
     }
     out << datasheet.packages().count() << " packages extracted, saved in " << outFile << endl;

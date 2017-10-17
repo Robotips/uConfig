@@ -12,9 +12,12 @@
 class KICAD_EXPORT PinRuler
 {
 public:
-    PinRuler(RulesSet *ruleSet);
+    PinRuler(RulesSet *ruleSet=Q_NULLPTR);
 
     void organize(Component *component);
+
+    RulesSet *ruleSet() const;
+    void setRuleSet(RulesSet *ruleSet);
 
 protected:
     RulesSet *_ruleSet;
