@@ -132,7 +132,7 @@ void Component::reorganizeToPackageStyle()
             rightMargin = width;
     }
     margin = (leftMargin + rightMargin) / 2;
-    margin = static_cast<int>(ceil(margin / 100.0)) * 100; // grid align
+    margin = (int)(ceil(margin / 100.0)) * 100; // grid align
 
     // place pins
     pos = QPoint(-margin, -leftOffset);
