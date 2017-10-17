@@ -57,21 +57,25 @@ public:
 
     QPoint pos() const;
     void setPos(const QPoint &pos);
+    void setPos(int x, int y);
 
-    QString padname() const;
-    void setPadname(const QString &padname);
+    QString padName() const;
+    void setPadName(const QString &padname);
 
     Direction direction() const;
     QString directionString() const;
     void setDirection(const Direction &direction);
+    void setDirection(char c);
 
     PinType pinType() const;
     QString pinTypeString() const;
     void setPinType(const PinType &pinType);
+    void setPinType(const QString &pinType);
 
     ElectricalType electricalType() const;
     QString electricalTypeString() const;
     void setElectricalType(const ElectricalType &electricalType);
+    void setElectricalType(char c);
 
     int layer() const;
     void setLayer(int layer);
@@ -79,20 +83,24 @@ public:
     int length() const;
     void setLength(int length);
 
+    bool isValid() const;
+
     friend bool operator<(const Pin &pin1, const Pin &pin);
     friend bool operator==(const Pin &pin1, const Pin &pin2);
 
     friend QTextStream &operator<<(QTextStream &stream, const Pin &pin);
+    friend QTextStream &operator>>(QTextStream &stream, Pin &pin);
 
 private:
     QString _name;
     QPoint _pos;
-    QString _padname;
+    QString _padName;
     Direction _direction;
     PinType _pinType;
     ElectricalType _electricalType;
     int _layer;
     int _length;
+    bool _valid;
 };
 
 #endif  // PIN_H

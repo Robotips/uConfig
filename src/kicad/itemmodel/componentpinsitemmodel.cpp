@@ -32,7 +32,7 @@ Pin *ComponentPinsItemModel::pin(const QModelIndex &index) const
 
 QModelIndex ComponentPinsItemModel::index(Pin *pin) const
 {
-    QModelIndexList list = match(this->index(0, 0), ComponentPinsItemModel::PinNumber, pin->padname(), -1, Qt::MatchRecursive);
+    QModelIndexList list = match(this->index(0, 0), ComponentPinsItemModel::PinNumber, pin->padName(), -1, Qt::MatchRecursive);
     if (list.isEmpty())
         return QModelIndex();
     return list.first();
@@ -73,7 +73,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
         switch (index.column())
         {
         case PinNumber:
-            return QVariant(pin->padname());
+            return QVariant(pin->padName());
         case PinName:
             return QVariant(pin->name());
         }

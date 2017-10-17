@@ -45,20 +45,20 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     {
     case Pin::Left:
         painter->drawLine(-3, 0, -_pin->length()/ratio, 0);
-        painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
+        painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
         break;
     case Pin::Right:
         painter->drawLine(3, 0, _pin->length()/ratio, 0);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
+        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         break;
     case Pin::Up:
         painter->drawLine(0, -3, 0, -_pin->length()/ratio);
         painter->rotate(-90);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
+        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         painter->rotate(90);
@@ -66,7 +66,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     case Pin::Down:
         painter->drawLine(0, 3, 0, _pin->length()/ratio);
         painter->rotate(90);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padname());
+        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
         painter->rotate(-90);

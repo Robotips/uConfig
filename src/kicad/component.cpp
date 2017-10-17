@@ -81,7 +81,7 @@ const QStringList &Component::footPrints() const
     return _footPrints;
 }
 
-void Component::addFootPrints(const QString &footprint)
+void Component::addFootPrint(const QString &footprint)
 {
     _footPrints.append(footprint);
 }
@@ -175,39 +175,76 @@ void Component::setDebugInfo(const QImage &debugInfo)
 
 QTextStream &operator>>(QTextStream &stream, Component &component)
 {
-    QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) "
-                   "([A-Z]) ([A-Z]) ([A-Z]) ([A-Z]+)$");
+    /*QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) "
+                   "([A-Z]) ([A-Z]) ([A-Z]) ([A-Z]+)$");*/
     bool draw = false;
     do
     {
-        QString line = stream.readLine();
-        if (line.startsWith("DEF"))
+        QString start;
+        stream >> start;
+        if (start.at(0) == '#') // comment
         {
+            stream.readLine();
         }
-        else if (regexp.indexIn(line) > -1)
+        else if (start == "DEF")
         {
-            qDebug() << regexp.cap(1) << regexp.cap(2) << regexp.cap(3)
-                     << regexp.cap(4) << regexp.cap(5);
+            QString name;
+            stream >> name;
+            component.setName(name);
+
+            QString prefix;
+            stream >> prefix;
+            component.setPrefixe(prefix);
+
+            stream.readLine();
         }
-        else if (line.startsWith("DRAW"))
+        else if (start.at(0) == 'F')
+        {
+            /*qDebug() << regexp.cap(1) << regexp.cap(2) << regexp.cap(3)
+                     << regexp.cap(4) << regexp.cap(5);*/
+            stream.readLine();
+        }
+        else if (start =="$FPLIST")
+        {
+            QString footprint;
+            while (!stream.atEnd())
+            {
+                stream >> footprint;
+                if (footprint == "$ENDFPLIST")
+                    break;
+                component.addFootPrint(footprint);
+            }
+        }
+        else if (start.startsWith("DRAW"))
         {
             draw = true;
+            stream.readLine();
         }
-        else if (line.startsWith("ENDDRAW"))
+        else if (start.startsWith("ENDDRAW"))
         {
             draw = false;
+            stream.readLine();
         }
-        else if (line.startsWith("ENDDEF"))
+        else if (start.startsWith("ENDDEF"))
         {
             component._valid = true;
-            qDebug() << line;
+            draw = false;
+            stream.readLine();
             return stream;
         }
-        else
+        else if (draw)
         {
-            if (draw)
+            if (start.at(0) == 'X')
             {
-                // stream >>
+                Pin *pin = new Pin();
+                stream >> *pin;
+                if (pin->isValid())
+                    component.addPin(pin);
+                else
+                {
+                    delete pin;
+                    stream.readLine();
+                }
             }
         }
     } while (!stream.atEnd());

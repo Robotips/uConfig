@@ -31,7 +31,7 @@ public:
     void addAlias(const QString &alias);
 
     const QStringList &footPrints() const;
-    void addFootPrints(const QString &footprint);
+    void addFootPrint(const QString &footprint);
 
     QRect rect() const;
     void setRect(const QRect &rect);
@@ -42,8 +42,7 @@ public:
     QImage debugInfo() const;
     void setDebugInfo(const QImage &debugInfo);
 
-    friend QTextStream &operator<<(QTextStream &stream,
-                                   const Component &component);
+    friend QTextStream &operator<<(QTextStream &stream, const Component &component);
     friend QTextStream &operator>>(QTextStream &stream, Component &component);
 
     bool isValid() const;

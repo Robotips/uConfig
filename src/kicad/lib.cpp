@@ -48,11 +48,17 @@ bool Lib::readFrom(const QString &fileName)
         return false;
     QTextStream stream(&input);
 
+    stream.readLine();
+
+    Component *component;
     do
     {
-        Component comp;
-        stream >> comp;
-        qDebug() << comp.isValid() << "ENDCOMP";
+        component = new Component();
+        stream >> *component;
+        if (component->isValid())
+            addComponent(component);
+        else
+            delete component;
     } while (!stream.atEnd());
 
     return true;
