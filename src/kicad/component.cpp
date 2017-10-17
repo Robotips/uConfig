@@ -3,7 +3,7 @@
 #include <QDebug>
 #include <QFontMetrics>
 
-#include <tgmath.h>
+#include <qmath.h>
 
 Component::Component(const QString &name)
     : _name(name), _prefixe("U")
@@ -132,7 +132,7 @@ void Component::reorganizeToPackageStyle()
             rightMargin = width;
     }
     margin = (leftMargin + rightMargin) / 2;
-    margin = (int)(ceil(margin / 100.0)) * 100; // grid align
+    margin = (qCeil(margin / 100.0)) * 100; // grid align
 
     // place pins
     pos = QPoint(-margin, -leftOffset);
