@@ -25,7 +25,7 @@ Component *DatasheetPackage::toComponent() const
     {
         Pin *pin = new Pin();
         pin->setName(dpin->name);
-        pin->setPadname(QString::number(dpin->pin));
+        pin->setPadName(QString::number(dpin->pin));
         comp->addPin(pin);
     }
     comp->setDebugInfo(image);
