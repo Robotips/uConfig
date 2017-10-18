@@ -35,3 +35,5 @@ LIBS += -L"$$PWD/../../bin"
 LIBS += -lkicad -lpdf_extract
 INCLUDEPATH += $$PWD/../kicad
 DEPENDPATH += $$PWD/../kicad
+
+win32 : RC_FILE = uconfig_gui.rc

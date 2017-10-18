@@ -29,6 +29,7 @@
 UConfigMainWindow::UConfigMainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    setWindowIcon(QIcon(":/icons/img/uConfig.ico"));
     createWidgets();
     createDocks();
     createToolbarsMenus();

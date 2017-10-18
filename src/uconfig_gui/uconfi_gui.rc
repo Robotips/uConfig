@@ -1,0 +1,54 @@
+IDI_ICON1               ICON    DISCARDABLE     "img/uConfig.ico"
+
+// Global definitions
+#define VS_FF_DEBUG 0x1L
+#define VS_VERSION_INFO 0x1L
+#define VS_FFI_FILEFLAGSMASK 0x17L
+#define VER_PRIVATEBUILD 0x0L
+#define VER_PRERELEASE 0x0L
+#define VOS__WINDOWS32 0x4L
+#define VFT_DLL 0x2L
+#define VFT2_UNKNOWN 0x0L
+
+// Local definitions
+#define VER_COMPANYNAME_STR "Robotips\0"
+#define VER_FILEDESCRIPTION_STR "Kicad Component creator\0"
+#define VER_INTERNALNAME_STR "uConfig"
+#define VER_LEGALCOPYRIGHT_STR "Robotips 2017"
+#define VER_LEGALTRADEMARKS1_STR ""
+#define VER_LEGALTRADEMARKS2_STR ""
+#define VER_ORIGINALFILENAME_STR "uConfig_gui.exe"
+#define VER_PRODUCTNAME_STR "uConfig_gui.exe"
+#define VER_PRODUCTVERSION_STR "1.0"
+#define VER_FILEVERSION 1,0
+#define VER_FILEVERSION_STR "1.0"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION    	VER_FILEVERSION
+PRODUCTVERSION 	VER_FILEVERSION
+FILEFLAGSMASK  	VS_FFI_FILEFLAGSMASK
+FILEOS         	VOS__WINDOWS32
+FILETYPE       	VFT_DLL
+FILESUBTYPE    	VFT2_UNKNOWN
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904E4"
+        BEGIN
+            VALUE "CompanyName",      VER_COMPANYNAME_STR
+            VALUE "FileDescription",  VER_FILEDESCRIPTION_STR
+            VALUE "FileVersion",      VER_FILEVERSION_STR
+            VALUE "InternalName",     VER_INTERNALNAME_STR
+            VALUE "LegalCopyright",   VER_LEGALCOPYRIGHT_STR
+            VALUE "LegalTrademarks1", VER_LEGALTRADEMARKS1_STR
+            VALUE "LegalTrademarks2", VER_LEGALTRADEMARKS2_STR
+            VALUE "OriginalFilename", VER_ORIGINALFILENAME_STR
+            VALUE "ProductName",      VER_PRODUCTNAME_STR
+            VALUE "ProductVersion",   VER_PRODUCTVERSION_STR
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END

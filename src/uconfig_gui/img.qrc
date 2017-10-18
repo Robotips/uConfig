@@ -7,5 +7,6 @@
         <file>img/import.png</file>
         <file>img/save.png</file>
         <file>img/save-as.png</file>
+        <file>img/uConfig.ico</file>
     </qresource>
 </RCC>
