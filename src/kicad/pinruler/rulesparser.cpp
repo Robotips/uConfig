@@ -73,7 +73,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
 void RulesParser::skipSpace()
 {
     const QChar *pt = _data.constData() + _id;
-    while ((*pt == '\n' || *pt == '\r' || *pt == '\t' || *pt == ' ') && *pt != 0)
+    while ((*pt == '\n' || *pt == '\r' || *pt == '\t' || *pt == ' ') && !pt->isNull())
     {
         if (*pt == '\n')
             _line++;
@@ -91,7 +91,7 @@ bool RulesParser::skipComments()
         return false;
     pt+=2;
     _id+=2;
-    while (*pt != 0)
+    while (!pt->isNull())
     {
         if (*pt == '*')
         {
