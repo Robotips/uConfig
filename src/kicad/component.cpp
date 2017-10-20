@@ -5,16 +5,25 @@
 
 #include <qmath.h>
 
+/**
+ * @brief Base constructor for component
+ * @param name optionally specify the component name at the creation
+ */
 Component::Component(const QString &name)
-    : _name(name), _prefixe("U")
+    : _prefix("U")
 {
+    setName(name);
     _valid = true;
 }
 
+/**
+ * @brief Component copy constructor. Also copy all the pins.
+ * @param other component to copy
+ */
 Component::Component(const Component &other)
 {
     _name = other._name;
-    _prefixe = other._prefixe;
+    _prefix = other._prefix;
     _alias = other._alias;
     _footPrints = other._footPrints;
     _rect = other._rect;
@@ -24,83 +33,155 @@ Component::Component(const Component &other)
         addPin(new Pin(*other._pins[i]));
 }
 
+/**
+ * @brief Component destructor. Delete also all the internal pins.
+ */
 Component::~Component()
 {
     for (int i=0; i<_pins.size(); i++)
         delete _pins[i];
 }
 
-QString Component::name() const
+/**
+ * @brief Component name getter.
+ * @return component name
+ */
+const QString &Component::name() const
 {
     return _name;
 }
 
+/**
+ * @brief Component name setter.
+ * @param name name to give
+ * @warning replace all the space contained in the name by underscore
+ */
 void Component::setName(const QString &name)
 {
     _name = name;
     _name.replace(" ","_");
 }
 
+/**
+ * @brief Component pins list getter
+ * @return list of pins
+ */
 QList<Pin *> Component::pins()
 {
     return _pins;
 }
 
+/**
+ * @brief Constant component pins list getter
+ * @return list of pins
+ */
 const QList<Pin *> Component::pins() const
 {
     return _pins;
 }
 
+/**
+ * @brief Adds a pin to the component
+ * @param pin pin pointer to add
+ */
 void Component::addPin(Pin *pin)
 {
     _pins.append(pin);
 }
 
-QString Component::prefixe() const
+/**
+ * @brief Removes a pin from his pointer
+ * @param pin pin pointer to remove
+ */
+void Component::removePin(Pin *pin)
 {
-    return _prefixe;
+    if (_pins.removeOne(pin))
+        delete pin;
 }
 
-void Component::setPrefixe(const QString &prefixe)
+/**
+ * @brief Component prefix letter(s) getter
+ * @return prefix letter(s)
+ */
+const QString &Component::prefix() const
 {
-    _prefixe = prefixe;
+    return _prefix;
 }
 
-const QStringList &Component::alias() const
+/**
+ * @brief Sets one or more letters prefix for the component. For ex: "U", "IC"
+ * @param prefix prefix letter(s)
+ */
+void Component::setPrefix(const QString &prefix)
+{
+    _prefix = prefix;
+}
+
+/**
+ * @brief Returns the list of component aliases name for identical pin package configuration
+ * @return aliases list
+ */
+const QStringList &Component::aliases() const
 {
     return _alias;
 }
 
+/**
+ * @brief Adds an alias name to the component
+ * @param alias alias name to add
+ */
 void Component::addAlias(const QString &alias)
 {
     _alias.append(alias);
 }
 
+/**
+ * @brief Returns possible footprint list
+ * @return footprint list
+ */
 const QStringList &Component::footPrints() const
 {
     return _footPrints;
 }
 
+/**
+ * @brief Adds a footprint name to the list of possible footprints for this component
+ * @param footprint name to add
+ */
 void Component::addFootPrint(const QString &footprint)
 {
     _footPrints.append(footprint);
 }
 
-QRect Component::rect() const
+/**
+ * @brief Returns the bounding rect of component without pin lenght
+ * @return bounding rect
+ */
+const QRect &Component::rect() const
 {
     return _rect;
 }
 
+/**
+ * @brief Sets the bounding rect of component
+ * @param rect bounding rect
+ */
 void Component::setRect(const QRect &rect)
 {
     _rect = rect;
 }
 
+/**
+ * @brief Sorts the component by pin name
+ */
 void Component::sort()
 {
     qSort(_pins);
 }
 
+/**
+ * @brief Reorganizes component pins like a simple DIP/SOIC package
+ */
 void Component::reorganizeToPackageStyle()
 {
     QPoint pos;
@@ -158,21 +239,39 @@ void Component::reorganizeToPackageStyle()
                   QPoint(margin-300, rightOffset+100));
 }
 
-bool Component::isValid() const
-{
-    return _valid;
-}
-
-QImage Component::debugInfo() const
+/**
+ * @brief Image of debugger for extraction from PDF
+ * @return image view of PDF with color rects
+ */
+const QImage &Component::debugInfo() const
 {
     return _debugInfo;
 }
 
+/**
+ * @brief Sets the debug image view
+ * @param debugInfo debug image view
+ */
 void Component::setDebugInfo(const QImage &debugInfo)
 {
     _debugInfo = debugInfo;
 }
 
+/**
+ * @brief If a component is correctly parsed and contains good informations
+ * @return true if the component is valid
+ */
+bool Component::isValid() const
+{
+    return _valid;
+}
+
+/**
+ * @brief Operator to serialise the component in Kicad format
+ * @param stream out stream
+ * @param component component to serialise
+ * @return stream
+ */
 QTextStream &operator>>(QTextStream &stream, Component &component)
 {
     /*QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) "
@@ -194,7 +293,7 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
 
             QString prefix;
             stream >> prefix;
-            component.setPrefixe(prefix);
+            component.setPrefix(prefix);
 
             stream.readLine();
         }
@@ -253,6 +352,12 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
     return stream;
 }
 
+/**
+ * @brief Operator to deserialise the component in Kicad format
+ * @param stream input stream
+ * @param component component to deserialise
+ * @return stream
+ */
 QTextStream &operator<<(QTextStream &stream, const Component &component)
 {
     // http://en.wikibooks.org/wiki/Kicad/file_formats#Description_of_a_component_2
@@ -261,8 +366,8 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
     stream << "#" << '\n' << "# " << component._name << '\n' << "#" << '\n';
 
     // def
-    stream << "DEF " << component._name << " " << component._prefixe << " 0 40 Y Y 1 F N" << '\n';
-    stream << "F0 \"" << component._prefixe << "\" " << component._rect.right()-50 << " " << -component._rect.bottom()-50 << " 50 H V C CNN" << '\n';
+    stream << "DEF " << component._name << " " << component._prefix << " 0 40 Y Y 1 F N" << '\n';
+    stream << "F0 \"" << component._prefix << "\" " << component._rect.right()-50 << " " << -component._rect.bottom()-50 << " 50 H V C CNN" << '\n';
     stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << '\n';
     stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
     stream << "F3 \"~\" 0 0 50 H I C CNN" << '\n';
