@@ -17,13 +17,14 @@ public:
         Table,
         Kicad
     };
+    ImportType type();
+    void setType(ImportType type);
 
     enum Page
     {
         PageStart,
-        PageCSVFile,
-        PagePDFFile, PagePDFProcess, PagePDFResults,
-        PageTableFile
+        PageFile,
+        PagePDFFile, PagePDFProcess, PagePDFResults
     };
 
     PinListImporter(const QString &fileName, QWidget *parent = 0);
@@ -32,6 +33,7 @@ public:
 
 private:
     DatasheetProcessPage *datasheetProcess;
+    ImportType _type;
 };
 
 #endif // PINLISTIMPORTER_H

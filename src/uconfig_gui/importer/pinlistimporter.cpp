@@ -8,14 +8,11 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     QWizard(parent)
 {
     setPage(PageStart, new StartWizardPage());
-    //setPage(PageCSVFile, new FilePage(CSV));
+    setPage(PageFile, new FilePage());
 
-    setPage(PagePDFFile, new FilePage(PDF));
     datasheetProcess = new DatasheetProcessPage();
     setPage(PagePDFProcess, datasheetProcess);
     setPage(PagePDFResults, new DatasheetResultsPage(datasheetProcess->datasheet()));
-
-    //setPage(PageTableFile, new FilePage(Table));
 
     if (fileName.isEmpty())
     {
@@ -24,8 +21,19 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     else if(fileName.endsWith(".pdf"))
     {
         setField("file", fileName);
-        setStartId(PagePDFFile);
+        setStartId(PageFile);
+        _type = PDF;
     }
+}
+
+PinListImporter::ImportType PinListImporter::type()
+{
+    return _type;
+}
+
+void PinListImporter::setType(PinListImporter::ImportType type)
+{
+    _type = type;
 }
 
 Datasheet *PinListImporter::datasheet()

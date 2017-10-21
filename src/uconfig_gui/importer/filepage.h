@@ -3,12 +3,17 @@
 
 #include <QWizardPage>
 #include <QLineEdit>
+#include <QLabel>
+
+#include "../pdf_extract/datasheet.h"
+
+#include "pinlistimporter.h"
 
 class FilePage : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit FilePage(const int type);
+    explicit FilePage();
 
     bool isComplete() const;
     int nextId() const;
@@ -29,8 +34,8 @@ private:
     bool _complete;
     QString _file;
     QString _fileTitle;
-    QLineEdit *fileEdit;
-    int _type;
+    QLineEdit *_fileEdit;
+    QLabel *_pagePreviewLabel;
     QStringList _suffixes;
 
     void setFile(const QString &file);

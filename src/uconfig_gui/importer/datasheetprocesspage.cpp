@@ -41,8 +41,8 @@ void DatasheetProcessPage::initializePage()
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
 
-    _datasheet.setDebugEnabled(true);
     _datasheet.open(filepdf);
+    _datasheet.setDebugEnabled(true);
     setTitle(QString("Extracting packages in %1").arg(fileName.right(30)));
 
     _progressBar->setMaximum(_datasheet.pageCount());

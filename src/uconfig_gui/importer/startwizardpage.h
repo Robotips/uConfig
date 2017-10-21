@@ -10,10 +10,6 @@ public:
     explicit StartWizardPage(QWidget *parent = 0);
 
     bool isComplete() const;
-    int type();
-    void setType(int type);
-
-    Q_PROPERTY(int type READ type WRITE setType)
 
     int nextId() const;
 
@@ -22,7 +18,6 @@ private slots:
 
 private:
     bool _complete;
-    int _type;
 };
 
 #endif // STARTWIZARDPAGE_H

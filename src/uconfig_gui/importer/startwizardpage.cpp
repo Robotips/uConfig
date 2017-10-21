@@ -9,11 +9,10 @@
 
 #include "pinlistimporter.h"
 
-StartWizardPage::StartWizardPage(QWidget *parent) :
-    QWizardPage(parent)
+StartWizardPage::StartWizardPage(QWidget *parent)
+    : QWizardPage (parent)
 {
     _complete = false;
-    _type = -1;
     setAcceptDrops(true);
 
     setTitle("Choose import format");
@@ -71,29 +70,9 @@ StartWizardPage::StartWizardPage(QWidget *parent) :
     //registerField("type", this, "type");
 }
 
-int StartWizardPage::type()
-{
-    return _type;
-}
-
-void StartWizardPage::setType(int type)
-{
-    _type = type;
-}
-
 int StartWizardPage::nextId() const
 {
-    switch (_type)
-    {
-    case PinListImporter::CSV:
-        return PinListImporter::PageCSVFile;
-    case PinListImporter::PDF:
-        return PinListImporter::PagePDFFile;
-    case PinListImporter::Table:
-        return PinListImporter::PageTableFile;
-    default:
-        return PinListImporter::PageCSVFile;
-    }
+    return PinListImporter::PageFile;
 }
 
 bool StartWizardPage::isComplete() const
@@ -103,8 +82,7 @@ bool StartWizardPage::isComplete() const
 
 void StartWizardPage::buttonClic(int type)
 {
-    _type = type;
-    //setField("type", _type);
+    static_cast<PinListImporter*>(wizard())->setType((PinListImporter::ImportType)type);
     _complete = true;
     emit completeChanged();
 }
