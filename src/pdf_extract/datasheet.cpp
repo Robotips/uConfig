@@ -23,11 +23,6 @@ Datasheet::~Datasheet()
     close();
 }
 
-bool Datasheet::open(int dsid)
-{
-    return open(QString("edc/doc/%1g.pdf").arg(dsid));
-}
-
 bool Datasheet::open(QString fileName)
 {
     close();
@@ -433,6 +428,16 @@ int Datasheet::pageCount() const
     if (_doc == NULL)
         return 0;
     return _doc->numPages();
+}
+
+QImage Datasheet::pageThumbnail(int numPage) const
+{
+    QImage image;
+    if (_doc == NULL)
+        return QImage();
+
+    Poppler::Page *page = _doc->page(numPage);
+    return page->renderToImage(20, 20, 0, 0, -1, -1);
 }
 
 QString Datasheet::name() const

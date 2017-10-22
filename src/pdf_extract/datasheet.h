@@ -4,6 +4,7 @@
 #include "pdf_extract_common.h"
 
 #include <QObject>
+#include <QImage>
 
 #include "datasheetpackage.h"
 #include "datasheetbox.h"
@@ -21,7 +22,6 @@ public:
     Datasheet();
     ~Datasheet();
 
-    bool open(int dsid);
     bool open(QString fileName);
     void close();
 
@@ -35,6 +35,7 @@ public:
     void setDebugEnabled(bool debug);
 
     int pageCount() const;
+    QImage pageThumbnail(int numPage) const;
 
 signals:
     void pageChanged(int page);
