@@ -14,7 +14,7 @@ SOURCES += \
         $$PWD/importer/startwizardpage.cpp \
         $$PWD/importer/filepage.cpp \
         $$PWD/importer/pdffilepage.cpp \
-        $$PWD/importer/datasheetresultspage.cpp \
+        $$PWD/importer/resultspage.cpp \
         $$PWD/importer/datasheetprocesspage.cpp \
         $$PWD/importer/datasheetthread.cpp
 
@@ -24,7 +24,7 @@ HEADERS  += \
         $$PWD/importer/startwizardpage.h \
         $$PWD/importer/filepage.h \
         $$PWD/importer/pdffilepage.h \
-        $$PWD/importer/datasheetresultspage.h \
+        $$PWD/importer/resultspage.h \
         $$PWD/importer/datasheetprocesspage.h \
         $$PWD/importer/datasheetthread.h
 

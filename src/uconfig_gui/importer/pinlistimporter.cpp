@@ -3,7 +3,8 @@
 #include "startwizardpage.h"
 #include "filepage.h"
 #include "pdffilepage.h"
-#include "datasheetresultspage.h"
+#include "resultspage.h"
+#include "datasheetprocesspage.h"
 
 #include <QAbstractButton>
 
@@ -13,10 +14,13 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     setPage(PageStart, new StartWizardPage());
     setPage(PageFile, new FilePage());
 
+    // PDF
     DatasheetProcessPage *datasheetProcess= new DatasheetProcessPage();
     setPage(PagePDFFile, new PDFFilePage(datasheetProcess->datasheetThread()));
     setPage(PagePDFProcess, datasheetProcess);
-    setPage(PagePDFResults, new DatasheetResultsPage(datasheetProcess->datasheetThread(), _components));
+
+    // Results
+    setPage(PageResults, new ResultsPage());
 
     if (fileName.isEmpty())
     {
@@ -30,7 +34,7 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     }
 }
 
-QList<Component *> PinListImporter::components()
+QList<Component *> &PinListImporter::components()
 {
     return _components;
 }

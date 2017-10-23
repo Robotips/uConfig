@@ -35,7 +35,7 @@ DatasheetProcessPage::DatasheetProcessPage()
 
 int DatasheetProcessPage::nextId() const
 {
-    return PinListImporter::PagePDFResults;
+    return PinListImporter::PageResults;
 }
 
 void DatasheetProcessPage::initializePage()
@@ -84,6 +84,15 @@ void DatasheetProcessPage::finish()
     _complete = true;
     _statusLabel->setText(tr("terminated"));
     emit completeChanged();
+
+    QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
+
+    qDeleteAll(components);
+    components.clear();
+    foreach (Component *component, _thread->datasheet()->components())
+    {
+        components.append(component);
+    }
 }
 
 void DatasheetProcessPage::changePage(int page)

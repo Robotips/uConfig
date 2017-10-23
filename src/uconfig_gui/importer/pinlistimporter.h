@@ -3,7 +3,7 @@
 
 #include <QWizard>
 
-#include "datasheetprocesspage.h"
+#include "../kicad/component.h"
 
 class PinListImporter : public QWizard
 {
@@ -26,12 +26,13 @@ public:
     {
         PageStart,
         PageFile,
-        PagePDFFile, PagePDFProcess, PagePDFResults,
-        PageCSVFile, PageCSVResults,
-        PageKicadFile, PageKicadResults
+        PagePDFFile, PagePDFProcess,
+        PageCSVFile,
+        PageKicadFile,
+        PageResults
     };
 
-    QList<Component *> components();
+    QList<Component *> &components();
 
 private:
     ImportType _type;

@@ -1,4 +1,4 @@
-#include "datasheetresultspage.h"
+#include "resultspage.h"
 
 #include <QLabel>
 #include <QHBoxLayout>
@@ -7,11 +7,10 @@
 
 #include "pinlistimporter.h"
 
-DatasheetResultsPage::DatasheetResultsPage(DataSheetThread *datasheetThread, QList<Component *> &components)
-    : QWizardPage(0), _components(components)
+ResultsPage::ResultsPage()
+    : QWizardPage(0)
 {
     QVBoxLayout *layout = new QVBoxLayout;
-    _datasheetThread = datasheetThread;
     _resultLabel = new QLabel();
     layout->addWidget(_resultLabel);
     layout->addSpacerItem(new QSpacerItem(10, 30,
@@ -20,12 +19,12 @@ DatasheetResultsPage::DatasheetResultsPage(DataSheetThread *datasheetThread, QLi
     setLayout(layout);
 }
 
-int DatasheetResultsPage::nextId() const
+int ResultsPage::nextId() const
 {
     return -1;
 }
 
-void DatasheetResultsPage::initializePage()
+void ResultsPage::initializePage()
 {
     QString filepdf = field("file").toString();
     QFileInfo info(filepdf);
@@ -33,27 +32,17 @@ void DatasheetResultsPage::initializePage()
     setTitle(QString("Extracted packages in %1").arg(fileName.right(30)));
 
     QString resText = QString("Packages found:");
-    foreach (DatasheetPackage *pack, _datasheetThread->datasheet()->packages())
+    QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
+    foreach (Component *component, components)
     {
         resText.append(QString("\n - %1 with %2 pins")
-                           .arg(pack->name)
-                           .arg(pack->pins.count()));
+                           .arg(component->name())
+                           .arg(component->pins().count()));
     }
     _resultLabel->setText(resText);
 }
 
-bool DatasheetResultsPage::validatePage()
-{
-    qDeleteAll(_components);
-    _components.clear();
-    foreach (Component *component, _datasheetThread->datasheet()->components())
-    {
-        _components.append(component);
-    }
-    return true;
-}
-
-bool DatasheetResultsPage::isComplete() const
+bool ResultsPage::isComplete() const
 {
     return true;
 }
