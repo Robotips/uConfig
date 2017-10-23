@@ -12,7 +12,7 @@ DatasheetProcessPage::DatasheetProcessPage()
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
-    _statusLabel = new QLabel("processing...");
+    _statusLabel = new QLabel(tr("processing..."));
     layout->addWidget(_statusLabel);
 
     _progressBar = new QProgressBar();
@@ -28,6 +28,9 @@ DatasheetProcessPage::DatasheetProcessPage()
 
     _thread = new DataSheetThread(&_datasheet);
     _complete = false;
+
+    connect(&_datasheet, &Datasheet::pageChanged, this, &DatasheetProcessPage::changePage);
+    connect(&_datasheet, &Datasheet::log, this, &DatasheetProcessPage::addLog);
 }
 
 int DatasheetProcessPage::nextId() const
@@ -41,34 +44,52 @@ void DatasheetProcessPage::initializePage()
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
 
-    _datasheet.open(filepdf);
     _datasheet.setDebugEnabled(true);
-    setTitle(QString("Extracting packages in %1").arg(fileName.right(30)));
+    setTitle(tr("Extracting packages in %1...").arg(fileName.right(30)));
 
-    _progressBar->setMaximum(_datasheet.pageCount());
-    connect(&_datasheet, &Datasheet::pageChanged, this, &DatasheetProcessPage::changePage);
-    connect(&_datasheet, &Datasheet::log, this, &DatasheetProcessPage::addLog);
 
+    int _pageStart;
+    int _pageCount;
+    if (_thread->pageBegin() == -1 && _thread->pageEnd() == -1) // whole document
+    {
+        _pageStart = 0;
+        _pageCount = _datasheet.pageCount();
+    }
+    else if (_thread->pageEnd() == -1)
+    {
+        _pageStart = _thread->pageBegin();
+        _pageCount = 1;
+    }
+    else
+    {
+        _pageStart = _thread->pageBegin();
+        _pageCount = _thread->pageEnd() - _thread->pageBegin();
+    }
+    _progressBar->setMinimum(_pageStart + 1);
+    _progressBar->setMaximum(_pageStart + _pageCount +1);
+
+    _logger->clear();
+    _datasheet.clean();
     _thread->start();
     connect(_thread, &QThread::finished, this, &DatasheetProcessPage::finish);
 }
 
-Datasheet *DatasheetProcessPage::datasheet()
+DataSheetThread *DatasheetProcessPage::datasheetThread()
 {
-    return &_datasheet;
+    return _thread;
 }
 
 void DatasheetProcessPage::finish()
 {
     _complete = true;
-    _statusLabel->setText("terminated");
+    _statusLabel->setText(tr("terminated"));
     emit completeChanged();
 }
 
 void DatasheetProcessPage::changePage(int page)
 {
     _progressBar->setValue(page);
-    _progressLabel->setText(QString("page %1 / %2").arg(page).arg(_progressBar->maximum()));
+    _progressLabel->setText(tr("page %1 / %2").arg(page).arg(_progressBar->maximum()));
 }
 
 void DatasheetProcessPage::addLog(QString str)

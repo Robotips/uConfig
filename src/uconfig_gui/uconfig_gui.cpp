@@ -5,7 +5,6 @@
 
 int main(int argc, char *argv[])
 {
-    QTextStream out(stdout);
     QApplication app(argc, argv);
 
     UConfigMainWindow mainWindow;

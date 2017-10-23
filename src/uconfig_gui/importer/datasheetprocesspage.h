@@ -18,7 +18,7 @@ public:
     int nextId() const;
     void initializePage();
 
-    Datasheet *datasheet();
+    DataSheetThread *datasheetThread();
 
 protected:
     void finish();
@@ -32,6 +32,8 @@ private:
     QLabel *_progressLabel;
     QProgressBar *_progressBar;
     QPlainTextEdit *_logger;
+    int _pageStart;
+    int _pageCount;
     bool _complete;
 };
 

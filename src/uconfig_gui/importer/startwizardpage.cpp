@@ -85,4 +85,5 @@ void StartWizardPage::buttonClic(int type)
     static_cast<PinListImporter*>(wizard())->setType((PinListImporter::ImportType)type);
     _complete = true;
     emit completeChanged();
+    wizard()->next();
 }

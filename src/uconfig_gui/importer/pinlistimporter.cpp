@@ -2,7 +2,10 @@
 
 #include "startwizardpage.h"
 #include "filepage.h"
+#include "pdffilepage.h"
 #include "datasheetresultspage.h"
+
+#include <QAbstractButton>
 
 PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     QWizard(parent)
@@ -10,9 +13,10 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     setPage(PageStart, new StartWizardPage());
     setPage(PageFile, new FilePage());
 
-    datasheetProcess = new DatasheetProcessPage();
+    DatasheetProcessPage *datasheetProcess= new DatasheetProcessPage();
+    setPage(PagePDFFile, new PDFFilePage(datasheetProcess->datasheetThread()));
     setPage(PagePDFProcess, datasheetProcess);
-    setPage(PagePDFResults, new DatasheetResultsPage(datasheetProcess->datasheet()));
+    setPage(PagePDFResults, new DatasheetResultsPage(datasheetProcess->datasheetThread(), _components));
 
     if (fileName.isEmpty())
     {
@@ -21,9 +25,14 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     else if(fileName.endsWith(".pdf"))
     {
         setField("file", fileName);
-        setStartId(PageFile);
+        setStartId(PagePDFFile);
         _type = PDF;
     }
+}
+
+QList<Component *> PinListImporter::components()
+{
+    return _components;
 }
 
 PinListImporter::ImportType PinListImporter::type()
@@ -34,9 +43,4 @@ PinListImporter::ImportType PinListImporter::type()
 void PinListImporter::setType(PinListImporter::ImportType type)
 {
     _type = type;
-}
-
-Datasheet *PinListImporter::datasheet()
-{
-    return datasheetProcess->datasheet();
 }

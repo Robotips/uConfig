@@ -35,11 +35,8 @@ FilePage::FilePage() :
     hlayout->addWidget(_fileEdit);
     hlayout->addWidget(fileExplore);
 
-    _pagePreviewLabel = new QLabel();
-
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addLayout(hlayout);
-    layout->addWidget(_pagePreviewLabel);
     layout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
     setLayout(layout);
 
@@ -55,10 +52,11 @@ int FilePage::nextId() const
     case PinListImporter::CSV:
         return PinListImporter::PagePDFProcess;
     case PinListImporter::PDF:
-        return PinListImporter::PagePDFProcess;
+        return PinListImporter::PagePDFFile;
     case PinListImporter::Table:
         return PinListImporter::PagePDFProcess;
     }
+    return 0;
 }
 
 void FilePage::initializePage()
@@ -125,8 +123,6 @@ void FilePage::checkEntry(const QString &text)
         _complete = true;
         emit completeChanged();
         palette.setColor(QPalette::Text, Qt::black);
-
-        //_pagePreviewLabel->setPixmap(QPixmap::fromImage(_datasheet->pageThumbnail(0)));
     }
     _fileEdit->setPalette(palette);
 }

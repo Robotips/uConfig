@@ -10,6 +10,8 @@ class PinListImporter : public QWizard
     Q_OBJECT
 public:
 
+    PinListImporter(const QString &fileName, QWidget *parent = 0);
+
     enum ImportType
     {
         CSV,
@@ -24,16 +26,16 @@ public:
     {
         PageStart,
         PageFile,
-        PagePDFFile, PagePDFProcess, PagePDFResults
+        PagePDFFile, PagePDFProcess, PagePDFResults,
+        PageCSVFile, PageCSVResults,
+        PageKicadFile, PageKicadResults
     };
 
-    PinListImporter(const QString &fileName, QWidget *parent = 0);
-
-    Datasheet *datasheet();
+    QList<Component *> components();
 
 private:
-    DatasheetProcessPage *datasheetProcess;
     ImportType _type;
+    QList<Component *> _components;
 };
 
 #endif // PINLISTIMPORTER_H

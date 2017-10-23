@@ -4,23 +4,26 @@
 #include <QWizardPage>
 #include <QLabel>
 
-#include "../pdf_extract/datasheet.h"
+#include "datasheetthread.h"
 
 class DatasheetResultsPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit DatasheetResultsPage(Datasheet *datasheet);
+    explicit DatasheetResultsPage(DataSheetThread *datasheetThread, QList<Component *> &components);
 
     bool isComplete() const;
     int nextId() const;
     void initializePage();
 
-    Datasheet *datasheet();
-
 private:
-    Datasheet *_datasheet;
+    DataSheetThread *_datasheetThread;
     QLabel *_resultLabel;
+    QList<Component *> &_components;
+
+    // QWizardPage interface
+public:
+    virtual bool validatePage();
 };
 
 #endif // DATASHEETRESULTSPAGE_H

@@ -77,13 +77,11 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
 
 void UConfigMainWindow::importComponents(const QString &fileName)
 {
-    PinListImporter importer(fileName);
+    PinListImporter importer(fileName, this);
     importer.exec();
 
-    foreach (DatasheetPackage *package, importer.datasheet()->packages())
+    foreach (Component *component, importer.components())
     {
-        Component *component = package->toComponent();
-        component->reorganizeToPackageStyle();
         _componentsTreeView->addComponent(component);
     }
     if (!_componentsTreeView->lib()->components().empty())

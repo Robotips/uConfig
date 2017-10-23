@@ -5,8 +5,6 @@
 #include <QLineEdit>
 #include <QLabel>
 
-#include "../pdf_extract/datasheet.h"
-
 #include "pinlistimporter.h"
 
 class FilePage : public QWizardPage
@@ -35,7 +33,6 @@ private:
     QString _file;
     QString _fileTitle;
     QLineEdit *_fileEdit;
-    QLabel *_pagePreviewLabel;
     QStringList _suffixes;
 
     void setFile(const QString &file);

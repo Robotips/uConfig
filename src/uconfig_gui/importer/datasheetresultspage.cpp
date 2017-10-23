@@ -7,11 +7,11 @@
 
 #include "pinlistimporter.h"
 
-DatasheetResultsPage::DatasheetResultsPage(Datasheet *datasheet)
-    : QWizardPage(0)
+DatasheetResultsPage::DatasheetResultsPage(DataSheetThread *datasheetThread, QList<Component *> &components)
+    : QWizardPage(0), _components(components)
 {
     QVBoxLayout *layout = new QVBoxLayout;
-    _datasheet = datasheet;
+    _datasheetThread = datasheetThread;
     _resultLabel = new QLabel();
     layout->addWidget(_resultLabel);
     layout->addSpacerItem(new QSpacerItem(10, 30,
@@ -33,7 +33,7 @@ void DatasheetResultsPage::initializePage()
     setTitle(QString("Extracted packages in %1").arg(fileName.right(30)));
 
     QString resText = QString("Packages found:");
-    foreach (DatasheetPackage *pack, _datasheet->packages())
+    foreach (DatasheetPackage *pack, _datasheetThread->datasheet()->packages())
     {
         resText.append(QString("\n - %1 with %2 pins")
                            .arg(pack->name)
@@ -42,9 +42,15 @@ void DatasheetResultsPage::initializePage()
     _resultLabel->setText(resText);
 }
 
-Datasheet *DatasheetResultsPage::datasheet()
+bool DatasheetResultsPage::validatePage()
 {
-    return _datasheet;
+    qDeleteAll(_components);
+    _components.clear();
+    foreach (Component *component, _datasheetThread->datasheet()->components())
+    {
+        _components.append(component);
+    }
+    return true;
 }
 
 bool DatasheetResultsPage::isComplete() const
