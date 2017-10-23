@@ -27,6 +27,12 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     QFont font("monospace");
     font.setStyleHint(QFont::Monospace);
     font.setPointSizeF(12);
+    painter->setFont(font);
+    double factor = 50.0 / PinItem::ratio / painter->fontMetrics().width('m');
+    if ((factor < 1) || (factor > 1.25))
+    {
+        font.setPointSizeF(font.pointSizeF()*factor);
+    }
 
     // selection modifier
     if (isSelected())
