@@ -20,12 +20,12 @@ protected:
     void finish();
     void changePage(int page);
     void addLog(QString str);
+    bool validatePage();
 
 private:
     QLabel *_statusLabel;
     ComponentLibTreeView *_componentTreeView;
-    int _pageStart;
-    int _pageCount;
+    Lib *_lib;
 };
 
 #endif // COMPONENTSPAGE_H

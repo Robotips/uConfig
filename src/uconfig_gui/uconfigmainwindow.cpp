@@ -64,7 +64,7 @@ void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
         return;
 
     QString fileName = event->mimeData()->urls().first().toLocalFile();
-    if (fileName.endsWith("pdf"))
+    if (fileName.endsWith(".pdf") || fileName.endsWith(".lib"))
         event->accept();
 }
 

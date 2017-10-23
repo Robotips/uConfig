@@ -48,7 +48,7 @@ int FilePage::nextId() const
     switch (static_cast<PinListImporter*>(wizard())->type())
     {
     case PinListImporter::Kicad:
-        return PinListImporter::PagePDFProcess;
+        return PinListImporter::PageComponents;
     case PinListImporter::CSV:
         return PinListImporter::PagePDFProcess;
     case PinListImporter::PDF:

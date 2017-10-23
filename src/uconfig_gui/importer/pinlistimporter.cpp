@@ -5,6 +5,7 @@
 #include "pdffilepage.h"
 #include "resultspage.h"
 #include "datasheetprocesspage.h"
+#include "componentspage.h"
 
 #include <QAbstractButton>
 
@@ -19,6 +20,9 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     setPage(PagePDFFile, new PDFFilePage(datasheetProcess->datasheetThread()));
     setPage(PagePDFProcess, datasheetProcess);
 
+    // Components
+    setPage(PageComponents, new ComponentsPage());
+
     // Results
     setPage(PageResults, new ResultsPage());
 
@@ -31,6 +35,12 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
         setField("file", fileName);
         setStartId(PagePDFFile);
         _type = PDF;
+    }
+    else if(fileName.endsWith(".lib"))
+    {
+        setField("file", fileName);
+        setStartId(PageComponents);
+        _type = Kicad;
     }
 }
 

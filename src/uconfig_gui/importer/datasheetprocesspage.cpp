@@ -35,7 +35,7 @@ DatasheetProcessPage::DatasheetProcessPage()
 
 int DatasheetProcessPage::nextId() const
 {
-    return PinListImporter::PageResults;
+    return PinListImporter::PageComponents;
 }
 
 void DatasheetProcessPage::initializePage()

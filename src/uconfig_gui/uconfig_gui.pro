@@ -16,7 +16,8 @@ SOURCES += \
         $$PWD/importer/pdffilepage.cpp \
         $$PWD/importer/resultspage.cpp \
         $$PWD/importer/datasheetprocesspage.cpp \
-        $$PWD/importer/datasheetthread.cpp
+        $$PWD/importer/datasheetthread.cpp \
+        $$PWD/importer/componentspage.cpp
 
 HEADERS  += \
         $$PWD/uconfigmainwindow.h \
@@ -26,7 +27,8 @@ HEADERS  += \
         $$PWD/importer/pdffilepage.h \
         $$PWD/importer/resultspage.h \
         $$PWD/importer/datasheetprocesspage.h \
-        $$PWD/importer/datasheetthread.h
+        $$PWD/importer/datasheetthread.h \
+        $$PWD/importer/componentspage.h
 
 RESOURCES += \
         $$PWD/img.qrc

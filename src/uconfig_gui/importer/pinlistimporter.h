@@ -29,6 +29,7 @@ public:
         PagePDFFile, PagePDFProcess,
         PageCSVFile,
         PageKicadFile,
+        PageComponents,
         PageResults
     };
 
