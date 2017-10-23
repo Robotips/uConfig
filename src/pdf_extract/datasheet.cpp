@@ -14,13 +14,15 @@ using namespace Poppler;
 
 Datasheet::Datasheet()
 {
-    _doc = NULL;
+    _doc = Q_NULLPTR;
     _debug = false;
+    _force = false;
 }
 
 Datasheet::~Datasheet()
 {
     close();
+    clean();
 }
 
 bool Datasheet::open(QString fileName)
@@ -55,11 +57,7 @@ bool Datasheet::open(QString fileName)
 void Datasheet::close()
 {
     delete _doc;
-    foreach (DatasheetPackage *package, _packages)
-    {
-        delete package;
-    }
-    _packages.clear();
+    _doc = Q_NULLPTR;
 }
 
 void Datasheet::pinSearch(int numPage)
@@ -423,6 +421,16 @@ void Datasheet::setDebugEnabled(bool debug)
     _debug = debug;
 }
 
+bool Datasheet::forceEnabled() const
+{
+    return _force;
+}
+
+void Datasheet::setForceEnabled(bool force)
+{
+    _force = force;
+}
+
 int Datasheet::pageCount() const
 {
     if (_doc == NULL)
@@ -438,6 +446,15 @@ QImage Datasheet::pageThumbnail(int numPage) const
 
     Poppler::Page *page = _doc->page(numPage);
     return page->renderToImage(20, 20, 0, 0, -1, -1);
+}
+
+void Datasheet::clean()
+{
+    foreach (DatasheetPackage *package, _packages)
+    {
+        delete package;
+    }
+    _packages.clear();
 }
 
 QString Datasheet::name() const
@@ -523,24 +540,42 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
     return -1;
 }
 
+/**
+ * @brief Launch analyse on datasheet.
+ * * analyse() -> whole document analyse
+ * * analyse(page) -> analyse only page `page`
+ * * analyse(start, end) -> analyse from page `start` to page `end`
+ * @param pageBegin
+ * @param pageEnd
+ */
 void Datasheet::analyse(int pageBegin, int pageEnd)
 {
     int page = pageBegin;
     bool bgaStyle;
+    int mpageEnd = pageEnd;
 
+    // only one page
     if (pageBegin != -1 && pageEnd == -1) // search in one page
     {
         pinSearch(pageBegin);
-        return;
     }
-
-    while ((page = pagePinDiagram(page + 1, &bgaStyle)) != -1)
+    else if (!_force)
     {
-        if (pageEnd != -1 && page >= pageEnd)
-            return;
-        /*if (bgaStyle)
-            pinSearchBGA(page);
-        else */
+        if (page == -1)
+            page = 0;
+        while ((page = pagePinDiagram(page, &bgaStyle)) != -1)
+        {
+            if (pageEnd != -1 && page >= pageEnd)
+                return;
+            pinSearch(page);
+            page++;
+        }
+    }
+    else
+    {
+        if (mpageEnd == -1)
+            mpageEnd = pageCount();
+        for (; page<mpageEnd; page++)
             pinSearch(page);
     }
 }
@@ -548,4 +583,16 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
 const QList<DatasheetPackage *> &Datasheet::packages() const
 {
     return _packages;
+}
+
+QList<Component *> Datasheet::components()
+{
+    QList<Component *> components;
+    foreach (DatasheetPackage *package, _packages)
+    {
+        Component *component = package->toComponent();
+        component->reorganizeToPackageStyle();
+        components.append(component);
+    }
+    return components;
 }

@@ -28,14 +28,20 @@ public:
     void analyse(int pageBegin = -1, int pageEnd = -1);
 
     const QList<DatasheetPackage *> &packages() const;
+    QList<Component *> components();
 
     QString name() const;
 
     bool debugEnabled() const;
     void setDebugEnabled(bool debug);
 
+    bool forceEnabled() const;
+    void setForceEnabled(bool force);
+
     int pageCount() const;
     QImage pageThumbnail(int numPage) const;
+
+    void clean();
 
 signals:
     void pageChanged(int page);
@@ -44,7 +50,6 @@ signals:
 private:
     int pagePinDiagram(int pageStart, bool *bgaStyle);
 
-    void pinSearchBGA(int numPage);
     void pinSearch(int numPage);
 
     Poppler::Document *_doc;
@@ -52,6 +57,7 @@ private:
 
     QList<DatasheetPackage *> _packages;
     bool _debug;
+    bool _force;
 };
 
 #endif  // DATASHEET_H
