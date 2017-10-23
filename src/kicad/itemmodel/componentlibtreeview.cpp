@@ -39,6 +39,26 @@ QList<Component *> ComponentLibTreeView::components() const
     return _model->components();
 }
 
+void ComponentLibTreeView::selectAll()
+{
+    _model->selectAll();
+}
+
+bool ComponentLibTreeView::getSelectedMode() const
+{
+    return _model->getSelectedMode();
+}
+
+void ComponentLibTreeView::setSelectedMode(bool selectedMode)
+{
+    _model->setSelectedMode(selectedMode);
+}
+
+const QList<Component *> &ComponentLibTreeView::selectedComponents() const
+{
+    return _model->selectedComponents();
+}
+
 void ComponentLibTreeView::mouseDoubleClickEvent(QMouseEvent *event)
 {
     QTreeView::mouseDoubleClickEvent(event);
@@ -51,5 +71,6 @@ void ComponentLibTreeView::mouseDoubleClickEvent(QMouseEvent *event)
         return;
 
     const QModelIndex &indexComponent = _sortProxy->mapToSource(index);
-    emit openedComponent(_model->component(indexComponent));
+    if (indexComponent.isValid())
+        emit openedComponent(_model->component(indexComponent));
 }

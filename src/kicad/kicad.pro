@@ -28,14 +28,14 @@ SOURCES += \
     $$PWD/itemmodel/componentpinsitemmodel.cpp \
     $$PWD/itemmodel/componentlibtreeview.cpp \
     $$PWD/itemmodel/componentpinstableview.cpp \
+    $$PWD/itemmodel/numericalsortfilterproxymodel.cpp \
     $$PWD/pinruler/rulesparser.cpp \
     $$PWD/pinruler/rule.cpp \
     $$PWD/pinruler/pinrule.cpp \
     $$PWD/pinruler/classrule.cpp \
     $$PWD/pinruler/rulesset.cpp \
     $$PWD/pinruler/pinclass.cpp \
-    $$PWD/pinruler/pinruler.cpp \
-    itemmodel/numericalsortfilterproxymodel.cpp
+    $$PWD/pinruler/pinruler.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -53,14 +53,14 @@ HEADERS += \
     $$PWD/itemmodel/componentpinsitemmodel.h \
     $$PWD/itemmodel/componentlibtreeview.h \
     $$PWD/itemmodel/componentpinstableview.h \
+    $$PWD/itemmodel/numericalsortfilterproxymodel.h \
     $$PWD/pinruler/rulesparser.h \
     $$PWD/pinruler/rule.h \
     $$PWD/pinruler/pinrule.h \
     $$PWD/pinruler/classrule.h \
     $$PWD/pinruler/rulesset.h \
     $$PWD/pinruler/pinclass.h \
-    $$PWD/pinruler/pinruler.h \
-    itemmodel/numericalsortfilterproxymodel.h
+    $$PWD/pinruler/pinruler.h
 
 unix {
     target.path = /usr/lib

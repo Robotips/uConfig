@@ -113,6 +113,14 @@ void Lib::takeComponent(Component *component)
 }
 
 /**
+ * @brief Removes all components whithout delete it
+ */
+void Lib::releaseComponents()
+{
+    _components.clear();
+}
+
+/**
  * @brief Saves the lib to `fileName` path
  * @param fileName file path
  * @return true in case of success, false otherwise

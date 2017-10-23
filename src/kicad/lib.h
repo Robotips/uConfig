@@ -23,6 +23,7 @@ public:
     void addComponent(Component *component);
     void removeComponent(Component *component);
     void takeComponent(Component *component);
+    void releaseComponents();
 
     bool saveTo(const QString &fileName);
     bool readFrom(const QString &fileName);
