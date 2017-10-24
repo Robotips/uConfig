@@ -14,7 +14,7 @@ ComponentsPage::ComponentsPage()
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
-    _statusLabel = new QLabel(tr("processing..."));
+    _statusLabel = new QLabel(tr("Choose component to import:"));
     layout->addWidget(_statusLabel);
 
     _componentTreeView = new ComponentLibTreeView();
@@ -31,17 +31,16 @@ int ComponentsPage::nextId() const
 
 void ComponentsPage::initializePage()
 {
-    QString filepdf = field("file").toString();
-    QFileInfo info(filepdf);
-    QString fileName = info.fileName();
 
     QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
     PinListImporter::ImportType type = static_cast<PinListImporter*>(wizard())->type();
     _lib = new Lib();
     if (type == PinListImporter::Kicad)
     {
+        QString file = field("file").toString();
         components.clear();
-        _lib->readFrom(filepdf);
+        if (!_lib->readFrom(file))
+            _statusLabel->setText(tr("Cannot parse library file"));
     }
     else
     {
@@ -66,9 +65,9 @@ bool ComponentsPage::validatePage()
     foreach (Component *component, _componentTreeView->selectedComponents())
     {
         components.append(component);
+        _lib->takeComponent(component);
     }
     _componentTreeView->setLib(Q_NULLPTR);
-    _lib->releaseComponents();
     delete _lib;
 
     return true;

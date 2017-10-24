@@ -4,6 +4,7 @@
 #include <QHBoxLayout>
 #include <QDebug>
 #include <QFileInfo>
+#include <QPushButton>
 
 #include "pinlistimporter.h"
 

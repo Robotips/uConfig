@@ -42,6 +42,7 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
         setStartId(PageComponents);
         _type = Kicad;
     }
+    setOption(QWizard::DisabledBackButtonOnLastPage, true);
 }
 
 QList<Component *> &PinListImporter::components()
