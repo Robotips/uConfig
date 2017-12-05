@@ -23,8 +23,8 @@ public slots:
 signals:
     void pinSelected(Pin *pin);
 
-protected:
-    virtual void mouseReleaseEvent(QMouseEvent *event);
+protected slots:
+    void updateSelect(const QItemSelection &selected, const QItemSelection &deselected);
 
 protected:
     ComponentPinsItemModel *_model;

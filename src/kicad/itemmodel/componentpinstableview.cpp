@@ -13,6 +13,7 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
     _sortProxy = new NumericalSortFilterProxyModel();
     _sortProxy->setSourceModel(_model);
     setModel(_sortProxy);
+    connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &ComponentPinsTableView::updateSelect);
 
     sortByColumn(0, Qt::AscendingOrder);
 
@@ -45,14 +46,14 @@ void ComponentPinsTableView::selectPin(Pin *pin)
     scrollTo(indexPin);
 }
 
-void ComponentPinsTableView::mouseReleaseEvent(QMouseEvent *event)
+void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const QItemSelection &deselected)
 {
-    QTableView::mouseReleaseEvent(event);
-
-    const QPersistentModelIndex index = indexAt(event->pos());
-    if (!index.isValid())
+    Q_UNUSED(deselected)
+    if (selected.indexes().count() != 1)
+        return;
+    if (!selected.indexes().first().isValid())
         return;
 
-    const QModelIndex &indexComponent = _sortProxy->mapToSource(index);
+    const QModelIndex &indexComponent = _sortProxy->mapToSource(selected.indexes().first());
     emit pinSelected(_model->pin(indexComponent));
 }
