@@ -9,7 +9,7 @@ class KICAD_EXPORT KssEditor : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit KssEditor(QWidget *parent = nullptr);
+    explicit KssEditor(QWidget *parent = Q_NULLPTR);
 
 signals:
 
