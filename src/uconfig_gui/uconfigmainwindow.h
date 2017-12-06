@@ -13,6 +13,7 @@
 #include "viewer/componentviewer.h"
 #include "itemmodel/componentlibtreeview.h"
 #include "itemmodel/componentpinstableview.h"
+#include "ksseditor/ksseditor.h"
 
 class UConfigMainWindow : public QMainWindow
 {
@@ -28,6 +29,7 @@ protected slots:
     void selectComponent(Component *component);
 
     void organize(QString ruleSetName);
+    void updateRules();
     void reloadRuleSetList();
 
     void about();
@@ -40,6 +42,9 @@ protected:
     ComponentViewer *_componentViewer;
     QComboBox *_ruleComboBox;
     QLabel *_pdfDebug;
+
+    QSplitter *_splitterEditor;
+    KssEditor *_kssEditor;
 
     void createDocks();
     QDockWidget *_componentsListDock;

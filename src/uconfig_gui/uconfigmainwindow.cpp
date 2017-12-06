@@ -146,12 +146,33 @@ void UConfigMainWindow::organize(QString ruleSetName)
         _componentViewer->scene()->clear();
         component->reorganizeToPackageStyle();
         _componentViewer->setComponent(component);
+        _kssEditor->clear();
         return;
     }
     RulesSet ruleSet;
     RulesParser parser(QString("../rules/%1.kss").arg(ruleSetName));
+    QFile kssFile(QString("../rules/%1.kss").arg(ruleSetName));
+    kssFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    _kssEditor->appendPlainText(kssFile.readAll());
+    connect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     parser.parse(&ruleSet);
 
+    PinRuler ruler(&ruleSet);
+    Component *component = _componentViewer->component();
+    _componentViewer->scene()->clear();
+    ruler.organize(component);
+    _componentViewer->setComponent(component);
+}
+
+void UConfigMainWindow::updateRules()
+{
+    if (!_componentViewer->component())
+        return;
+    RulesSet ruleSet;
+    RulesParser parser;
+    parser.setData(_kssEditor->document()->toPlainText());
+    if (!parser.parse(&ruleSet))
+        return;
     PinRuler ruler(&ruleSet);
     Component *component = _componentViewer->component();
     _componentViewer->scene()->clear();
@@ -172,7 +193,12 @@ void UConfigMainWindow::reloadRuleSetList()
 
 void UConfigMainWindow::createWidgets()
 {
+    _splitterEditor = new QSplitter(Qt::Vertical);
     _componentsPinTableView = new ComponentPinsTableView();
+    _kssEditor = new KssEditor();
+    _splitterEditor->addWidget(_componentsPinTableView);
+    _splitterEditor->addWidget(_kssEditor);
+    _splitterEditor->setSizes(QList<int>()<<200<<200);
 
     QTabWidget *tabWidget = new QTabWidget();
     _componentViewer = new ComponentViewer();
@@ -186,7 +212,7 @@ void UConfigMainWindow::createWidgets()
     tabWidget->addTab(pdfDebugArea, "pdf debugger");
 
     _splitter = new QSplitter();
-    _splitter->addWidget(_componentsPinTableView);
+    _splitter->addWidget(_splitterEditor);
     _splitter->addWidget(tabWidget);
     _splitter->setSizes(QList<int>()<<200<<200);
 

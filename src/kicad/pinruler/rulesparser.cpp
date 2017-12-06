@@ -9,12 +9,20 @@
 RulesParser::RulesParser(const QString &fileName)
 {
     _fileName = fileName;
-    QFile file(fileName);
-    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    if (!fileName.isEmpty())
+    {
+        QFile file(fileName);
+        file.open(QIODevice::ReadOnly | QIODevice::Text);
 
-    QTextStream stream(&file);
-    _data = stream.readAll();
-    file.close();
+        QTextStream stream(&file);
+        _data = stream.readAll();
+        file.close();
+    }
+}
+
+void RulesParser::setData(const QString &data)
+{
+    _data = data;
 }
 
 bool RulesParser::parse(RulesSet *ruleSet)

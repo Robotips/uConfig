@@ -11,8 +11,9 @@
 class KICAD_EXPORT RulesParser
 {
 public:
-    RulesParser(const QString &fileName);
+    RulesParser(const QString &fileName=QString());
 
+    void setData(const QString &data);
     bool parse(RulesSet *ruleSet);
 
     int errorLine() const;
