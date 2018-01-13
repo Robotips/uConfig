@@ -5,15 +5,16 @@
 
 #include <QPlainTextEdit>
 
+#include "ksssyntax.h"
+
 class KICAD_EXPORT KssEditor : public QPlainTextEdit
 {
     Q_OBJECT
 public:
     explicit KssEditor(QWidget *parent = Q_NULLPTR);
 
-signals:
-
-public slots:
+protected:
+    KSSSyntax *_syntax;
 };
 
 #endif // KSSEDITOR_H

@@ -138,10 +138,11 @@ void UConfigMainWindow::selectComponent(Component *component)
 
 void UConfigMainWindow::organize(QString ruleSetName)
 {
-    if (!_componentViewer->component())
-        return;
+    disconnect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     if (ruleSetName == "package")
     {
+        if (!_componentViewer->component())
+            return;
         Component *component = _componentViewer->component();
         _componentViewer->scene()->clear();
         component->reorganizeToPackageStyle();
@@ -153,31 +154,37 @@ void UConfigMainWindow::organize(QString ruleSetName)
     RulesParser parser(QString("../rules/%1.kss").arg(ruleSetName));
     QFile kssFile(QString("../rules/%1.kss").arg(ruleSetName));
     kssFile.open(QIODevice::ReadOnly | QIODevice::Text);
+    _kssEditor->clear();
     _kssEditor->appendPlainText(kssFile.readAll());
     connect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     parser.parse(&ruleSet);
 
-    PinRuler ruler(&ruleSet);
-    Component *component = _componentViewer->component();
-    _componentViewer->scene()->clear();
-    ruler.organize(component);
-    _componentViewer->setComponent(component);
+    if (_componentViewer->component())
+    {
+        PinRuler ruler(&ruleSet);
+        Component *component = _componentViewer->component();
+        _componentViewer->scene()->clear();
+        ruler.organize(component);
+        _componentViewer->setComponent(component);
+    }
 }
 
 void UConfigMainWindow::updateRules()
 {
-    if (!_componentViewer->component())
-        return;
     RulesSet ruleSet;
     RulesParser parser;
     parser.setData(_kssEditor->document()->toPlainText());
     if (!parser.parse(&ruleSet))
         return;
+
     PinRuler ruler(&ruleSet);
-    Component *component = _componentViewer->component();
-    _componentViewer->scene()->clear();
-    ruler.organize(component);
-    _componentViewer->setComponent(component);
+    if (_componentViewer->component())
+    {
+        Component *component = _componentViewer->component();
+        _componentViewer->scene()->clear();
+        ruler.organize(component);
+        _componentViewer->setComponent(component);
+    }
 }
 
 void UConfigMainWindow::reloadRuleSetList()
@@ -304,7 +311,7 @@ void UConfigMainWindow::createToolbarsMenus()
 
 void UConfigMainWindow::about()
 {
-    QMessageBox::about(this, "uConfig v0", QString("Copyright (C) 2017 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
+    QMessageBox::about(this, "uConfig v0", QString("Copyright (C) 2018 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
 <br>\
 This sofware is part of uConfig distribution. To check for new version, please visit <a href=\"https://github.com/Robotips/uConfig\">github.com/Robotips/uConfig</a><br>\
 <br>\

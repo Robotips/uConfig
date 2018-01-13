@@ -36,7 +36,8 @@ SOURCES += \
     $$PWD/pinruler/rulesset.cpp \
     $$PWD/pinruler/pinclass.cpp \
     $$PWD/pinruler/pinruler.cpp \
-    $$PWD/ksseditor/ksseditor.cpp
+    $$PWD/ksseditor/ksseditor.cpp \
+    $$PWD/ksseditor/ksssyntax.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -62,7 +63,8 @@ HEADERS += \
     $$PWD/pinruler/rulesset.h \
     $$PWD/pinruler/pinclass.h \
     $$PWD/pinruler/pinruler.h \
-    $$PWD/ksseditor/ksseditor.h
+    $$PWD/ksseditor/ksseditor.h \
+    $$PWD/ksseditor/ksssyntax.h
 
 unix {
     target.path = /usr/lib
