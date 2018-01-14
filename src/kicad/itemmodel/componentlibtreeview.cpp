@@ -1,5 +1,6 @@
 #include "componentlibtreeview.h"
 
+#include <QDebug>
 #include <QMouseEvent>
 
 ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent) :
@@ -39,11 +40,6 @@ QList<Component *> ComponentLibTreeView::components() const
     return _model->components();
 }
 
-void ComponentLibTreeView::selectAll()
-{
-    _model->selectAll();
-}
-
 bool ComponentLibTreeView::getSelectedMode() const
 {
     return _model->getSelectedMode();
@@ -57,6 +53,11 @@ void ComponentLibTreeView::setSelectedMode(bool selectedMode)
 const QList<Component *> &ComponentLibTreeView::selectedComponents() const
 {
     return _model->selectedComponents();
+}
+
+void ComponentLibTreeView::selectAll(bool selected)
+{
+    _model->selectAll(selected);
 }
 
 void ComponentLibTreeView::mouseDoubleClickEvent(QMouseEvent *event)

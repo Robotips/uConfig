@@ -3,6 +3,7 @@
 
 #include <QWizardPage>
 #include <QLabel>
+#include <QCheckBox>
 
 #include "../kicad/itemmodel/componentlibtreeview.h"
 
@@ -23,6 +24,7 @@ protected:
     bool validatePage();
 
 private:
+    QCheckBox *_checkAllBox;
     QLabel *_statusLabel;
     ComponentLibTreeView *_componentTreeView;
     Lib *_lib;

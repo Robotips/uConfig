@@ -157,7 +157,7 @@ int ComponentLibItemModel::rowCount(const QModelIndex &parent) const
 {
     if (!_lib)
         return 0;
-    if(!parent.isValid())
+    if (!parent.isValid())
         return _lib->components().count();
     return 0;
 }
@@ -170,11 +170,16 @@ Qt::ItemFlags ComponentLibItemModel::flags(const QModelIndex &index) const
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
-void ComponentLibItemModel::selectAll()
+void ComponentLibItemModel::selectAll(bool selected)
 {
+    emit layoutAboutToBeChanged();
     if (!_lib)
         return;
-    _selectedComponents = _lib->components();
+    if (selected)
+        _selectedComponents = _lib->components();
+    else
+        _selectedComponents.clear();
+    emit layoutChanged();
 }
 
 bool ComponentLibItemModel::getSelectedMode() const

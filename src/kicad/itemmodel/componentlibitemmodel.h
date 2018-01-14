@@ -21,7 +21,7 @@ public:
 
     Component *component(const QModelIndex &index) const;
 
-    void selectAll();
+    void selectAll(bool selected=true);
     bool getSelectedMode() const;
     void setSelectedMode(bool selectedMode);
     const QList<Component *> &selectedComponents() const;

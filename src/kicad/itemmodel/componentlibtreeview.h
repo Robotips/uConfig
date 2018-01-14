@@ -20,10 +20,12 @@ public:
     void addComponent(Component *component);
     QList<Component *> components() const;
 
-    void selectAll();
     bool getSelectedMode() const;
     void setSelectedMode(bool selectedMode);
     const QList<Component *> &selectedComponents() const;
+
+public slots:
+    void selectAll(bool selected=true);
 
 signals:
     void openedComponent(Component * component);

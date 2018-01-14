@@ -17,9 +17,14 @@ ComponentsPage::ComponentsPage()
     _statusLabel = new QLabel(tr("Choose component to import:"));
     layout->addWidget(_statusLabel);
 
+    _checkAllBox = new QCheckBox("Select all");
+    _checkAllBox->setChecked(true);
+    layout->addWidget(_checkAllBox);
+
     _componentTreeView = new ComponentLibTreeView();
     _componentTreeView->setSelectedMode(true);
     layout->addWidget(_componentTreeView);
+    connect(_checkAllBox, SIGNAL(clicked(bool)), _componentTreeView, SLOT(selectAll(bool)));
 
     setLayout(layout);
 }
@@ -51,6 +56,8 @@ void ComponentsPage::initializePage()
     }
     _componentTreeView->setLib(_lib);
     _componentTreeView->selectAll();
+    _componentTreeView->resizeColumnToContents(0);
+    _componentTreeView->resizeColumnToContents(1);
 }
 
 bool ComponentsPage::isComplete() const

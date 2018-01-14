@@ -95,7 +95,9 @@ QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const
 
 int ComponentPinsItemModel::rowCount(const QModelIndex &parent) const
 {
-    if(!parent.isValid())
+    if (!_component)
+        return 0;
+    if (!parent.isValid())
         return _component->pins().count();
     return 0;
 }
