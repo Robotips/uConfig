@@ -71,8 +71,12 @@ void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
 void UConfigMainWindow::dropEvent(QDropEvent *event)
 {
     event->accept();
-    QString fileName = event->mimeData()->urls().first().toLocalFile();
-    importComponents(fileName);
+
+    foreach (const QUrl &url, event->mimeData()->urls())
+    {
+        QString fileName = url.toLocalFile();
+        importComponents(fileName);
+    }
 }
 
 void UConfigMainWindow::importComponents(const QString &fileName)
