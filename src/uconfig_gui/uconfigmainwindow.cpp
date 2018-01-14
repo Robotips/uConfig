@@ -127,6 +127,10 @@ void UConfigMainWindow::selectComponent(Component *component)
 {
     _componentsPinTableView->setComponent(component);
     _componentViewer->setComponent(component);
+
+    if (!component)
+        return;
+
     organize(_ruleComboBox->currentText());
     if (!component->debugInfo().isNull())
     {
@@ -242,6 +246,7 @@ void UConfigMainWindow::createDocks()
     QLayout *componentsListLayout = new QVBoxLayout();
     componentsListLayout->setContentsMargins(5, 5, 5, 5);
     _componentsTreeView = new ComponentLibTreeView();
+    _componentsTreeView->setEditMode(true);
     connect(_componentsTreeView, &ComponentLibTreeView::openedComponent, this, &UConfigMainWindow::selectComponent);
     componentsListLayout->addWidget(_componentsTreeView);
     componentsListContent->setLayout(componentsListLayout);

@@ -40,6 +40,9 @@ void ComponentViewer::setComponent(Component *component)
     scene()->clear();
     _component = component;
 
+    if (!component)
+        return;
+
     _componentItem = new ComponentItem(component);
     scene()->addItem(_componentItem);
     scene()->setSceneRect(_componentItem->boundingRect());

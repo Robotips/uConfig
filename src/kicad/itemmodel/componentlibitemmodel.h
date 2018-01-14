@@ -20,9 +20,10 @@ public:
     QList<Component *> components() const;
 
     Component *component(const QModelIndex &index) const;
+    void remove(const QModelIndex &index);
 
     void selectAll(bool selected=true);
-    bool getSelectedMode() const;
+    bool selectedMode() const;
     void setSelectedMode(bool selectedMode);
     const QList<Component *> &selectedComponents() const;
 

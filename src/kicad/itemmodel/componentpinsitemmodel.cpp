@@ -4,11 +4,6 @@ ComponentPinsItemModel::ComponentPinsItemModel(Component *component, QObject *pa
     QAbstractItemModel(parent)
 {
     _component = component;
-
-    if (component)
-        _component = component;
-    else
-        _component = new Component();
 }
 
 Component *ComponentPinsItemModel::component() const
@@ -65,6 +60,9 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
 
 QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 {
+    if (!_component)
+        return QVariant();
+
     Pin *pin = _component->pins().at(index.row());
 
     switch (role)
@@ -83,6 +81,8 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 
 QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex &parent) const
 {
+    if (!_component)
+        return QModelIndex();
     Q_UNUSED(parent)
     return createIndex(row, column, _component->pins()[row]);
 }

@@ -54,6 +54,17 @@ Component *ComponentLibItemModel::component(const QModelIndex &index) const
     return static_cast<Component*>(index.internalPointer());
 }
 
+void ComponentLibItemModel::remove(const QModelIndex &index)
+{
+    Component *mcomponent = component(index);
+    if (!mcomponent)
+        return;
+
+    emit layoutAboutToBeChanged();
+    _lib->removeComponent(mcomponent);
+    emit layoutChanged();
+}
+
 int ComponentLibItemModel::columnCount(const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
@@ -182,7 +193,7 @@ void ComponentLibItemModel::selectAll(bool selected)
     emit layoutChanged();
 }
 
-bool ComponentLibItemModel::getSelectedMode() const
+bool ComponentLibItemModel::selectedMode() const
 {
     return _selectedMode;
 }
