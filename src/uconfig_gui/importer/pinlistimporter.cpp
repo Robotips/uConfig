@@ -50,6 +50,16 @@ QList<Component *> &PinListImporter::components()
     return _components;
 }
 
+QString PinListImporter::filePath() const
+{
+    return _filePath;
+}
+
+void PinListImporter::setFilePath(const QString &filePath)
+{
+    _filePath = filePath;
+}
+
 PinListImporter::ImportType PinListImporter::type()
 {
     return _type;

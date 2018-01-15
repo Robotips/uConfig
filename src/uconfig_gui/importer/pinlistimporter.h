@@ -22,6 +22,9 @@ public:
     ImportType type();
     void setType(ImportType type);
 
+    QString filePath() const;
+    void setFilePath(const QString &filePath);
+
     enum Page
     {
         PageStart,
@@ -37,6 +40,7 @@ public:
 
 private:
     ImportType _type;
+    QString _filePath;
     QList<Component *> _components;
 };
 

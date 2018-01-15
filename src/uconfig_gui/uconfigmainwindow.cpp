@@ -94,6 +94,8 @@ void UConfigMainWindow::importComponents(const QString &fileName)
     }
     _componentsTreeView->resizeColumnToContents(0);
     _componentsTreeView->resizeColumnToContents(1);
+
+    _importedPathLib = importer.filePath();
 }
 
 void UConfigMainWindow::saveLib()
@@ -112,6 +114,12 @@ void UConfigMainWindow::saveLibAs(const QString &fileName)
         fileDialog.setDefaultSuffix(".lib");
         fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
         fileDialog.setWindowTitle(tr("Save Kicad library"));
+        if (!_importedPathLib.isEmpty())
+        {
+            libFileName = _importedPathLib;
+            libFileName.replace(QRegExp("(.*)\\.(pdf|csv)"), "\\1.lib");
+            fileDialog.selectFile(libFileName);
+        }
         if (fileDialog.exec())
             libFileName = fileDialog.selectedFiles().first();
         if (libFileName.isEmpty())

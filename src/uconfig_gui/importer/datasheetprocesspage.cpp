@@ -41,6 +41,7 @@ int DatasheetProcessPage::nextId() const
 void DatasheetProcessPage::initializePage()
 {
     QString filepdf = field("file").toString();
+    static_cast<PinListImporter*>(wizard())->setFilePath(filepdf);
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
 

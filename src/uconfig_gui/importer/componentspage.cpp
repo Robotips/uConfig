@@ -36,13 +36,13 @@ int ComponentsPage::nextId() const
 
 void ComponentsPage::initializePage()
 {
-
     QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
     PinListImporter::ImportType type = static_cast<PinListImporter*>(wizard())->type();
     _lib = new Lib();
     if (type == PinListImporter::Kicad)
     {
         QString file = field("file").toString();
+        static_cast<PinListImporter*>(wizard())->setFilePath(file);
         components.clear();
         if (!_lib->readFrom(file))
             _statusLabel->setText(tr("Cannot parse library file"));

@@ -52,6 +52,7 @@ protected:
     void createToolbarsMenus();
 
     QString _pathLib;
+    QString _importedPathLib;
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
