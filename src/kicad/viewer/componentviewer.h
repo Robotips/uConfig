@@ -23,6 +23,7 @@ public:
 public slots:
     void selectPin(Pin *pin);
     void selectPins(QList<Pin *>pins);
+    void updatePin(Pin *pin);
 
 signals:
     void pinSelected(Pin *pin);

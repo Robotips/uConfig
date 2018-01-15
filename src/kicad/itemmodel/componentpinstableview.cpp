@@ -57,3 +57,8 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
     const QModelIndex &indexComponent = _sortProxy->mapToSource(selected.indexes().first());
     emit pinSelected(_model->pin(indexComponent));
 }
+
+ComponentPinsItemModel *ComponentPinsTableView::model() const
+{
+    return _model;
+}

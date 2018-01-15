@@ -17,6 +17,8 @@ public:
     Component *component() const;
     void setComponent(Component *component);
 
+    ComponentPinsItemModel *model() const;
+
 public slots:
     void selectPin(Pin *pin);
 

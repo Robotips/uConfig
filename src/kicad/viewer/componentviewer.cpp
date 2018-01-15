@@ -11,10 +11,37 @@
 #include <QDropEvent>
 #include <qmath.h>
 
+class GridScene : public QGraphicsScene
+{
+public:
+    GridScene(qreal x, qreal y, qreal w, qreal h)
+        : QGraphicsScene(x, y, w, h)
+    { }
+
+protected:
+    void drawBackground(QPainter *painter, const QRectF &rect)
+    {
+        const int gridSize = 20;
+
+        qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
+        qreal top = int(rect.top()) - (int(rect.top()) % gridSize);
+
+        QVarLengthArray<QLineF, 100> lines;
+
+        for (qreal x = left; x < rect.right(); x += gridSize)
+            lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+        for (qreal y = top; y < rect.bottom(); y += gridSize)
+            lines.append(QLineF(rect.left(), y, rect.right(), y));
+
+        painter->setPen(Qt::darkGray);
+        painter->drawLines(lines.data(), lines.size());
+    }
+};
+
 ComponentViewer::ComponentViewer(QWidget *parent)
     : QGraphicsView(parent)
 {
-    setScene(new QGraphicsScene());
+    setScene(new GridScene(-5000, -5000, 10000, 10000));
     connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
     scale(0.835, 0.835);
     _currentZoomLevel = 1;
@@ -72,6 +99,13 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
             pinItem->setSelected(true);
     }
     blockSignals(false);
+}
+
+void ComponentViewer::updatePin(Pin *pin)
+{
+    PinItem *pinItem = _componentItem->pinItem(pin);
+    if (pinItem)
+        pinItem->updateData();
 }
 
 void ComponentViewer::wheelEvent(QWheelEvent *event)

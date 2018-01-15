@@ -249,6 +249,8 @@ void UConfigMainWindow::createWidgets()
             _componentsPinTableView, &ComponentPinsTableView::selectPin);
     connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected,
             _componentViewer, &ComponentViewer::selectPin);
+    connect(_componentsPinTableView->model(), &ComponentPinsItemModel::pinModified,
+            _componentViewer, &ComponentViewer::updatePin);
 }
 
 void UConfigMainWindow::createDocks()

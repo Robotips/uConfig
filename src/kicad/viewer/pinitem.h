@@ -23,6 +23,8 @@ public:
     Pin *pin() const;
     void setPin(Pin *pin);
 
+    void updateData();
+
     static const int ratio;
 
 private:

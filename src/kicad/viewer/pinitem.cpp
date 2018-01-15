@@ -165,3 +165,8 @@ void PinItem::setPin(Pin *pin)
     setPos(pin->pos() / ratio);
     update();
 }
+
+void PinItem::updateData()
+{
+    prepareGeometryChange();
+}

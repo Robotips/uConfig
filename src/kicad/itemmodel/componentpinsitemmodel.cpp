@@ -118,12 +118,14 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
         switch (index.column())
         {
         case PinNumber:
-            return false;
+            pin->setPadName(value.toString());
+            break;
         case PinName:
             pin->setName(value.toString());
-            emit pinModified(pin);
-            return true;
+            break;
         }
+        emit pinModified(pin);
+        return true;
     }
     return false;
 }
@@ -131,7 +133,7 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
 Qt::ItemFlags ComponentPinsItemModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags baseFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    if (index.column() == PinName)
+    if (index.column() == PinNumber ||index.column() == PinName )
         return baseFlags | Qt::ItemIsEditable;
     return baseFlags;
 }
