@@ -146,9 +146,9 @@ void PinRuler::organize(Component *component)
     QRect rect;
     int pinLenght = component->pins()[0]->length();
     rect.setLeft(-sideX + pinLenght);
-    rect.setWidth(sideX * 2 - pinLenght * 2);
+    rect.setWidth(sideX * 2 - pinLenght * 2 + 1);
     rect.setTop(-sideY - 50);
-    rect.setHeight(sideY * 2 + 100);
+    rect.setHeight(sideY * 2 + 100 + 1);
     component->setRect(rect);
 
     // debug
