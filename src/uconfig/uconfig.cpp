@@ -14,9 +14,37 @@
 #include "../kicad/pinruler/pinruler.h"
 #include "../kicad/pinruler/rulesparser.h"
 
+QTextStream out(stdout);
+
+void processFilePdf(QString file, Lib *lib, bool debug)
+{
+    Datasheet datasheet;
+    datasheet.setDebugEnabled(debug);
+    bool opened = datasheet.open(file);
+    if (!opened)
+    {
+        out << "error (2): input file cannot be opened" << endl;
+        exit(2);
+    }
+    datasheet.analyse();
+    foreach(DatasheetPackage *package, datasheet.packages())
+    {
+        Component *component = package->toComponent();
+        lib->addComponent(component);
+    }
+}
+
+void processFileLib(QString file, Lib *lib)
+{
+    if (!lib->readFrom(file))
+    {
+        out << "error (2): input file cannot be opened" << endl;
+        exit(2);
+    }
+}
+
 int main(int argc, char *argv[])
 {
-    QTextStream out(stdout);
     QCoreApplication app(argc, argv);
     QCoreApplication::setApplicationName("uconfig");
     QCoreApplication::setApplicationVersion("1.0");
@@ -69,10 +97,10 @@ int main(int argc, char *argv[])
             }
         }
     }
-    RulesSet ruleSet;
     PinRuler ruler;
     if (!ruleFile.isEmpty())
     {
+        RulesSet ruleSet;
         RulesParser ruleParser(ruleFile);
         if (!ruleParser.parse(&ruleSet))
         {
@@ -90,34 +118,33 @@ int main(int argc, char *argv[])
     }
     const QString &file = files.at(0);
 
-    Datasheet datasheet;
-    datasheet.setDebugEnabled(parser.isSet(debugOption));
-    bool opened = datasheet.open(file);
-    if (!opened)
-    {
-        out << "error (2): input file cannot be opened" << endl;
-        return -2;
-    }
-
     QString outFile = parser.value("out");
     if (outFile.isEmpty())
         outFile = QFileInfo(file).baseName() + ".lib";
 
+    Lib lib;
     out << "> " << file << endl;
     qint64 d = QDateTime::currentMSecsSinceEpoch();
-    datasheet.analyse();
-    Lib lib;
-    foreach(DatasheetPackage *package, datasheet.packages())
-    {
-        Component *component = package->toComponent();
 
+    if (file.endsWith(".pdf"))
+        processFilePdf(file, &lib, parser.isSet(debugOption));
+    else if (file.endsWith(".lib"))
+        processFileLib(file, &lib);
+    else
+    {
+        out << "error (2): input file cannot be opened" << endl;
+        exit(2);
+    }
+    out << lib.componentsCount() << " packages extracted, saved in " << outFile << endl;
+
+    foreach(Component *component, lib.components())
+    {
         if (ruleFile.isEmpty())
             component->reorganizeToPackageStyle();
         else
             ruler.organize(component);
-        lib.addComponent(component);
     }
-    out << datasheet.packages().count() << " packages extracted, saved in " << outFile << endl;
+
     out << "Elapsed time: " << QDateTime::currentMSecsSinceEpoch() - d << "ms" << endl;
     lib.saveTo(outFile);
 
