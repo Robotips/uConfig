@@ -1,6 +1,7 @@
 #include "pinruler.h"
 
 #include <QDebug>
+#include <qmath.h>
 
 PinRuler::PinRuler(RulesSet *ruleSet)
 {
@@ -98,43 +99,43 @@ void PinRuler::organize(Component *component)
     rightSize.rwidth() += 100;
 
     // placement
-    int sideX = (leftSize.width() + rightSize.width()) / 2 + 350;
+    int sideX = (leftSize.width() + rightSize.width()) / 2 + 300;
+    sideX = (sideX / 100) * 100; // grid align KLC4.1
     int sideY = qMax(leftSize.height(), rightSize.height()) / 2;
+    sideY = (qCeil(sideY / 100) + 1) * 100; // grid align KLC4.1
 
     x = -sideX;
-    y = -sideY+50;
+    y = -sideY+100;
     if (leftSize.height() < rightSize.height())
         y += (rightSize.height() - leftSize.height()) / 2;
-    //y = (y / 100) * 100; // grid align
     foreach (PinClass *mpinClass, leftSide)
     {
-        //qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
         mpinClass->placePins(QPoint(x, y));
         y += mpinClass->rect().height() + 100;
     }
 
     x = sideX;
-    y = -sideY+50;
+    y = -sideY+100;
     if (rightSize.height() < leftSize.height())
         y += (leftSize.height() - rightSize.height()) / 2;
-    //y = (y / 100) * 100; // grid align
     foreach (PinClass *mpinClass, rightSide)
     {
-        //qDebug()<<">"<<mpinClass->className()<<QPoint(x, y);
         mpinClass->placePins(QPoint(x, y));
         y += mpinClass->rect().height() + 100;
     }
 
-    x = -topSize.width() / 2 + 50;
-    y = -sideY - 350;
+    x = -topSize.width() / 2;
+    x = qCeil(x / 100) * 100; // grid align KLC4.1
+    y = -sideY - 300;
     foreach (PinClass *mpinClass, topSide)
     {
         mpinClass->placePins(QPoint(x, y));
         x += mpinClass->rect().width() + 100;
     }
 
-    x = -bottomSize.width() / 2 + 50;
-    y = sideY + 350;
+    x = -bottomSize.width() / 2;
+    x = qCeil(x / 100) * 100; // grid align KLC4.1
+    y = sideY + 300;
     foreach (PinClass *mpinClass, bottomSide)
     {
         mpinClass->placePins(QPoint(x, y));
@@ -147,8 +148,8 @@ void PinRuler::organize(Component *component)
     int pinLenght = component->pins()[0]->length();
     rect.setLeft(-sideX + pinLenght);
     rect.setWidth(sideX * 2 - pinLenght * 2 + 1);
-    rect.setTop(-sideY - 50);
-    rect.setHeight(sideY * 2 + 100 + 1);
+    rect.setTop(-sideY);
+    rect.setHeight(sideY * 2 + 1);
     component->setRect(rect);
 
     // debug
