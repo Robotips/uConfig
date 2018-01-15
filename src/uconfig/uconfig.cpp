@@ -57,9 +57,10 @@ int main(int argc, char *argv[])
             ruleFile.append(".kss");
         if (!QFileInfo(ruleFile).exists())
         {
-            if (QFileInfo("../rules/"+ruleFile).exists())
+            QString binPath = QFileInfo(QApplication::arguments()[0]).path() + "/";
+            if (QFileInfo(binPath + "../rules/"+ruleFile).exists())
             {
-                ruleFile = "../rules/"+ruleFile;
+                ruleFile = binPath + "../rules/"+ruleFile;
             }
             else
             {
