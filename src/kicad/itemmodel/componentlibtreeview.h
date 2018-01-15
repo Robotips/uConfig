@@ -29,6 +29,8 @@ public:
     bool editMode() const;
     void setEditMode(bool editMode);
 
+    ComponentLibItemModel *model() const;
+
 public slots:
     void selectAll(bool selected=true);
     void remove();

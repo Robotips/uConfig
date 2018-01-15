@@ -68,6 +68,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
+    case Qt::EditRole:
         switch (index.column())
         {
         case PinNumber:
@@ -100,4 +101,37 @@ int ComponentPinsItemModel::rowCount(const QModelIndex &parent) const
     if (!parent.isValid())
         return _component->pins().count();
     return 0;
+}
+
+
+bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &value, int role)
+{
+    if (!_component)
+        return false;
+
+    Pin *pin = _component->pins().at(index.row());
+
+    switch (role)
+    {
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+        switch (index.column())
+        {
+        case PinNumber:
+            return false;
+        case PinName:
+            pin->setName(value.toString());
+            emit pinModified(pin);
+            return true;
+        }
+    }
+    return false;
+}
+
+Qt::ItemFlags ComponentPinsItemModel::flags(const QModelIndex &index) const
+{
+    Qt::ItemFlags baseFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
+    if (index.column() == PinName)
+        return baseFlags | Qt::ItemIsEditable;
+    return baseFlags;
 }

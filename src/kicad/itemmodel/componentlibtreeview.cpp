@@ -130,6 +130,11 @@ void ComponentLibTreeView::contextMenuEvent(QContextMenuEvent *event)
     menu.exec(event->globalPos());
 }
 
+ComponentLibItemModel *ComponentLibTreeView::model() const
+{
+    return _model;
+}
+
 bool ComponentLibTreeView::editMode() const
 {
     return _editMode;
