@@ -12,7 +12,8 @@ void ComponentItem::paint(QPainter *painter,
                           const QStyleOptionGraphicsItem * /*option*/,
                           QWidget * /*widget*/)
 {
-    painter->setPen(QColor(132, 0, 0));
+    painter->setPen(QPen(QColor(132, 0, 0), 2));
+    painter->setBrush(QColor(255, 255, 194));
     painter->drawRect(_numRect);
 }
 

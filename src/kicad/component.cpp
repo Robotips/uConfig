@@ -402,7 +402,7 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
                << component._rect.top() << " "
                << component._rect.right() << " "
                << component._rect.bottom() << " "
-               << "0 1 0 N" << '\n';
+               << "0 1 10 f" << '\n';
     }
 
     // end
