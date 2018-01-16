@@ -22,6 +22,7 @@ public:
     enum Column {
         PinNumber,
         PinName,
+        PinElecType,
         ColumnCount
     };
 

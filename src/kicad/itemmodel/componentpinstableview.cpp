@@ -3,6 +3,8 @@
 #include <QMouseEvent>
 #include <QDebug>
 
+#include "componentelectricaldelegate.h"
+
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
     : QTableView(parent)
 {
@@ -17,8 +19,9 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
     connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &ComponentPinsTableView::updateSelect);
 
     sortByColumn(0, Qt::AscendingOrder);
-
     setSortingEnabled(true);
+
+    setItemDelegate(new ComponentElectricalDelegate(this));
 }
 
 Component *ComponentPinsTableView::component() const

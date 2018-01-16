@@ -51,7 +51,9 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
         case PinNumber:
             return QVariant("#");
         case PinName:
-            return QVariant("Pin name");
+            return QVariant("Name");
+        case PinElecType:
+            return QVariant("Elec type");
         }
         break;
     }
@@ -75,6 +77,8 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
             return QVariant(pin->padName());
         case PinName:
             return QVariant(pin->name());
+        case PinElecType:
+            return QVariant(Pin::electricalTypeDesc(pin->electricalType()));
         }
     }
     return QVariant();
@@ -123,6 +127,9 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
         case PinName:
             pin->setName(value.toString());
             break;
+        case PinElecType:
+            pin->setElectricalType(static_cast<Pin::ElectricalType>(value.toInt()));
+            break;
         }
         emit pinModified(pin);
         return true;
@@ -133,7 +140,7 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
 Qt::ItemFlags ComponentPinsItemModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags baseFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    if (index.column() == PinNumber ||index.column() == PinName )
+    if (index.column() == PinNumber || index.column() == PinName || index.column() == PinElecType)
         return baseFlags | Qt::ItemIsEditable;
     return baseFlags;
 }
