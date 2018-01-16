@@ -100,16 +100,15 @@ void ComponentViewer::wheelEvent(QWheelEvent *event)
 
 void ComponentViewer::selectedItem()
 {
-    Pin *pin;
-    if (scene()->selectedItems().isEmpty())
-        pin = Q_NULLPTR;
-    else
+    QList<Pin*> selectedPins;
+
+    foreach (QGraphicsItem *item, scene()->selectedItems())
     {
-        PinItem *pinItem = qgraphicsitem_cast<PinItem *>(scene()->selectedItems().at(0));
-        pin = pinItem->pin();
+        PinItem *pinItem = qgraphicsitem_cast<PinItem *>(item);
+        selectedPins.append(pinItem->pin());
     }
 
-    emit pinSelected(pin);
+    emit pinsSelected(selectedPins);
 }
 
 void ComponentViewer::dragEnterEvent(QDragEnterEvent *event)

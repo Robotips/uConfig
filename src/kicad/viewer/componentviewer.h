@@ -29,7 +29,7 @@ public slots:
     void setGridVisible(bool visible);
 
 signals:
-    void pinSelected(Pin *pin);
+    void pinsSelected(QList<Pin *>pins);
     void droppedFile(QString fileName);
 
 protected:
