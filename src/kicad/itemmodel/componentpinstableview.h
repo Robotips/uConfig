@@ -21,9 +21,10 @@ public:
 
 public slots:
     void selectPin(Pin *pin);
+    void selectPins(QList<Pin *> pins);
 
 signals:
-    void pinSelected(Pin *pin);
+    void pinSelected(QList<Pin *> pins);
 
 protected slots:
     void updateSelect(const QItemSelection &selected, const QItemSelection &deselected);

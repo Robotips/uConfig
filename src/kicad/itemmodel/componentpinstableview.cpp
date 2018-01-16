@@ -1,6 +1,7 @@
 #include "componentpinstableview.h"
 
 #include <QMouseEvent>
+#include <QDebug>
 
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
     : QTableView(parent)
@@ -42,20 +43,56 @@ void ComponentPinsTableView::selectPin(Pin *pin)
     if (!index.isValid())
         return;
     const QModelIndex &indexPin = _sortProxy->mapFromSource(index);
+    if (!indexPin.isValid())
+        return;
     selectionModel()->select(indexPin, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     scrollTo(indexPin);
 }
 
+void ComponentPinsTableView::selectPins(QList<Pin *> pins)
+{
+    if (pins.isEmpty())
+    {
+        selectionModel()->clearSelection();
+        return;
+    }
+    if (pins.count() == 1)
+    {
+        selectPin(pins.first());
+        return;
+    }
+    foreach (Pin *pin, pins)
+    {
+        const QPersistentModelIndex index = _model->index(pin);
+        if (!index.isValid())
+            return;
+        const QModelIndex &indexPin = _sortProxy->mapFromSource(index);
+        if (!indexPin.isValid())
+            return;
+        selectionModel()->select(indexPin, QItemSelectionModel::Select | QItemSelectionModel::Rows);
+    }
+}
+
 void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const QItemSelection &deselected)
 {
+    Q_UNUSED(selected)
     Q_UNUSED(deselected)
-    if (selected.indexes().count() != 1)
-        return;
-    if (!selected.indexes().first().isValid())
-        return;
 
-    const QModelIndex &indexComponent = _sortProxy->mapToSource(selected.indexes().first());
-    emit pinSelected(_model->pin(indexComponent));
+    QSet<Pin*> selectedPins;
+
+    foreach (const QModelIndex &index, selectionModel()->selectedIndexes())
+    {
+        if (!index.isValid())
+            continue;
+        const QModelIndex &indexComponent = _sortProxy->mapToSource(index);
+        if (!indexComponent.isValid())
+            continue;
+
+        selectedPins.insert(_model->pin(indexComponent));
+    }
+
+    if (!selectedPins.isEmpty())
+        emit pinSelected(selectedPins.toList());
 }
 
 ComponentPinsItemModel *ComponentPinsTableView::model() const

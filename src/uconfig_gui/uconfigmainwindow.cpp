@@ -245,10 +245,10 @@ void UConfigMainWindow::createWidgets()
     connect(_componentViewer, &ComponentViewer::droppedFile,
             this, &UConfigMainWindow::importComponents);
 
-    connect(_componentViewer, &ComponentViewer::pinSelected,
-            _componentsPinTableView, &ComponentPinsTableView::selectPin);
+    connect(_componentViewer, &ComponentViewer::pinsSelected,
+            _componentsPinTableView, &ComponentPinsTableView::selectPins);
     connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected,
-            _componentViewer, &ComponentViewer::selectPin);
+            _componentViewer, &ComponentViewer::selectPins);
     connect(_componentsPinTableView->model(), &ComponentPinsItemModel::pinModified,
             _componentViewer, &ComponentViewer::updatePin);
 }
