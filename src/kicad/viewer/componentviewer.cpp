@@ -94,6 +94,11 @@ void ComponentViewer::wheelEvent(QWheelEvent *event)
     int numSteps = numDegrees / 15;
 
     double mscale = qPow(1.25,numSteps);
+    if (_currentZoomLevel < 0.1 && mscale < 1)
+        return;
+    if (_currentZoomLevel > 20 && mscale > 1)
+        return;
+
     _currentZoomLevel *= mscale;
     scale(mscale, mscale);
 }
