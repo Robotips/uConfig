@@ -319,6 +319,11 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
             draw = true;
             stream.readLine();
         }
+        else if (start.startsWith("ALIAS"))
+        {
+            QString aliases = stream.readLine();
+            component._alias.append(aliases.split(' '));
+        }
         else if (start.startsWith("ENDDRAW"))
         {
             draw = false;
