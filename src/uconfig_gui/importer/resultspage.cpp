@@ -5,6 +5,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QPushButton>
+#include <QScrollArea>
 
 #include "pinlistimporter.h"
 
@@ -13,7 +14,15 @@ ResultsPage::ResultsPage()
 {
     QVBoxLayout *layout = new QVBoxLayout;
     _resultLabel = new QLabel();
-    layout->addWidget(_resultLabel);
+    _resultLabel->setTextInteractionFlags(Qt::TextSelectableByKeyboard | Qt::TextSelectableByMouse);
+    _resultLabel->setWordWrap(true);
+    _resultLabel->setScaledContents(true);
+    QScrollArea *scrollArea = new QScrollArea();
+    scrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    scrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    scrollArea->setWidgetResizable(true);
+    scrollArea->setWidget(_resultLabel);
+    layout->addWidget(scrollArea);
     layout->addSpacerItem(new QSpacerItem(10, 30,
                                           QSizePolicy::Expanding,
                                           QSizePolicy::Expanding));

@@ -82,7 +82,8 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
 void UConfigMainWindow::importComponents(const QString &fileName)
 {
     PinListImporter importer(fileName, this);
-    importer.exec();
+    if (importer.exec() != QDialog::Accepted)
+        return;
 
     foreach (Component *component, importer.components())
     {
