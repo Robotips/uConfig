@@ -1,9 +1,11 @@
 #ifndef COMPONENTSCENE_H
 #define COMPONENTSCENE_H
 
+#include "kicad_global.h"
+
 #include <QGraphicsScene>
 
-class ComponentScene : public QGraphicsScene
+class KICAD_EXPORT ComponentScene : public QGraphicsScene
 {
 public:
     ComponentScene(qreal x, qreal y, qreal w, qreal h);
@@ -13,6 +15,7 @@ public:
 
 protected:
     bool _grid;
+    int _prevGridSize;
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 };
