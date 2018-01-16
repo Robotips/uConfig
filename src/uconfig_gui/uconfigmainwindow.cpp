@@ -317,6 +317,16 @@ void UConfigMainWindow::createToolbarsMenus()
     actionRuleCombox->setStatusTip(tr("Change the rule for pin organisation"));
 
     // ============= Help =============
+    QMenu *viewMenu = menuBar()->addMenu("&View");
+
+    QAction *gridAction = new QAction("Show / Hide &grid", this);
+    gridAction->setCheckable(true);
+    gridAction->setChecked(true);
+    gridAction->setShortcut(QKeySequence("Ctrl+G"));
+    connect(gridAction, SIGNAL(triggered(bool)), _componentViewer, SLOT(setGridVisible(bool)));
+    viewMenu->addAction(gridAction);
+
+    // ============= Help =============
     QMenu *helpMenu = menuBar()->addMenu("&Help");
 
     QAction *aboutAction = new QAction("&About", this);

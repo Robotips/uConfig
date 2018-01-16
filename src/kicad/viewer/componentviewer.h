@@ -8,6 +8,7 @@
 
 #include "component.h"
 
+class ComponentScene;
 class ComponentItem;
 class PinItem;
 
@@ -25,6 +26,8 @@ public slots:
     void selectPins(QList<Pin *>pins);
     void updatePin(Pin *pin);
 
+    void setGridVisible(bool visible);
+
 signals:
     void pinSelected(Pin *pin);
     void droppedFile(QString fileName);
@@ -36,6 +39,7 @@ protected slots:
     void selectedItem();
 
 protected:
+    ComponentScene *_scene;
     Component *_component;
     ComponentItem *_componentItem;
     double _currentZoomLevel;
