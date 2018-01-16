@@ -20,10 +20,18 @@ public:
     QString className(const QString &pinName = QString()) const;
     void setClassName(const QString &className);
 
+    int length() const;
+    void setLength(int length);
+
+    bool lengthSet() const;
+
     static QStringList propsName;
 
 protected:
     QString _className;
+
+    int _length;
+    bool _lengthSet;
 };
 
 #endif // PINRULE_H

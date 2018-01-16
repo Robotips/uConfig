@@ -4,11 +4,14 @@
 
 QStringList PinRule::propsName = QStringList()
         <<"class"
+        <<"length"
         <<"elec_type";
 
 PinRule::PinRule(const QString &selector)
     : Rule(selector)
 {
+    _length = 200;
+    _lengthSet = false;
 }
 
 Rule::Type PinRule::type() const
@@ -27,6 +30,9 @@ bool PinRule::setProperty(const QString &name, const QString &value)
     {
     case 0: // class
         setClassName(value);
+        break;
+    case 1: // length
+        setLength(value.toInt());
         break;
     }
 
@@ -62,4 +68,20 @@ QString PinRule::className(const QString &pinName) const
 void PinRule::setClassName(const QString &className)
 {
     _className = className;
+}
+
+int PinRule::length() const
+{
+    return _length;
+}
+
+void PinRule::setLength(int lenght)
+{
+    _length = lenght;
+    _lengthSet = true;
+}
+
+bool PinRule::lengthSet() const
+{
+    return _lengthSet;
 }

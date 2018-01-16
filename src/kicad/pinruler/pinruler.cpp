@@ -25,6 +25,7 @@ void PinRuler::organize(Component *component)
             QString className = rules.first()->className(pin->name());
             PinClass *mpinClass = pinClass(className);
             pin->setPinType(Pin::Normal);
+            pin->setLength(rules.first()->length());
             mpinClass->addPin(pin);
         }
     }

@@ -18,8 +18,6 @@ VDD {
 }
 ```
 
-[google](google.fr)
-
 All pins named `VDD` or `Vdd` will be putted in the class named `power+`.
 
 |Selector|Example|Example description|
@@ -29,7 +27,7 @@ All pins named `VDD` or `Vdd` will be putted in the class named `power+`.
 |name[12]      |VDD[AB]            |All pin named VDDA or VDDB|
 |name[1-3]     |VDD[A-C]           |All pin named VDDA or VDDB or VDDC|
 |name[1-3]*    |VDD[A-C]*          |All pin named VDD or VDDA or VDDB or VDDC|
-|\[fb\]\[1-3\]+|\[PR\]\[A-L\][0-9]+|Match all gpio RA1, PF8, ...|
+|\[fb\]\[1-3\]+|\[PR\]\[A-L\][0-9]+|Match all gpio RA16, PF5, ...|
 
 For more examples, take a look to kss files in this directory or look at regular expression reference guide.
 
@@ -45,7 +43,7 @@ Letter after P or R is captured and putted in `\1`. So a pin named `RB1` will be
 
 ### Class selector
 
-Class selector are similar to pin selector but start by a point.
+Class selector are similar to pin selector but start with a point.
 
 Example :
 
@@ -66,11 +64,17 @@ At the moment, only a few set of properties are implemented.
 
 #### class [text, text with capture]
 
-class gives the name of the name of the destinantion class.
+class gives the name of the name of the destination class.
 
 If the selector contains capture(s), captured parts could be used to set the destination class.
 
 default: "default"
+
+#### length [int > 0]
+
+length gives the length of the pin. Should be comprise in [100, 300] interval with increment of 50 to respect [KLC](http://kicad-pcb.org/libraries/klc/) convention.
+
+default: 200
 
 ### Class properties
 
