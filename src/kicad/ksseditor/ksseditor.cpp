@@ -9,3 +9,8 @@ KssEditor::KssEditor(QWidget *parent)
     font.setStyleHint(QFont::Monospace);
     setFont(font);
 }
+
+void KssEditor::dragEnterEvent(QDragEnterEvent *event)
+{
+    event->ignore();
+}

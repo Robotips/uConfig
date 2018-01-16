@@ -15,6 +15,10 @@ public:
 
 protected:
     KSSSyntax *_syntax;
+
+    // QWidget interface
+protected:
+    virtual void dragEnterEvent(QDragEnterEvent *event);
 };
 
 #endif // KSSEDITOR_H
