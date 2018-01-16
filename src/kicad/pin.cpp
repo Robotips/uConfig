@@ -213,6 +213,36 @@ QString Pin::electricalTypeString() const
     return "I";
 }
 
+QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
+{
+    switch (electricalType)
+    {
+    case Pin::Input:
+        return QStringLiteral("input");
+    case Pin::Output:
+        return QStringLiteral("output");
+    case Pin::Bidir:
+        return QStringLiteral("bi-directional");
+    case Pin::Tristate:
+        return QStringLiteral("tristate");
+    case Pin::Passive:
+        return QStringLiteral("passive");
+    case Pin::Unspecified:
+        return QStringLiteral("unspecified");
+    case Pin::PowerIn:
+        return QStringLiteral("power in");
+    case Pin::PowerOut:
+        return QStringLiteral("power out");
+    case Pin::OpenCollector:
+        return QStringLiteral("open collector");
+    case Pin::OpenEmitter:
+        return QStringLiteral("open emitter");
+    case Pin::NotConnected:
+        return QStringLiteral("not connected");
+    }
+    return QStringLiteral("input");
+}
+
 void Pin::setElectricalType(const ElectricalType &electricalType)
 {
     _electricalType = electricalType;

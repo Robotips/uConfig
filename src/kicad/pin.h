@@ -74,6 +74,7 @@ public:
 
     ElectricalType electricalType() const;
     QString electricalTypeString() const;
+    static QString electricalTypeDesc(const Pin::ElectricalType &electricalType);
     void setElectricalType(const ElectricalType &electricalType);
     void setElectricalType(char c);
 
