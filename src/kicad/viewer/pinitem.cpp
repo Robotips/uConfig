@@ -54,19 +54,99 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     {
         linesInvert.append(i-linesInvert.count());
         i = _pin->name().indexOf('~', i+1);
-        qDebug()<<i;
     }
     if (linesInvert.count() % 2 == 1)
         linesInvert.append(_pin->name().length()-linesInvert.count());
 
+    QPolygon polygon;
     QString name = _pin->name();
     name.remove('~');
-    qDebug()<<linesInvert<<_pin->name()<<name;
     switch (_pin->direction())
     {
+    case Pin::Up:
+        painter->rotate(-90);
+    case Pin::Right:
+        painter->drawLine(3, 0, _pin->length()/ratio, 0);
+        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
+        switch (_pin->pinType())
+        {
+        case Pin::InvertedClock:
+            painter->drawLine(_pin->length()/ratio+8, 0, _pin->length()/ratio,  5);
+            painter->drawLine(_pin->length()/ratio+8, 0, _pin->length()/ratio, -5);
+        case Pin::Invert:
+            painter->setBrush(Qt::white);
+            painter->drawEllipse(QPoint(_pin->length()/ratio-5, 0), 5, 5);
+            break;
+        case Pin::ClockLow:
+            painter->drawLine(_pin->length()/ratio,      0, _pin->length()/ratio-10, -10);
+            painter->drawLine(_pin->length()/ratio-10, -10, _pin->length()/ratio-10, 0);
+        case Pin::Clock:
+            painter->drawLine(_pin->length()/ratio+8, 0, _pin->length()/ratio,  5);
+            painter->drawLine(_pin->length()/ratio+8, 0, _pin->length()/ratio, -5);
+            break;
+        case Pin::LowIn:
+            painter->drawLine(_pin->length()/ratio,      0, _pin->length()/ratio-10, -10);
+            painter->drawLine(_pin->length()/ratio-10, -10, _pin->length()/ratio-10, 0);
+            break;
+        case Pin::LowOut:
+            painter->drawLine(_pin->length()/ratio, -10, _pin->length()/ratio-10, 0);
+            break;
+        case Pin::FallingEdge:
+            painter->setBrush(Qt::white);
+            polygon << QPoint(_pin->length()/ratio, 5) << QPoint(_pin->length()/ratio-10, 0) << QPoint(_pin->length()/ratio, -5);
+            painter->drawPolygon(polygon);
+            break;
+        case Pin::NonLogic:
+            painter->drawLine(_pin->length()/ratio+5, -5, _pin->length()/ratio-5,  5);
+            painter->drawLine(_pin->length()/ratio+5,  5, _pin->length()/ratio-5, -5);
+            break;
+        }
+        painter->setPen(textColor);
+        painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
+        for (int l=0; l<linesInvert.count(); l+=2)
+        {
+            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+        }
+        break;
+    case Pin::Down:
+        painter->rotate(-90);
     case Pin::Left:
         painter->drawLine(-3, 0, -_pin->length()/ratio, 0);
         painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
+        switch (_pin->pinType())
+        {
+        case Pin::InvertedClock:
+            painter->drawLine(-_pin->length()/ratio-8, 0, -_pin->length()/ratio,  5);
+            painter->drawLine(-_pin->length()/ratio-8, 0, -_pin->length()/ratio, -5);
+        case Pin::Invert:
+            painter->setBrush(Qt::white);
+            painter->drawEllipse(QPoint(-_pin->length()/ratio+5, 0), 5, 5);
+            break;
+        case Pin::ClockLow:
+            painter->drawLine(-_pin->length()/ratio,      0, -_pin->length()/ratio+10, -10);
+            painter->drawLine(-_pin->length()/ratio+10, -10, -_pin->length()/ratio+10, 0);
+        case Pin::Clock:
+            painter->drawLine(-_pin->length()/ratio-8, 0, -_pin->length()/ratio,  5);
+            painter->drawLine(-_pin->length()/ratio-8, 0, -_pin->length()/ratio, -5);
+            break;
+        case Pin::LowIn:
+            painter->drawLine(-_pin->length()/ratio,      0, -_pin->length()/ratio+10, -10);
+            painter->drawLine(-_pin->length()/ratio+10, -10, -_pin->length()/ratio+10, 0);
+            break;
+        case Pin::LowOut:
+            painter->drawLine(-_pin->length()/ratio, -10, -_pin->length()/ratio+10, 0);
+            break;
+        case Pin::FallingEdge:
+            painter->setBrush(Qt::white);
+            polygon << QPoint(-_pin->length()/ratio, 5) << QPoint(-_pin->length()/ratio+10, 0) << QPoint(-_pin->length()/ratio, -5);
+            painter->drawPolygon(polygon);
+            break;
+        case Pin::NonLogic:
+            painter->drawLine(-_pin->length()/ratio-5, -5, -_pin->length()/ratio+5,  5);
+            painter->drawLine(-_pin->length()/ratio-5,  5, -_pin->length()/ratio+5, -5);
+            break;
+        }
         painter->setPen(textColor);
         painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
         for (int l=0; l<linesInvert.count(); l+=2)
@@ -74,43 +154,6 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             painter->drawLine(-_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
                               -_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
         }
-        break;
-    case Pin::Right:
-        painter->drawLine(3, 0, _pin->length()/ratio, 0);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
-        painter->setPen(textColor);
-        painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
-        for (int l=0; l<linesInvert.count(); l+=2)
-        {
-            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
-                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
-        }
-        break;
-    case Pin::Up:
-        painter->drawLine(0, -3, 0, -_pin->length()/ratio);
-        painter->rotate(-90);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
-        painter->setPen(textColor);
-        painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
-        for (int l=0; l<linesInvert.count(); l+=2)
-        {
-            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
-                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
-        }
-        painter->rotate(90);
-        break;
-    case Pin::Down:
-        painter->drawLine(0, 3, 0, _pin->length()/ratio);
-        painter->rotate(90);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
-        painter->setPen(textColor);
-        painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
-        for (int l=0; l<linesInvert.count(); l+=2)
-        {
-            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
-                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
-        }
-        painter->rotate(-90);
         break;
     }
 }
@@ -127,16 +170,16 @@ QRectF PinItem::boundingRect() const
     switch (_pin->direction())
     {
     case Pin::Left:
-        rect = QRect(4, -metrics.height(), -name.count()*50/ratio - _pin->length()/ratio - 14, metrics.height()*3/2);
+        rect = QRect(4, -metrics.height()-1, -name.count()*50/ratio - _pin->length()/ratio - 14, metrics.height()*3/2+2);
         break;
     case Pin::Right:
-        rect = QRect(-4, -metrics.height(), name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height()*3/2);
+        rect = QRect(-4, -metrics.height()-1, name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height()*3/2+2);
         break;
     case Pin::Up:
-        rect = QRect(-metrics.height(), 4, metrics.height()*3/2, -name.count()*50/ratio - _pin->length()/ratio - 14);
+        rect = QRect(-metrics.height()/2-1, 4, metrics.height()*3/2+2, -name.count()*50/ratio - _pin->length()/ratio - 14);
         break;
     case Pin::Down:
-        rect = QRect(-metrics.height()/2, -4, metrics.height()*3/2, name.count()*50/ratio + _pin->length()/ratio + 14);
+        rect = QRect(-metrics.height()/2-1, -4, metrics.height()*3/2+2, name.count()*50/ratio + _pin->length()/ratio + 14);
         break;
     }
     return rect.normalized();
