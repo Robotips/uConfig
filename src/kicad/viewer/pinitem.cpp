@@ -2,6 +2,7 @@
 
 #include <QCursor>
 #include <QPainter>
+#include <QDebug>
 
 const int PinItem::ratio=5;
 
@@ -46,7 +47,21 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
     painter->setFont(font);
     painter->drawEllipse(-3, -3, 6, 6);
 
+    // line invert draw
+    QList<int> linesInvert;
+    int i = _pin->name().indexOf('~');
+    while (i >= 0)
+    {
+        linesInvert.append(i-linesInvert.count());
+        i = _pin->name().indexOf('~', i+1);
+        qDebug()<<i;
+    }
+    if (linesInvert.count() % 2 == 1)
+        linesInvert.append(_pin->name().length()-linesInvert.count());
+
     QString name = _pin->name();
+    name.remove('~');
+    qDebug()<<linesInvert<<_pin->name()<<name;
     switch (_pin->direction())
     {
     case Pin::Left:
@@ -54,12 +69,22 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
+        for (int l=0; l<linesInvert.count(); l+=2)
+        {
+            painter->drawLine(-_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                              -_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+        }
         break;
     case Pin::Right:
         painter->drawLine(3, 0, _pin->length()/ratio, 0);
         painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
+        for (int l=0; l<linesInvert.count(); l+=2)
+        {
+            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+        }
         break;
     case Pin::Up:
         painter->drawLine(0, -3, 0, -_pin->length()/ratio);
@@ -67,6 +92,11 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
+        for (int l=0; l<linesInvert.count(); l+=2)
+        {
+            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+        }
         painter->rotate(90);
         break;
     case Pin::Down:
@@ -75,6 +105,11 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
         painter->setPen(textColor);
         painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
+        for (int l=0; l<linesInvert.count(); l+=2)
+        {
+            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+        }
         painter->rotate(-90);
         break;
     }
