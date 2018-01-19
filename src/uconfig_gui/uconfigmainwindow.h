@@ -21,8 +21,10 @@ class UConfigMainWindow : public QMainWindow
 public:
     UConfigMainWindow(QWidget *parent = Q_NULLPTR);
 
-protected slots:
+public slots:
     void importComponents(const QString &fileName = QString());
+
+protected slots:
     void saveLib();
     void saveLibAs(const QString &fileName = QString());
 
