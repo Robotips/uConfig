@@ -69,6 +69,7 @@ public:
 
     PinType pinType() const;
     QString pinTypeString() const;
+    static QString pinTypeDesc(const Pin::PinType &pinType);
     void setPinType(const PinType &pinType);
     void setPinType(const QString &pinType);
 

@@ -23,6 +23,7 @@ public:
         PinNumber,
         PinName,
         PinElecType,
+        PinStyle,
         ColumnCount
     };
 

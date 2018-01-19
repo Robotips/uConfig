@@ -149,6 +149,34 @@ QString Pin::pinTypeString() const
     return "";
 }
 
+QString Pin::pinTypeDesc(const Pin::PinType &pinType)
+{
+    switch (pinType)
+    {
+    case Pin::Normal:
+        return QStringLiteral("input");
+    case Pin::NotVisible:
+        return QStringLiteral("not visible");
+    case Pin::Invert:
+        return QStringLiteral("inverted");
+    case Pin::Clock:
+        return QStringLiteral("clock");
+    case Pin::InvertedClock:
+        return QStringLiteral("inverted clock");
+    case Pin::LowIn:
+        return QStringLiteral("low in");
+    case Pin::ClockLow:
+        return QStringLiteral("clock low");
+    case Pin::LowOut:
+        return QStringLiteral("low out");
+    case Pin::FallingEdge:
+        return QStringLiteral("falling edge");
+    case Pin::NonLogic:
+        return QStringLiteral("non logic");
+    }
+    return QStringLiteral("");
+}
+
 void Pin::setPinType(const Pin::PinType &pinType)
 {
     _pinType = pinType;
