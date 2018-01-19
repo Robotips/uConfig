@@ -350,6 +350,20 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
                     stream.readLine();
                 }
             }
+            else if (start.startsWith("S"))
+            {
+                QRect rect;
+                int n;
+                stream >> n;
+                rect.setX(n);
+                stream >> n;
+                rect.setY(n);
+                stream >> n;
+                rect.setRight(n);
+                stream >> n;
+                rect.setBottom(n);
+                component._rect = rect;
+            }
         }
     } while (!stream.atEnd());
 
