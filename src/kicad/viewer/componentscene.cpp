@@ -26,8 +26,8 @@ void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
         return;
 
     int gridSize = 20;
-    if (rect.width() > 1200)
-        gridSize = 100;
+    if (rect.width() > 4000)
+        gridSize = 40;
     if (_prevGridSize != gridSize)
         update();
     _prevGridSize = gridSize;
@@ -38,11 +38,15 @@ void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
     QVarLengthArray<QLineF, 100> lines;
 
     for (qreal x = left; x < rect.right(); x += gridSize)
-        lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+        if (x != 0)
+            lines.append(QLineF(x, rect.top(), x, rect.bottom()));
     for (qreal y = top; y < rect.bottom(); y += gridSize)
-        lines.append(QLineF(rect.left(), y, rect.right(), y));
+        if (y != 0)
+            lines.append(QLineF(rect.left(), y, rect.right(), y));
 
-    painter->setPen(Qt::darkGray);
+    painter->setPen(Qt::lightGray);
     painter->drawLines(lines.data(), lines.size());
-
+    painter->setPen(Qt::darkGray);
+    painter->drawLine(QLineF(rect.left(), 0, rect.right(), 0));
+    painter->drawLine(QLineF(0, rect.top(), 0, rect.bottom()));
 }

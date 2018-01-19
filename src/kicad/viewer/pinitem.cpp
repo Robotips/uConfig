@@ -162,6 +162,7 @@ QRectF PinItem::boundingRect() const
 {
     QRectF rect;
     QString name = _pin->name();
+    name.remove('~');
     QFont font("monospace");
     font.setPointSizeF(12);
     font.setStyleHint(QFont::Monospace);
@@ -176,10 +177,10 @@ QRectF PinItem::boundingRect() const
         rect = QRect(-4, -metrics.height()-1, name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height()*3/2+2);
         break;
     case Pin::Up:
-        rect = QRect(-metrics.height()/2-1, 4, metrics.height()*3/2+2, -name.count()*50/ratio - _pin->length()/ratio - 14);
+        rect = QRect(-metrics.height()-1, 4, metrics.height()*3/2+2, -name.count()*50/ratio - _pin->length()/ratio - 14);
         break;
     case Pin::Down:
-        rect = QRect(-metrics.height()/2-1, -4, metrics.height()*3/2+2, name.count()*50/ratio + _pin->length()/ratio + 14);
+        rect = QRect(-metrics.height()-1, -4, metrics.height()*3/2+2, name.count()*50/ratio + _pin->length()/ratio + 14);
         break;
     }
     return rect.normalized();
@@ -187,8 +188,9 @@ QRectF PinItem::boundingRect() const
 
 QPainterPath PinItem::shape() const
 {
-    QRectF rect;
+    QRectF textRect, numRect;
     QString name = _pin->name();
+    name.remove('~');
     QFont font("monospace");
     font.setPointSizeF(12);
     font.setStyleHint(QFont::Monospace);
@@ -197,21 +199,26 @@ QPainterPath PinItem::shape() const
     switch (_pin->direction())
     {
     case Pin::Left:
-        rect = QRect(4, -metrics.height()/2, -name.count()*50/ratio - _pin->length()/ratio - 14, metrics.height());
+        textRect = QRect(-_pin->length()/ratio, -metrics.height()/2, -name.count()*50/ratio - 10, metrics.height());
+        numRect = QRect(4, 4, -_pin->length()/ratio-4, -metrics.height());
         break;
     case Pin::Right:
-        rect = QRect(-4, -metrics.height()/2, name.count()*50/ratio + _pin->length()/ratio + 14, metrics.height());
+        textRect = QRect(_pin->length()/ratio, -metrics.height()/2, name.count()*50/ratio + 10, metrics.height());
+        numRect = QRect(-4, 4, _pin->length()/ratio+4, -metrics.height());
         break;
     case Pin::Up:
-        rect = QRect(-metrics.height()/2, 0, metrics.height(), -name.count()*50/ratio - _pin->length()/ratio - 14);
+        textRect = QRect(-metrics.height()/2, -_pin->length()/ratio, metrics.height(), -name.count()*50/ratio - 10);
+        numRect = QRect(4, 4, -metrics.height(), -_pin->length()/ratio-4);
         break;
     case Pin::Down:
-        rect = QRect(-metrics.height()/2, 0, metrics.height(), name.count()*50/ratio + _pin->length()/ratio + 14);
+        textRect = QRect(-metrics.height()/2, _pin->length()/ratio, metrics.height(), name.count()*50/ratio + 10);
+        numRect = QRect(4, -4, -metrics.height(), _pin->length()/ratio+4);
         break;
     }
 
     QPainterPath path;
-    path.addRect(rect.normalized());
+    path.addRect(textRect.normalized());
+    path.addRect(numRect.normalized());
     return path;
 }
 

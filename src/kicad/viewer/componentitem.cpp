@@ -29,6 +29,7 @@ Component *ComponentItem::component() const
 
 void ComponentItem::setComponent(Component *component)
 {
+    prepareGeometryChange();
     _component = component;
     _pinItemMap.clear();
 
@@ -38,7 +39,7 @@ void ComponentItem::setComponent(Component *component)
         pinItem->setParentItem(this);
         _pinItemMap.insert(pin, pinItem);
     }
-    _numRect = QRect(_component->rect().topLeft() / PinItem::ratio, _component->rect().size() / PinItem::ratio);
+    _numRect = QRect(_component->rect().topLeft() / PinItem::ratio, _component->rect().size() / PinItem::ratio).normalized();
 
     update();
 }
