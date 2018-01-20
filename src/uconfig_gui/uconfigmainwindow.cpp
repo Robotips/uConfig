@@ -140,6 +140,7 @@ void UConfigMainWindow::selectComponent(Component *component)
 {
     _componentsPinTableView->setComponent(component);
     _componentViewer->setComponent(component);
+    _componentInfosEditor->setComponent(component);
 
     if (!component)
         return;
@@ -267,6 +268,16 @@ void UConfigMainWindow::createDocks()
     componentsListContent->setLayout(componentsListLayout);
     _componentsListDock->setWidget(componentsListContent);
     addDockWidget(Qt::LeftDockWidgetArea, _componentsListDock);
+
+    _componentInfosDock = new QDockWidget(tr("Component infos"), this);
+    QWidget *componentInfosContent = new QWidget(_componentsListDock);
+    QLayout *componentInfosLayout = new QVBoxLayout();
+    componentInfosLayout->setContentsMargins(5, 5, 5, 5);
+    _componentInfosEditor = new ComponentInfosEditor();
+    componentInfosLayout->addWidget(_componentInfosEditor);
+    componentInfosContent->setLayout(componentInfosLayout);
+    _componentInfosDock->setWidget(componentInfosContent);
+    addDockWidget(Qt::LeftDockWidgetArea, _componentInfosDock);
 }
 
 void UConfigMainWindow::createToolbarsMenus()

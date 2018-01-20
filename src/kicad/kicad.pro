@@ -39,7 +39,8 @@ SOURCES += \
     $$PWD/ksseditor/ksseditor.cpp \
     $$PWD/ksseditor/ksssyntax.cpp \
     viewer/componentscene.cpp \
-    itemmodel/componentelectricaldelegate.cpp
+    itemmodel/componentelectricaldelegate.cpp \
+    itemmodel/componentinfoseditor.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -68,7 +69,8 @@ HEADERS += \
     $$PWD/ksseditor/ksseditor.h \
     $$PWD/ksseditor/ksssyntax.h \
     viewer/componentscene.h \
-    itemmodel/componentelectricaldelegate.h
+    itemmodel/componentelectricaldelegate.h \
+    itemmodel/componentinfoseditor.h
 
 unix {
     target.path = /usr/lib

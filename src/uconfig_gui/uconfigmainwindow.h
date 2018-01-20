@@ -14,6 +14,7 @@
 #include "itemmodel/componentlibtreeview.h"
 #include "itemmodel/componentpinstableview.h"
 #include "ksseditor/ksseditor.h"
+#include "itemmodel/componentinfoseditor.h"
 
 class UConfigMainWindow : public QMainWindow
 {
@@ -40,6 +41,7 @@ protected:
     void createWidgets();
     QSplitter *_splitter;
     ComponentLibTreeView *_componentsTreeView;
+    ComponentInfosEditor *_componentInfosEditor;
     ComponentPinsTableView *_componentsPinTableView;
     ComponentViewer *_componentViewer;
     QComboBox *_ruleComboBox;
@@ -50,6 +52,7 @@ protected:
 
     void createDocks();
     QDockWidget *_componentsListDock;
+    QDockWidget *_componentInfosDock;
 
     void createToolbarsMenus();
 
