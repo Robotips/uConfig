@@ -1,20 +1,18 @@
 #ifndef COMPONENTINFOSEDITOR_H
 #define COMPONENTINFOSEDITOR_H
 
-#include "kicad_global.h"
-
 #include <QWidget>
 
 #include <QLineEdit>
 #include <QComboBox>
 
-#include "component.h"
+#include "project/uconfigproject.h"
 
-class KICAD_EXPORT ComponentInfosEditor : public QWidget
+class ComponentInfosEditor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ComponentInfosEditor(QWidget *parent = Q_NULLPTR);
+    explicit ComponentInfosEditor(UConfigProject *project);
 
     Component *component() const;
 
@@ -23,12 +21,18 @@ signals:
 public slots:
     void setComponent(Component *component);
 
+protected slots:
+    void setComponentName();
+    void setComponentReference();
+
 protected:
+    UConfigProject *_project;
     Component *_component;
 
     void createWidgets();
     QLineEdit *_nameEdit;
     QComboBox *_packageCombo;
+    QLineEdit *_referenceEdit;
 };
 
 #endif // COMPONENTINFOSEDITOR_H

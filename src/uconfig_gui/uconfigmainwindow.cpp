@@ -187,7 +187,7 @@ void UConfigMainWindow::createDocks()
     QWidget *componentInfosContent = new QWidget(_componentsListDock);
     QLayout *componentInfosLayout = new QVBoxLayout();
     componentInfosLayout->setContentsMargins(5, 5, 5, 5);
-    _componentInfosEditor = new ComponentInfosEditor();
+    _componentInfosEditor = new ComponentInfosEditor(_project);
     componentInfosLayout->addWidget(_componentInfosEditor);
     componentInfosContent->setLayout(componentInfosLayout);
     _componentInfosDock->setWidget(componentInfosContent);

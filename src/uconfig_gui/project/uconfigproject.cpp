@@ -127,6 +127,25 @@ void UConfigProject::selectComponent(Component *component)
     }*/
 }
 
+void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType, const QVariant &value)
+{
+    if (!_activeComponent)
+        return;
+
+    switch (infoType)
+    {
+    case UConfigProject::ComponentNameInfo:
+        _activeComponent->setName(value.toString());
+        break;
+    case UConfigProject::ComponentPackagesInfo:
+        _activeComponent->footPrints() = value.toStringList();
+        break;
+    case UConfigProject::ComponentReferenceInfo:
+        _activeComponent->setPrefix(value.toString());
+        break;
+    }
+}
+
 QWidget *UConfigProject::window() const
 {
     return _window;

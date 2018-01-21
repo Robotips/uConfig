@@ -17,6 +17,12 @@ public:
     QWidget *window() const;
     void setWindow(QWidget *window);
 
+    enum ComponentInfoType {
+        ComponentNameInfo,
+        ComponentPackagesInfo,
+        ComponentReferenceInfo
+    };
+
 public slots:
     void newLib();
     void openLib(const QString &libFileName=QString());
@@ -25,6 +31,8 @@ public slots:
     void importComponents(const QString &fileName=QString());
 
     void selectComponent(Component *component);
+
+    void setComponentInfo(ComponentInfoType infoType, const QVariant &value);
 
 signals:
     void libChanged(Lib *lib);

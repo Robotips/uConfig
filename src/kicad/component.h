@@ -35,6 +35,7 @@ public:
     const QStringList &aliases() const;
     void addAlias(const QString &alias);
 
+    QStringList &footPrints();
     const QStringList &footPrints() const;
     void addFootPrint(const QString &footprint);
 

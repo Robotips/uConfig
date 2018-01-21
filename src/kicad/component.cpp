@@ -141,6 +141,15 @@ void Component::addAlias(const QString &alias)
 }
 
 /**
+ * @brief Returns a reference to possible footprint list
+ * @return non const footprint list
+ */
+QStringList &Component::footPrints()
+{
+    return _footPrints;
+}
+
+/**
  * @brief Returns possible footprint list
  * @return footprint list
  */

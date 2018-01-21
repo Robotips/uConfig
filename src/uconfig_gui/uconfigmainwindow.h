@@ -16,7 +16,7 @@
 #include "itemmodel/componentlibtreeview.h"
 #include "itemmodel/componentpinstableview.h"
 #include "ksseditor/ksseditor.h"
-#include "itemmodel/componentinfoseditor.h"
+#include "componentinfoseditor.h"
 
 class UConfigMainWindow : public QMainWindow
 {

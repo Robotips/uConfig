@@ -18,7 +18,8 @@ SOURCES += \
         $$PWD/importer/datasheetprocesspage.cpp \
         $$PWD/importer/datasheetthread.cpp \
         $$PWD/importer/componentspage.cpp \
-    project/uconfigproject.cpp
+        $$PWD/project/uconfigproject.cpp \
+        $$PWD/componentinfoseditor.cpp
 
 HEADERS  += \
         $$PWD/uconfigmainwindow.h \
@@ -30,7 +31,8 @@ HEADERS  += \
         $$PWD/importer/datasheetprocesspage.h \
         $$PWD/importer/datasheetthread.h \
         $$PWD/importer/componentspage.h \
-    project/uconfigproject.h
+        $$PWD/project/uconfigproject.h \
+        $$PWD/componentinfoseditor.h
 
 RESOURCES += \
         $$PWD/img.qrc

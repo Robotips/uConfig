@@ -2,9 +2,9 @@
 
 #include <QFormLayout>
 
-ComponentInfosEditor::ComponentInfosEditor(QWidget *parent)
-    : QWidget(parent)
+ComponentInfosEditor::ComponentInfosEditor(UConfigProject *project)
 {
+    _project = project;
     createWidgets();
     setComponent(Q_NULLPTR);
 }
@@ -21,6 +21,7 @@ void ComponentInfosEditor::setComponent(Component *component)
     {
         _nameEdit->setEnabled(false);
         _packageCombo->setEnabled(false);
+        _referenceEdit->setEnabled(false);
         return;
     }
 
@@ -30,6 +31,19 @@ void ComponentInfosEditor::setComponent(Component *component)
     _packageCombo->setEnabled(true);
     _packageCombo->clear();
     _packageCombo->addItems(component->footPrints());
+
+    _referenceEdit->setEnabled(true);
+    _referenceEdit->setText(component->prefix());
+}
+
+void ComponentInfosEditor::setComponentName()
+{
+    _project->setComponentInfo(UConfigProject::ComponentNameInfo, _nameEdit->text());
+}
+
+void ComponentInfosEditor::setComponentReference()
+{
+    _project->setComponentInfo(UConfigProject::ComponentReferenceInfo, _referenceEdit->text());
 }
 
 void ComponentInfosEditor::createWidgets()
@@ -38,11 +52,16 @@ void ComponentInfosEditor::createWidgets()
     layout->setContentsMargins(0, 0, 0, 0);
 
     _nameEdit = new QLineEdit();
+    connect(_nameEdit, &QLineEdit::editingFinished, this, &ComponentInfosEditor::setComponentName);
     layout->addRow(tr("Name"), _nameEdit);
 
     _packageCombo = new QComboBox();
     _packageCombo->setEditable(true);
     layout->addRow(tr("Package"), _packageCombo);
+
+    _referenceEdit = new QLineEdit();
+    connect(_referenceEdit, &QLineEdit::editingFinished, this, &ComponentInfosEditor::setComponentReference);
+    layout->addRow(tr("Reference"), _referenceEdit);
 
     setLayout(layout);
 }
