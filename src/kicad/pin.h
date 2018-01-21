@@ -7,6 +7,8 @@
 #include <QPoint>
 #include <QTextStream>
 
+class Component;
+
 class KICAD_EXPORT Pin
 {
 public:
@@ -85,6 +87,9 @@ public:
     int length() const;
     void setLength(int length);
 
+    Component *component() const;
+    void setComponent(Component *component);
+
     bool isValid() const;
 
     friend bool operator<(const Pin &pin1, const Pin &pin);
@@ -103,6 +108,8 @@ private:
     int _layer;
     int _length;
     bool _valid;
+
+    Component *_component;
 };
 
 #endif  // PIN_H

@@ -8,6 +8,7 @@ Pin::Pin()
     _layer = 1;
     _length = 300;
     _valid = true;
+    _component = Q_NULLPTR;
 }
 
 Pin::Pin(const QString &name, const QString &padName)
@@ -17,6 +18,7 @@ Pin::Pin(const QString &name, const QString &padName)
     _layer = 1;
     _length = 300;
     _valid = true;
+    _component = Q_NULLPTR;
 }
 
 Pin::Pin(const QString &name, const int padnumber)
@@ -334,6 +336,16 @@ int Pin::length() const
 void Pin::setLength(int length)
 {
     _length = length;
+}
+
+Component *Pin::component() const
+{
+    return _component;
+}
+
+void Pin::setComponent(Component *component)
+{
+    _component = component;
 }
 
 bool Pin::isValid() const

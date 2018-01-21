@@ -4,6 +4,8 @@
 #include <QPainter>
 #include <QDebug>
 
+#include "component.h"
+
 const int PinItem::ratio=5;
 
 PinItem::PinItem(Pin *pin)
@@ -67,7 +69,10 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->rotate(-90);
     case Pin::Right:
         painter->drawLine(3, 0, _pin->length()/ratio, 0);
-        painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
+
+        if (_pin->component()->showPadName())
+            painter->drawText(QRect(0, 3, _pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
+
         switch (_pin->pinType())
         {
         case Pin::InvertedClock:
@@ -102,18 +107,25 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             break;
         }
         painter->setPen(textColor);
-        painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
-        for (int l=0; l<linesInvert.count(); l+=2)
+        if (_pin->component()->showPinName())
         {
-            painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
-                              _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+            painter->drawText(QRect(_pin->length()/ratio+10, -painter->fontMetrics().height()/2, name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignLeft, name);
+            for (int l=0; l<linesInvert.count(); l+=2)
+            {
+                painter->drawLine(_pin->length()/ratio+8 + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                                  _pin->length()/ratio+8 + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+            }
         }
         break;
+
     case Pin::Down:
         painter->rotate(-90);
     case Pin::Left:
         painter->drawLine(-3, 0, -_pin->length()/ratio, 0);
-        painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
+
+        if (_pin->component()->showPadName())
+            painter->drawText(QRect(0, 3, -_pin->length()/ratio, -painter->fontMetrics().height()).normalized(), Qt::AlignHCenter, _pin->padName());
+
         switch (_pin->pinType())
         {
         case Pin::InvertedClock:
@@ -148,11 +160,15 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             break;
         }
         painter->setPen(textColor);
-        painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
-        for (int l=0; l<linesInvert.count(); l+=2)
+
+        if (_pin->component()->showPinName())
         {
-            painter->drawLine(-_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
-                              -_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+            painter->drawText(QRect(-_pin->length()/ratio-10, -painter->fontMetrics().height()/2, -name.count()*50/ratio, painter->fontMetrics().height()).normalized(), Qt::AlignRight, name);
+            for (int l=0; l<linesInvert.count(); l+=2)
+            {
+                painter->drawLine(-_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l]*50/ratio, -painter->fontMetrics().height()/2,
+                                  -_pin->length()/ratio-8-name.count()*50/ratio + linesInvert[l+1]*50/ratio, -painter->fontMetrics().height()/2);
+            }
         }
         break;
     }

@@ -13,6 +13,8 @@ Component::Component(const QString &name)
     : _prefix("U")
 {
     setName(name);
+    _showPinName = true;
+    _showPadName = true;
     _valid = true;
 }
 
@@ -27,6 +29,8 @@ Component::Component(const Component &other)
     _alias = other._alias;
     _footPrints = other._footPrints;
     _rect = other._rect;
+    _showPinName = other._showPinName;
+    _showPadName = other._showPadName;
     _valid = other._valid;
 
     for (int i=0; i<other._pins.size(); i++)
@@ -86,6 +90,7 @@ const QList<Pin *> Component::pins() const
  */
 void Component::addPin(Pin *pin)
 {
+    pin->setComponent(this);
     _pins.append(pin);
 }
 
@@ -180,6 +185,42 @@ void Component::sort()
 }
 
 /**
+ * @brief Pin name is shown if true
+ * @return true if pin name is shown
+ */
+bool Component::showPinName() const
+{
+    return _showPinName;
+}
+
+/**
+ * @brief Makes pin name visible
+ * @param showPinName Pin name is shown if true
+ */
+void Component::setShowPinName(bool showPinName)
+{
+    _showPinName = showPinName;
+}
+
+/**
+ * @brief Pad name is shown if true
+ * @return true if pad name is shown
+ */
+bool Component::showPadName() const
+{
+    return _showPadName;
+}
+
+/**
+ * @brief Makes pad name visible
+ * @param showPadName Pad name is shown if true
+ */
+void Component::setShowPadName(bool showPadName)
+{
+    _showPadName = showPadName;
+}
+
+/**
  * @brief Reorganizes component pins like a simple DIP/SOIC package
  */
 void Component::reorganizeToPackageStyle()
@@ -190,8 +231,8 @@ void Component::reorganizeToPackageStyle()
     int rightCount = _pins.count() / 2;
     int leftCount = _pins.count() - rightCount;
 
-    int leftOffset = leftCount * 100 / 2 - 50;
-    int rightOffset = rightCount * 100 / 2 - 50;
+    int leftOffset = ceil(leftCount / 2.0) * 100;
+    int rightOffset = ceil(rightCount / 2.0) * 100;
 
     int margin = 0;
     int leftMargin = 0, rightMargin = 0;
@@ -276,6 +317,7 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
 {
     /*QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) "
                    "([A-Z]) ([A-Z]) ([A-Z]) ([A-Z]+)$");*/
+    QString dummy;
     bool draw = false;
     do
     {
@@ -294,6 +336,15 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
             QString prefix;
             stream >> prefix;
             component.setPrefix(prefix);
+
+            stream >> dummy;
+            stream >> dummy; // text offset TODO
+
+            QString option;
+            stream >> option;
+            component._showPadName = (option == "Y");
+            stream >> option;
+            component._showPinName = (option == "Y");
 
             stream.readLine();
         }
@@ -385,7 +436,11 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
     stream << "#" << '\n' << "# " << component._name << '\n' << "#" << '\n';
 
     // def
-    stream << "DEF " << component._name << " " << component._prefix << " 0 40 Y Y 1 F N" << '\n';
+    stream << "DEF " << component._name << " " << component._prefix << " 0 40 ";
+
+    stream << (component._showPadName ? "Y " : "N ");
+    stream << (component._showPinName ? "Y " : "N ");
+    stream << "1 F N" << '\n';
     stream << "F0 \"" << component._prefix << "\" " << component._rect.right()-50 << " " << -component._rect.bottom()-50 << " 50 H V C CNN" << '\n';
     stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << '\n';
     stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';

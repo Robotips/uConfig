@@ -41,6 +41,12 @@ public:
     const QRect &rect() const;
     void setRect(const QRect &rect);
 
+    bool showPinName() const;
+    void setShowPinName(bool showPinName);
+
+    bool showPadName() const;
+    void setShowPadName(bool showPadName);
+
     void sort();
     void reorganizeToPackageStyle();
 
@@ -60,6 +66,8 @@ private:
     QStringList _footPrints;
     QRect _rect;
     bool _valid;
+    bool _showPinName;
+    bool _showPadName;
     QImage _debugInfo;
 };
 
