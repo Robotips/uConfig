@@ -11,6 +11,7 @@ class PinListImporter : public QWizard
 public:
 
     PinListImporter(const QString &fileName, QWidget *parent = 0);
+    ~PinListImporter();
 
     enum ImportType
     {

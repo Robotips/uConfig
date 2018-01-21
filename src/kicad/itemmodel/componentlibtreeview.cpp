@@ -39,6 +39,8 @@ void ComponentLibTreeView::setLib(Lib *lib)
 void ComponentLibTreeView::addComponent(Component *component)
 {
     _model->addComponent(component);
+    resizeColumnToContents(0);
+    resizeColumnToContents(1);
 }
 
 QList<Component *> ComponentLibTreeView::components() const

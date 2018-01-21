@@ -1,7 +1,5 @@
 #include "uconfigmainwindow.h"
 
-#include "importer/pinlistimporter.h"
-
 #include <QApplication>
 #include <QScreen>
 #include <QMenuBar>
@@ -26,8 +24,8 @@
 #include "pinruler/rulesparser.h"
 #include "pinruler/rulesset.h"
 
-UConfigMainWindow::UConfigMainWindow(QWidget *parent)
-    : QMainWindow(parent)
+UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
+    : _project(project)
 {
     setWindowIcon(QIcon(":/icons/img/uConfig.ico"));
     createWidgets();
@@ -37,25 +35,16 @@ UConfigMainWindow::UConfigMainWindow(QWidget *parent)
     reloadRuleSetList();
     setAcceptDrops(true);
 
-    resize(QApplication::primaryScreen()->size()*.7);
+    connect(_project, &UConfigProject::libChanged, _componentsTreeView, &ComponentLibTreeView::setLib);
+    connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
+    connect(_project, &UConfigProject::activeComponentChange, _componentsPinTableView, &ComponentPinsTableView::setComponent);
+    connect(_project, &UConfigProject::activeComponentChange, _componentViewer, &ComponentViewer::setComponent);
 
-#if 0
-    Datasheet datasheet;
-    //datasheet.open("../../../projects/DataSheets/mem/IS61WV25616BLL.pdf");
-    datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
-    datasheet.setDebugEnabled(true);
-    datasheet.analyse(0, 12);
-    foreach (DatasheetPackage *package, datasheet.packages())
-    {
-        Component *component = package->toComponent();
-        component->reorganizeToPackageStyle();
-        _componentsTreeView->addComponent(component);
-    }
-    if (!datasheet.packages().empty())
-    {
-        selectComponent(_componentsTreeView->lib()->components()[0]);
-    }
-#endif
+    resize(QApplication::primaryScreen()->size()*.7);
+}
+
+UConfigMainWindow::~UConfigMainWindow()
+{
 }
 
 void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -75,82 +64,7 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
     foreach (const QUrl &url, event->mimeData()->urls())
     {
         QString fileName = url.toLocalFile();
-        importComponents(fileName);
-    }
-}
-
-void UConfigMainWindow::importComponents(const QString &fileName)
-{
-    PinListImporter importer(fileName, this);
-    if (importer.exec() != QDialog::Accepted)
-        return;
-
-    foreach (Component *component, importer.components())
-    {
-        _componentsTreeView->addComponent(component);
-    }
-    if (!_componentsTreeView->lib()->components().empty())
-    {
-        selectComponent(_componentsTreeView->lib()->components()[0]);
-    }
-    _componentsTreeView->resizeColumnToContents(0);
-    _componentsTreeView->resizeColumnToContents(1);
-
-    _importedPathLib = importer.filePath();
-}
-
-void UConfigMainWindow::saveLib()
-{
-    saveLibAs(_pathLib);
-}
-
-void UConfigMainWindow::saveLibAs(const QString &fileName)
-{
-    QString libFileName;
-
-    if (fileName.isEmpty())
-    {
-        QFileDialog fileDialog(this);
-        fileDialog.setAcceptMode(QFileDialog::AcceptSave);
-        fileDialog.setDefaultSuffix(".lib");
-        fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
-        fileDialog.setWindowTitle(tr("Save Kicad library"));
-        if (!_importedPathLib.isEmpty())
-        {
-            libFileName = _importedPathLib;
-            libFileName.replace(QRegExp("(.*)\\.(pdf|csv)"), "\\1.lib");
-            fileDialog.selectFile(libFileName);
-        }
-        if (fileDialog.exec())
-            libFileName = fileDialog.selectedFiles().first();
-        if (libFileName.isEmpty())
-            return;
-    }
-    else
-        libFileName = fileName;
-
-    if (!libFileName.endsWith(".lib"))
-        libFileName.append(".lib");
-    _pathLib = libFileName;
-
-    _componentsTreeView->lib()->saveTo(libFileName);
-}
-
-void UConfigMainWindow::selectComponent(Component *component)
-{
-    _componentsPinTableView->setComponent(component);
-    _componentViewer->setComponent(component);
-    _componentInfosEditor->setComponent(component);
-
-    if (!component)
-        return;
-
-    organize(_ruleComboBox->currentText());
-    if (!component->debugInfo().isNull())
-    {
-        QImage image = component->debugInfo();
-        image = image.scaledToHeight(QApplication::primaryScreen()->size().height());
-        _pdfDebug->setPixmap(QPixmap::fromImage(image));
+        _project->importComponents(fileName);
     }
 }
 
@@ -245,7 +159,7 @@ void UConfigMainWindow::createWidgets()
     setStatusBar(new QStatusBar());
 
     connect(_componentViewer, &ComponentViewer::droppedFile,
-            this, &UConfigMainWindow::importComponents);
+            _project, &UConfigProject::importComponents);
 
     connect(_componentViewer, &ComponentViewer::pinsSelected,
             _componentsPinTableView, &ComponentPinsTableView::selectPins);
@@ -263,7 +177,7 @@ void UConfigMainWindow::createDocks()
     componentsListLayout->setContentsMargins(5, 5, 5, 5);
     _componentsTreeView = new ComponentLibTreeView();
     _componentsTreeView->setEditMode(true);
-    connect(_componentsTreeView, &ComponentLibTreeView::openedComponent, this, &UConfigMainWindow::selectComponent);
+    connect(_componentsTreeView, &ComponentLibTreeView::openedComponent, _project, &UConfigProject::selectComponent);
     componentsListLayout->addWidget(_componentsTreeView);
     componentsListContent->setLayout(componentsListLayout);
     _componentsListDock->setWidget(componentsListContent);
@@ -290,31 +204,47 @@ void UConfigMainWindow::createToolbarsMenus()
     // ============= File =============
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
 
-    QAction *openFileAction = new QAction(tr("&Import components..."),this);
-    openFileAction->setStatusTip(tr("Import components from various format of files"));
+    QAction *newFileAction = new QAction(tr("&New library..."), this);
+    newFileAction->setStatusTip(tr("Create a new library of components"));
+    newFileAction->setShortcut(QKeySequence::New);
+    newFileAction->setIcon(QIcon(":/icons/img/new"));
+    fileMenu->addAction(newFileAction);
+    toolBar->addAction(newFileAction);
+    connect(newFileAction, &QAction::triggered, _project, &UConfigProject::newLib);
+
+    QAction *openFileAction = new QAction(tr("&Open library..."), this);
+    openFileAction->setStatusTip(tr("Opens an existing library"));
     openFileAction->setShortcut(QKeySequence::Open);
-    openFileAction->setIcon(QIcon(":/icons/img/import"));
+    openFileAction->setIcon(QIcon(":/icons/img/open"));
     fileMenu->addAction(openFileAction);
     toolBar->addAction(openFileAction);
-    connect(openFileAction, SIGNAL(triggered()), this, SLOT(importComponents()));
+    connect(openFileAction, SIGNAL(triggered()), _project, SLOT(openLib()));
 
-    QAction *saveFileAction = new QAction(tr("&Save lib"),this);
+    QAction *importFileAction = new QAction(tr("&Import components..."), this);
+    importFileAction->setStatusTip(tr("Imports components from various format of files"));
+    importFileAction->setShortcut(QKeySequence("Ctrl+I"));
+    importFileAction->setIcon(QIcon(":/icons/img/import"));
+    fileMenu->addAction(importFileAction);
+    toolBar->addAction(importFileAction);
+    connect(importFileAction, SIGNAL(triggered()), _project, SLOT(importComponents()));
+
+    QAction *saveFileAction = new QAction(tr("&Save lib"), this);
     saveFileAction->setStatusTip(tr("Save to Kicad components lib"));
     saveFileAction->setShortcut(QKeySequence::Save);
     saveFileAction->setIcon(QIcon(":/icons/img/save"));
     fileMenu->addAction(saveFileAction);
     toolBar->addAction(saveFileAction);
-    connect(saveFileAction, &QAction::triggered, this, &UConfigMainWindow::saveLib);
+    connect(saveFileAction, &QAction::triggered, _project, &UConfigProject::saveLib);
 
-    QAction *saveFileAsAction = new QAction(tr("Save lib &as..."),this);
+    QAction *saveFileAsAction = new QAction(tr("Save lib &as..."), this);
     saveFileAsAction->setStatusTip(tr("Save to Kicad components lib with new name"));
     saveFileAsAction->setShortcut(QKeySequence::SaveAs);
     saveFileAsAction->setIcon(QIcon(":/icons/img/save-as"));
     fileMenu->addAction(saveFileAsAction);
-    connect(saveFileAsAction, SIGNAL(triggered()), this, SLOT(saveLibAs()));
+    connect(saveFileAsAction, SIGNAL(triggered()), _project, SLOT(saveLibAs()));
 
     fileMenu->addSeparator();
-    QAction *exitAction = new QAction(tr("E&xit"),this);
+    QAction *exitAction = new QAction(tr("E&xit"), this);
     exitAction->setStatusTip(tr("Exits uConfig"));
     exitAction->setShortcut(QKeySequence::Quit);
     fileMenu->addAction(exitAction);

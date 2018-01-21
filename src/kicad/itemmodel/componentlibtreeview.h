@@ -17,7 +17,6 @@ public:
     ComponentLibTreeView(Lib *lib = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
 
     Lib *lib() const;
-    void setLib(Lib *lib);
 
     void addComponent(Component *component);
     QList<Component *> components() const;
@@ -32,6 +31,7 @@ public:
     ComponentLibItemModel *model() const;
 
 public slots:
+    void setLib(Lib *lib);
     void selectAll(bool selected=true);
     void remove();
 

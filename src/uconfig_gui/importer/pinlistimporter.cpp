@@ -30,19 +30,24 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     {
         setStartId(PageStart);
     }
-    else if(fileName.endsWith(".pdf"))
+    else if (fileName.endsWith(".pdf"))
     {
         setField("file", fileName);
         setStartId(PagePDFFile);
         _type = PDF;
     }
-    else if(fileName.endsWith(".lib"))
+    else if (fileName.endsWith(".lib"))
     {
         setField("file", fileName);
         setStartId(PageComponents);
         _type = Kicad;
     }
     setOption(QWizard::DisabledBackButtonOnLastPage, true);
+}
+
+PinListImporter::~PinListImporter()
+{
+
 }
 
 QList<Component *> &PinListImporter::components()

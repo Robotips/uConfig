@@ -10,6 +10,8 @@
 #include <QComboBox>
 #include <QLabel>
 
+#include "project/uconfigproject.h"
+
 #include "viewer/componentviewer.h"
 #include "itemmodel/componentlibtreeview.h"
 #include "itemmodel/componentpinstableview.h"
@@ -20,17 +22,10 @@ class UConfigMainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
-    UConfigMainWindow(QWidget *parent = Q_NULLPTR);
-
-public slots:
-    void importComponents(const QString &fileName = QString());
+    UConfigMainWindow(UConfigProject *project);
+    ~UConfigMainWindow();
 
 protected slots:
-    void saveLib();
-    void saveLibAs(const QString &fileName = QString());
-
-    void selectComponent(Component *component);
-
     void organize(QString ruleSetName);
     void updateRules();
     void reloadRuleSetList();
@@ -38,6 +33,8 @@ protected slots:
     void about();
 
 protected:
+    UConfigProject *_project;
+
     void createWidgets();
     QSplitter *_splitter;
     ComponentLibTreeView *_componentsTreeView;
@@ -55,9 +52,6 @@ protected:
     QDockWidget *_componentInfosDock;
 
     void createToolbarsMenus();
-
-    QString _pathLib;
-    QString _importedPathLib;
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
