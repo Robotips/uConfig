@@ -328,24 +328,31 @@ void UConfigMainWindow::createToolbarsMenus()
     QAction *actionRuleCombox = toolBar->addWidget(_ruleComboBox);
     actionRuleCombox->setStatusTip(tr("Change the rule for pin organisation"));
 
-    // ============= Help =============
-    QMenu *viewMenu = menuBar()->addMenu("&View");
+    // ============= View =============
+    QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
-    QAction *gridAction = new QAction("Show / Hide &grid", this);
+    QAction *gridAction = new QAction(tr("&Grid"), this);
     gridAction->setCheckable(true);
     gridAction->setChecked(true);
     gridAction->setShortcut(QKeySequence("Ctrl+G"));
     connect(gridAction, SIGNAL(triggered(bool)), _componentViewer, SLOT(setGridVisible(bool)));
     viewMenu->addAction(gridAction);
 
-    // ============= Help =============
-    QMenu *helpMenu = menuBar()->addMenu("&Help");
+    viewMenu->addSeparator();
+    QAction *componentsListDockAction = _componentsListDock->toggleViewAction();
+    viewMenu->addAction(componentsListDockAction);
 
-    QAction *aboutAction = new QAction("&About", this);
+    QAction *_componentInfosDockAction = _componentInfosDock->toggleViewAction();
+    viewMenu->addAction(_componentInfosDockAction);
+
+    // ============= Help =============
+    QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
+
+    QAction *aboutAction = new QAction(tr("&About"), this);
     connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(about()));
     helpMenu->addAction(aboutAction);
 
-    QAction *aboutQtAction = new QAction("About &Qt", this);
+    QAction *aboutQtAction = new QAction(tr("About &Qt"), this);
     connect(aboutQtAction, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt()));
     helpMenu->addAction(aboutQtAction);
 }
