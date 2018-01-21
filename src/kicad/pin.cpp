@@ -348,6 +348,8 @@ QTextStream &operator>>(QTextStream &stream, Pin &pin)
     // name
     QString name;
     stream >> name;
+    if (name == "~")
+        name = "";
     if (stream.status() != QTextStream::Ok)
         return stream;
     pin.setName(name);
@@ -415,7 +417,12 @@ QTextStream &operator<<(QTextStream &stream, const Pin &pin)
 
     // X PIN_NAME PAD_NAME X_POS Y_POS LINE_WIDTH DIRECTION NAME_TEXT_SIZE
     // LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
-    stream << "X " << pin._name << " "                      // pin name
+    stream << "X ";
+    if (pin._name.isEmpty())
+        stream << "~";
+    else
+        stream << pin._name;
+    stream << " "
            << pin._padName << " "                           // pad name
            << pin._pos.x() << " " << -pin._pos.y() << " "   // x y position
            << pin._length << " "                            // lenght
