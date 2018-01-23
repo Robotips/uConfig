@@ -48,7 +48,7 @@ signals:
     void log(QString txt);
 
 private:
-    int pagePinDiagram(int pageStart, bool *bgaStyle);
+    int pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle);
 
     void pinSearch(int numPage);
 

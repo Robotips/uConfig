@@ -84,6 +84,7 @@ void DatasheetProcessPage::finish()
 {
     _complete = true;
     _statusLabel->setText(tr("terminated"));
+    changePage(_progressBar->maximum());
     emit completeChanged();
 
     QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();

@@ -462,7 +462,7 @@ QString Datasheet::name() const
     return _name;
 }
 
-int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
+int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
 {
     QStringList keyWords;
     keyWords << "Pin Diagram"
@@ -491,9 +491,8 @@ int Datasheet::pagePinDiagram(int pageStart, bool *bgaStyle)
 
     if (pageStart >= _doc->numPages())
         return -1;
-    for (int i = pageStart; i < _doc->numPages(); i++)
+    for (int i = pageStart; i < _doc->numPages() && i <= pageEnd; i++)
     {
-        QList<QRectF> result;
         Poppler::Page *page = _doc->page(i);
         if (page == NULL)
             continue;
@@ -561,9 +560,11 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
     }
     else if (!_force)
     {
+        if (mpageEnd == -1)
+            mpageEnd = pageCount();
         if (page == -1)
             page = 0;
-        while ((page = pagePinDiagram(page, &bgaStyle)) != -1)
+        while ((page = pagePinDiagram(page, mpageEnd, &bgaStyle)) != -1)
         {
             if (pageEnd != -1 && page >= pageEnd)
                 return;
