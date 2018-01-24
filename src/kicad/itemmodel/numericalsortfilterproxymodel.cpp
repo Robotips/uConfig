@@ -21,8 +21,8 @@ bool NumericalSortFilterProxyModel::filterAcceptsColumn(int source_column, const
 
 bool NumericalSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
-    QString leftSortPatern = toNumeric(sourceModel()->data(source_left, filterKeyColumn()).toString());
-    QString rightSortPatern = toNumeric(sourceModel()->data(source_right, filterKeyColumn()).toString());
+    QString leftSortPatern = toNumeric(sourceModel()->data(source_left, Qt::DisplayRole).toString());
+    QString rightSortPatern = toNumeric(sourceModel()->data(source_right, Qt::DisplayRole).toString());
 
     return (leftSortPatern.compare(rightSortPatern, Qt::CaseInsensitive) < 0);
 }
