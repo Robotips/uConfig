@@ -42,6 +42,7 @@ public:
 
     enum PinType
     {
+        Normal,
         NotVisible,
         Invert,
         Clock,
@@ -50,8 +51,7 @@ public:
         ClockLow,
         LowOut,
         FallingEdge,
-        NonLogic,
-        Normal
+        NonLogic
     };
 
     QString name() const;

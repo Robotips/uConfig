@@ -72,7 +72,6 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-    case Qt::EditRole:
         switch (index.column())
         {
         case PinNumber:
@@ -83,6 +82,18 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
             return QVariant(Pin::electricalTypeDesc(pin->electricalType()));
         case PinStyle:
             return QVariant(Pin::pinTypeDesc(pin->pinType()));
+        }
+    case Qt::EditRole:
+        switch (index.column())
+        {
+        case PinNumber:
+            return QVariant(pin->padName());
+        case PinName:
+            return QVariant(pin->name());
+        case PinElecType:
+            return QVariant(pin->electricalType());
+        case PinStyle:
+            return QVariant(pin->pinType());
         }
     }
     return QVariant();

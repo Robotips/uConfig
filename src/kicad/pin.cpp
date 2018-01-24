@@ -156,7 +156,7 @@ QString Pin::pinTypeDesc(const Pin::PinType &pinType)
     switch (pinType)
     {
     case Pin::Normal:
-        return QStringLiteral("input");
+        return QStringLiteral("normal");
     case Pin::NotVisible:
         return QStringLiteral("not visible");
     case Pin::Invert:

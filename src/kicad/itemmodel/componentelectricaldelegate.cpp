@@ -24,7 +24,7 @@ QWidget *ComponentElectricalDelegate::createEditor(QWidget *parent, const QStyle
     case ComponentPinsItemModel::PinStyle:
         {
             QComboBox *combobox = new QComboBox(parent);
-            for (int i=0; i<=Pin::Normal; i++)
+            for (int i=0; i<=Pin::NonLogic; i++)
                 combobox->addItem(Pin::pinTypeDesc(static_cast<Pin::PinType>(i)), i);
             return combobox;
         }
