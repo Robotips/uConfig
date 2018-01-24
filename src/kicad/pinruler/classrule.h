@@ -17,6 +17,7 @@ public:
 
     static QStringList propsName;
     virtual bool setProperty(const QString &name, const QString &value);
+    virtual bool hasPropertySet(const QString &name) const;
 
     // position property [top, bottom, left, right, aside] left default
     enum Position {
@@ -29,7 +30,7 @@ public:
     static QStringList positionEnumStr;
     Position positionValue() const;
     QString positionStr() const;
-    bool isPositionSet() const;
+    bool hasPositionSet() const;
     void setPosition(Position position);
     void setPosition(const QString &position);
 
@@ -42,13 +43,13 @@ public:
     static QStringList sortEnumStr;
     Sort sortValue() const;
     QString sortStr() const;
-    bool isSortSet() const;
+    bool hasSortSet() const;
     void setSort(Sort sort);
     void setSort(const QString &sort);
 
     // sortPattern property
     QString sortPattern() const;
-    bool isSortPatternSet() const;
+    bool hasSortPatternSet() const;
     void setSortPattern(const QString &sortPattern);
 
 protected:

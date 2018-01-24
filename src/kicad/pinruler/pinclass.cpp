@@ -21,11 +21,11 @@ QString PinClass::className() const
 
 void PinClass::applyRule(ClassRule *rule)
 {
-    if (!_positionSet && rule->isPositionSet())
+    if (!_positionSet && rule->hasPositionSet())
         setPosition(rule->positionValue());
-    if (!_sortSet && rule->isSortSet())
+    if (!_sortSet && rule->hasSortSet())
         setSort(rule->sortValue());
-    if (!_sortPatternSet && rule->isSortPatternSet())
+    if (!_sortPatternSet && rule->hasSortPatternSet())
         setSortPattern(rule->sortPattern());
 }
 

@@ -10,6 +10,8 @@ QStringList PinRule::propsName = QStringList()
 PinRule::PinRule(const QString &selector)
     : Rule(selector)
 {
+    _classSet = false;
+
     _length = 200;
     _lengthSet = false;
 }
@@ -37,6 +39,19 @@ bool PinRule::setProperty(const QString &name, const QString &value)
     }
 
     return true;
+}
+
+bool PinRule::hasPropertySet(const QString &name) const
+{
+    int id = PinRule::propsName.indexOf(name);
+    switch (id)
+    {
+    case 0: // class
+        return hasClassSet();
+    case 1: // length
+        return hasLengthSet();
+    }
+    return false;
 }
 
 QString PinRule::className(const QString &pinName) const
@@ -68,6 +83,12 @@ QString PinRule::className(const QString &pinName) const
 void PinRule::setClassName(const QString &className)
 {
     _className = className;
+    _classSet = true;
+}
+
+bool PinRule::hasClassSet() const
+{
+    return _classSet;
 }
 
 int PinRule::length() const
@@ -81,7 +102,7 @@ void PinRule::setLength(int lenght)
     _lengthSet = true;
 }
 
-bool PinRule::lengthSet() const
+bool PinRule::hasLengthSet() const
 {
     return _lengthSet;
 }

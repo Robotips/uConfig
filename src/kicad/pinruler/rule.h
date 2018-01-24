@@ -28,6 +28,7 @@ public:
     void setEnabled(bool enabled);
 
     virtual bool setProperty(const QString &name, const QString &value) =0;
+    virtual bool hasPropertySet(const QString &name) const =0;
 
     // debug
     QString file() const;

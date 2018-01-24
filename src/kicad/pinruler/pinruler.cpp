@@ -8,6 +8,11 @@ PinRuler::PinRuler(RulesSet *ruleSet)
     _ruleSet = ruleSet;
 }
 
+bool heightGreaterThan(PinClass *c1, PinClass *c2)
+{
+    return c1->rect().height() > c2->rect().height();
+}
+
 void PinRuler::organize(Component *component)
 {
     int x, y;
@@ -22,10 +27,28 @@ void PinRuler::organize(Component *component)
         }
         else
         {
-            QString className = rules.first()->className(pin->name());
+            QString className;// = rules.first()->className(pin->name());
+            foreach (PinRule *rule, rules)
+            {
+                if (rule->hasClassSet())
+                {
+                    className = rule->className(pin->name());
+                    break;
+                }
+            }
             PinClass *mpinClass = pinClass(className);
-            pin->setPinType(Pin::Normal);
-            pin->setLength(rules.first()->length());
+            pin->setPinType(Pin::Normal);  // TODO add a property for me
+
+            //qDebug()<<"> "<<pin->name();
+            foreach (PinRule *rule, rules)
+            {
+                //qDebug()<<"  * "<<rule->className(pin->name());
+                if (rule->hasLengthSet())
+                {
+                    pin->setLength(rule->length());
+                    break;
+                }
+            }
             mpinClass->addPin(pin);
         }
     }
@@ -72,6 +95,7 @@ void PinRuler::organize(Component *component)
     }
 
     // aside list assignment and right and left sides updates
+    qSort(aSide.begin(), aSide.end(), heightGreaterThan);
     foreach (PinClass *mpinClass, aSide)
     {
         QRect rect = mpinClass->rect();

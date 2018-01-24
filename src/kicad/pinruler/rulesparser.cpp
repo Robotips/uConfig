@@ -46,7 +46,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         }
         //qDebug()<<"> "<<selector<<lineSelector;
 
-        if (selector.startsWith('.'))
+        if (selector.startsWith('.') && !selector.startsWith(".*"))
             rule = new ClassRule(selector.mid(1));
         else
             rule = new PinRule(selector);
@@ -127,13 +127,13 @@ void RulesParser::skipSpaceAndComments()
 
 QString RulesParser::getSelector()
 {
-    QRegularExpression rule("(\\.?[a-zA-Z\\(\\[][/a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|\\\\\\*\\.\\^$\\?]*)", QRegularExpression::MultilineOption
+    QRegularExpression rule("(\\.?[a-zA-Z\\(\\[\\.][/a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|\\\\\\*\\.\\^$\\?]*)", QRegularExpression::MultilineOption
                                     | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
         return QString();
     _id += ruleMath.capturedEnd();
-    return  ruleMath.captured(1);
+    return ruleMath.captured(1);
 }
 
 /*QStringList RulesParser::getSelectors()

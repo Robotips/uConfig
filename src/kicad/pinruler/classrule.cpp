@@ -56,6 +56,21 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
     return true;
 }
 
+bool ClassRule::hasPropertySet(const QString &name) const
+{
+    int id = ClassRule::propsName.indexOf(name);
+    switch (id)
+    {
+    case 0: // position
+        return hasPositionSet();
+    case 1: // sort
+        return hasSortSet();
+    case 2: // sortpattern
+        return hasSortPatternSet();
+    }
+    return false;
+}
+
 ClassRule::Position ClassRule::positionValue() const
 {
     return _position;
@@ -66,7 +81,7 @@ QString ClassRule::positionStr() const
     return ClassRule::positionEnumStr.at(_position);
 }
 
-bool ClassRule::isPositionSet() const
+bool ClassRule::hasPositionSet() const
 {
     return _positionSet;
 }
@@ -94,7 +109,7 @@ QString ClassRule::sortStr() const
     return ClassRule::positionEnumStr.at(_sort);
 }
 
-bool ClassRule::isSortSet() const
+bool ClassRule::hasSortSet() const
 {
     return _sortSet;
 }
@@ -117,7 +132,7 @@ QString ClassRule::sortPattern() const
     return _sortPattern;
 }
 
-bool ClassRule::isSortPatternSet() const
+bool ClassRule::hasSortPatternSet() const
 {
     return _sortPatternSet;
 }

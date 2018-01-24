@@ -16,19 +16,21 @@ public:
     virtual Type type() const;
 
     virtual bool setProperty(const QString &name, const QString &value);
+    virtual bool hasPropertySet(const QString &name) const;
 
     QString className(const QString &pinName = QString()) const;
     void setClassName(const QString &className);
+    bool hasClassSet() const;
 
     int length() const;
     void setLength(int length);
-
-    bool lengthSet() const;
+    bool hasLengthSet() const;
 
     static QStringList propsName;
 
 protected:
     QString _className;
+    bool _classSet;
 
     int _length;
     bool _lengthSet;
