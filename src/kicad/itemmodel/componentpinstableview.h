@@ -22,6 +22,7 @@ public:
 public slots:
     void selectPin(Pin *pin);
     void selectPins(QList<Pin *> pins);
+    void setPinFilter(const QString &filter);
 
 signals:
     void pinSelected(QList<Pin *> pins);

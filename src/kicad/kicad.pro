@@ -22,6 +22,7 @@ SOURCES += \
     $$PWD/module.cpp \
     $$PWD/pad.cpp \
     $$PWD/viewer/componentviewer.cpp \
+    $$PWD/viewer/componentscene.cpp \
     $$PWD/viewer/componentitem.cpp \
     $$PWD/viewer/pinitem.cpp \
     $$PWD/itemmodel/componentlibitemmodel.cpp \
@@ -29,6 +30,8 @@ SOURCES += \
     $$PWD/itemmodel/componentlibtreeview.cpp \
     $$PWD/itemmodel/componentpinstableview.cpp \
     $$PWD/itemmodel/numericalsortfilterproxymodel.cpp \
+    $$PWD/itemmodel/componentelectricaldelegate.cpp \
+    $$PWD/itemmodel/pinlisteditor.cpp \
     $$PWD/pinruler/rulesparser.cpp \
     $$PWD/pinruler/rule.cpp \
     $$PWD/pinruler/pinrule.cpp \
@@ -37,9 +40,7 @@ SOURCES += \
     $$PWD/pinruler/pinclass.cpp \
     $$PWD/pinruler/pinruler.cpp \
     $$PWD/ksseditor/ksseditor.cpp \
-    $$PWD/ksseditor/ksssyntax.cpp \
-    $$PWD/viewer/componentscene.cpp \
-    $$PWD/itemmodel/componentelectricaldelegate.cpp
+    $$PWD/ksseditor/ksssyntax.cpp
 
 HEADERS += \
     $$PWD/kicad.h \
@@ -51,6 +52,7 @@ HEADERS += \
     $$PWD/module.h \
     $$PWD/pad.h \
     $$PWD/viewer/componentviewer.h \
+    $$PWD/viewer/componentscene.h \
     $$PWD/viewer/componentitem.h \
     $$PWD/viewer/pinitem.h \
     $$PWD/itemmodel/componentlibitemmodel.h \
@@ -58,6 +60,8 @@ HEADERS += \
     $$PWD/itemmodel/componentlibtreeview.h \
     $$PWD/itemmodel/componentpinstableview.h \
     $$PWD/itemmodel/numericalsortfilterproxymodel.h \
+    $$PWD/itemmodel/componentelectricaldelegate.h \
+    $$PWD/itemmodel/pinlisteditor.h \
     $$PWD/pinruler/rulesparser.h \
     $$PWD/pinruler/rule.h \
     $$PWD/pinruler/pinrule.h \
@@ -66,9 +70,7 @@ HEADERS += \
     $$PWD/pinruler/pinclass.h \
     $$PWD/pinruler/pinruler.h \
     $$PWD/ksseditor/ksseditor.h \
-    $$PWD/ksseditor/ksssyntax.h \
-    $$PWD/viewer/componentscene.h \
-    $$PWD/itemmodel/componentelectricaldelegate.h
+    $$PWD/ksseditor/ksssyntax.h
 
 unix {
     target.path = /usr/lib

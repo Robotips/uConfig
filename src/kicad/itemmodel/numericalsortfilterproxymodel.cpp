@@ -9,9 +9,7 @@ NumericalSortFilterProxyModel::NumericalSortFilterProxyModel()
 
 bool NumericalSortFilterProxyModel::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
 {
-    Q_UNUSED(source_row)
-    Q_UNUSED(source_parent)
-    return true;
+    return QSortFilterProxyModel::filterAcceptsRow(source_row, source_parent);
 }
 
 bool NumericalSortFilterProxyModel::filterAcceptsColumn(int source_column, const QModelIndex &source_parent) const

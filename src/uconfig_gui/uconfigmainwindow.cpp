@@ -37,7 +37,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
 
     connect(_project, &UConfigProject::libChanged, _componentsTreeView, &ComponentLibTreeView::setLib);
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
-    connect(_project, &UConfigProject::activeComponentChange, _componentsPinTableView, &ComponentPinsTableView::setComponent);
+    connect(_project, &UConfigProject::activeComponentChange, _pinListEditor, &PinListEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentViewer, &ComponentViewer::setComponent);
 
     resize(QApplication::primaryScreen()->size()*.7);
@@ -133,9 +133,9 @@ void UConfigMainWindow::reloadRuleSetList()
 void UConfigMainWindow::createWidgets()
 {
     _splitterEditor = new QSplitter(Qt::Vertical);
-    _componentsPinTableView = new ComponentPinsTableView();
+    _pinListEditor = new PinListEditor();
     _kssEditor = new KssEditor();
-    _splitterEditor->addWidget(_componentsPinTableView);
+    _splitterEditor->addWidget(_pinListEditor);
     _splitterEditor->addWidget(_kssEditor);
     _splitterEditor->setSizes(QList<int>()<<200<<200);
 
@@ -162,10 +162,10 @@ void UConfigMainWindow::createWidgets()
             _project, &UConfigProject::importComponents);
 
     connect(_componentViewer, &ComponentViewer::pinsSelected,
-            _componentsPinTableView, &ComponentPinsTableView::selectPins);
-    connect(_componentsPinTableView, &ComponentPinsTableView::pinSelected,
+            _pinListEditor->tableView(), &ComponentPinsTableView::selectPins);
+    connect(_pinListEditor->tableView(), &ComponentPinsTableView::pinSelected,
             _componentViewer, &ComponentViewer::selectPins);
-    connect(_componentsPinTableView->model(), &ComponentPinsItemModel::pinModified,
+    connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinModified,
             _componentViewer, &ComponentViewer::updatePin);
 }
 

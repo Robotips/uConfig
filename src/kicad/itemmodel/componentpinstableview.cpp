@@ -21,6 +21,9 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
     sortByColumn(0, Qt::AscendingOrder);
     setSortingEnabled(true);
 
+    _sortProxy->setFilterRole(Qt::DisplayRole);
+    _sortProxy->setFilterKeyColumn(ComponentPinsItemModel::PinName);
+
     setItemDelegate(new ComponentElectricalDelegate(this));
 }
 
@@ -74,6 +77,11 @@ void ComponentPinsTableView::selectPins(QList<Pin *> pins)
             return;
         selectionModel()->select(indexPin, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
+}
+
+void ComponentPinsTableView::setPinFilter(const QString &filter)
+{
+    _sortProxy->setFilterRegExp(filter);
 }
 
 void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const QItemSelection &deselected)

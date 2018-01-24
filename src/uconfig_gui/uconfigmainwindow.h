@@ -14,7 +14,7 @@
 
 #include "viewer/componentviewer.h"
 #include "itemmodel/componentlibtreeview.h"
-#include "itemmodel/componentpinstableview.h"
+#include "itemmodel/pinlisteditor.h"
 #include "ksseditor/ksseditor.h"
 #include "componentinfoseditor.h"
 
@@ -39,7 +39,7 @@ protected:
     QSplitter *_splitter;
     ComponentLibTreeView *_componentsTreeView;
     ComponentInfosEditor *_componentInfosEditor;
-    ComponentPinsTableView *_componentsPinTableView;
+    PinListEditor *_pinListEditor;
     ComponentViewer *_componentViewer;
     QComboBox *_ruleComboBox;
     QLabel *_pdfDebug;
