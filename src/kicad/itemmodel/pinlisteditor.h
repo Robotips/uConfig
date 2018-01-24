@@ -12,7 +12,7 @@ class KICAD_EXPORT PinListEditor : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PinListEditor(QWidget *parent = nullptr);
+    explicit PinListEditor(QWidget *parent = Q_NULLPTR);
 
     Component *component() const;
 
