@@ -1,0 +1,38 @@
+/* pins */
+(A?)(VCC|VDD) {
+    class: "\1power+";
+    length: 200;
+}
+(A?)(VSS|GND) {
+    class: "\1power-";
+    length: 200;
+}
+
+A[0-9]+ {
+    class: "address";
+}
+I[/]*O[0-9]+ {
+    class: "data";
+}
+(CE|LB|OE|UB|WE) {
+    class: "control";
+}
+
+/* classes */
+.power\+ {
+    sort: asc;
+    position: top;
+}
+.power\- {
+    sort: asc;
+    position: bottom;
+}
+.address {
+    position: left;
+}
+.data {
+    position: right;
+}
+.control {
+    position: left;
+}

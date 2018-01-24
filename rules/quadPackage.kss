@@ -1,0 +1,27 @@
+/* pins */
+:quarter(0) {
+    class: left;
+}
+:quarter(1) {
+    class: bottom;
+}
+:quarter(2) {
+    class: right;
+}
+:quarter(3) {
+    class: top;
+}
+
+/* classes */
+.left {
+    postion: left;
+}
+.bottom {
+    postion: bottom;
+}
+.right {
+    postion: right;
+}
+.top {
+    postion: top;
+}

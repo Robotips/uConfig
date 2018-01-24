@@ -1,0 +1,15 @@
+/* pins */
+:half(0) {
+    class: left;
+}
+:half(1) {
+    class: right;
+}
+
+/* classes */
+.left {
+    postion: left;
+}
+.right {
+    postion: right;
+}

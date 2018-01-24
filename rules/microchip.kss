@@ -1,0 +1,54 @@
+
+/* pins */
+(A?)(VCC|VDD) {
+    class: "\1power+";
+    length: 200;
+}
+(A?)(VSS|GND) {
+    class: "\1power-";
+    length: 200;
+}
+
+(D[0-9]?\+|D[0-9]?\-|VUSB.*|VBUS) {
+    class: "USB";
+}
+
+(^|[^A-Z])R([A-L])[0-9]+ {
+    class: "gpio\2";
+}
+(MCLR|VCAP|OSC[1-2]|VBAT) {
+    class: "special";
+}
+
+/* classes */
+.special {
+    position: left;
+}
+.power\+ {
+    sort: asc;
+    position: top;
+}
+.power\- {
+    sort: asc;
+    position: bottom;
+}
+
+/*.gpioA {
+    position: left;
+}
+.gpioB {
+    position: right;
+}*/
+
+.gpio[A-L] {
+    sort: asc;
+    sortpattern: "R[A-L][0-9]+";
+}
+.USB {
+    position: left;
+    sort: asc;
+}
+
+.others {
+    position: top;
+}
