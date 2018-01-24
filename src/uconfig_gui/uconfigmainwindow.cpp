@@ -77,6 +77,7 @@ void UConfigMainWindow::organize(QString ruleSetName)
             return;
         Component *component = _componentViewer->component();
         _componentViewer->scene()->clear();
+        _componentViewer->setComponent(Q_NULLPTR);
         component->reorganizeToPackageStyle();
         _componentViewer->setComponent(component);
         _kssEditor->clear();
@@ -113,7 +114,7 @@ void UConfigMainWindow::updateRules()
     if (_componentViewer->component())
     {
         Component *component = _componentViewer->component();
-        _componentViewer->scene()->clear();
+        _componentViewer->setComponent(Q_NULLPTR);
         ruler.organize(component);
         _componentViewer->setComponent(component);
     }

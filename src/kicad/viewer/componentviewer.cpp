@@ -17,7 +17,6 @@ ComponentViewer::ComponentViewer(QWidget *parent)
 {
     _scene = new ComponentScene(-5000, -5000, 10000, 10000);
     setScene(_scene);
-    connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
     scale(0.835, 0.835);
     _currentZoomLevel = 1;
     setDragMode(QGraphicsView::ScrollHandDrag);
@@ -39,6 +38,7 @@ Component *ComponentViewer::component() const
 
 void ComponentViewer::setComponent(Component *component)
 {
+    disconnect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
     scene()->clear();
     _component = component;
 
@@ -49,6 +49,8 @@ void ComponentViewer::setComponent(Component *component)
     scene()->addItem(_componentItem);
     scene()->setSceneRect(_componentItem->boundingRect());
     fitInView(_componentItem, Qt::KeepAspectRatio);
+
+    connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
 }
 
 void ComponentViewer::selectPin(Pin *pin)
@@ -65,6 +67,9 @@ void ComponentViewer::selectPin(Pin *pin)
 
 void ComponentViewer::selectPins(QList<Pin *> pins)
 {
+    if (!_componentItem)
+        return;
+
     blockSignals(true);
     scene()->clearSelection();
     foreach (Pin *pin, pins)
