@@ -18,7 +18,6 @@ ComponentViewer::ComponentViewer(QWidget *parent)
     _scene = new ComponentScene(-5000, -5000, 10000, 10000);
     setScene(_scene);
     scale(0.835, 0.835);
-    _currentZoomLevel = 1;
     setDragMode(QGraphicsView::ScrollHandDrag);
     setCursor(Qt::ArrowCursor);
 
@@ -48,7 +47,7 @@ void ComponentViewer::setComponent(Component *component)
     _componentItem = new ComponentItem(component);
     scene()->addItem(_componentItem);
     scene()->setSceneRect(_componentItem->boundingRect());
-    fitInView(_componentItem, Qt::KeepAspectRatio);
+    //fitInView(_componentItem, Qt::KeepAspectRatio);
 
     connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
 }
@@ -98,13 +97,13 @@ void ComponentViewer::wheelEvent(QWheelEvent *event)
     int numDegrees = event->delta() / 8;
     int numSteps = numDegrees / 15;
 
-    double mscale = qPow(1.25,numSteps);
-    if (_currentZoomLevel < 0.1 && mscale < 1)
+    double mscale = qPow(1.25, numSteps);
+
+    if (transform().m11() < 0.1 && mscale < 1)
         return;
-    if (_currentZoomLevel > 20 && mscale > 1)
+    if (transform().m11() > 20 && mscale > 1)
         return;
 
-    _currentZoomLevel *= mscale;
     scale(mscale, mscale);
 }
 
