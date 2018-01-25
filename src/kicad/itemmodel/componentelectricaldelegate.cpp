@@ -48,7 +48,7 @@ void ComponentElectricalDelegate::setEditorData(QWidget *editor, const QModelInd
             break;
         }
     default:
-        return QItemDelegate::setEditorData(editor, index);
+        QItemDelegate::setEditorData(editor, index);
     }
 }
 
@@ -65,18 +65,24 @@ void ComponentElectricalDelegate::setModelData(QWidget *editor, QAbstractItemMod
             break;
         }
     default:
-        return QItemDelegate::setModelData(editor, model, index);
+        QItemDelegate::setModelData(editor, model, index);
     }
 }
 
 void ComponentElectricalDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    if (index.column() == ComponentPinsItemModel::PinElecType)
+    switch (index.column())
     {
-        editor->setGeometry(option.rect);
-    }
-    else
-    {
-        return QItemDelegate::updateEditorGeometry(editor, option, index);
+    case ComponentPinsItemModel::PinElecType:
+    case ComponentPinsItemModel::PinStyle:
+        {
+            QRect rect = option.rect;
+            if (rect.width() < 150)
+                rect.setWidth(150);
+            editor->setGeometry(rect);
+            break;
+        }
+    default:
+        QItemDelegate::updateEditorGeometry(editor, option, index);
     }
 }
