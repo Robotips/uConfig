@@ -7,6 +7,7 @@
 UConfigProject::UConfigProject(QWidget *window)
 {
     setWindow(window);
+    _lib = Q_NULLPTR;
     _activeComponent = Q_NULLPTR;
 }
 
@@ -93,6 +94,9 @@ void UConfigProject::saveLibAs(const QString &fileName)
 
 void UConfigProject::importComponents(const QString &fileName)
 {
+    if (!_lib)
+        _lib = new Lib();
+
     PinListImporter importer(fileName, _window);
     if (importer.exec() != QDialog::Accepted)
         return;
