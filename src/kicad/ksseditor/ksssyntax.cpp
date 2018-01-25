@@ -1,3 +1,21 @@
+/**
+ ** This file is part of the uConfig project.
+ ** Copyright 2018 Robotips sebastien.caux@robotips.fr.
+ **
+ ** This program is free software: you can redistribute it and/or modify
+ ** it under the terms of the GNU General Public License as published by
+ ** the Free Software Foundation, either version 3 of the License, or
+ ** (at your option) any later version.
+ **
+ ** This program is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ** GNU General Public License for more details.
+ **
+ ** You should have received a copy of the GNU General Public License
+ ** along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **/
+
 #include "ksssyntax.h"
 
 #include <QDebug>
@@ -10,7 +28,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class";
+    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length";
     foreach (const QString &pattern, keywordPatterns)
     {
         rule.pattern.setPattern("\\b("+pattern+")\\b");
@@ -70,7 +88,7 @@ void KSSSyntax::highlightBlock(const QString &text)
         PartToHighlight partToHighlight = partsToHighlight.takeFirst();
 
         // highlight if needed
-        if(partToHighlight.index>=index)
+        if (partToHighlight.index>=index)
         {
             setFormat(partToHighlight.index, partToHighlight.length, partToHighlight.rule.format);
             index = partToHighlight.index + partToHighlight.length;
