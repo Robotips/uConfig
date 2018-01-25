@@ -1,6 +1,7 @@
 #include "componentlibitemmodel.h"
 
 #include <QDebug>
+#include <QFont>
 
 ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent) :
     QAbstractItemModel(parent)
@@ -10,6 +11,7 @@ ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent) :
     else
         _lib = new Lib();
     _selectedMode = false;
+    _activeComponent = Q_NULLPTR;
 }
 
 Lib *ComponentLibItemModel::lib() const
@@ -20,6 +22,7 @@ Lib *ComponentLibItemModel::lib() const
 void ComponentLibItemModel::setLib(Lib *lib)
 {
     emit layoutAboutToBeChanged();
+    _activeComponent = Q_NULLPTR;
     beginResetModel();
     resetInternalData();
     //delete _lib;
@@ -43,6 +46,19 @@ QList<Component *> ComponentLibItemModel::components() const
     if (!_lib)
         return QList<Component *>();
     return _lib->components();
+}
+
+QModelIndex ComponentLibItemModel::index(Component *component)
+{
+    if (!component)
+        return QModelIndex();
+
+    for (int i=0; i<_lib->componentsCount(); i++)
+    {
+        if (_lib->component(i) == component)
+            return index(i, 0, QModelIndex());
+    }
+    return QModelIndex();
 }
 
 Component *ComponentLibItemModel::component(const QModelIndex &index) const
@@ -83,9 +99,9 @@ QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientat
         case Name:
             return QVariant("Name");
         case Package:
-            return QVariant("Package");
+            return QVariant("Package(s)");
         case PinCount:
-            return QVariant("Pin count");
+            return QVariant("Pins");
         }
         break;
     }
@@ -120,6 +136,14 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
                 return Qt::Checked;
             else
                 return Qt::Unchecked;
+        }
+        break;
+    case Qt::FontRole:
+        if (component == _activeComponent)
+        {
+            QFont font;
+            font.setBold(true);
+            return font;
         }
         break;
     }
@@ -179,6 +203,22 @@ Qt::ItemFlags ComponentLibItemModel::flags(const QModelIndex &index) const
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
     else
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+}
+
+Component *ComponentLibItemModel::activeComponent() const
+{
+    return _activeComponent;
+}
+
+void ComponentLibItemModel::setActiveComponent(Component *activeComponent)
+{
+    QModelIndex oldIndex = index(_activeComponent);
+    if (oldIndex.isValid())
+        emit dataChanged(oldIndex, oldIndex);
+    _activeComponent = activeComponent;
+    QModelIndex newIndex = index(_activeComponent);
+    if (newIndex.isValid())
+        emit dataChanged(newIndex, newIndex);
 }
 
 void ComponentLibItemModel::selectAll(bool selected)

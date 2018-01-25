@@ -16,9 +16,13 @@ public:
     Lib *lib() const;
     void setLib(Lib *lib);
 
+    Component *activeComponent() const;
+    void setActiveComponent(Component *activeComponent);
+
     void addComponent(Component *component);
     QList<Component *> components() const;
 
+    QModelIndex index(Component *component);
     Component *component(const QModelIndex &index) const;
     void remove(const QModelIndex &index);
 
@@ -29,8 +33,8 @@ public:
 
     enum Column {
         Name,
-        Package,
         PinCount,
+        Package,
         ColumnCount
     };
 
@@ -48,6 +52,7 @@ public:
 private:
     Lib *_lib;
     QList<Component *> _selectedComponents;
+    Component *_activeComponent;
     bool _selectedMode;
 };
 
