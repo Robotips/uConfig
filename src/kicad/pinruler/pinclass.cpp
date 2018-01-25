@@ -26,7 +26,21 @@ void PinClass::applyRule(ClassRule *rule)
     if (!_sortSet && rule->hasSortSet())
         setSort(rule->sortValue());
     if (!_sortPatternSet && rule->hasSortPatternSet())
-        setSortPattern(rule->sortPattern());
+    {
+        QString newSortPatern = rule->sortPattern();
+        QRegularExpressionMatch match = rule->selector().match(_className, 0, QRegularExpression::NormalMatch);
+        if (match.hasMatch())
+        {
+            const QStringList &captures = (match.capturedTexts());
+            if (captures.count()>1)
+                newSortPatern.replace("\\1", captures[1]);
+            if (captures.count()>2)
+                newSortPatern.replace("\\2", captures[2]);
+            if (captures.count()>3)
+                newSortPatern.replace("\\3", captures[3]);
+        }
+        setSortPattern(newSortPatern);
+    }
 }
 
 void PinClass::applyRules(QList<ClassRule *> rules)
@@ -49,15 +63,33 @@ void PinClass::sortPins()
 
     QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
     QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
+
+    /*int n = 0;
+    foreach (Pin *pin, _pins)
+    {
+        QString pinName = pin->name();
+        pinName.replace("~", "");
+        if (pinName.count() > n)
+            n = pinName.count();
+    }*/
+
     foreach (Pin *pin, _pins)
     {
         QString sortPatern;
+        QString pinName = pin->name();
+        pinName.replace("~", "");
 
-        QRegularExpressionMatch match = pattern.match(pin->name());
-        if (match.hasMatch())
-            sortPatern = match.captured(0);
+        if (pattern.isValid())
+        {
+            QRegularExpressionMatch match = pattern.match(pinName);
+            if (match.hasMatch())
+                sortPatern = match.captured(0);
+            else
+                sortPatern = pinName;
+        }
         else
-            sortPatern = pin->name();
+            sortPatern = pinName;
+        //sortPatern = sortPatern.leftJustified(n, ' ');
 
         QRegularExpressionMatchIterator numMatchIt = numPattern.globalMatch(sortPatern);
         if (numMatchIt.hasNext())
@@ -75,16 +107,16 @@ void PinClass::sortPins()
         }
 
         pins.append(qMakePair(sortPatern, pin));
-        qSort(pins.begin(), pins.end(), PinClass::pinPatterLessThan);
-
-        _pins.clear();
-        if (_sort == ClassRule::SortAsc)
-            for (int i=0; i<pins.size(); i++)
-                _pins.append(pins[i].second);
-        if (_sort == ClassRule::SortDesc)
-            for (int i=pins.size()-1; i>=0; i--)
-                _pins.append(pins[i].second);
     }
+    qSort(pins.begin(), pins.end(), PinClass::pinPatterLessThan);
+
+    _pins.clear();
+    if (_sort == ClassRule::SortAsc)
+        for (int i=0; i<pins.size(); i++)
+            _pins.append(pins[i].second);
+    if (_sort == ClassRule::SortDesc)
+        for (int i=pins.size()-1; i>=0; i--)
+            _pins.append(pins[i].second);
 
 }
 
