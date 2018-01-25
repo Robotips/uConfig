@@ -26,6 +26,8 @@ public:
     ~UConfigMainWindow();
 
 protected slots:
+    void setTitle();
+
     void organize(QString ruleSetName);
     void updateRules();
     void reloadRuleSetList();

@@ -16,14 +16,20 @@ Lib *UConfigProject::lib() const
     return _lib;
 }
 
-QString UConfigProject::libFileName() const
+const QString &UConfigProject::libFileName() const
 {
     return _libFileName;
+}
+
+const QString &UConfigProject::libName() const
+{
+    return _libName;
 }
 
 void UConfigProject::newLib()
 {
     _lib = new Lib();
+    _libName = tr("newlib");
     selectComponent(Q_NULLPTR);
     emit libChanged(_lib);
 }
@@ -38,7 +44,7 @@ void UConfigProject::openLib(const QString &libFileName)
         fileDialog.setAcceptMode(QFileDialog::AcceptOpen);
         fileDialog.setDefaultSuffix(".lib");
         fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
-        fileDialog.setWindowTitle(tr("Save Kicad library"));
+        fileDialog.setWindowTitle(tr("Open Kicad library"));
         if (fileDialog.exec())
             mlibFileName = fileDialog.selectedFiles().first();
         if (mlibFileName.isEmpty())
@@ -46,13 +52,15 @@ void UConfigProject::openLib(const QString &libFileName)
     }
 
     _importedPathLib = mlibFileName;
+    _libFileName = mlibFileName;
     _lib = new Lib();
     _lib->readFrom(mlibFileName);
+    _libName = _lib->name();
+    emit libChanged(_lib);
     if (!_lib->components().empty())
         selectComponent(_lib->components()[0]);
     else
         selectComponent(Q_NULLPTR);
-    emit libChanged(_lib);
 }
 
 void UConfigProject::saveLib()
@@ -70,7 +78,7 @@ void UConfigProject::saveLibAs(const QString &fileName)
         fileDialog.setAcceptMode(QFileDialog::AcceptSave);
         fileDialog.setDefaultSuffix(".lib");
         fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
-        fileDialog.setWindowTitle(tr("Save Kicad library"));
+        fileDialog.setWindowTitle(tr("Save Kicad library as..."));
         if (!_importedPathLib.isEmpty())
         {
             libFileName = _importedPathLib;
@@ -89,6 +97,9 @@ void UConfigProject::saveLibAs(const QString &fileName)
         libFileName.append(".lib");
     _libFileName = libFileName;
 
+    _libName = _lib->name();
+    emit libChanged(_lib);
+
     _lib->saveTo(libFileName);
 }
 
@@ -104,11 +115,11 @@ void UConfigProject::importComponents(const QString &fileName)
     foreach (Component *component, importer.components())
         _lib->addComponent(component);
 
-    if (!_lib->components().empty())
-        selectComponent(_lib->components()[0]);
-
     _importedPathLib = importer.filePath();
     emit libChanged(_lib);
+
+    if (!_lib->components().empty())
+        selectComponent(_lib->components()[0]);
 }
 
 void UConfigProject::selectComponent(Component *component)
@@ -159,4 +170,3 @@ void UConfigProject::setWindow(QWidget *window)
 {
     _window = window;
 }
-

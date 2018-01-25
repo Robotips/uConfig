@@ -36,16 +36,23 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     setAcceptDrops(true);
 
     connect(_project, &UConfigProject::libChanged, _componentsTreeView, &ComponentLibTreeView::setLib);
+    connect(_project, &UConfigProject::libChanged, this, &UConfigMainWindow::setTitle);
     connect(_project, &UConfigProject::activeComponentChange, _componentsTreeView, &ComponentLibTreeView::setActiveComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _pinListEditor, &PinListEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentViewer, &ComponentViewer::setComponent);
 
     resize(QApplication::primaryScreen()->size()*.7);
+    setTitle();
 }
 
 UConfigMainWindow::~UConfigMainWindow()
 {
+}
+
+void UConfigMainWindow::setTitle()
+{
+    setWindowTitle(_project->libName() + " | uConfig");
 }
 
 void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)

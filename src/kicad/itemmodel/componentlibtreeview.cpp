@@ -33,6 +33,8 @@ Lib *ComponentLibTreeView::lib() const
 
 void ComponentLibTreeView::setLib(Lib *lib)
 {
+    if (lib == _model->lib())
+        return;
     _model->setLib(lib);
     resizeColumnToContents(0);
     resizeColumnToContents(1);

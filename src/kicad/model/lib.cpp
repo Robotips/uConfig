@@ -3,6 +3,7 @@
 #include <QDateTime>
 #include <QFile>
 #include <QDebug>
+#include <QFileInfo>
 
 /**
  * @brief Lib constructor
@@ -128,11 +129,13 @@ void Lib::releaseComponents()
 bool Lib::saveTo(const QString &fileName)
 {
     QFile output(fileName);
+    QFileInfo info(output);
     if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
         return false;
 
     QTextStream stream(&output);
     stream << *this;
+    setName(info.baseName());
 
     output.close();
     return true;
@@ -146,6 +149,7 @@ bool Lib::saveTo(const QString &fileName)
 bool Lib::readFrom(const QString &fileName)
 {
     QFile input(fileName);
+    QFileInfo info(input);
     if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
         return false;
     QTextStream stream(&input);
@@ -162,6 +166,7 @@ bool Lib::readFrom(const QString &fileName)
         else
             delete component;
     } while (!stream.atEnd());
+    setName(info.baseName());
 
     return true;
 }

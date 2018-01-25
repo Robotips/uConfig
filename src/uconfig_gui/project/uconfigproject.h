@@ -12,7 +12,8 @@ public:
     explicit UConfigProject(QWidget *window=Q_NULLPTR);
 
     Lib *lib() const;
-    QString libFileName() const;
+    const QString &libFileName() const;
+    const QString &libName() const;
 
     QWidget *window() const;
     void setWindow(QWidget *window);
@@ -44,6 +45,7 @@ signals:
 protected:
     Lib *_lib;
     QString _libFileName;
+    QString _libName;
     QString _importedPathLib;
 
     Component *_activeComponent;
