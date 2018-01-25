@@ -7,7 +7,7 @@
 
 #include "pinlistimporter.h"
 
-#include "../kicad/lib.h"
+#include "../kicad/model/lib.h"
 
 ComponentsPage::ComponentsPage()
     : QWizardPage(0)

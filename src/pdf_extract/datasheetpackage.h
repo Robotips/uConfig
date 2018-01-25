@@ -4,7 +4,7 @@
 #include "pdf_extract_common.h"
 
 #include "datasheetpin.h"
-#include "../kicad/component.h"
+#include "../kicad/model/component.h"
 
 #include <QString>
 #include <QStringList>

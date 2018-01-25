@@ -6,6 +6,7 @@
 #include "../pdf_extract/datasheet.h"
 
 #include "../kicad/viewer/componentviewer.h"
+#include "../kicad/model/lib.h"
 
 #include "../kicad/pinruler/pinruler.h"
 #include "../kicad/pinruler/rulesparser.h"

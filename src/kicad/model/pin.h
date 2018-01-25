@@ -1,7 +1,7 @@
 #ifndef PIN_H
 #define PIN_H
 
-#include "kicad_global.h"
+#include "../kicad_global.h"
 
 #include <QString>
 #include <QPoint>

@@ -4,7 +4,7 @@
 #include "kicad_global.h"
 
 #include <QGraphicsItem>
-#include "pin.h"
+#include "model/pin.h"
 
 class KICAD_EXPORT PinItem : public QGraphicsItem
 {

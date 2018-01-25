@@ -1,7 +1,7 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include "kicad_global.h"
+#include "../kicad_global.h"
 
 #include <QList>
 #include <QString>

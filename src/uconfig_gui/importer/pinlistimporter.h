@@ -3,7 +3,7 @@
 
 #include <QWizard>
 
-#include "../kicad/component.h"
+#include "../kicad/model/component.h"
 
 class PinListImporter : public QWizard
 {

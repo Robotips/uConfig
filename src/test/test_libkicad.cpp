@@ -1,4 +1,4 @@
-#include "lib.h"
+#include "model/lib.h"
 
 #include <QFile>
 #include <QDebug>

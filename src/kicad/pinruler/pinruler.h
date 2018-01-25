@@ -7,7 +7,7 @@
 
 #include "rulesset.h"
 #include "pinclass.h"
-#include "component.h"
+#include "model/component.h"
 
 class KICAD_EXPORT PinRuler
 {

@@ -1,7 +1,7 @@
 #ifndef PAD_H
 #define PAD_H
 
-#include "kicad_global.h"
+#include "../kicad_global.h"
 
 #include <QString>
 #include <QPointF>

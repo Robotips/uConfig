@@ -1,7 +1,7 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include "kicad_global.h"
+#include "../kicad_global.h"
 
 #include <QList>
 #include <QString>

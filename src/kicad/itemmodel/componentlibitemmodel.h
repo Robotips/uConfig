@@ -5,7 +5,7 @@
 
 #include <QAbstractItemModel>
 
-#include "lib.h"
+#include "model/lib.h"
 
 class KICAD_EXPORT ComponentLibItemModel : public QAbstractItemModel
 {

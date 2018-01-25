@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-#include "lib.h"
+#include "model/lib.h"
 
 class UConfigProject : public QObject
 {

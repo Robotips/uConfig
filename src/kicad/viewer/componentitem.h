@@ -6,7 +6,7 @@
 #include <QGraphicsItem>
 #include <QMap>
 
-#include "component.h"
+#include "model/component.h"
 #include "pinitem.h"
 
 class PinItem;

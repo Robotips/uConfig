@@ -8,11 +8,12 @@
 
 #include "datasheetpackage.h"
 #include "datasheetbox.h"
-#include "../kicad/component.h"
+#include "../kicad/model/component.h"
 
 namespace Poppler
 {
 class Document;
+class Page;
 }
 
 class DATASHEET_EXTRACTOR_EXPORT Datasheet : public QObject

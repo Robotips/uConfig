@@ -14,13 +14,13 @@ DESTDIR = "$$PWD/../../bin"
 DEFINES += KICAD_EXPORT_LIB
 
 SOURCES += \
-    $$PWD/kicad.cpp \
-    $$PWD/lib.cpp \
-    $$PWD/component.cpp \
-    $$PWD/pin.cpp \
-    $$PWD/libmodule.cpp \
-    $$PWD/module.cpp \
-    $$PWD/pad.cpp \
+    $$PWD/model/kicad.cpp \
+    $$PWD/model/lib.cpp \
+    $$PWD/model/component.cpp \
+    $$PWD/model/pin.cpp \
+    $$PWD/model/libmodule.cpp \
+    $$PWD/model/module.cpp \
+    $$PWD/model/pad.cpp \
     $$PWD/viewer/componentviewer.cpp \
     $$PWD/viewer/componentscene.cpp \
     $$PWD/viewer/componentitem.cpp \
@@ -43,14 +43,14 @@ SOURCES += \
     $$PWD/ksseditor/ksssyntax.cpp
 
 HEADERS += \
-    $$PWD/kicad.h \
     $$PWD/kicad_global.h \
-    $$PWD/lib.h \
-    $$PWD/component.h \
-    $$PWD/pin.h \
-    $$PWD/libmodule.h \
-    $$PWD/module.h \
-    $$PWD/pad.h \
+    $$PWD/model/kicad.h \
+    $$PWD/model/lib.h \
+    $$PWD/model/component.h \
+    $$PWD/model/pin.h \
+    $$PWD/model/libmodule.h \
+    $$PWD/model/module.h \
+    $$PWD/model/pad.h \
     $$PWD/viewer/componentviewer.h \
     $$PWD/viewer/componentscene.h \
     $$PWD/viewer/componentitem.h \

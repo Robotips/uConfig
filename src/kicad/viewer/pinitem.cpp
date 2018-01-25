@@ -4,7 +4,7 @@
 #include <QPainter>
 #include <QDebug>
 
-#include "component.h"
+#include "model/component.h"
 
 const int PinItem::ratio=5;
 

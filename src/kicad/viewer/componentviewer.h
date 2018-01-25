@@ -6,7 +6,7 @@
 #include <QGraphicsView>
 #include <QList>
 
-#include "component.h"
+#include "model/component.h"
 
 class ComponentScene;
 class ComponentItem;

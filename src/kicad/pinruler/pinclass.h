@@ -7,7 +7,7 @@
 #include <QList>
 #include <QRect>
 
-#include "pin.h"
+#include "model/pin.h"
 #include "classrule.h"
 
 class KICAD_EXPORT PinClass
