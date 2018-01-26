@@ -22,7 +22,8 @@
 
 QStringList PinRule::propsName = QStringList()
         <<"class"
-        <<"elecType";
+        <<"elecType"
+        <<"pinType";
 
 QStringList PinRule::elecTypeEnumStr = QStringList()
         <<"in"
@@ -37,6 +38,18 @@ QStringList PinRule::elecTypeEnumStr = QStringList()
         <<"opem"
         <<"nc";
 
+QStringList PinRule::pinTypeEnumStr = QStringList()
+        <<"norm"
+        <<"novisible"
+        <<"inverted"
+        <<"clock"
+        <<"iclock"
+        <<"lowin"
+        <<"clocklow"
+        <<"lowout"
+        <<"faledge"
+        <<"nologic";
+
 PinRule::PinRule(const QString &selector)
     : Rule(selector)
 {
@@ -44,6 +57,9 @@ PinRule::PinRule(const QString &selector)
 
     _elecType = Pin::Input;
     _elecTypeSet = false;
+
+    _pinType = Pin::Normal;
+    _pinTypeSet = false;
 }
 
 Rule::Type PinRule::type() const
@@ -63,8 +79,11 @@ bool PinRule::setProperty(const QString &name, const QString &value)
     case 0: // class
         setClassName(value);
         break;
-    case 1: // elec_type
+    case 1: // elecType
         setElecType(value);
+        break;
+    case 2: // pinType
+        setPinType(value);
         break;
     }
 
@@ -78,8 +97,10 @@ bool PinRule::hasPropertySet(const QString &name) const
     {
     case 0: // class
         return hasClassSet();
-    case 1: // length
+    case 1: // elec_type
         return hasElecType();
+    case 2: // pinType
+        return hasPinType();
     }
     return false;
 }
@@ -132,9 +153,9 @@ void PinRule::setElecType(Pin::ElectricalType elecType)
     _elecTypeSet = true;
 }
 
-void PinRule::setElecType(const QString &className)
+void PinRule::setElecType(const QString &elecType)
 {
-    int id = PinRule::elecTypeEnumStr.indexOf(className);
+    int id = PinRule::elecTypeEnumStr.indexOf(elecType);
     if (id != -1)
         setElecType((Pin::ElectricalType)(id));
 }
@@ -142,4 +163,27 @@ void PinRule::setElecType(const QString &className)
 bool PinRule::hasElecType() const
 {
     return _elecTypeSet;
+}
+
+Pin::PinType PinRule::pinType() const
+{
+    return _pinType;
+}
+
+void PinRule::setPinType(const Pin::PinType &pinType)
+{
+    _pinType = pinType;
+    _pinTypeSet = true;
+}
+
+void PinRule::setPinType(const QString &pinType)
+{
+    int id = PinRule::pinTypeEnumStr.indexOf(pinType);
+    if (id != -1)
+        setPinType((Pin::PinType)(id));
+}
+
+bool PinRule::hasPinType() const
+{
+    return _pinTypeSet;
 }

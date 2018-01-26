@@ -76,6 +76,18 @@ Sets the electrical type of the pin.
 
 default: in
 
+#### elecType [in out bidir tri passive unspecified pin pout opcol opem nc]
+
+Sets the electrical type of the pin.
+
+default: in
+
+#### pinType [norm novisible inverted clock iclock lowin clocklow lowout faledge nologic]
+
+Sets the visual style type of the pin.
+
+default: norm
+
 ### Class properties
 
 #### position [top, bottom, left, right, aside]

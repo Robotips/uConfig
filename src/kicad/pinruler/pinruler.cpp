@@ -55,13 +55,20 @@ void PinRuler::organize(Component *component)
                 }
             }
             PinClass *mpinClass = pinClass(className);
-            pin->setPinType(Pin::Normal);  // TODO add a property for me
-
             foreach (PinRule *rule, rules)
             {
                 if (rule->hasElecType())
                 {
                     pin->setElectricalType(rule->elecType());
+                    break;
+                }
+            }
+            pin->setPinType(Pin::Normal); // Remove me to keep default
+            foreach (PinRule *rule, rules)
+            {
+                if (rule->hasPinType())
+                {
+                    pin->setPinType(rule->pinType());
                     break;
                 }
             }

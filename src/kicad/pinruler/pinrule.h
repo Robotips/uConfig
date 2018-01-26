@@ -46,8 +46,14 @@ public:
     void setElecType(const QString &className);
     bool hasElecType() const;
 
+    Pin::PinType pinType() const;
+    void setPinType(const Pin::PinType &pinType);
+    void setPinType(const QString &className);
+    bool hasPinType() const;
+
     static QStringList propsName;
     static QStringList elecTypeEnumStr;
+    static QStringList pinTypeEnumStr;
 
 protected:
     QString _className;
@@ -55,6 +61,9 @@ protected:
 
     Pin::ElectricalType _elecType;
     bool _elecTypeSet;
+
+    Pin::PinType _pinType;
+    bool _pinTypeSet;
 };
 
 #endif // PINRULE_H
