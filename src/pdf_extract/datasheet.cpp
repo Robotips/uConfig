@@ -80,174 +80,17 @@ void Datasheet::close()
 
 void Datasheet::pinSearch(int numPage)
 {
-    QList<DatasheetBox *> numbers;
-    QList<DatasheetBox *> labels;
-    QList<DatasheetBox *> proc_labels;
-    QList<DatasheetBox *> pack_labels;
     QList<DatasheetPin *> pins;
     QList<DatasheetPackage *> packages;
 
+    QList<DatasheetBox *> labels;
+    /*QList<DatasheetBox *> proc_labels;
+    QList<DatasheetBox *> pack_labels;*/
+
     emit log("==============================");
-    emit log(QString("+ possible components at page: %1").arg(numPage + 1));
-    if (_doc == NULL)
-    {
-        qDebug() << "can not open";
-        return;
-    }
-    if (_doc->numPages() < 1)
-    {
-        qDebug() << "no page";
-        return;
-    }
-
-    Poppler::Page *page = _doc->page(numPage);
-
-    // extracting text boxes and sort it by possible usage
-    bool prev = false;
-    DatasheetBox *box = new DatasheetBox();
-    foreach (TextBox *textBox, page->textList())
-    {
-        bool okNumber;
-
-        if (textBox->text().startsWith("•"))
-            textBox->text().mid(1).toInt(&okNumber);
-        else
-            textBox->text().toInt(&okNumber);
-        if (textBox->nextWord() != NULL && okNumber == false)
-        {
-            box->text.append(textBox->text());
-            if (textBox->hasSpaceAfter())
-                box->text.append(" ");
-            box->pos = textBox->boundingBox().united(box->pos);
-            prev = true;
-        }
-        else
-        {
-            if (prev && !okNumber)
-            {
-                box->text = box->text + textBox->text();
-                box->pos = textBox->boundingBox().united(box->pos);
-            }
-            else
-            {
-                if (!prev)
-                {
-                    if (textBox->text().startsWith("•"))
-                        box->text = textBox->text().mid(1);
-                    else
-                        box->text = textBox->text();
-                    box->pos = textBox->boundingBox();
-                }
-
-                if (okNumber)
-                {
-                    if (!prev)
-                    {
-                        numbers.push_back(box);
-                        box = new DatasheetBox();
-                    }
-                    else
-                    {
-                        DatasheetBox *nbox = new DatasheetBox();
-                        if (textBox->text().startsWith("•"))
-                            nbox->text = textBox->text().mid(1);
-                        else
-                            nbox->text = textBox->text();
-                        nbox->pos = textBox->boundingBox();
-                        numbers.push_back(nbox);
-                        okNumber = false;
-                    }
-                }
-                prev = false;
-            }
-
-            box->text.replace(QRegExp("\\([0-9]+\\)"), "");
-            if (!okNumber || prev)
-            {
-                if (box->text.isEmpty() ||
-                    box->text.contains("Note", Qt::CaseInsensitive) ||
-                    box->text.contains(QRegExp("^\\([0-9]+\\)$")))
-                {
-                    // none
-                }
-                else if (box->text.startsWith("PIC", Qt::CaseInsensitive) ||
-                         box->text.startsWith("DSPIC", Qt::CaseInsensitive) ||
-                         box->text.startsWith("IS", Qt::CaseInsensitive) ||
-                         box->text.startsWith("RX", Qt::CaseInsensitive))
-                {
-                    proc_labels.push_back(box);
-                    box = new DatasheetBox();
-                }
-                else if (box->text.contains("DIP", Qt::CaseInsensitive) ||
-                         box->text.contains("SOIC", Qt::CaseInsensitive) ||
-                         box->text.contains("BGA", Qt::CaseInsensitive) ||
-                         box->text.contains("TQFP", Qt::CaseInsensitive) ||
-                         box->text.contains("LQP", Qt::CaseInsensitive) ||
-                         box->text.contains("LQFP", Qt::CaseInsensitive) ||
-                         box->text.contains("LGA", Qt::CaseInsensitive) ||
-                         box->text.contains("QFN", Qt::CaseInsensitive))
-                {
-                    pack_labels.push_back(box);
-                    box = new DatasheetBox();
-                }
-                /*else if (box->text.size() > 10 && !box->text.contains("/"))
-                {
-                    delete box;
-                    box = new DatasheetBox();
-                }*/
-                else
-                {
-                    labels.push_back(box);
-                    box = new DatasheetBox();
-                }
-            }
-            prev = false;
-        }
-    }
+    pins = extractPins(numPage, labels);
+    //pins.append(extractPins(numPage+1, labels));
     QCoreApplication::processEvents();
-
-    // pairing label and number to pin
-    foreach (DatasheetBox *number, numbers)
-    {
-        DatasheetPin *pin = new DatasheetPin();
-        qreal dist = 999999999999;
-        QPointF center = number->pos.center();
-        DatasheetBox *assocLabel = NULL;
-        for (int i = 0; i < labels.count(); i++)
-        {
-            DatasheetBox *label = labels[i];
-            if (label->associated)
-                continue;
-
-            if (!DatasheetBox::isAlign(*label, *number))
-                continue;
-
-            qreal newdist = label->distanceToPoint(center);
-            if (newdist < dist)
-            {
-                dist = newdist;
-                assocLabel = label;
-            }
-        }
-
-        if (assocLabel)
-        {
-            assocLabel->associated = true;
-
-            pin->pin = number->text.toInt();
-            pin->numPos = number->pos;
-            pin->numberBox = number;
-
-            pin->name = assocLabel->text;
-            pin->name.remove(QRegExp("\\([0-9]+\\)"));
-            pin->name.remove(QRegExp(" +"));
-            pin->nameBox = assocLabel;
-
-            pin->pos = number->pos.united(assocLabel->pos);
-
-            pins.push_back(pin);
-        }
-    }
 
     // painring pin to find package
     foreach (DatasheetPin *pin, pins)
@@ -295,30 +138,27 @@ void Datasheet::pinSearch(int numPage)
     // unasociated label
     foreach (DatasheetBox *label, labels)
     {
-        if (label->associated == false)
+        DatasheetPin *nearPin = NULL;
+        qreal dist = 99999999999999;
+        //qDebug()<<"+ unasociated label"<<label->text;
+        for (int i = 0; i < pins.count(); i++)
         {
-            DatasheetPin *nearPin = NULL;
-            qreal dist = 99999999999999;
-            //qDebug()<<"+ unasociated label"<<label->text;
-            for (int i = 0; i < pins.count(); i++)
+            DatasheetPin *pin = pins[i];
+            if (pin->name.endsWith("/"))
             {
-                DatasheetPin *pin = pins[i];
-                if (pin->name.endsWith("/"))
+                qreal newdist = label->distanceToPoint(pin->nameBox->pos.bottomLeft());
+                if (newdist < dist)
                 {
-                    qreal newdist = label->distanceToPoint(pin->nameBox->pos.bottomLeft());
-                    if (newdist < dist)
-                    {
-                        dist = newdist;
-                        nearPin = pin;
-                    }
+                    dist = newdist;
+                    nearPin = pin;
                 }
             }
-            if (nearPin != NULL && dist < nearPin->numPos.height()*2)
-            {
-                //qDebug()<<"  > pin"<<nearPin->name<<nearPin->numberBox->text<<dist;
-                nearPin->name += label->text;
-                label->associated = true;
-            }
+        }
+        if (nearPin != NULL && dist < nearPin->numPos.height()*2)
+        {
+            //qDebug()<<"  > pin"<<nearPin->name<<nearPin->numberBox->text<<dist;
+            nearPin->name += label->text;
+            label->associated = true;
         }
     }
 
@@ -381,7 +221,7 @@ void Datasheet::pinSearch(int numPage)
         //qDebug() << _name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac);
         QTextStream textStream(&file);
 
-        textStream << "Proc: ";
+        /*textStream << "Proc: ";
         foreach (DatasheetBox *proc, proc_labels)
         {
             textStream << proc->text << "-";
@@ -410,7 +250,7 @@ void Datasheet::pinSearch(int numPage)
                 QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res,
                       label->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
 
-        }
+        }*/
         painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
         foreach (DatasheetPin *pin, package->pins)
         {
@@ -427,6 +267,190 @@ void Datasheet::pinSearch(int numPage)
 
     emit log(QString("%1 package%2 deleted").arg(badcount).arg(badcount>1 ? "s" : ""));
     emit log(QString("%1 package%2 found").arg(count).arg(count>1 ? "s" : ""));
+}
+
+QRectF Datasheet::toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageNumber)
+{
+    QRectF global = rect;
+    global.setY(rect.y() + page->pageSize().height() * pageNumber);
+    return rect;
+}
+
+QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> &nonassoc_label)
+{
+    QList<DatasheetBox *> numbers;
+    QList<DatasheetBox *> labels;
+    QList<DatasheetBox *> proc_labels;
+    QList<DatasheetBox *> pack_labels;
+    QList<DatasheetPin *> pins;
+
+    emit log(QString("+ find pins at page: %1").arg(numPage + 1));
+    if (_doc == NULL)
+    {
+        qDebug() << "can not open";
+        return pins;
+    }
+    if (_doc->numPages() < 1)
+    {
+        qDebug() << "no page";
+        return pins;
+    }
+
+    Poppler::Page *page = _doc->page(numPage);
+
+    // extracting text boxes and sort it by possible usage
+    bool prev = false;
+    DatasheetBox *box = new DatasheetBox();
+    foreach (TextBox *textBox, page->textList())
+    {
+        bool okNumber;
+
+        if (textBox->text().startsWith("•"))
+            textBox->text().mid(1).toInt(&okNumber);
+        else
+            textBox->text().toInt(&okNumber);
+        if (textBox->nextWord() != NULL && okNumber == false)
+        {
+            box->text.append(textBox->text());
+            if (textBox->hasSpaceAfter())
+                box->text.append(" ");
+            box->pos = toGlobalPos(textBox->boundingBox(), page, numPage).united(box->pos);
+            prev = true;
+        }
+        else
+        {
+            if (prev && !okNumber)
+            {
+                box->text = box->text + textBox->text();
+                box->pos = toGlobalPos(textBox->boundingBox(), page, numPage).united(box->pos);
+            }
+            else
+            {
+                if (!prev)
+                {
+                    if (textBox->text().startsWith("•"))
+                        box->text = textBox->text().mid(1);
+                    else
+                        box->text = textBox->text();
+                    box->pos = toGlobalPos(textBox->boundingBox(), page, numPage);
+                }
+
+                if (okNumber)
+                {
+                    if (!prev)
+                    {
+                        numbers.push_back(box);
+                        box = new DatasheetBox();
+                    }
+                    else
+                    {
+                        DatasheetBox *nbox = new DatasheetBox();
+                        if (textBox->text().startsWith("•"))
+                            nbox->text = textBox->text().mid(1);
+                        else
+                            nbox->text = textBox->text();
+                        nbox->pos = textBox->boundingBox();
+                        numbers.push_back(nbox);
+                        okNumber = false;
+                    }
+                }
+                prev = false;
+            }
+
+            // remove notes
+            box->text.replace(QRegExp("\\([0-9]+\\)"), "");
+
+            // classify boxes
+            if (!okNumber || prev)
+            {
+                if (box->text.isEmpty() ||
+                    box->text.contains("Note", Qt::CaseInsensitive) ||
+                    box->text.contains(QRegExp("^\\([0-9]+\\)$")))
+                {
+                    // none
+                }
+                else if (box->text.startsWith("PIC", Qt::CaseInsensitive) ||
+                         box->text.startsWith("DSPIC", Qt::CaseInsensitive) ||
+                         box->text.startsWith("IS", Qt::CaseInsensitive) ||
+                         box->text.startsWith("RX", Qt::CaseInsensitive))
+                {
+                    proc_labels.push_back(box);
+                    box = new DatasheetBox();
+                }
+                else if (box->text.contains("DIP", Qt::CaseInsensitive) ||
+                         box->text.contains("SOIC", Qt::CaseInsensitive) ||
+                         box->text.contains("BGA", Qt::CaseInsensitive) ||
+                         box->text.contains("TQFP", Qt::CaseInsensitive) ||
+                         box->text.contains("LQP", Qt::CaseInsensitive) ||
+                         box->text.contains("LQFP", Qt::CaseInsensitive) ||
+                         box->text.contains("LGA", Qt::CaseInsensitive) ||
+                         box->text.contains("QFN", Qt::CaseInsensitive))
+                {
+                    pack_labels.push_back(box);
+                    box = new DatasheetBox();
+                }
+                /*else if (box->text.size() > 10 && !box->text.contains("/"))
+                {
+                    delete box;
+                    box = new DatasheetBox();
+                }*/
+                else
+                {
+                    labels.push_back(box);
+                    box = new DatasheetBox();
+                }
+            }
+            prev = false;
+        }
+    }
+    // pairing label and number to pin
+    foreach (DatasheetBox *number, numbers)
+    {
+        DatasheetPin *pin = new DatasheetPin();
+        qreal dist = 999999999999;
+        QPointF center = number->pos.center();
+        DatasheetBox *assocLabel = NULL;
+        for (int i = 0; i < labels.count(); i++)
+        {
+            DatasheetBox *label = labels[i];
+            if (label->associated)
+                continue;
+
+            if (!DatasheetBox::isAlign(*label, *number))
+                continue;
+
+            qreal newdist = label->distanceToPoint(center);
+            if (newdist < dist)
+            {
+                dist = newdist;
+                assocLabel = label;
+            }
+        }
+
+        if (assocLabel)
+        {
+            assocLabel->associated = true;
+
+            pin->pin = number->text.toInt();
+            pin->numPos = number->pos;
+            pin->numberBox = number;
+
+            pin->name = assocLabel->text;
+            pin->name.remove(QRegExp("\\([0-9]+\\)"));
+            pin->name.remove(QRegExp(" +"));
+            pin->nameBox = assocLabel;
+
+            pin->pos = number->pos.united(assocLabel->pos);
+
+            pins.push_back(pin);
+        }
+    }
+
+    foreach (DatasheetBox *label, labels)
+        if (label->associated == false)
+            nonassoc_label.append(label);
+
+    return pins;
 }
 
 bool Datasheet::debugEnabled() const

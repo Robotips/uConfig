@@ -33,6 +33,7 @@ public:
 
     QString text;
     QRectF pos;
+    int page;
     bool associated;
 
     static bool isAlign(const DatasheetBox &label, const DatasheetBox &number);

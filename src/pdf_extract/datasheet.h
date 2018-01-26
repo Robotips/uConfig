@@ -71,6 +71,9 @@ private:
 
     void pinSearch(int numPage);
 
+    QRectF toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageNumber);
+    QList<DatasheetPin *> extractPins(int numPage, QList<DatasheetBox *> &nonassoc_label);
+
     Poppler::Document *_doc;
     QString _name;
 
