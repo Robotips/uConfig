@@ -66,7 +66,7 @@ QList<Component *> ComponentLibItemModel::components() const
     return _lib->components();
 }
 
-QModelIndex ComponentLibItemModel::index(Component *component)
+QModelIndex ComponentLibItemModel::index(Component *component, int coulumn)
 {
     if (!component)
         return QModelIndex();
@@ -74,7 +74,7 @@ QModelIndex ComponentLibItemModel::index(Component *component)
     for (int i=0; i<_lib->componentsCount(); i++)
     {
         if (_lib->component(i) == component)
-            return index(i, 0, QModelIndex());
+            return index(i, coulumn, QModelIndex());
     }
     return QModelIndex();
 }
@@ -231,12 +231,16 @@ Component *ComponentLibItemModel::activeComponent() const
 void ComponentLibItemModel::setActiveComponent(Component *activeComponent)
 {
     QModelIndex oldIndex = index(_activeComponent);
+    QModelIndex oldIndex2 = index(_activeComponent, 2);
     if (oldIndex.isValid())
-        emit dataChanged(oldIndex, oldIndex);
+        emit dataChanged(oldIndex, oldIndex2);
+
     _activeComponent = activeComponent;
+
     QModelIndex newIndex = index(_activeComponent);
+    QModelIndex newIndex2 = index(_activeComponent, 2);
     if (newIndex.isValid())
-        emit dataChanged(newIndex, newIndex);
+        emit dataChanged(newIndex, newIndex2);
 }
 
 void ComponentLibItemModel::selectAll(bool selected)

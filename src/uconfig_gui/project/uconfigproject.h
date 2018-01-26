@@ -24,6 +24,8 @@ public:
         ComponentReferenceInfo
     };
 
+    Component *activeComponent() const;
+
 public slots:
     void newLib();
     void openLib(const QString &libFileName=QString());

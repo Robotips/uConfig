@@ -40,7 +40,7 @@ public:
     void addComponent(Component *component);
     QList<Component *> components() const;
 
-    QModelIndex index(Component *component);
+    QModelIndex index(Component *component, int coulumn = 0);
     Component *component(const QModelIndex &index) const;
     void remove(const QModelIndex &index);
 

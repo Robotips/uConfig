@@ -161,6 +161,11 @@ void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType
     }
 }
 
+Component *UConfigProject::activeComponent() const
+{
+    return _activeComponent;
+}
+
 QWidget *UConfigProject::window() const
 {
     return _window;
