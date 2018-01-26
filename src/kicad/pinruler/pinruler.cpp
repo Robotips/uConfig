@@ -57,13 +57,11 @@ void PinRuler::organize(Component *component)
             PinClass *mpinClass = pinClass(className);
             pin->setPinType(Pin::Normal);  // TODO add a property for me
 
-            //qDebug()<<"> "<<pin->name();
             foreach (PinRule *rule, rules)
             {
-                //qDebug()<<"  * "<<rule->className(pin->name());
-                if (rule->hasLengthSet())
+                if (rule->hasElecType())
                 {
-                    pin->setLength(rule->length());
+                    pin->setElectricalType(rule->elecType());
                     break;
                 }
             }
@@ -142,7 +140,7 @@ void PinRuler::organize(Component *component)
     rightSize.rwidth() += 100;
 
     // placement
-    int sideX = qMax((leftSize.width() + rightSize.width()) / 2 + 300, qMax(topSize.width() / 2, bottomSize.width() / 2));
+    int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width() / 2, bottomSize.width() / 2));
     sideX = (sideX / 100) * 100; // grid align KLC4.1
     int sideY = qMax(leftSize.height(), rightSize.height()) / 2;
     sideY = (qCeil(sideY / 100) + 1) * 100; // grid align KLC4.1
@@ -169,7 +167,7 @@ void PinRuler::organize(Component *component)
 
     x = -topSize.width() / 2;
     x = qCeil(x / 100) * 100; // grid align KLC4.1
-    y = -sideY - 300;
+    y = -sideY;
     foreach (PinClass *mpinClass, topSide)
     {
         mpinClass->placePins(QPoint(x, y));
@@ -178,7 +176,7 @@ void PinRuler::organize(Component *component)
 
     x = -bottomSize.width() / 2;
     x = qCeil(x / 100) * 100; // grid align KLC4.1
-    y = sideY + 300;
+    y = sideY;
     foreach (PinClass *mpinClass, bottomSide)
     {
         mpinClass->placePins(QPoint(x, y));
@@ -188,9 +186,8 @@ void PinRuler::organize(Component *component)
     // rect compute
     // TODO review this part
     QRect rect;
-    int pinLenght = component->pins()[0]->length();
-    rect.setLeft(-sideX + pinLenght);
-    rect.setWidth(sideX * 2 - pinLenght * 2 + 1);
+    rect.setLeft(-sideX);
+    rect.setWidth(sideX * 2 + 1);
     rect.setTop(-sideY);
     rect.setHeight(sideY * 2 + 1);
     component->setRect(rect);

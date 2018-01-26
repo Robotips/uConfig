@@ -56,6 +56,9 @@ public:
     QString sortPattern() const;
     void setSortPattern(const QString &sortPattern);
 
+    int length() const;
+    void setLength(int length);
+
     void addPin(Pin *pin);
     const QList<Pin *> &pins() const;
 
@@ -70,6 +73,9 @@ protected:
 
     QString _sortPattern;
     bool _sortPatternSet;
+
+    int _length;
+    bool _lengthSet;
 
     QList<Pin *> _pins;
 };

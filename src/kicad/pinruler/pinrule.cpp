@@ -22,16 +22,28 @@
 
 QStringList PinRule::propsName = QStringList()
         <<"class"
-        <<"length"
-        <<"elec_type";
+        <<"elecType";
+
+QStringList PinRule::elecTypeEnumStr = QStringList()
+        <<"in"
+        <<"out"
+        <<"bidir"
+        <<"tri"
+        <<"passive"
+        <<"unspecified"
+        <<"pin"
+        <<"pout"
+        <<"opcol"
+        <<"opem"
+        <<"nc";
 
 PinRule::PinRule(const QString &selector)
     : Rule(selector)
 {
     _classSet = false;
 
-    _length = 200;
-    _lengthSet = false;
+    _elecType = Pin::Input;
+    _elecTypeSet = false;
 }
 
 Rule::Type PinRule::type() const
@@ -51,8 +63,8 @@ bool PinRule::setProperty(const QString &name, const QString &value)
     case 0: // class
         setClassName(value);
         break;
-    case 1: // length
-        setLength(value.toInt());
+    case 1: // elec_type
+        setElecType(value);
         break;
     }
 
@@ -67,7 +79,7 @@ bool PinRule::hasPropertySet(const QString &name) const
     case 0: // class
         return hasClassSet();
     case 1: // length
-        return hasLengthSet();
+        return hasElecType();
     }
     return false;
 }
@@ -109,18 +121,25 @@ bool PinRule::hasClassSet() const
     return _classSet;
 }
 
-int PinRule::length() const
+Pin::ElectricalType PinRule::elecType() const
 {
-    return _length;
+    return _elecType;
 }
 
-void PinRule::setLength(int lenght)
+void PinRule::setElecType(Pin::ElectricalType elecType)
 {
-    _length = lenght;
-    _lengthSet = true;
+    _elecType = elecType;
+    _elecTypeSet = true;
 }
 
-bool PinRule::hasLengthSet() const
+void PinRule::setElecType(const QString &className)
 {
-    return _lengthSet;
+    int id = PinRule::elecTypeEnumStr.indexOf(className);
+    if (id != -1)
+        setElecType((Pin::ElectricalType)(id));
+}
+
+bool PinRule::hasElecType() const
+{
+    return _elecTypeSet;
 }

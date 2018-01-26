@@ -70,6 +70,11 @@ public:
     bool hasSortPatternSet() const;
     void setSortPattern(const QString &sortPattern);
 
+    // length property
+    int length() const;
+    bool hasLengthSet() const;
+    void setLength(int length);
+
 protected:
     Position _position;
     bool _positionSet;
@@ -79,6 +84,9 @@ protected:
 
     QString _sortPattern;
     bool _sortPatternSet;
+
+    int _length;
+    bool _lengthSet;
 };
 
 #endif // CLASSRULE_H

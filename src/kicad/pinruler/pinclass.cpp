@@ -26,10 +26,15 @@ PinClass::PinClass(const QString &className)
     // properties default values
     _position = ClassRule::PositionASide;
     _positionSet = false;
+
     _sort = ClassRule::SortAsc;
     _sortSet = false;
+
     _sortPattern = ".*";
     _sortPatternSet = false;
+
+    _length = 200;
+    _lengthSet = false;
 }
 
 QString PinClass::className() const
@@ -59,6 +64,8 @@ void PinClass::applyRule(ClassRule *rule)
         }
         setSortPattern(newSortPatern);
     }
+    if (!_lengthSet && rule->hasLengthSet())
+        setLength(rule->length());
 }
 
 void PinClass::applyRules(QList<ClassRule *> rules)
@@ -142,6 +149,7 @@ void PinClass::placePins(const QPoint &basePos)
 {
     QPoint pos = basePos;
     QPoint offset;
+    QPoint translate;
     Pin::Direction direction;
 
     switch (_position)
@@ -149,29 +157,35 @@ void PinClass::placePins(const QPoint &basePos)
     case ClassRule::PositionTop:
         direction = Pin::Down;
         offset = QPoint(100, 0);
+        translate = QPoint(0, -_length);
         break;
     case ClassRule::PositionBottom:
         direction = Pin::Up;
         offset = QPoint(100, 0);
+        translate = QPoint(0, _length);
         break;
     case ClassRule::PositionLeft:
         direction = Pin::Right;
         offset = QPoint(0, 100);
+        translate = QPoint(-_length, 0);
         break;
     case ClassRule::PositionRight:
         direction = Pin::Left;
         offset = QPoint(0, 100);
+        translate = QPoint(_length, 0);
         break;
     case ClassRule::PositionASide:
         direction = Pin::Left;
         offset = QPoint(0, 100);
+        translate = QPoint(_length, 0);
         break;
     }
     sortPins();
     foreach (Pin *pin, _pins)
     {
         pin->setDirection(direction);
-        pin->setPos(pos);
+        pin->setPos(pos + translate);
+        pin->setLength(_length);
         pos += offset;
     }
 }
@@ -242,6 +256,16 @@ void PinClass::setSortPattern(const QString &sortPattern)
 {
     _sortPattern = sortPattern;
     _sortPatternSet = true;
+}
+
+int PinClass::length() const
+{
+    return _length;
+}
+
+void PinClass::setLength(int length)
+{
+    _length = length;
 }
 
 void PinClass::addPin(Pin *pin)

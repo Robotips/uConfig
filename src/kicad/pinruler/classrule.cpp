@@ -21,7 +21,8 @@
 QStringList ClassRule::propsName = QStringList()
         <<"position"
         <<"sort"
-        <<"sortpattern";
+        <<"sortpattern"
+        <<"length";
 
 QStringList ClassRule::positionEnumStr = QStringList()
         <<"top"
@@ -40,10 +41,15 @@ ClassRule::ClassRule(const QString &selector)
 {
     _position = PositionASide;
     _positionSet = false;
+
     _sort = SortAsc;
     _sortSet = false;
+
     _sortPattern = ".*";
     _sortPatternSet = false;
+
+    _length = 200;
+    _lengthSet = false;
 }
 
 Rule::Type ClassRule::type() const
@@ -69,6 +75,9 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
     case 2: // sortpattern
         setSortPattern(value);
         break;
+    case 3: // length
+        setLength(value.toInt());
+        break;
     }
 
     return true;
@@ -85,6 +94,8 @@ bool ClassRule::hasPropertySet(const QString &name) const
         return hasSortSet();
     case 2: // sortpattern
         return hasSortPatternSet();
+    case 3: // length
+        return hasLengthSet();
     }
     return false;
 }
@@ -159,4 +170,20 @@ void ClassRule::setSortPattern(const QString &sortPattern)
 {
     _sortPattern = sortPattern;
     _sortPatternSet = true;
+}
+
+int ClassRule::length() const
+{
+    return _length;
+}
+
+bool ClassRule::hasLengthSet() const
+{
+    return _lengthSet;
+}
+
+void ClassRule::setLength(int length)
+{
+    _length = length;
+    _lengthSet = true;
 }

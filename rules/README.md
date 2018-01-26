@@ -70,11 +70,11 @@ If the selector contains capture(s), captured parts could be used to set the des
 
 default: "default"
 
-#### length [int > 0]
+#### elecType [in out bidir tri passive unspecified pin pout opcol opem nc]
 
-length gives the length of the pin. Should be comprise in [100, 300] interval with increment of 50 to respect [KLC](http://kicad-pcb.org/libraries/klc/) convention.
+Sets the electrical type of the pin.
 
-default: 200
+default: in
 
 ### Class properties
 
@@ -95,3 +95,9 @@ default: none
 The sortpattern regular expression gives the part of pin that will be used to sort pins.
 
 default: ".*" (the whole pin name)
+
+#### length [int > 0]
+
+length gives the length of pins in class. Should be comprise in [100, 300] interval with increment of 50 to respect [KLC](http://kicad-pcb.org/libraries/klc/) convention.
+
+default: 200

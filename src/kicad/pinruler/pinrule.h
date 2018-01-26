@@ -25,6 +25,7 @@
 #include <QStringList>
 
 #include "rule.h"
+#include "model/pin.h"
 
 class KICAD_EXPORT PinRule : public Rule
 {
@@ -40,18 +41,20 @@ public:
     void setClassName(const QString &className);
     bool hasClassSet() const;
 
-    int length() const;
-    void setLength(int length);
-    bool hasLengthSet() const;
+    Pin::ElectricalType elecType() const;
+    void setElecType(Pin::ElectricalType elecType);
+    void setElecType(const QString &className);
+    bool hasElecType() const;
 
     static QStringList propsName;
+    static QStringList elecTypeEnumStr;
 
 protected:
     QString _className;
     bool _classSet;
 
-    int _length;
-    bool _lengthSet;
+    Pin::ElectricalType _elecType;
+    bool _elecTypeSet;
 };
 
 #endif // PINRULE_H
