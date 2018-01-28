@@ -105,9 +105,9 @@ bool PinRule::hasPropertySet(const QString &name) const
     case 0: // class
         return hasClassSet();
     case 1: // elec_type
-        return hasElecType();
+        return hasElecTypeSet();
     case 2: // pinType
-        return hasPinType();
+        return hasPinTypeSet();
     case 3: // priority
         return hasPrioritySet();
     }
@@ -169,7 +169,7 @@ void PinRule::setElecType(const QString &elecType)
         setElecType((Pin::ElectricalType)(id));
 }
 
-bool PinRule::hasElecType() const
+bool PinRule::hasElecTypeSet() const
 {
     return _elecTypeSet;
 }
@@ -192,7 +192,7 @@ void PinRule::setPinType(const QString &pinType)
         setPinType((Pin::PinType)(id));
 }
 
-bool PinRule::hasPinType() const
+bool PinRule::hasPinTypeSet() const
 {
     return _pinTypeSet;
 }

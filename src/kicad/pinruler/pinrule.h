@@ -46,13 +46,13 @@ public:
     Pin::ElectricalType elecType() const;
     void setElecType(Pin::ElectricalType elecType);
     void setElecType(const QString &className);
-    bool hasElecType() const;
+    bool hasElecTypeSet() const;
 
     // pinType property
     Pin::PinType pinType() const;
     void setPinType(const Pin::PinType &pinType);
     void setPinType(const QString &className);
-    bool hasPinType() const;
+    bool hasPinTypeSet() const;
 
     // priority property
     int priority() const;

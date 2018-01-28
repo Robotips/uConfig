@@ -20,16 +20,6 @@
 
 #include <QDebug>
 
-bool PinClassItem::pinLessThan(PinClassItem *pin1, PinClassItem *pin2)
-{
-    return pin1->sortLabel.toLower() < pin2->sortLabel.toLower();
-}
-
-bool PinClassItem::pinGreaterThan(PinClassItem *pin1, PinClassItem *pin2)
-{
-    return pin1->sortLabel.toLower() > pin2->sortLabel.toLower();
-}
-
 PinClass::PinClass(const QString &className)
     : _className(className)
 {
@@ -109,7 +99,7 @@ void PinClass::sortPins()
     foreach (PinClassItem *pinItem, _pins)
     {
         QString sortPatern;
-        QString pinName = pinItem->pin->name();
+        QString pinName = pinItem->pin()->name();
         pinName.replace("~", "");
 
         if (pattern.isValid())
@@ -132,14 +122,14 @@ void PinClass::sortPins()
             QRegularExpressionMatch numMatch = numMatchIt.next();
             sortPatern.append(numMatch.captured(1) + QString('0').repeated(5-numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
         }
-        QRegularExpressionMatchIterator padMatchIt = numPattern.globalMatch(pinItem->pin->padName());
+        QRegularExpressionMatchIterator padMatchIt = numPattern.globalMatch(pinItem->pin()->padName());
         while (padMatchIt.hasNext())
         {
             QRegularExpressionMatch padMatch = padMatchIt.next();
             sortPatern.append(padMatch.captured(1) + QString('0').repeated(5-padMatch.captured(2).size()) + padMatch.captured(2) + padMatch.captured(3));
         }
 
-        pinItem->sortLabel = sortPatern;
+        pinItem->setSortLabel(sortPatern);
     }
 
     if (_sort == ClassRule::SortAsc)
@@ -187,9 +177,9 @@ void PinClass::placePins(const QPoint &basePos)
     sortPins();
     foreach (PinClassItem *pinItem, _pins)
     {
-        pinItem->pin->setDirection(direction);
-        pinItem->pin->setPos(pos + translate);
-        pinItem->pin->setLength(_length);
+        pinItem->pin()->setDirection(direction);
+        pinItem->pin()->setPos(pos + translate);
+        pinItem->pin()->setLength(_length);
         pos += offset;
     }
 }
@@ -200,8 +190,8 @@ QRect PinClass::rect() const
     int maxLenght = 0;
     foreach (PinClassItem *pinItem, _pins)
     {
-        if (pinItem->pin->name().size() > maxLenght)
-            maxLenght = pinItem->pin->name().size();
+        if (pinItem->pin()->name().size() > maxLenght)
+            maxLenght = pinItem->pin()->name().size();
     }
 
     switch (_position)
@@ -282,17 +272,12 @@ void PinClass::setPriority(int priority)
     _priority = priority;
 }
 
-void PinClass::addPin(Pin *pin)
+void PinClass::addPinItem(PinClassItem *pin)
 {
-    _pins.append(new PinClassItem(pin));
+    _pins.append(pin);
 }
 
 const QList<PinClassItem *> &PinClass::pins() const
 {
     return _pins;
-}
-
-PinClassItem::PinClassItem(Pin *p)
-    : pin(p)
-{
 }

@@ -25,19 +25,8 @@
 #include <QList>
 #include <QRect>
 
-#include "model/pin.h"
 #include "classrule.h"
-
-struct KICAD_EXPORT PinClassItem
-{
-    PinClassItem(Pin *p);
-    Pin *pin;
-    int priority;
-    QString sortLabel;
-
-    static bool pinLessThan(PinClassItem *pin1, PinClassItem *pin2);
-    static bool pinGreaterThan(PinClassItem *pin1, PinClassItem *pin2);
-};
+#include "pinclassitem.h"
 
 class KICAD_EXPORT PinClass
 {
@@ -72,7 +61,7 @@ public:
     int priority() const;
     void setPriority(int priority);
 
-    void addPin(Pin *pin);
+    void addPinItem(PinClassItem *pin);
     const QList<PinClassItem *> &pins() const;
 
 protected:

@@ -44,11 +44,12 @@ void PinRuler::organize(Component *component)
     PinClass *defaultClass = pinClass("default");
     foreach (Pin *pin, component->pins())
     {
+        PinClassItem *pinClassItem = new PinClassItem(pin);
         const QList<PinRule*> &rules = _ruleSet->rulesForPin(pin->name());
         if (rules.isEmpty())
         {
             pin->setPinType(Pin::NotVisible);
-            defaultClass->addPin(pin);
+            defaultClass->addPinItem(pinClassItem);
         }
         else
         {
@@ -64,7 +65,7 @@ void PinRuler::organize(Component *component)
             PinClass *mpinClass = pinClass(className);
             foreach (PinRule *rule, rules)
             {
-                if (rule->hasElecType())
+                if (rule->hasElecTypeSet())
                 {
                     pin->setElectricalType(rule->elecType());
                     break;
@@ -73,13 +74,21 @@ void PinRuler::organize(Component *component)
             pin->setPinType(Pin::Normal); // Remove me to keep default
             foreach (PinRule *rule, rules)
             {
-                if (rule->hasPinType())
+                if (rule->hasPinTypeSet())
                 {
                     pin->setPinType(rule->pinType());
                     break;
                 }
             }
-            mpinClass->addPin(pin);
+            foreach (PinRule *rule, rules)
+            {
+                if (rule->hasPrioritySet())
+                {
+                    pinClassItem->setPriority(rule->priority());
+                    break;
+                }
+            }
+            mpinClass->addPinItem(pinClassItem);
         }
     }
 

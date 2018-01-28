@@ -38,6 +38,7 @@ SOURCES += \
     $$PWD/pinruler/classrule.cpp \
     $$PWD/pinruler/rulesset.cpp \
     $$PWD/pinruler/pinclass.cpp \
+    $$PWD/pinruler/pinclassitem.cpp \
     $$PWD/pinruler/pinruler.cpp \
     $$PWD/ksseditor/ksseditor.cpp \
     $$PWD/ksseditor/ksssyntax.cpp
@@ -68,6 +69,7 @@ HEADERS += \
     $$PWD/pinruler/classrule.h \
     $$PWD/pinruler/rulesset.h \
     $$PWD/pinruler/pinclass.h \
+    $$PWD/pinruler/pinclassitem.h \
     $$PWD/pinruler/pinruler.h \
     $$PWD/ksseditor/ksseditor.h \
     $$PWD/ksseditor/ksssyntax.h
