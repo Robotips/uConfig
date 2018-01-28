@@ -28,6 +28,17 @@
 #include "model/pin.h"
 #include "classrule.h"
 
+struct KICAD_EXPORT PinClassItem
+{
+    PinClassItem(Pin *p);
+    Pin *pin;
+    int priority;
+    QString sortLabel;
+
+    static bool pinLessThan(PinClassItem *pin1, PinClassItem *pin2);
+    static bool pinGreaterThan(PinClassItem *pin1, PinClassItem *pin2);
+};
+
 class KICAD_EXPORT PinClass
 {
 public:
@@ -38,7 +49,6 @@ public:
     void applyRule(ClassRule *rule);
     void applyRules(QList<ClassRule *> rules);
 
-    static bool pinPatterLessThan(QPair<QString, Pin *> pin1, QPair<QString, Pin *> pin2);
     void sortPins();
 
     void placePins(const QPoint &pos);
@@ -59,8 +69,11 @@ public:
     int length() const;
     void setLength(int length);
 
+    int priority() const;
+    void setPriority(int priority);
+
     void addPin(Pin *pin);
-    const QList<Pin *> &pins() const;
+    const QList<PinClassItem *> &pins() const;
 
 protected:
     QString _className;
@@ -77,7 +90,10 @@ protected:
     int _length;
     bool _lengthSet;
 
-    QList<Pin *> _pins;
+    int _priority;
+    bool _prioritySet;
+
+    QList<PinClassItem *> _pins;
 };
 
 #endif // PINCLASS_H

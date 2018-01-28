@@ -75,6 +75,11 @@ public:
     bool hasLengthSet() const;
     void setLength(int length);
 
+    // priority property
+    int priority() const;
+    bool hasPrioritySet() const;
+    void setPriority(int priority);
+
 protected:
     Position _position;
     bool _positionSet;
@@ -87,6 +92,9 @@ protected:
 
     int _length;
     bool _lengthSet;
+
+    int _priority;
+    bool _prioritySet;
 };
 
 #endif // CLASSRULE_H

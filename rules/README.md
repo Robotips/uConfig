@@ -76,17 +76,19 @@ Sets the electrical type of the pin.
 
 default: in
 
-#### elecType [in out bidir tri passive unspecified pin pout opcol opem nc]
-
-Sets the electrical type of the pin.
-
-default: in
-
 #### pinType [norm novisible inverted clock iclock lowin clocklow lowout faledge nologic]
 
 Sets the visual style type of the pin.
 
 default: norm
+
+#### priority [int]
+
+Sets priority of the pin in class. The pin with the higher priority will be placed first in the class. The lowest, last.
+
+Could be negative.
+
+default: 0
 
 ### Class properties
 
@@ -113,3 +115,11 @@ default: ".*" (the whole pin name)
 length gives the length of pins in class. Should be comprise in [100, 300] interval with increment of 50 to respect [KLC](http://kicad-pcb.org/libraries/klc/) convention.
 
 default: 200
+
+#### priority [int]
+
+Sets priority of the class. The class with the higher priority will be placed first in the side. The lowest, last.
+
+Could be negative.
+
+default: 0

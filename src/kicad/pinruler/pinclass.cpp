@@ -20,6 +20,16 @@
 
 #include <QDebug>
 
+bool PinClassItem::pinLessThan(PinClassItem *pin1, PinClassItem *pin2)
+{
+    return pin1->sortLabel.toLower() < pin2->sortLabel.toLower();
+}
+
+bool PinClassItem::pinGreaterThan(PinClassItem *pin1, PinClassItem *pin2)
+{
+    return pin1->sortLabel.toLower() > pin2->sortLabel.toLower();
+}
+
 PinClass::PinClass(const QString &className)
     : _className(className)
 {
@@ -35,6 +45,9 @@ PinClass::PinClass(const QString &className)
 
     _length = 200;
     _lengthSet = false;
+
+    _priority = 0;
+    _prioritySet = false;
 }
 
 QString PinClass::className() const
@@ -66,6 +79,8 @@ void PinClass::applyRule(ClassRule *rule)
     }
     if (!_lengthSet && rule->hasLengthSet())
         setLength(rule->length());
+    if (!_prioritySet && rule->hasPrioritySet())
+        setPriority(rule->priority());
 }
 
 void PinClass::applyRules(QList<ClassRule *> rules)
@@ -74,17 +89,10 @@ void PinClass::applyRules(QList<ClassRule *> rules)
         applyRule(rule);
 }
 
-bool PinClass::pinPatterLessThan(QPair<QString, Pin*> pin1, QPair<QString, Pin*> pin2)
-{
-    return pin1.first.toLower() < pin2.first.toLower();
-}
-
 void PinClass::sortPins()
 {
     if (_sort == ClassRule::SortNone)
         return;
-
-    QList<QPair<QString, Pin*> > pins;
 
     QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
     QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
@@ -98,10 +106,10 @@ void PinClass::sortPins()
             n = pinName.count();
     }*/
 
-    foreach (Pin *pin, _pins)
+    foreach (PinClassItem *pinItem, _pins)
     {
         QString sortPatern;
-        QString pinName = pin->name();
+        QString pinName = pinItem->pin->name();
         pinName.replace("~", "");
 
         if (pattern.isValid())
@@ -124,24 +132,20 @@ void PinClass::sortPins()
             QRegularExpressionMatch numMatch = numMatchIt.next();
             sortPatern.append(numMatch.captured(1) + QString('0').repeated(5-numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
         }
-        QRegularExpressionMatchIterator padMatchIt = numPattern.globalMatch(pin->padName());
+        QRegularExpressionMatchIterator padMatchIt = numPattern.globalMatch(pinItem->pin->padName());
         while (padMatchIt.hasNext())
         {
             QRegularExpressionMatch padMatch = padMatchIt.next();
             sortPatern.append(padMatch.captured(1) + QString('0').repeated(5-padMatch.captured(2).size()) + padMatch.captured(2) + padMatch.captured(3));
         }
 
-        pins.append(qMakePair(sortPatern, pin));
+        pinItem->sortLabel = sortPatern;
     }
-    qSort(pins.begin(), pins.end(), PinClass::pinPatterLessThan);
 
-    _pins.clear();
     if (_sort == ClassRule::SortAsc)
-        for (int i=0; i<pins.size(); i++)
-            _pins.append(pins[i].second);
+        qSort(_pins.begin(), _pins.end(), PinClassItem::pinLessThan);
     if (_sort == ClassRule::SortDesc)
-        for (int i=pins.size()-1; i>=0; i--)
-            _pins.append(pins[i].second);
+        qSort(_pins.begin(), _pins.end(), PinClassItem::pinGreaterThan);
 
 }
 
@@ -181,11 +185,11 @@ void PinClass::placePins(const QPoint &basePos)
         break;
     }
     sortPins();
-    foreach (Pin *pin, _pins)
+    foreach (PinClassItem *pinItem, _pins)
     {
-        pin->setDirection(direction);
-        pin->setPos(pos + translate);
-        pin->setLength(_length);
+        pinItem->pin->setDirection(direction);
+        pinItem->pin->setPos(pos + translate);
+        pinItem->pin->setLength(_length);
         pos += offset;
     }
 }
@@ -194,10 +198,10 @@ QRect PinClass::rect() const
 {
     QRect rect;
     int maxLenght = 0;
-    foreach (Pin *pin, _pins)
+    foreach (PinClassItem *pinItem, _pins)
     {
-        if (pin->name().size() > maxLenght)
-            maxLenght = pin->name().size();
+        if (pinItem->pin->name().size() > maxLenght)
+            maxLenght = pinItem->pin->name().size();
     }
 
     switch (_position)
@@ -268,12 +272,27 @@ void PinClass::setLength(int length)
     _length = length;
 }
 
-void PinClass::addPin(Pin *pin)
+int PinClass::priority() const
 {
-    _pins.append(pin);
+    return _priority;
 }
 
-const QList<Pin *> &PinClass::pins() const
+void PinClass::setPriority(int priority)
+{
+    _priority = priority;
+}
+
+void PinClass::addPin(Pin *pin)
+{
+    _pins.append(new PinClassItem(pin));
+}
+
+const QList<PinClassItem *> &PinClass::pins() const
 {
     return _pins;
+}
+
+PinClassItem::PinClassItem(Pin *p)
+    : pin(p)
+{
 }

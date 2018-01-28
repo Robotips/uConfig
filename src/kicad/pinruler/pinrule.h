@@ -37,19 +37,27 @@ public:
     virtual bool setProperty(const QString &name, const QString &value);
     virtual bool hasPropertySet(const QString &name) const;
 
+    // class property
     QString className(const QString &pinName = QString()) const;
     void setClassName(const QString &className);
     bool hasClassSet() const;
 
+    // elecType property
     Pin::ElectricalType elecType() const;
     void setElecType(Pin::ElectricalType elecType);
     void setElecType(const QString &className);
     bool hasElecType() const;
 
+    // pinType property
     Pin::PinType pinType() const;
     void setPinType(const Pin::PinType &pinType);
     void setPinType(const QString &className);
     bool hasPinType() const;
+
+    // priority property
+    int priority() const;
+    void setPriority(int priority);
+    bool hasPrioritySet() const;
 
     static QStringList propsName;
     static QStringList elecTypeEnumStr;
@@ -64,6 +72,9 @@ protected:
 
     Pin::PinType _pinType;
     bool _pinTypeSet;
+
+    int _priority;
+    bool _prioritySet;
 };
 
 #endif // PINRULE_H

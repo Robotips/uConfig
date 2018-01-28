@@ -23,7 +23,8 @@
 QStringList PinRule::propsName = QStringList()
         <<"class"
         <<"elecType"
-        <<"pinType";
+        <<"pinType"
+        <<"priority";
 
 QStringList PinRule::elecTypeEnumStr = QStringList()
         <<"in"
@@ -60,6 +61,9 @@ PinRule::PinRule(const QString &selector)
 
     _pinType = Pin::Normal;
     _pinTypeSet = false;
+
+    _priority = 0;
+    _prioritySet = false;
 }
 
 Rule::Type PinRule::type() const
@@ -85,6 +89,9 @@ bool PinRule::setProperty(const QString &name, const QString &value)
     case 2: // pinType
         setPinType(value);
         break;
+    case 3: // priority
+        setPriority(value.toInt());
+        break;
     }
 
     return true;
@@ -101,6 +108,8 @@ bool PinRule::hasPropertySet(const QString &name) const
         return hasElecType();
     case 2: // pinType
         return hasPinType();
+    case 3: // priority
+        return hasPrioritySet();
     }
     return false;
 }
@@ -186,4 +195,20 @@ void PinRule::setPinType(const QString &pinType)
 bool PinRule::hasPinType() const
 {
     return _pinTypeSet;
+}
+
+int PinRule::priority() const
+{
+    return _priority;
+}
+
+void PinRule::setPriority(int priority)
+{
+    _prioritySet = true;
+    _priority = priority;
+}
+
+bool PinRule::hasPrioritySet() const
+{
+    return _prioritySet;
 }

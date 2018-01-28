@@ -31,6 +31,13 @@ bool heightGreaterThan(PinClass *c1, PinClass *c2)
     return c1->rect().height() > c2->rect().height();
 }
 
+bool prioGreaterThan(PinClass *c1, PinClass *c2)
+{
+    if (c1->priority() == c2->priority())
+        return heightGreaterThan(c1, c2);
+    return c1->priority() > c2->priority();
+}
+
 void PinRuler::organize(Component *component)
 {
     int x, y;
@@ -139,6 +146,9 @@ void PinRuler::organize(Component *component)
                 rightSize.setWidth(rect.width());
         }
     }
+
+    qSort(leftSide.begin(), leftSide.end(), prioGreaterThan);
+    qSort(rightSide.begin(), rightSide.end(), prioGreaterThan);
 
     // margins
     leftSize.rheight() += (leftSide.size() - 1) * 100;
