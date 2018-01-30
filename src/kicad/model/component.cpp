@@ -296,8 +296,10 @@ void Component::reorganizeToPackageStyle()
     int rightCount = _pins.count() / 2;
     int leftCount = _pins.count() - rightCount;
 
-    int leftOffset = ceil(leftCount / 2.0) * 100;
-    int rightOffset = ceil(rightCount / 2.0) * 100;
+    int leftOffset = (ceil(leftCount / 2.0)-1) * 100;
+    int rightOffset = (ceil(rightCount / 2.0)-1) * 100;
+    if (leftCount%2 == 0)
+        leftOffset += 100;
 
     int margin = 0;
     int leftMargin = 0, rightMargin = 0;
@@ -306,7 +308,8 @@ void Component::reorganizeToPackageStyle()
     {
         Pin *pin = _pins[i];
         pin->setPinType(Pin::Normal);
-        int width = pin->name().count()*50+350;
+        pin->setLength(200);
+        int width = pin->name().count() * 50 + 250;
         if (width > leftMargin)
             leftMargin = width;
     }
@@ -314,7 +317,8 @@ void Component::reorganizeToPackageStyle()
     {
         Pin *pin = _pins[i];
         pin->setPinType(Pin::Normal);
-        int width = pin->name().count()*50+350;
+        pin->setLength(200);
+        int width = pin->name().count() * 50 + 250;
         if (width > rightMargin)
             rightMargin = width;
     }
@@ -341,8 +345,10 @@ void Component::reorganizeToPackageStyle()
         pos += QPoint(0, -100);
     }
 
-    _rect = QRect(QPoint(-margin+300, -leftOffset-100),
-                  QPoint(margin-300, rightOffset+100));
+    _rect = QRect(QPoint(-margin + 200,
+                         -qMax(leftOffset, rightOffset) - 100),
+                  QPoint(margin - 200,
+                         qMax(leftOffset, rightOffset) + 100));
 }
 
 /**
