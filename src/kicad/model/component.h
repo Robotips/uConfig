@@ -26,7 +26,9 @@
 #include <QRect>
 #include <QStringList>
 #include <QImage>
+
 #include "pin.h"
+#include "draw.h"
 
 /**
  * @brief The Component class contains all information about one schematic component.
@@ -42,10 +44,15 @@ public:
     const QString &name() const;
     void setName(const QString &name);
 
-    QList<Pin *> pins();
-    const QList<Pin *> pins() const;
+    QList<Pin *> &pins();
+    const QList<Pin *> &pins() const;
     void addPin(Pin *pin);
     void removePin(Pin *pin);
+
+    QList<Draw *> &draws();
+    const QList<Draw *> &draws() const;
+    void addDraw(Draw *draw);
+    void removeDraw(Draw *draw);
 
     const QString &prefix() const;
     void setPrefix(const QString &prefix);
@@ -79,6 +86,8 @@ public:
 
 private:
     QList<Pin *> _pins;
+    QList<Draw *> _draws;
+
     QString _name;
     QString _prefix;
     QStringList _alias;

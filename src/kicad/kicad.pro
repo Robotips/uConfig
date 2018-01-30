@@ -21,6 +21,12 @@ SOURCES += \
     $$PWD/model/libmodule.cpp \
     $$PWD/model/module.cpp \
     $$PWD/model/pad.cpp \
+    $$PWD/model/draw.cpp \
+    $$PWD/model/drawtext.cpp \
+    $$PWD/model/drawarc.cpp \
+    $$PWD/model/drawcircle.cpp \
+    $$PWD/model/drawpoly.cpp \
+    $$PWD/model/drawrect.cpp \
     $$PWD/viewer/componentviewer.cpp \
     $$PWD/viewer/componentscene.cpp \
     $$PWD/viewer/componentitem.cpp \
@@ -52,6 +58,12 @@ HEADERS += \
     $$PWD/model/libmodule.h \
     $$PWD/model/module.h \
     $$PWD/model/pad.h \
+    $$PWD/model/draw.h \
+    $$PWD/model/drawtext.h \
+    $$PWD/model/drawarc.h \
+    $$PWD/model/drawcircle.h \
+    $$PWD/model/drawpoly.h \
+    $$PWD/model/drawrect.h \
     $$PWD/viewer/componentviewer.h \
     $$PWD/viewer/componentscene.h \
     $$PWD/viewer/componentitem.h \

@@ -88,7 +88,7 @@ void Component::setName(const QString &name)
  * @brief Component pins list getter
  * @return list of pins
  */
-QList<Pin *> Component::pins()
+QList<Pin *> &Component::pins()
 {
     return _pins;
 }
@@ -97,7 +97,7 @@ QList<Pin *> Component::pins()
  * @brief Constant component pins list getter
  * @return list of pins
  */
-const QList<Pin *> Component::pins() const
+const QList<Pin *> &Component::pins() const
 {
     return _pins;
 }
@@ -120,6 +120,44 @@ void Component::removePin(Pin *pin)
 {
     if (_pins.removeOne(pin))
         delete pin;
+}
+
+/**
+ * @brief Component draw items list getter
+ * @return list of draws
+ */
+QList<Draw *> &Component::draws()
+{
+    return _draws;
+}
+
+/**
+ * @brief Constant component draw items list getter
+ * @return list of draws
+ */
+const QList<Draw *> &Component::draws() const
+{
+    return _draws;
+}
+
+/**
+ * @brief Adds a item draw to the component
+ * @param draw draw pointer to add
+ */
+void Component::addDraw(Draw *draw)
+{
+    draw->setComponent(this);
+    _draws.append(draw);
+}
+
+/**
+ * @brief Removes a draw item from his pointer
+ * @param draw draw pointer to remove
+ */
+void Component::removeDraw(Draw *draw)
+{
+    if (_draws.removeOne(draw))
+        delete draw;
 }
 
 /**
@@ -435,12 +473,12 @@ QTextStream &operator>>(QTextStream &stream, Component &component)
                 stream >> n;
                 rect.setX(n);
                 stream >> n;
-                rect.setY(n);
+                rect.setY(-n);
                 stream >> n;
                 rect.setRight(n);
                 stream >> n;
-                rect.setBottom(n);
-                component._rect = rect;
+                rect.setBottom(-n);
+                component._rect = rect.normalized();
             }
         }
     } while (!stream.atEnd());
@@ -464,13 +502,20 @@ QTextStream &operator<<(QTextStream &stream, const Component &component)
 
     // def
     stream << "DEF " << component._name << " " << component._prefix << " 0 40 ";
-
     stream << (component._showPadName ? "Y " : "N ");
     stream << (component._showPinName ? "Y " : "N ");
     stream << "1 F N" << '\n';
+
+    // F0
     stream << "F0 \"" << component._prefix << "\" " << component._rect.right()-50 << " " << -component._rect.bottom()-50 << " 50 H V C CNN" << '\n';
+
+    // F1
     stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << '\n';
+
+    // F2
     stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
+
+    // F3
     stream << "F3 \"~\" 0 0 50 H I C CNN" << '\n';
 
     // footprints
