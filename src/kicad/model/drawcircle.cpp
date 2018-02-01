@@ -20,7 +20,11 @@
 
 DrawCircle::DrawCircle()
 {
+}
 
+Draw::TypeDraw DrawCircle::type() const
+{
+    return TypeDrawCircle;
 }
 
 uint DrawCircle::radius() const

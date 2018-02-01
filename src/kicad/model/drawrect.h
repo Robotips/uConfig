@@ -28,6 +28,8 @@ class KICAD_EXPORT DrawRect : public Draw
 public:
     DrawRect();
 
+    TypeDraw type() const;
+
     QPoint endPos() const;
     void setEndPos(const QPoint &endPos);
 

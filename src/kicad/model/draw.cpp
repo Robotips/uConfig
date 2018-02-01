@@ -27,6 +27,10 @@ Draw::Draw()
     _component = Q_NULLPTR;
 }
 
+Draw::~Draw()
+{
+}
+
 QPoint Draw::pos() const
 {
     return _pos;

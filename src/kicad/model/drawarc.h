@@ -28,6 +28,8 @@ class KICAD_EXPORT DrawArc : public Draw
 public:
     DrawArc();
 
+    TypeDraw type() const;
+
     uint radius() const;
     void setRadius(const uint &radius);
 

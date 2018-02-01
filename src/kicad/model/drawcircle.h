@@ -28,6 +28,8 @@ class KICAD_EXPORT DrawCircle : public Draw
 public:
     DrawCircle();
 
+    TypeDraw type() const;
+
     uint radius() const;
     void setRadius(const uint &radius);
 

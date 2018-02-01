@@ -20,7 +20,11 @@
 
 DrawArc::DrawArc()
 {
+}
 
+Draw::TypeDraw DrawArc::type() const
+{
+    return TypeDrawArc;
 }
 
 uint DrawArc::radius() const

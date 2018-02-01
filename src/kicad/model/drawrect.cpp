@@ -20,7 +20,11 @@
 
 DrawRect::DrawRect()
 {
+}
 
+Draw::TypeDraw DrawRect::type() const
+{
+    return TypeDrawPoly;
 }
 
 QPoint DrawRect::endPos() const

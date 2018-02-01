@@ -29,6 +29,16 @@ class KICAD_EXPORT Draw
 {
 public:
     Draw();
+    virtual ~Draw();
+
+    enum TypeDraw {
+        TypeDrawArc,
+        TypeDrawCircle,
+        TypeDrawPoly,
+        TypeDrawRect,
+        TypeDrawText
+    };
+    virtual TypeDraw type() const =0;
 
     QPoint pos() const;
     void setPos(const QPoint &pos);

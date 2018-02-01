@@ -27,6 +27,11 @@ DrawText::DrawText()
     _textVJustify = TextVCenter;
 }
 
+Draw::TypeDraw DrawText::type() const
+{
+    return TypeDrawText;
+}
+
 QString DrawText::text() const
 {
     return _text;

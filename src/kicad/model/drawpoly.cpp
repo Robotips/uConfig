@@ -20,7 +20,11 @@
 
 DrawPoly::DrawPoly()
 {
+}
 
+Draw::TypeDraw DrawPoly::type() const
+{
+    return TypeDrawPoly;
 }
 
 QList<QPoint> &DrawPoly::points()

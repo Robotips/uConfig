@@ -30,6 +30,8 @@ class KICAD_EXPORT DrawText : public Draw
 public:
     DrawText();
 
+    TypeDraw type() const;
+
     QString text() const;
     void setText(const QString &text);
 

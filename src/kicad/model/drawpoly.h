@@ -30,6 +30,8 @@ class KICAD_EXPORT DrawPoly : public Draw
 public:
     DrawPoly();
 
+    TypeDraw type() const;
+
     QList<QPoint> &points();
     const QList<QPoint> &points() const;
 
