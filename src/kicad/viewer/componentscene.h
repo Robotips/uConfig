@@ -23,17 +23,32 @@
 
 #include <QGraphicsScene>
 
+#include "model/component.h"
+#include "componentitem.h"
+
 class KICAD_EXPORT ComponentScene : public QGraphicsScene
 {
 public:
-    ComponentScene(qreal x, qreal y, qreal w, qreal h);
+    ComponentScene(qreal x=-5000, qreal y=-5000, qreal w=10000, qreal h=10000);
 
     bool grid() const;
     void setGrid(bool grid);
 
+    Component *component() const;
+    void setComponent(Component *component);
+
+    ComponentItem *componentItem() const;
+    void setComponentItem(ComponentItem *componentItem);
+
+    void saveAsPdf(const QString &fileName);
+    void saveAsImage(const QString &fileName, const QSize &size=QSize(1000, 1000));
+
 protected:
     bool _grid;
     int _prevGridSize;
+
+    Component *_component;
+    ComponentItem *_componentItem;
 
     void drawBackground(QPainter *painter, const QRectF &rect);
 };

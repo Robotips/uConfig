@@ -19,7 +19,6 @@
 #include "componentviewer.h"
 
 #include "componentitem.h"
-#include "componentscene.h"
 
 #include <QDebug>
 #include <QWheelEvent>
@@ -44,28 +43,20 @@ ComponentViewer::ComponentViewer(QWidget *parent)
     setRenderHint(QPainter::Antialiasing, true);
     setRenderHint(QPainter::SmoothPixmapTransform, true);
     setRenderHint(QPainter::TextAntialiasing, true);
-
-    _component = Q_NULLPTR;
 }
 
 Component *ComponentViewer::component() const
 {
-    return _component;
+    return _scene->component();
 }
 
 void ComponentViewer::setComponent(Component *component)
 {
     disconnect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
-    scene()->clear();
-    _component = component;
-
-    if (!component)
-        return;
-
-    _componentItem = new ComponentItem(component);
-    scene()->addItem(_componentItem);
-    scene()->setSceneRect(_componentItem->boundingRect());
-    //fitInView(_componentItem, Qt::KeepAspectRatio);
+    _scene->setComponent(component);
+    if (component)
+        scene()->setSceneRect(_scene->componentItem()->boundingRect());
+    //fitInView(_scene->componentItem(), Qt::KeepAspectRatio);
 
     connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
 }
@@ -76,7 +67,7 @@ void ComponentViewer::selectPin(Pin *pin)
     scene()->clearSelection();
     if (!pin)
         return;
-    PinItem *pinItem = _componentItem->pinItem(pin);
+    PinItem *pinItem = _scene->componentItem()->pinItem(pin);
     if (pinItem)
         pinItem->setSelected(true);
     blockSignals(false);
@@ -84,14 +75,14 @@ void ComponentViewer::selectPin(Pin *pin)
 
 void ComponentViewer::selectPins(QList<Pin *> pins)
 {
-    if (!_componentItem)
+    if (!_scene->componentItem())
         return;
 
     blockSignals(true);
     scene()->clearSelection();
     foreach (Pin *pin, pins)
     {
-        PinItem *pinItem = _componentItem->pinItem(pin);
+        PinItem *pinItem = _scene->componentItem()->pinItem(pin);
         if (pinItem)
             pinItem->setSelected(true);
     }
@@ -100,7 +91,7 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
 
 void ComponentViewer::updatePin(Pin *pin)
 {
-    PinItem *pinItem = _componentItem->pinItem(pin);
+    PinItem *pinItem = _scene->componentItem()->pinItem(pin);
     if (pinItem)
         pinItem->updateData();
 }

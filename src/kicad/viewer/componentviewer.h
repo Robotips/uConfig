@@ -25,6 +25,7 @@
 #include <QList>
 
 #include "model/component.h"
+#include "componentscene.h"
 
 class ComponentScene;
 class ComponentItem;
@@ -58,8 +59,6 @@ protected slots:
 
 protected:
     ComponentScene *_scene;
-    Component *_component;
-    ComponentItem *_componentItem;
     double _currentZoomLevel;
 
     // QWidget interface

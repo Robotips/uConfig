@@ -19,12 +19,15 @@
 #include "componentscene.h"
 
 #include <QPainter>
+#include <QPrinter>
 
 ComponentScene::ComponentScene(qreal x, qreal y, qreal w, qreal h)
     : QGraphicsScene(x, y, w, h)
 {
     _grid = true;
     _prevGridSize = 0;
+
+    _component = Q_NULLPTR;
 }
 
 bool ComponentScene::grid() const
@@ -36,6 +39,70 @@ void ComponentScene::setGrid(bool grid)
 {
     _grid = grid;
     update();
+}
+
+Component *ComponentScene::component() const
+{
+    return _component;
+}
+
+void ComponentScene::setComponent(Component *component)
+{
+    clear();
+    _component = component;
+
+    if (!component)
+    {
+        _componentItem = Q_NULLPTR;
+        return;
+    }
+
+    _componentItem = new ComponentItem(component);
+    addItem(_componentItem);
+}
+
+ComponentItem *ComponentScene::componentItem() const
+{
+    return _componentItem;
+}
+
+void ComponentScene::setComponentItem(ComponentItem *componentItem)
+{
+    _componentItem = componentItem;
+}
+
+void ComponentScene::saveAsPdf(const QString &fileName)
+{
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setPageSize(QPrinter::A4);
+    printer.setOrientation(QPrinter::Portrait);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(fileName);
+
+    QPainter p;
+
+    if (!p.begin(&printer))
+        return;
+
+    render(&p);
+    p.end();
+}
+
+void ComponentScene::saveAsImage(const QString &fileName, const QSize &size)
+{
+    QImage image(size, QImage::Format_ARGB32);
+
+    QPainter p;
+
+    if (!p.begin(&image))
+        return;
+    p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
+
+    p.fillRect(QRect(QPoint(0, 0), size), Qt::white);
+    render(&p);
+    p.end();
+
+    image.save(fileName);
 }
 
 void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
