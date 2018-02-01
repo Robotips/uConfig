@@ -59,6 +59,7 @@ public:
 
     const QStringList &aliases() const;
     void addAlias(const QString &alias);
+    void addAlias(const QStringList &aliases);
 
     QStringList &footPrints();
     const QStringList &footPrints() const;
@@ -79,11 +80,6 @@ public:
     const QImage &debugInfo() const;
     void setDebugInfo(const QImage &debugInfo);
 
-    bool isValid() const;
-
-    friend QTextStream &operator<<(QTextStream &stream, const Component &component);
-    friend QTextStream &operator>>(QTextStream &stream, Component &component);
-
 private:
     QList<Pin *> _pins;
     QList<Draw *> _draws;
@@ -93,7 +89,6 @@ private:
     QStringList _alias;
     QStringList _footPrints;
     QRect _rect;
-    bool _valid;
     bool _showPinName;
     bool _showPadName;
     QImage _debugInfo;

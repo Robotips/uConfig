@@ -113,9 +113,6 @@ public:
     friend bool operator<(const Pin &pin1, const Pin &pin);
     friend bool operator==(const Pin &pin1, const Pin &pin2);
 
-    friend QTextStream &operator<<(QTextStream &stream, const Pin &pin);
-    friend QTextStream &operator>>(QTextStream &stream, Pin &pin);
-
 private:
     QString _name;
     QPoint _pos;
@@ -125,7 +122,6 @@ private:
     ElectricalType _electricalType;
     int _layer;
     int _length;
-    bool _valid;
 
     Component *_component;
 };

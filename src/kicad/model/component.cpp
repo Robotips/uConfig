@@ -33,7 +33,6 @@ Component::Component(const QString &name)
     setName(name);
     _showPinName = true;
     _showPadName = true;
-    _valid = true;
 }
 
 /**
@@ -49,7 +48,6 @@ Component::Component(const Component &other)
     _rect = other._rect;
     _showPinName = other._showPinName;
     _showPadName = other._showPadName;
-    _valid = other._valid;
 
     for (int i=0; i<other._pins.size(); i++)
         addPin(new Pin(*other._pins[i]));
@@ -194,6 +192,15 @@ const QStringList &Component::aliases() const
 void Component::addAlias(const QString &alias)
 {
     _alias.append(alias);
+}
+
+/**
+ * @brief Adds an alias list name to the component
+ * @param aliases aliases names to add
+ */
+void Component::addAlias(const QStringList &aliases)
+{
+    _alias.append(aliases);
 }
 
 /**
@@ -367,199 +374,4 @@ const QImage &Component::debugInfo() const
 void Component::setDebugInfo(const QImage &debugInfo)
 {
     _debugInfo = debugInfo;
-}
-
-/**
- * @brief If a component is correctly parsed and contains good informations
- * @return true if the component is valid
- */
-bool Component::isValid() const
-{
-    return _valid;
-}
-
-/**
- * @brief Operator to serialise the component in Kicad format
- * @param stream out stream
- * @param component component to serialise
- * @return stream
- */
-QTextStream &operator>>(QTextStream &stream, Component &component)
-{
-    /*QRegExp regexp("^F([0-9]) \"(\\S*)\" (\\-?[0-9]+) (\\-?[0-9]+) ([0-9]+) "
-                   "([A-Z]) ([A-Z]) ([A-Z]) ([A-Z]+)$");*/
-    QString dummy;
-    bool draw = false;
-    do
-    {
-        QString start;
-        stream >> start;
-        if (start.at(0) == '#') // comment
-        {
-            stream.readLine();
-        }
-        else if (start == "DEF")
-        {
-            QString name;
-            stream >> name;
-            component.setName(name);
-
-            QString prefix;
-            stream >> prefix;
-            component.setPrefix(prefix);
-
-            stream >> dummy;
-            stream >> dummy; // text offset TODO
-
-            QString option;
-            stream >> option;
-            component._showPadName = (option == "Y");
-            stream >> option;
-            component._showPinName = (option == "Y");
-
-            stream.readLine();
-        }
-        else if (start.at(0) == 'F')
-        {
-            /*qDebug() << regexp.cap(1) << regexp.cap(2) << regexp.cap(3)
-                     << regexp.cap(4) << regexp.cap(5);*/
-            stream.readLine();
-        }
-        else if (start =="$FPLIST")
-        {
-            QString footprint;
-            while (!stream.atEnd())
-            {
-                stream >> footprint;
-                if (footprint == "$ENDFPLIST")
-                    break;
-                component.addFootPrint(footprint);
-            }
-        }
-        else if (start.startsWith("DRAW"))
-        {
-            draw = true;
-            stream.readLine();
-        }
-        else if (start.startsWith("ALIAS"))
-        {
-            QString aliases = stream.readLine();
-            component._alias.append(aliases.split(' '));
-        }
-        else if (start.startsWith("ENDDRAW"))
-        {
-            draw = false;
-            stream.readLine();
-        }
-        else if (start.startsWith("ENDDEF"))
-        {
-            component._valid = true;
-            draw = false;
-            stream.readLine();
-            return stream;
-        }
-        else if (draw)
-        {
-            if (start.at(0) == 'X')
-            {
-                Pin *pin = new Pin();
-                stream >> *pin;
-                if (pin->isValid())
-                    component.addPin(pin);
-                else
-                {
-                    delete pin;
-                    stream.readLine();
-                }
-            }
-            else if (start.startsWith("S"))
-            {
-                QRect rect;
-                int n;
-                stream >> n;
-                rect.setX(n);
-                stream >> n;
-                rect.setY(-n);
-                stream >> n;
-                rect.setRight(n);
-                stream >> n;
-                rect.setBottom(-n);
-                component._rect = rect.normalized();
-            }
-        }
-    } while (!stream.atEnd());
-
-    component._valid = false;
-    return stream;
-}
-
-/**
- * @brief Operator to deserialise the component in Kicad format
- * @param stream input stream
- * @param component component to deserialise
- * @return stream
- */
-QTextStream &operator<<(QTextStream &stream, const Component &component)
-{
-    // http://en.wikibooks.org/wiki/Kicad/file_formats#Description_of_a_component_2
-
-    // comments
-    stream << "#" << '\n' << "# " << component._name << '\n' << "#" << '\n';
-
-    // def
-    stream << "DEF " << component._name << " " << component._prefix << " 0 40 ";
-    stream << (component._showPadName ? "Y " : "N ");
-    stream << (component._showPinName ? "Y " : "N ");
-    stream << "1 F N" << '\n';
-
-    // F0
-    stream << "F0 \"" << component._prefix << "\" " << component._rect.right()-50 << " " << -component._rect.bottom()-50 << " 50 H V C CNN" << '\n';
-
-    // F1
-    stream << "F1 \"" << component._name << "\" 0 0 50 H V C CNN" << '\n';
-
-    // F2
-    stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
-
-    // F3
-    stream << "F3 \"~\" 0 0 50 H I C CNN" << '\n';
-
-    // footprints
-    if (!component._footPrints.isEmpty())
-    {
-        stream << "$FPLIST" << '\n';
-        foreach (QString footPrint, component._footPrints)
-        {
-            stream << " " << footPrint << '\n';
-        }
-        stream << "$ENDFPLIST" << '\n';
-    }
-
-    // alias
-    if (!component._alias.isEmpty())
-        stream << "ALIAS " << component._alias.join(" ") << '\n';
-
-    stream << "DRAW" << '\n';
-    // pins
-    foreach (Pin *pin, component._pins)
-    {
-        stream << *pin << '\n';
-    }
-
-    // rect
-    if (component._rect.isValid())
-    {
-        stream << "S "
-               << component._rect.left() << " "
-               << component._rect.top() << " "
-               << component._rect.right() << " "
-               << component._rect.bottom() << " "
-               << "0 1 10 f" << '\n';
-    }
-
-    // end
-    stream << "ENDDRAW" << '\n';
-    stream << "ENDDEF";
-
-    return stream;
 }

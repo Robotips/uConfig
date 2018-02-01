@@ -25,7 +25,6 @@ Pin::Pin()
 {
     _layer = 1;
     _length = 300;
-    _valid = true;
     _component = Q_NULLPTR;
 }
 
@@ -35,7 +34,6 @@ Pin::Pin(const QString &name, const QString &padName)
 {
     _layer = 1;
     _length = 300;
-    _valid = true;
     _component = Q_NULLPTR;
 }
 
@@ -364,108 +362,6 @@ Component *Pin::component() const
 void Pin::setComponent(Component *component)
 {
     _component = component;
-}
-
-bool Pin::isValid() const
-{
-    return _valid;
-}
-
-QTextStream &operator>>(QTextStream &stream, Pin &pin)
-{
-    pin._valid = false;
-
-    // name
-    QString name;
-    stream >> name;
-    if (name == "~")
-        name = "";
-    if (stream.status() != QTextStream::Ok)
-        return stream;
-    pin.setName(name);
-
-    // name
-    QString padName;
-    stream >> padName;
-    if (stream.status() != QTextStream::Ok)
-        return stream;
-    pin.setPadName(padName);
-
-    // position
-    int x, y;
-    stream >> x >> y;
-    if (stream.status() != QTextStream::Ok)
-        return stream;
-    pin.setPos(x, -y);
-
-    // lenght
-    int lenght;
-    stream >> lenght;
-    if (stream.status() != QTextStream::Ok)
-        return stream;
-    pin.setLength(lenght);
-
-    // orientation
-    char direction;
-    stream.skipWhiteSpace();
-    stream >> direction;
-    pin.setDirection(direction);
-
-    // two ignored fields
-    QString dummy;
-    stream >> dummy;
-    stream >> dummy;
-
-    // layer
-    int layer;
-    stream >> layer;
-    if (stream.status() != QTextStream::Ok)
-        return stream;
-    pin.setLayer(layer);
-
-    stream.skipWhiteSpace();
-    stream >> dummy;
-
-    // elec type
-    char elec_type;
-    stream.skipWhiteSpace();
-    stream >> elec_type;
-    pin.setElectricalType(elec_type);
-
-    // pin type
-    QString pinType = stream.readLine();
-    pin.setPinType(pinType.trimmed());
-
-    pin._valid = true;
-
-    return stream;
-}
-
-QTextStream &operator<<(QTextStream &stream, const Pin &pin)
-{
-    // http://en.wikibooks.org/wiki/Kicad/file_formats#X_record_.28Pin.29
-
-    // X PIN_NAME PAD_NAME X_POS Y_POS LINE_WIDTH DIRECTION NAME_TEXT_SIZE
-    // LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
-    stream << "X ";
-    if (pin._name.isEmpty())
-        stream << "~";
-    else
-        stream << pin._name;
-    stream << " "
-           << pin._padName << " "                           // pad name
-           << pin._pos.x() << " " << -pin._pos.y() << " "   // x y position
-           << pin._length << " "                            // lenght
-           << pin.directionString() << " "                  // pin direction (up/down/left/right)
-           << "50" << " "                                   // name text size
-           << "50" << " "                                   // pad name text size
-           << pin._layer << " "
-           << "1" << " "
-           << pin.electricalTypeString();
-    if (pin._pinType != Pin::Normal)
-        stream << " " << pin.pinTypeString();
-
-    return stream;
 }
 
 bool operator<(const Pin &pin1, const Pin &pin2)

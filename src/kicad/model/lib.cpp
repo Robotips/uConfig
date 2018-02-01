@@ -23,6 +23,8 @@
 #include <QDebug>
 #include <QFileInfo>
 
+#include "../parser/libparser.h"
+
 /**
  * @brief Lib constructor
  * @param name optional library name
@@ -51,8 +53,7 @@ Lib::Lib(const Lib &other)
  */
 Lib::~Lib()
 {
-    for (int i=0; i<_components.size(); i++)
-        delete _components[i];
+    clear();
 }
 
 /**
@@ -140,23 +141,24 @@ void Lib::releaseComponents()
 }
 
 /**
+ * @brief Removes and deletes all components of lib
+ */
+void Lib::clear()
+{
+    for (int i=0; i<_components.size(); i++)
+        delete _components[i];
+    _components.clear();
+}
+
+/**
  * @brief Saves the lib to `fileName` path
  * @param fileName file path
  * @return true in case of success, false otherwise
  */
 bool Lib::saveTo(const QString &fileName)
 {
-    QFile output(fileName);
-    QFileInfo info(output);
-    if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
-        return false;
-
-    QTextStream stream(&output);
-    stream << *this;
-    setName(info.baseName());
-
-    output.close();
-    return true;
+    LibParser libParser;
+    return libParser.saveLib(this, fileName, LibParser::Kicad);
 }
 
 /**
@@ -166,54 +168,6 @@ bool Lib::saveTo(const QString &fileName)
  */
 bool Lib::readFrom(const QString &fileName)
 {
-    QFile input(fileName);
-    QFileInfo info(input);
-    if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
-        return false;
-    QTextStream stream(&input);
-
-    stream.readLine();
-
-    Component *component;
-    do
-    {
-        component = new Component();
-        stream >> *component;
-        if (component->isValid())
-            addComponent(component);
-        else
-            delete component;
-    } while (!stream.atEnd());
-    setName(info.baseName());
-
-    return true;
-}
-
-/**
- * @brief Operator to serialise the lib in Kicad format
- * @param stream out stream
- * @param lib lib to serialise
- * @return stream
- */
-QTextStream &operator<<(QTextStream &stream, const Lib &lib)
-{
-    // header
-    stream << "EESchema-LIBRARY Version 2.3  Date: "
-           << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss")
-           << '\n';
-    stream << "#encoding utf-8" << '\n';
-    stream << "#created with uConfig by Sebastien CAUX (sebcaux)" << '\n';
-    stream << "#https://github.com/Robotips/uConfig" << '\n';
-
-    // components
-    foreach (Component *component, lib._components)
-    {
-        stream << *component << '\n';
-    }
-
-    // footer
-    stream << "#" << '\n';
-    stream << "#End Library";
-
-    return stream;
+    LibParser libParser;
+    return libParser.loadLib(this, fileName, LibParser::Kicad);
 }

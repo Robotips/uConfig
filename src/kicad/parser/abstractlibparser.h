@@ -16,40 +16,20 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef LIB_H
-#define LIB_H
+#ifndef ABSTRACTLIBPARSER_H
+#define ABSTRACTLIBPARSER_H
 
-#include "../kicad_global.h"
+#include "kicad_global.h"
 
-#include <QList>
-#include <QString>
-#include "component.h"
+#include "../model/lib.h"
 
-class KICAD_EXPORT Lib
+class KICAD_EXPORT AbstractLibParser
 {
 public:
-    Lib(const QString &name=QString());
-    Lib(const Lib &other);
-    ~Lib();
+    AbstractLibParser();
 
-    QString name() const;
-    void setName(const QString &name);
-
-    Component *component(int i) const;
-    const QList<Component *> &components() const;
-    int componentsCount() const;
-    void addComponent(Component *component);
-    void removeComponent(Component *component);
-    void takeComponent(Component *component);
-    void releaseComponents();
-    void clear();
-
-    bool saveTo(const QString &fileName);
-    bool readFrom(const QString &fileName);
-
-private:
-    QList<Component *> _components;
-    QString _name;
+    virtual Lib *loadLib(const QString &fileName, Lib *lib=Q_NULLPTR) =0;
+    virtual bool saveLib(const QString &fileName, Lib *lib) =0;
 };
 
-#endif  // LIB_H
+#endif // LIBPARSER_H

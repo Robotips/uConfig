@@ -47,7 +47,10 @@ SOURCES += \
     $$PWD/pinruler/pinclassitem.cpp \
     $$PWD/pinruler/pinruler.cpp \
     $$PWD/ksseditor/ksseditor.cpp \
-    $$PWD/ksseditor/ksssyntax.cpp
+    $$PWD/ksseditor/ksssyntax.cpp \
+    $$PWD/parser/libparser.cpp \
+    $$PWD/parser/kicadlibparser.cpp \
+    $$PWD/parser/abstractlibparser.cpp
 
 HEADERS += \
     $$PWD/kicad_global.h \
@@ -84,7 +87,10 @@ HEADERS += \
     $$PWD/pinruler/pinclassitem.h \
     $$PWD/pinruler/pinruler.h \
     $$PWD/ksseditor/ksseditor.h \
-    $$PWD/ksseditor/ksssyntax.h
+    $$PWD/ksseditor/ksssyntax.h \
+    $$PWD/parser/libparser.h \
+    $$PWD/parser/kicadlibparser.h \
+    $$PWD/parser/abstractlibparser.h
 
 unix {
     target.path = /usr/lib
