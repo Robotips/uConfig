@@ -27,7 +27,12 @@ Draw::TypeDraw DrawRect::type() const
     return TypeDrawPoly;
 }
 
-QPoint DrawRect::endPos() const
+QPoint &DrawRect::endPos()
+{
+    return _endPos;
+}
+
+const QPoint &DrawRect::endPos() const
 {
     return _endPos;
 }

@@ -40,7 +40,8 @@ public:
     };
     virtual TypeDraw type() const =0;
 
-    QPoint pos() const;
+    QPoint &pos();
+    const QPoint &pos() const;
     void setPos(const QPoint &pos);
 
     enum DrawFill {

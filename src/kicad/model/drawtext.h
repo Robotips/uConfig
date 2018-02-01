@@ -51,6 +51,7 @@ public:
         TextBold   = 0x01,
         TextItalic = 0x02
     };
+    Q_DECLARE_FLAGS(TextStyles, TextStyle)
     TextStyle textStyle() const;
     void setTextStyle(const TextStyle &textStyle);
 
@@ -78,5 +79,7 @@ protected:
     TextHJustify _textHJustify;
     TextVJustify _textVJustify;
 };
+
+Q_DECLARE_OPERATORS_FOR_FLAGS(DrawText::TextStyles)
 
 #endif // DRAWTEXT_H

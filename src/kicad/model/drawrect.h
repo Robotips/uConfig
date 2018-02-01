@@ -30,7 +30,8 @@ public:
 
     TypeDraw type() const;
 
-    QPoint endPos() const;
+    QPoint &endPos();
+    const QPoint &endPos() const;
     void setEndPos(const QPoint &endPos);
 
 protected:

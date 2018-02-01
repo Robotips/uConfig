@@ -31,7 +31,12 @@ Draw::~Draw()
 {
 }
 
-QPoint Draw::pos() const
+const QPoint &Draw::pos() const
+{
+    return _pos;
+}
+
+QPoint &Draw::pos()
 {
     return _pos;
 }

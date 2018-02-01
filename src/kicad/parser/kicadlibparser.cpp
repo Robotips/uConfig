@@ -21,6 +21,12 @@
 #include <QDateTime>
 #include <QFileInfo>
 
+#include "model/drawarc.h"
+#include "model/drawcircle.h"
+#include "model/drawpoly.h"
+#include "model/drawrect.h"
+#include "model/drawtext.h"
+
 KicadLibParser::KicadLibParser()
 {
 }
@@ -194,6 +200,25 @@ void KicadLibParser::writePin(Pin *pin)
         _stream << " " << pin->pinTypeString();
 }
 
+void KicadLibParser::writeDraw(Draw *draw)
+{
+    switch (draw->type())
+    {
+    case Draw::TypeDrawArc:
+        break;
+    case Draw::TypeDrawCircle:
+        break;
+    case Draw::TypeDrawPoly:
+        break;
+    case Draw::TypeDrawRect:
+        break;
+    case Draw::TypeDrawText:
+        break;
+    default:
+        break;
+    }
+}
+
 Component *KicadLibParser::readComponent()
 {
     Component *component = new Component();
@@ -267,7 +292,7 @@ Component *KicadLibParser::readComponent()
         }
         else if (draw)
         {
-            if (start.at(0) == 'X')
+            if (start.startsWith('X'))
             {
                 Pin *pin = readPin();
                 if (pin)
@@ -275,24 +300,18 @@ Component *KicadLibParser::readComponent()
                 else
                     _stream.readLine();
             }
-            else if (start.startsWith("S"))
+            else
             {
-                QRect rect;
-                int n;
-                _stream >> n;
-                rect.setX(n);
-                _stream >> n;
-                rect.setY(-n);
-                _stream >> n;
-                rect.setRight(n);
-                _stream >> n;
-                rect.setBottom(-n);
-                component->setRect(rect.normalized());
+                Draw *draw = readDraw(start.data()[0].toLatin1());
+                if (draw)
+                    component->addDraw(draw);
+                else
+                    _stream.readLine();
             }
         }
     } while (!_stream.atEnd());
 
-    return component;
+    return Q_NULLPTR;
 }
 
 Pin *KicadLibParser::readPin()
@@ -376,4 +395,105 @@ Pin *KicadLibParser::readPin()
     pin->setPinType(pinType.trimmed());
 
     return pin;
+}
+
+Draw *KicadLibParser::readDraw(char c)
+{
+    int n;
+    char nc;
+
+    switch (c)
+    {
+    case 'S': // rect
+        {
+            DrawRect *draw = new DrawRect();
+            _stream >> n;
+            draw->pos().setX(n);
+            _stream >> n;
+            draw->pos().setY(-n);
+            _stream >> n;
+            draw->endPos().setX(n);
+            _stream >> n;
+            draw->endPos().setY(-n);
+            _stream >> n;
+            draw->setUnit(n);
+            _stream >> n;
+            draw->setConvert(n);
+            _stream >> n;
+            draw->setThickness(n);
+            _stream >> nc;
+            switch (nc)
+            {
+            case 'F':
+                draw->setFilled(DrawText::DrawFilledForeGround);
+                break;
+            case 'f':
+                draw->setFilled(DrawText::DrawFilledBackGround);
+                break;
+            default:
+                draw->setFilled(DrawText::DrawNotFilled);
+                break;
+            }
+            _stream.readLine();
+            return draw;
+        }
+    case 'T': // text
+        {
+            DrawText *draw = new DrawText();
+            _stream >> n;
+            if (n == 0)
+                draw->setDirection(DrawText::DirectionHorizontal);
+            else
+                draw->setDirection(DrawText::DirectionVertital);
+            _stream >> n;
+            draw->pos().setX(n);
+            _stream >> n;
+            draw->pos().setY(-n);
+            _stream >> n;
+            draw->setTextSize(n);
+            _stream >> n;
+            _stream >> n;
+            draw->setUnit(n);
+            _stream >> n;
+            draw->setConvert(n);
+            DrawText::TextStyles style = DrawText::TextNormal;
+            _stream >> n;
+            if (n != 0)
+                style |= DrawText::TextItalic;
+            _stream >> n;
+            if (n != 0)
+                style |= DrawText::TextBold;
+            draw->setTextSize(style);
+            _stream >> nc;
+            switch (nc)
+            {
+            case 'C':
+                draw->setTextHJustify(DrawText::TextHCenter);
+                break;
+            case 'R':
+                draw->setTextHJustify(DrawText::TextHRight);
+                break;
+            default:
+                draw->setTextHJustify(DrawText::TextHLeft);
+                break;
+            }
+            _stream >> nc;
+            switch (nc)
+            {
+            case 'B':
+                draw->setTextVJustify(DrawText::TextVBottom);
+                break;
+            case 'T':
+                draw->setTextVJustify(DrawText::TextVTop);
+                break;
+            default:
+                draw->setTextVJustify(DrawText::TextVCenter);
+                break;
+            }
+            _stream.readLine();
+            return draw;
+        }
+    default:
+        return Q_NULLPTR;
+    }
 }
