@@ -22,6 +22,11 @@ DrawCircle::DrawCircle()
 {
 }
 
+Draw *DrawCircle::clone() const
+{
+    return new DrawCircle(*this);
+}
+
 Draw::TypeDraw DrawCircle::type() const
 {
     return TypeDrawCircle;

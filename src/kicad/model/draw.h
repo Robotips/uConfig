@@ -30,6 +30,7 @@ class KICAD_EXPORT Draw
 public:
     Draw();
     virtual ~Draw();
+    virtual Draw *clone() const =0;
 
     enum TypeDraw {
         TypeDrawArc,

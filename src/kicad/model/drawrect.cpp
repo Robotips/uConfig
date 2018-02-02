@@ -18,13 +18,25 @@
 
 #include "drawrect.h"
 
-DrawRect::DrawRect()
+DrawRect::DrawRect(const QPoint &pos, const QPoint &endPos)
 {
+    setPos(pos);
+    setEndPos(endPos);
+}
+
+DrawRect::DrawRect(const QRect &rect)
+{
+    setRect(rect);
+}
+
+Draw *DrawRect::clone() const
+{
+    return new DrawRect(*this);
 }
 
 Draw::TypeDraw DrawRect::type() const
 {
-    return TypeDrawPoly;
+    return TypeDrawRect;
 }
 
 QPoint &DrawRect::endPos()
@@ -40,4 +52,15 @@ const QPoint &DrawRect::endPos() const
 void DrawRect::setEndPos(const QPoint &endPos)
 {
     _endPos = endPos;
+}
+
+void DrawRect::setRect(const QRect &rect)
+{
+    setPos(rect.topLeft());
+    setEndPos(rect.bottomRight());
+}
+
+QRect DrawRect::rect()
+{
+    return QRect(pos(), endPos());
 }

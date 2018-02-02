@@ -27,6 +27,7 @@ class KICAD_EXPORT DrawCircle : public Draw
 {
 public:
     DrawCircle();
+    Draw *clone() const;
 
     TypeDraw type() const;
 

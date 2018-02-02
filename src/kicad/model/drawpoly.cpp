@@ -22,6 +22,11 @@ DrawPoly::DrawPoly()
 {
 }
 
+Draw *DrawPoly::clone() const
+{
+    return new DrawPoly(*this);
+}
+
 Draw::TypeDraw DrawPoly::type() const
 {
     return TypeDrawPoly;

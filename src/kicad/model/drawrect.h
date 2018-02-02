@@ -23,16 +23,23 @@
 
 #include "draw.h"
 
+#include <QRect>
+
 class KICAD_EXPORT DrawRect : public Draw
 {
 public:
-    DrawRect();
+    DrawRect(const QPoint &pos, const QPoint &endPos);
+    DrawRect(const QRect &rect=QRect());
+    Draw *clone() const;
 
     TypeDraw type() const;
 
     QPoint &endPos();
     const QPoint &endPos() const;
     void setEndPos(const QPoint &endPos);
+
+    void setRect(const QRect &rect);
+    QRect rect();
 
 protected:
     QPoint _endPos;

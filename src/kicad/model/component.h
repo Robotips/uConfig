@@ -29,6 +29,7 @@
 
 #include "pin.h"
 #include "draw.h"
+#include "drawtext.h"
 
 /**
  * @brief The Component class contains all information about one schematic component.
@@ -48,11 +49,13 @@ public:
     const QList<Pin *> &pins() const;
     void addPin(Pin *pin);
     void removePin(Pin *pin);
+    void clearPins();
 
     QList<Draw *> &draws();
     const QList<Draw *> &draws() const;
     void addDraw(Draw *draw);
     void removeDraw(Draw *draw);
+    void clearDraws();
 
     const QString &prefix() const;
     void setPrefix(const QString &prefix);
@@ -65,7 +68,8 @@ public:
     const QStringList &footPrints() const;
     void addFootPrint(const QString &footprint);
 
-    const QRect &rect() const;
+    QRect boundingRect() const;
+    QRect rect() const;
     void setRect(const QRect &rect);
 
     bool showPinName() const;
@@ -74,11 +78,17 @@ public:
     bool showPadName() const;
     void setShowPadName(bool showPadName);
 
-    void sort();
-    void reorganizeToPackageStyle();
-
     const QImage &debugInfo() const;
     void setDebugInfo(const QImage &debugInfo);
+
+    DrawText *refText() const;
+    void setRefText(DrawText *refText);
+
+    DrawText *nameText() const;
+    void setNameText(DrawText *nameText);
+
+    void sort();
+    void reorganizeToPackageStyle();
 
 private:
     QList<Pin *> _pins;
@@ -88,10 +98,12 @@ private:
     QString _prefix;
     QStringList _alias;
     QStringList _footPrints;
-    QRect _rect;
     bool _showPinName;
     bool _showPadName;
     QImage _debugInfo;
+    QRect _rect;
+    DrawText *_refText;
+    DrawText *_nameText;
 };
 
 #endif  // COMPONENT_H

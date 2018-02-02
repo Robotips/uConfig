@@ -44,6 +44,7 @@ protected:
     Component *readComponent();
     Pin *readPin();
     Draw *readDraw(char c);
+    DrawText *readLabel();
 };
 
 #endif // KICADLIBPARSER_H

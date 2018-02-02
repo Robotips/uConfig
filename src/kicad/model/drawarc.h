@@ -27,6 +27,7 @@ class KICAD_EXPORT DrawArc : public Draw
 {
 public:
     DrawArc();
+    Draw *clone() const;
 
     TypeDraw type() const;
 

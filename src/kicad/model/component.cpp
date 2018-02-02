@@ -17,6 +17,7 @@
  **/
 
 #include "component.h"
+#include "drawrect.h"
 
 #include <QDebug>
 #include <QFontMetrics>
@@ -33,6 +34,8 @@ Component::Component(const QString &name)
     setName(name);
     _showPinName = true;
     _showPadName = true;
+    _refText = new DrawText("U");
+    _nameText = new DrawText();
 }
 
 /**
@@ -45,12 +48,16 @@ Component::Component(const Component &other)
     _prefix = other._prefix;
     _alias = other._alias;
     _footPrints = other._footPrints;
-    _rect = other._rect;
     _showPinName = other._showPinName;
     _showPadName = other._showPadName;
 
     for (int i=0; i<other._pins.size(); i++)
         addPin(new Pin(*other._pins[i]));
+    for (int i=0; i<other._draws.size(); i++)
+        addDraw(other._draws[i]->clone());
+
+    _refText = new DrawText(*other._refText);
+    _nameText = new DrawText(*other._nameText);
 }
 
 /**
@@ -60,6 +67,10 @@ Component::~Component()
 {
     for (int i=0; i<_pins.size(); i++)
         delete _pins[i];
+    for (int i=0; i<_draws.size(); i++)
+        delete _draws[i];
+    delete _refText;
+    delete _nameText;
 }
 
 /**
@@ -121,6 +132,16 @@ void Component::removePin(Pin *pin)
 }
 
 /**
+ * @brief Removes and deletes all pins
+ */
+void Component::clearPins()
+{
+    for (int i=0; i<_pins.size(); i++)
+        delete _pins[i];
+    _pins.clear();
+}
+
+/**
  * @brief Component draw items list getter
  * @return list of draws
  */
@@ -156,6 +177,16 @@ void Component::removeDraw(Draw *draw)
 {
     if (_draws.removeOne(draw))
         delete draw;
+}
+
+/**
+ * @brief Removes and deletes all draws
+ */
+void Component::clearDraws()
+{
+    for (int i=0; i<_draws.size(); i++)
+        delete _draws[i];
+    _draws.clear();
 }
 
 /**
@@ -231,21 +262,39 @@ void Component::addFootPrint(const QString &footprint)
 }
 
 /**
- * @brief Returns the bounding rect of component without pin lenght
+ * @brief Returns the bounding rect of component with pin lenght
  * @return bounding rect
  */
-const QRect &Component::rect() const
+QRect Component::boundingRect() const
+{
+    QRect mrect(0, 0, 1, 1);
+    for (int i=0; i<_pins.size(); i++)
+        mrect = mrect.united(QRect(_pins[i]->pos(), QSize(1, 1)));
+    return mrect;
+}
+
+/**
+ * @brief Component rect
+ * @return component rect
+ */
+QRect Component::rect() const
 {
     return _rect;
 }
 
 /**
- * @brief Sets the bounding rect of component
- * @param rect bounding rect
+ * @brief Sets rect of component
+ * @param rect component rect
  */
 void Component::setRect(const QRect &rect)
 {
     _rect = rect;
+}
+
+bool pinPadLessThan(const Pin *pin1, const Pin *pin2)
+{
+    return (pin1->padName().rightJustified(4, '0') <
+            pin2->padName().rightJustified(4, '0'));
 }
 
 /**
@@ -253,7 +302,7 @@ void Component::setRect(const QRect &rect)
  */
 void Component::sort()
 {
-    qSort(_pins);
+    qSort(_pins.begin(), _pins.end(), pinPadLessThan);
 }
 
 /**
@@ -293,6 +342,62 @@ void Component::setShowPadName(bool showPadName)
 }
 
 /**
+ * @brief Image of debugger for extraction from PDF
+ * @return image view of PDF with color rects
+ */
+const QImage &Component::debugInfo() const
+{
+    return _debugInfo;
+}
+
+/**
+ * @brief Sets the debug image view
+ * @param debugInfo debug image view
+ */
+void Component::setDebugInfo(const QImage &debugInfo)
+{
+    _debugInfo = debugInfo;
+}
+
+/**
+ * @brief Reference draw text
+ * @return Pointer to reference draw text
+ */
+DrawText *Component::refText() const
+{
+    return _refText;
+}
+
+/**
+ * @brief Sets reference draw text
+ * @param refText Pointer to reference draw text
+ */
+void Component::setRefText(DrawText *refText)
+{
+    delete _refText;
+    _refText = refText;
+}
+
+/**
+ * @brief Reference name text
+ * @return Pointer to name draw text
+ */
+DrawText *Component::nameText() const
+{
+    return _nameText;
+}
+
+/**
+ * @brief Sets name draw text
+ * @param refText Pointer to name draw text
+ */
+void Component::setNameText(DrawText *nameText)
+{
+    delete _nameText;
+    _nameText = nameText;
+}
+
+/**
  * @brief Reorganizes component pins like a simple DIP/SOIC package
  */
 void Component::reorganizeToPackageStyle()
@@ -310,6 +415,7 @@ void Component::reorganizeToPackageStyle()
 
     int margin = 0;
     int leftMargin = 0, rightMargin = 0;
+    sort();
     // compute leftMargin and rightMargin
     for (i = 0; i < leftCount; i++)
     {
@@ -352,26 +458,10 @@ void Component::reorganizeToPackageStyle()
         pos += QPoint(0, -100);
     }
 
-    _rect = QRect(QPoint(-margin + 200,
+    clearDraws();
+    QRect rect = QRect(QPoint(-margin + 200,
                          -qMax(leftOffset, rightOffset) - 100),
                   QPoint(margin - 200,
                          qMax(leftOffset, rightOffset) + 100));
-}
-
-/**
- * @brief Image of debugger for extraction from PDF
- * @return image view of PDF with color rects
- */
-const QImage &Component::debugInfo() const
-{
-    return _debugInfo;
-}
-
-/**
- * @brief Sets the debug image view
- * @param debugInfo debug image view
- */
-void Component::setDebugInfo(const QImage &debugInfo)
-{
-    _debugInfo = debugInfo;
+    addDraw(new DrawRect(rect));
 }

@@ -29,6 +29,7 @@ class KICAD_EXPORT DrawPoly : public Draw
 {
 public:
     DrawPoly();
+    Draw *clone() const;
 
     TypeDraw type() const;
 

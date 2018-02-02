@@ -22,6 +22,11 @@ DrawArc::DrawArc()
 {
 }
 
+Draw *DrawArc::clone() const
+{
+    return new DrawArc(*this);
+}
+
 Draw::TypeDraw DrawArc::type() const
 {
     return TypeDrawArc;

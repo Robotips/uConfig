@@ -123,12 +123,15 @@ void KicadLibParser::writeComponent(Component *component)
 
     // F0
     _stream << "F0 \"" << component->prefix() << "\" "
-            << component->rect().right()-50 << " "
-            << -component->rect().bottom()-50
+            << component->refText()->pos().x() << " "
+            << -component->refText()->pos().y()
             << " 50 H V C CNN" << '\n';
 
     // F1
-    _stream << "F1 \"" << component->name() << "\" 0 0 50 H V C CNN" << '\n';
+    _stream << "F1 \"" << component->name() << "\" "
+            << component->nameText()->pos().x() << " "
+            << -component->nameText()->pos().y()
+            << " 50 H V C CNN" << '\n';
 
     // F2
     _stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
@@ -157,17 +160,6 @@ void KicadLibParser::writeComponent(Component *component)
     {
         writePin(pin);
         _stream << '\n';
-    }
-
-    // rect
-    if (component->rect().isValid())
-    {
-        _stream << "S "
-                << component->rect().left() << " "
-                << component->rect().top() << " "
-                << component->rect().right() << " "
-                << component->rect().bottom() << " "
-                << "0 1 10 f" << '\n';
     }
 
     // end
@@ -254,9 +246,26 @@ Component *KicadLibParser::readComponent()
 
             _stream.readLine();
         }
-        else if (start.at(0) == 'F')
+        else if (start.startsWith("F"))
         {
-            _stream.readLine();
+            if (start.startsWith("F0"))
+            {
+                DrawText *refText = readLabel();
+                if (refText)
+                    component->setRefText(refText);
+                else
+                    _stream.readLine();
+            }
+            else if (start.startsWith("F1"))
+            {
+                DrawText *nameText = readLabel();
+                if (nameText)
+                    component->setNameText(nameText);
+                else
+                    _stream.readLine();
+            }
+            else
+                _stream.readLine();
         }
         else if (start =="$FPLIST")
         {
@@ -317,6 +326,7 @@ Component *KicadLibParser::readComponent()
 Pin *KicadLibParser::readPin()
 {
     Pin *pin = new Pin();
+    _stream.resetStatus();
 
     // name
     QString name;
@@ -401,6 +411,8 @@ Draw *KicadLibParser::readDraw(char c)
 {
     int n;
     char nc;
+    QString text;
+    _stream.resetStatus();
 
     switch (c)
     {
@@ -456,6 +468,8 @@ Draw *KicadLibParser::readDraw(char c)
             draw->setUnit(n);
             _stream >> n;
             draw->setConvert(n);
+            _stream >> text;
+            draw->setText(text);
             DrawText::TextStyles style = DrawText::TextNormal;
             _stream >> n;
             if (n != 0)
@@ -463,7 +477,7 @@ Draw *KicadLibParser::readDraw(char c)
             _stream >> n;
             if (n != 0)
                 style |= DrawText::TextBold;
-            draw->setTextSize(style);
+            draw->setTextStyle(style);
             _stream >> nc;
             switch (nc)
             {
@@ -496,4 +510,61 @@ Draw *KicadLibParser::readDraw(char c)
     default:
         return Q_NULLPTR;
     }
+}
+
+DrawText *KicadLibParser::readLabel()
+{
+    int n;
+    char nc;
+    QString text;
+
+    _stream.resetStatus();
+
+    DrawText *draw = new DrawText();
+    _stream >> text;
+    draw->setText(text);
+    _stream >> n;
+    draw->pos().setX(n);
+    _stream >> n;
+    draw->pos().setY(-n);
+
+    _stream >> n;
+    draw->setTextSize(n);
+    _stream >> nc;
+    if (nc == 'H')
+        draw->setDirection(DrawText::DirectionHorizontal);
+    else
+        draw->setDirection(DrawText::DirectionVertital);
+    _stream >> n;
+
+    _stream >> nc; // visibility TODO
+
+    _stream >> nc;
+    switch (nc)
+    {
+    case 'C':
+        draw->setTextHJustify(DrawText::TextHCenter);
+        break;
+    case 'R':
+        draw->setTextHJustify(DrawText::TextHRight);
+        break;
+    default:
+        draw->setTextHJustify(DrawText::TextHLeft);
+        break;
+    }
+    _stream >> nc;
+    switch (nc)
+    {
+    case 'B':
+        draw->setTextVJustify(DrawText::TextVBottom);
+        break;
+    case 'T':
+        draw->setTextVJustify(DrawText::TextVTop);
+        break;
+    default:
+        draw->setTextVJustify(DrawText::TextVCenter);
+        break;
+    }
+    _stream.readLine();
+    return draw;
 }

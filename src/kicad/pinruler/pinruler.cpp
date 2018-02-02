@@ -21,6 +21,8 @@
 #include <QDebug>
 #include <qmath.h>
 
+#include "model/drawrect.h"
+
 PinRuler::PinRuler(RulesSet *ruleSet)
 {
     _ruleSet = ruleSet;
@@ -210,13 +212,13 @@ void PinRuler::organize(Component *component)
     }
 
     // rect compute
-    // TODO review this part
     QRect rect;
     rect.setLeft(-sideX);
     rect.setWidth(sideX * 2 + 1);
     rect.setTop(-sideY);
     rect.setHeight(sideY * 2 + 1);
-    component->setRect(rect);
+    component->clearDraws();
+    component->addDraw(new DrawRect(rect));
 
     // debug
     /*qDebug()<<"";

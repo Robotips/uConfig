@@ -18,13 +18,20 @@
 
 #include "drawtext.h"
 
-DrawText::DrawText()
+DrawText::DrawText(const QString &text, const QPoint &pos)
 {
     _direction = DirectionVertital;
     _textSize = 50;
     _textStyle = TextNormal;
     _textHJustify = TextHLeft;
     _textVJustify = TextVCenter;
+    setPos(pos);
+    setText(text);
+}
+
+Draw *DrawText::clone() const
+{
+    return new DrawText(*this);
 }
 
 Draw::TypeDraw DrawText::type() const
@@ -62,12 +69,12 @@ void DrawText::setTextSize(const uint &textSize)
     _textSize = textSize;
 }
 
-DrawText::TextStyle DrawText::textStyle() const
+DrawText::TextStyles DrawText::textStyle() const
 {
     return _textStyle;
 }
 
-void DrawText::setTextStyle(const TextStyle &textStyle)
+void DrawText::setTextStyle(const TextStyles &textStyle)
 {
     _textStyle = textStyle;
 }

@@ -28,7 +28,8 @@
 class KICAD_EXPORT DrawText : public Draw
 {
 public:
-    DrawText();
+    DrawText(const QString &text=QString(), const QPoint &pos=QPoint());
+    Draw *clone() const;
 
     TypeDraw type() const;
 
@@ -52,8 +53,8 @@ public:
         TextItalic = 0x02
     };
     Q_DECLARE_FLAGS(TextStyles, TextStyle)
-    TextStyle textStyle() const;
-    void setTextStyle(const TextStyle &textStyle);
+    DrawText::TextStyles textStyle() const;
+    void setTextStyle(const TextStyles &textStyle);
 
     enum TextHJustify {
         TextHCenter,
@@ -75,7 +76,7 @@ protected:
     QString _text;
     Direction _direction;
     uint _textSize;
-    TextStyle _textStyle;
+    TextStyles _textStyle;
     TextHJustify _textHJustify;
     TextVJustify _textVJustify;
 };
