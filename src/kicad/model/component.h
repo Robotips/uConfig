@@ -87,6 +87,12 @@ public:
     DrawText *nameText() const;
     void setNameText(DrawText *nameText);
 
+    DrawText *packageText() const;
+    void setPackageText(DrawText *packageText);
+
+    DrawText *docText() const;
+    void setDocText(DrawText *docText);
+
     void sort();
     void reorganizeToPackageStyle();
 
@@ -104,6 +110,8 @@ private:
     QRect _rect;
     DrawText *_refText;
     DrawText *_nameText;
+    DrawText *_packageText;
+    DrawText *_docText;
 };
 
 #endif  // COMPONENT_H

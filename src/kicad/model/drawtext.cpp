@@ -23,6 +23,7 @@ DrawText::DrawText(const QString &text, const QPoint &pos)
     _direction = DirectionVertital;
     _textSize = 50;
     _textStyle = TextNormal;
+    _visible = true;
     _textHJustify = TextHLeft;
     _textVJustify = TextVCenter;
     setPos(pos);
@@ -77,6 +78,16 @@ DrawText::TextStyles DrawText::textStyle() const
 void DrawText::setTextStyle(const TextStyles &textStyle)
 {
     _textStyle = textStyle;
+}
+
+bool DrawText::isVisible() const
+{
+    return _visible;
+}
+
+void DrawText::setVisible(bool visible)
+{
+    _visible = visible;
 }
 
 DrawText::TextHJustify DrawText::textHJustify() const

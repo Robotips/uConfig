@@ -20,6 +20,7 @@
 
 #include <QDateTime>
 #include <QFileInfo>
+#include <QDebug>
 
 #include "model/drawarc.h"
 #include "model/drawcircle.h"
@@ -83,6 +84,27 @@ bool KicadLibParser::saveLib(const QString &fileName, Lib *lib)
     return true;
 }
 
+QString KicadLibParser::readText()
+{
+    QString text, word;
+    _stream >> word;
+    if (word.startsWith('"'))
+    {
+        word.remove(0, 1);
+        text.append(word);
+        while (!word.endsWith('"') && _stream.status() == QTextStream::Ok)
+        {
+            _stream >> word;
+            text.append(' ');
+            text.append(word);
+        }
+        text.remove('"');
+        return text;
+    }
+    else
+        return word;
+}
+
 /**
  * @brief Serialise the lib in Kicad format
  * @param lib lib to serialise
@@ -93,8 +115,8 @@ void KicadLibParser::writeLib(Lib *lib)
             << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss")
             << '\n';
     _stream << "#encoding utf-8" << '\n';
-    _stream << "#created with uConfig by Sebastien CAUX (sebcaux)" << '\n';
-    _stream << "#https://github.com/Robotips/uConfig" << '\n';
+    //_stream << "#created with uConfig by Sebastien CAUX (sebcaux)" << '\n';
+    //_stream << "#https://github.com/Robotips/uConfig" << '\n';
 
     // components
     foreach (Component *component, lib->components())
@@ -122,22 +144,24 @@ void KicadLibParser::writeComponent(Component *component)
     _stream << "1 F N" << '\n';
 
     // F0
-    _stream << "F0 \"" << component->prefix() << "\" "
-            << component->refText()->pos().x() << " "
-            << -component->refText()->pos().y()
-            << " 50 H V C CNN" << '\n';
+    _stream << "F0";
+    writeLabel(component->refText());
+    _stream << '\n';
 
     // F1
-    _stream << "F1 \"" << component->name() << "\" "
-            << component->nameText()->pos().x() << " "
-            << -component->nameText()->pos().y()
-            << " 50 H V C CNN" << '\n';
+    _stream << "F1";
+    writeLabel(component->nameText());
+    _stream << '\n';
 
     // F2
-    _stream << "F2 \"~\" 0 0 50 H I C CNN" << '\n';
+    _stream << "F2";
+    writeLabel(component->packageText());
+    _stream << '\n';
 
     // F3
-    _stream << "F3 \"~\" 0 0 50 H I C CNN" << '\n';
+    _stream << "F3";
+    writeLabel(component->docText());
+    _stream << '\n';
 
     // footprints
     if (!component->footPrints().isEmpty())
@@ -211,6 +235,61 @@ void KicadLibParser::writeDraw(Draw *draw)
     }
 }
 
+void KicadLibParser::writeLabel(DrawText *draw)
+{
+    _stream << " \"" << draw->text() << "\" ";
+
+    _stream << draw->pos().x() << " "
+            << -draw->pos().y() << " "
+            << draw->textSize() << " ";
+
+    if (draw->direction() == DrawText::DirectionHorizontal)
+        _stream << "H ";
+    else
+        _stream << "V ";
+
+    if (draw->isVisible())
+        _stream << "V ";
+    else
+        _stream << "I ";
+
+    switch (draw->textHJustify())
+    {
+    case DrawText::TextHCenter:
+        _stream << "C ";
+        break;
+    case DrawText::TextHLeft:
+        _stream << "L ";
+        break;
+    case DrawText::TextHRight:
+        _stream << "R ";
+        break;
+    }
+
+    switch (draw->textVJustify())
+    {
+    case DrawText::TextVCenter:
+        _stream << "C";
+        break;
+    case DrawText::TextVBottom:
+        _stream << "B";
+        break;
+    case DrawText::TextVTop:
+        _stream << "T";
+        break;
+    }
+
+    if (draw->textStyle().testFlag(DrawText::TextItalic))
+        _stream << "I";
+    else
+        _stream << "N";
+
+    if (draw->textStyle().testFlag(DrawText::TextBold))
+        _stream << "B";
+    else
+        _stream << "N";
+}
+
 Component *KicadLibParser::readComponent()
 {
     Component *component = new Component();
@@ -261,6 +340,22 @@ Component *KicadLibParser::readComponent()
                 DrawText *nameText = readLabel();
                 if (nameText)
                     component->setNameText(nameText);
+                else
+                    _stream.readLine();
+            }
+            else if (start.startsWith("F2"))
+            {
+                DrawText *packageText = readLabel();
+                if (packageText)
+                    component->setPackageText(packageText);
+                else
+                    _stream.readLine();
+            }
+            else if (start.startsWith("F3"))
+            {
+                DrawText *docText = readLabel();
+                if (docText)
+                    component->setDocText(docText);
                 else
                     _stream.readLine();
             }
@@ -433,6 +528,8 @@ Draw *KicadLibParser::readDraw(char c)
             draw->setConvert(n);
             _stream >> n;
             draw->setThickness(n);
+
+            _stream.skipWhiteSpace();
             _stream >> nc;
             switch (nc)
             {
@@ -468,7 +565,7 @@ Draw *KicadLibParser::readDraw(char c)
             draw->setUnit(n);
             _stream >> n;
             draw->setConvert(n);
-            _stream >> text;
+            text = readText();
             draw->setText(text);
             DrawText::TextStyles style = DrawText::TextNormal;
             _stream >> n;
@@ -478,6 +575,8 @@ Draw *KicadLibParser::readDraw(char c)
             if (n != 0)
                 style |= DrawText::TextBold;
             draw->setTextStyle(style);
+
+            _stream.skipWhiteSpace();
             _stream >> nc;
             switch (nc)
             {
@@ -491,6 +590,8 @@ Draw *KicadLibParser::readDraw(char c)
                 draw->setTextHJustify(DrawText::TextHLeft);
                 break;
             }
+
+            _stream.skipWhiteSpace();
             _stream >> nc;
             switch (nc)
             {
@@ -521,7 +622,7 @@ DrawText *KicadLibParser::readLabel()
     _stream.resetStatus();
 
     DrawText *draw = new DrawText();
-    _stream >> text;
+    text = readText();
     draw->setText(text);
     _stream >> n;
     draw->pos().setX(n);
@@ -530,15 +631,18 @@ DrawText *KicadLibParser::readLabel()
 
     _stream >> n;
     draw->setTextSize(n);
+    _stream.skipWhiteSpace();
     _stream >> nc;
     if (nc == 'H')
         draw->setDirection(DrawText::DirectionHorizontal);
     else
         draw->setDirection(DrawText::DirectionVertital);
-    _stream >> n;
 
-    _stream >> nc; // visibility TODO
+    _stream.skipWhiteSpace();
+    _stream >> nc;
+    draw->setVisible(nc == 'V');
 
+    _stream.skipWhiteSpace();
     _stream >> nc;
     switch (nc)
     {
@@ -552,6 +656,8 @@ DrawText *KicadLibParser::readLabel()
         draw->setTextHJustify(DrawText::TextHLeft);
         break;
     }
+
+    _stream.skipWhiteSpace();
     _stream >> nc;
     switch (nc)
     {
@@ -565,6 +671,16 @@ DrawText *KicadLibParser::readLabel()
         draw->setTextVJustify(DrawText::TextVCenter);
         break;
     }
+
+    _stream >> nc;
+    DrawText::TextStyles style = DrawText::TextNormal;
+    if (nc == 'I')
+        style |= DrawText::TextItalic;
+    _stream >> nc;
+    if (nc == 'B')
+        style |= DrawText::TextBold;
+    draw->setTextStyle(style);
+
     _stream.readLine();
     return draw;
 }

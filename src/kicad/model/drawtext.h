@@ -56,6 +56,9 @@ public:
     DrawText::TextStyles textStyle() const;
     void setTextStyle(const TextStyles &textStyle);
 
+    bool isVisible() const;
+    void setVisible(bool visible);
+
     enum TextHJustify {
         TextHCenter,
         TextHLeft,
@@ -77,6 +80,7 @@ protected:
     Direction _direction;
     uint _textSize;
     TextStyles _textStyle;
+    bool _visible;
     TextHJustify _textHJustify;
     TextVJustify _textVJustify;
 };

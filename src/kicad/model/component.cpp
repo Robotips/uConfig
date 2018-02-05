@@ -31,11 +31,13 @@
 Component::Component(const QString &name)
     : _prefix("U")
 {
-    setName(name);
     _showPinName = true;
     _showPadName = true;
     _refText = new DrawText("U");
     _nameText = new DrawText();
+    _packageText = new DrawText();
+    _docText = new DrawText();
+    setName(name);
 }
 
 /**
@@ -58,6 +60,8 @@ Component::Component(const Component &other)
 
     _refText = new DrawText(*other._refText);
     _nameText = new DrawText(*other._nameText);
+    _packageText = new DrawText(*other._packageText);
+    _docText = new DrawText(*other._nameText);
 }
 
 /**
@@ -71,6 +75,8 @@ Component::~Component()
         delete _draws[i];
     delete _refText;
     delete _nameText;
+    delete _packageText;
+    delete _docText;
 }
 
 /**
@@ -91,6 +97,7 @@ void Component::setName(const QString &name)
 {
     _name = name;
     _name.replace(" ","_");
+    _nameText->setText(name);
 }
 
 /**
@@ -395,6 +402,44 @@ void Component::setNameText(DrawText *nameText)
 {
     delete _nameText;
     _nameText = nameText;
+}
+
+/**
+ * @brief Reference package text
+ * @return Pointer to package draw text
+ */
+DrawText *Component::packageText() const
+{
+    return _packageText;
+}
+
+/**
+ * @brief Sets package draw text
+ * @param refText Pointer to package draw text
+ */
+void Component::setPackageText(DrawText *packageText)
+{
+    delete _packageText;
+    _packageText = packageText;
+}
+
+/**
+ * @brief Reference doc text
+ * @return Pointer to doc draw text
+ */
+DrawText *Component::docText() const
+{
+    return _docText;
+}
+
+/**
+ * @brief Sets doc draw text
+ * @param refText Pointer to doc draw text
+ */
+void Component::setDocText(DrawText *docText)
+{
+    delete _docText;
+    _docText = docText;
 }
 
 /**

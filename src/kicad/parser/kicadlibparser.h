@@ -35,11 +35,13 @@ public:
 
 protected:
     QTextStream _stream;
+    QString readText();
 
     void writeLib(Lib *lib);
     void writeComponent(Component *component);
     void writePin(Pin *pin);
     void writeDraw(Draw *draw);
+    void writeLabel(DrawText *draw);
 
     Component *readComponent();
     Pin *readPin();
