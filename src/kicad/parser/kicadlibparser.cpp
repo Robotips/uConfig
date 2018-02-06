@@ -127,7 +127,7 @@ void KicadLibParser::writeLib(Lib *lib)
 
     // footer
     _stream << "#" << '\n';
-    _stream << "#End Library";
+    _stream << "#End Library" << '\n';
 }
 
 void KicadLibParser::writeComponent(Component *component)
@@ -179,6 +179,12 @@ void KicadLibParser::writeComponent(Component *component)
         _stream << "ALIAS " << component->aliases().join(" ") << '\n';
 
     _stream << "DRAW" << '\n';
+    // draw
+    foreach (Draw *draw, component->draws())
+    {
+        writeDraw(draw);
+        _stream << '\n';
+    }
     // pins
     foreach (Pin *pin, component->pins())
     {
@@ -218,6 +224,9 @@ void KicadLibParser::writePin(Pin *pin)
 
 void KicadLibParser::writeDraw(Draw *draw)
 {
+    DrawRect *drawRect;
+    DrawText *drawText;
+
     switch (draw->type())
     {
     case Draw::TypeDrawArc:
@@ -227,8 +236,83 @@ void KicadLibParser::writeDraw(Draw *draw)
     case Draw::TypeDrawPoly:
         break;
     case Draw::TypeDrawRect:
+        // S startx starty endx endy unit convert thickness fill
+        drawRect = static_cast<DrawRect*>(draw);
+        _stream << "S "
+                << drawRect->pos().x() << " "
+                << -drawRect->pos().y() << " "
+                << drawRect->endPos().x() << " "
+                << -drawRect->endPos().y() << " "
+                << drawRect->unit() << " "
+                << drawRect->convert() << " "
+                << drawRect->thickness() << " ";
+        switch (drawRect->filled())
+        {
+        case Draw::DrawNotFilled:
+            _stream << "N";
+            break;
+        case Draw::DrawFilledForeGround:
+            _stream << "F";
+            break;
+        case Draw::DrawFilledBackGround:
+            _stream << "f";
+            break;
+        }
         break;
+
     case Draw::TypeDrawText:
+        // T direction posx posy text_size text_type unit convert text text_italic text_hjustify text_vjustify
+        drawText = static_cast<DrawText*>(draw);
+        _stream << "T ";
+        if (drawText->direction() == DrawText::DirectionHorizontal)
+            _stream << "H ";
+        else
+            _stream << "V ";
+
+        _stream << drawText->pos().x() << " "
+                << -drawText->pos().y() << " "
+                << drawText->textSize() << " "
+                << "0 "
+                << drawText->unit() << " "
+                << drawText->convert() << " "
+                << drawText->text() << " ";
+
+        switch (drawText->textHJustify())
+        {
+        case DrawText::TextHCenter:
+            _stream << "C ";
+            break;
+        case DrawText::TextHLeft:
+            _stream << "L ";
+            break;
+        case DrawText::TextHRight:
+            _stream << "R ";
+            break;
+        }
+
+        switch (drawText->textVJustify())
+        {
+        case DrawText::TextVCenter:
+            _stream << "C";
+            break;
+        case DrawText::TextVBottom:
+            _stream << "B";
+            break;
+        case DrawText::TextVTop:
+            _stream << "T";
+            break;
+        }
+
+        if (drawText->textStyle().testFlag(DrawText::TextItalic))
+            _stream << "I";
+        else
+            _stream << "N";
+
+        if (drawText->textStyle().testFlag(DrawText::TextBold))
+            _stream << "B";
+        else
+            _stream << "N";
+
         break;
     default:
         break;
