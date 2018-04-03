@@ -33,8 +33,11 @@ before_build:
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - mingw32-make.exe -j2
+
+after_build:
+  - cd %APPVEYOR_BUILD_FOLDER%
   - windeployqt.exe "%APPVEYOR_BUILD_FOLDER%\bin"
-  - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\*" -xr!build -xr!.git
+  - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\..\*" -xr!build -xr!.git
 
 test: off
 
