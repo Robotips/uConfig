@@ -36,7 +36,7 @@ build_script:
 
 after_build:
   - cd %APPVEYOR_BUILD_FOLDER%
-  - windeployqt.exe "%APPVEYOR_BUILD_FOLDER%\bin"
+  - windeployqt.exe "%APPVEYOR_BUILD_FOLDER%\bin\uconfig_gui.exe"
   - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\..\*" -xr!build -xr!.git
 
 test: off
