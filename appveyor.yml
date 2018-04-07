@@ -35,8 +35,9 @@ build_script:
   - mingw32-make.exe -j2
 
 after_build:
+  - cd %APPVEYOR_BUILD_FOLDER\bin%
+  - windeployqt.exe uconfig_gui.exe kicad.dll pdf_extract.dll libpoppler-qt5.dll
   - cd %APPVEYOR_BUILD_FOLDER%
-  - windeployqt.exe "%APPVEYOR_BUILD_FOLDER%\bin\uconfig_gui.exe"
   - 7z a uconfig-win32-v0.zip "%APPVEYOR_BUILD_FOLDER%\..\*" -xr!build -xr!.git
 
 test: off

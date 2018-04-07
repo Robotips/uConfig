@@ -24,6 +24,6 @@ HEADERS += \
     $$PWD/datasheetbox.h
 
 LIBS += -L"$$PWD/../../bin"
-LIBS += -lpoppler-qt5-1
+LIBS += -lpoppler-qt5
 INCLUDEPATH += $$PWD/../../
 LIBS += -lkicad
