@@ -31,6 +31,7 @@ SOURCES += \
     $$PWD/viewer/componentscene.cpp \
     $$PWD/viewer/componentitem.cpp \
     $$PWD/viewer/pinitem.cpp \
+    $$PWD/viewer/drawitem.cpp \
     $$PWD/itemmodel/componentlibitemmodel.cpp \
     $$PWD/itemmodel/componentpinsitemmodel.cpp \
     $$PWD/itemmodel/componentlibtreeview.cpp \
@@ -71,6 +72,7 @@ HEADERS += \
     $$PWD/viewer/componentscene.h \
     $$PWD/viewer/componentitem.h \
     $$PWD/viewer/pinitem.h \
+    $$PWD/viewer/drawitem.h \
     $$PWD/itemmodel/componentlibitemmodel.h \
     $$PWD/itemmodel/componentpinsitemmodel.h \
     $$PWD/itemmodel/componentlibtreeview.h \

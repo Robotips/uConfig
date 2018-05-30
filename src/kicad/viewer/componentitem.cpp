@@ -17,6 +17,7 @@
  **/
 
 #include "componentitem.h"
+#include "drawitem.h"
 
 #include <QPainter>
 #include <QDebug>
@@ -30,14 +31,14 @@ void ComponentItem::paint(QPainter *painter,
                           const QStyleOptionGraphicsItem * /*option*/,
                           QWidget * /*widget*/)
 {
-    painter->setPen(QPen(QColor(132, 0, 0), 2));
+    /*painter->setPen(QPen(QColor(132, 0, 0), 2));
     painter->setBrush(QColor(255, 255, 194));
-    painter->drawRect(_numRect);
+    painter->drawRect(_numRect);*/
 }
 
 QRectF ComponentItem::boundingRect() const
 {
-    return _numRect.adjusted(-80, -80, 80, 80);
+    return _numRect.adjusted(-10, -10, 10, 10);
 }
 
 Component *ComponentItem::component() const
@@ -57,7 +58,16 @@ void ComponentItem::setComponent(Component *component)
         pinItem->setParentItem(this);
         _pinItemMap.insert(pin, pinItem);
     }
-    _numRect = QRect(_component->rect().topLeft() / PinItem::ratio, _component->rect().size() / PinItem::ratio).normalized();
+    foreach (Draw *draw, component->draws())
+    {
+        DrawItem *drawItem = new DrawItem(draw);
+        drawItem->setParentItem(this);
+    }
+    DrawItem *drawItem = new DrawItem(component->refText());
+    drawItem->setParentItem(this);
+    drawItem = new DrawItem(component->nameText());
+    drawItem->setParentItem(this);
+    _numRect = QRect(_component->boundingRect().topLeft() / PinItem::ratio, _component->boundingRect().size() / PinItem::ratio).normalized();
 
     update();
 }

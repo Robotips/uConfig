@@ -218,21 +218,11 @@ void PinRuler::organize(Component *component)
     rect.setTop(-sideY);
     rect.setHeight(sideY * 2 + 1);
     component->clearDraws();
-    component->addDraw(new DrawRect(rect));
-
-    // debug
-    /*qDebug()<<"";
-    qDebug()<<sideX<<sideY;
-    qDebug()<<topSize<<bottomSize;
-    qDebug()<<leftSize<<rightSize;
-    foreach (PinClass *mpinClass, _pinClasses)
-    {
-        qDebug()<<">"<<mpinClass->className()<<mpinClass->positionStr()<<mpinClass->sortStr()<<mpinClass->sortPattern()<<mpinClass->rect();
-        foreach (Pin *pin, mpinClass->pins())
-        {
-            //qDebug()<<" - "<<pin->name()<<pin->pos();
-        }
-    }*/
+    DrawRect *rectDraw = new DrawRect(rect);
+    rectDraw->setFilled(DrawRect::DrawFilledBackGround);
+    component->addDraw(rectDraw);
+    component->nameText()->setPos(QPoint(rect.right(), rect.bottom() + 50));
+    component->nameText()->setTextHJustify(DrawText::TextHRight);
 
     foreach (PinClass *mpinClass, _pinClasses)
         delete mpinClass;
