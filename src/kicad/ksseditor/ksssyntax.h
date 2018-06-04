@@ -48,7 +48,9 @@ protected:
     };
     friend bool operator<(const PartToHighlight &t1, const PartToHighlight &t2);
 
+    QTextCharFormat classFormat;
     QTextCharFormat keywordFormat;
+    QTextCharFormat enumvaluesFormat;
     QTextCharFormat singleLineCommentFormat;
     QTextCharFormat multiLineCommentFormat;
     QTextCharFormat quotationFormat;
