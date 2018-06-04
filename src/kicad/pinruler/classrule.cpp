@@ -23,7 +23,8 @@ QStringList ClassRule::propsName = QStringList()
         <<"sort"
         <<"sortpattern"
         <<"length"
-        <<"priority";
+        <<"priority"
+        <<"visibility";
 
 QStringList ClassRule::positionEnumStr = QStringList()
         <<"top"
@@ -36,6 +37,11 @@ QStringList ClassRule::sortEnumStr = QStringList()
         <<"none"
         <<"asc"
         <<"desc";
+
+QStringList ClassRule::visibilityEnumStr = QStringList()
+        <<"visible"
+        <<"hidden"
+        <<"removed";
 
 ClassRule::ClassRule(const QString &selector)
     : Rule(selector)
@@ -54,6 +60,9 @@ ClassRule::ClassRule(const QString &selector)
 
     _priority = 0;
     _prioritySet = false;
+
+    _visibility = VisibilityVisible;
+    _visibilitySet = false;
 }
 
 Rule::Type ClassRule::type() const
@@ -85,6 +94,9 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
     case 4: // priority
         setPriority(value.toInt());
         break;
+    case 5: // visibility
+        setVisibility(value);
+        break;
     }
 
     return true;
@@ -105,6 +117,8 @@ bool ClassRule::hasPropertySet(const QString &name) const
         return hasLengthSet();
     case 4: // priority
         return hasPrioritySet();
+    case 5: // visibility
+        return hasVisibilitySet();
     }
     return false;
 }
@@ -213,4 +227,32 @@ void ClassRule::setPriority(int priority)
 {
     _priority = priority;
     _prioritySet = true;
+}
+
+ClassRule::Visibility ClassRule::visibilityValue() const
+{
+    return _visibility;
+}
+
+QString ClassRule::visibilityStr() const
+{
+    return ClassRule::visibilityEnumStr.at(_visibility);
+}
+
+bool ClassRule::hasVisibilitySet() const
+{
+    return _visibilitySet;
+}
+
+void ClassRule::setVisibility(Visibility visibility)
+{
+    _visibility = visibility;
+    _visibilitySet = true;
+}
+
+void ClassRule::setVisibility(const QString &visibility)
+{
+    int id = ClassRule::visibilityEnumStr.indexOf(visibility);
+    if (id != -1)
+        setVisibility((ClassRule::Visibility)(id));
 }

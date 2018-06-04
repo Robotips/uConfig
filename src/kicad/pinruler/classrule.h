@@ -80,6 +80,19 @@ public:
     bool hasPrioritySet() const;
     void setPriority(int priority);
 
+    // class visibility [visible, hidden, removed] visible default
+    enum Visibility {
+        VisibilityVisible,
+        VisibilityHidden,
+        VisibilityRemoved
+    };
+    static QStringList visibilityEnumStr;
+    Visibility visibilityValue() const;
+    QString visibilityStr() const;
+    bool hasVisibilitySet() const;
+    void setVisibility(Visibility visibility);
+    void setVisibility(const QString &visibility);
+
 protected:
     Position _position;
     bool _positionSet;
@@ -95,6 +108,9 @@ protected:
 
     int _priority;
     bool _prioritySet;
+
+    Visibility _visibility;
+    bool _visibilitySet;
 };
 
 #endif // CLASSRULE_H

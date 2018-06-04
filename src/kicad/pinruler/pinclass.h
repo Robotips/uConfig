@@ -28,7 +28,7 @@
 #include "classrule.h"
 #include "pinclassitem.h"
 
-class KICAD_EXPORT PinClass
+class KICAD_EXPORT PinClass : public ClassRule
 {
 public:
     PinClass(const QString &className);
@@ -44,43 +44,11 @@ public:
 
     QRect rect() const;
 
-    ClassRule::Position positionValue() const;
-    QString positionStr() const;
-    void setPosition(const ClassRule::Position &position);
-
-    ClassRule::Sort sortValue() const;
-    QString sortStr() const;
-    void setSort(const ClassRule::Sort &sort);
-
-    QString sortPattern() const;
-    void setSortPattern(const QString &sortPattern);
-
-    int length() const;
-    void setLength(int length);
-
-    int priority() const;
-    void setPriority(int priority);
-
     void addPinItem(PinClassItem *pin);
     const QList<PinClassItem *> &pins() const;
 
 protected:
     QString _className;
-
-    ClassRule::Position _position;
-    bool _positionSet;
-
-    ClassRule::Sort _sort;
-    bool _sortSet;
-
-    QString _sortPattern;
-    bool _sortPatternSet;
-
-    int _length;
-    bool _lengthSet;
-
-    int _priority;
-    bool _prioritySet;
 
     QList<PinClassItem *> _pins;
 };

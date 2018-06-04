@@ -123,3 +123,9 @@ Sets priority of the class. The class with the higher priority will be placed fi
 Could be negative.
 
 default: 0
+
+#### visibility [visible, hidden, removed]
+
+Visibility of the class. In case of 'hidden', all pins of the class are hidden but class is placed like others. With 'removed', pins are hidden and class is not placed.
+
+default: visible

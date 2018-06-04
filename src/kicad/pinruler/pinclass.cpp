@@ -38,6 +38,9 @@ PinClass::PinClass(const QString &className)
 
     _priority = 0;
     _prioritySet = false;
+
+    _visibility = ClassRule::VisibilityVisible;
+    _visibilitySet = false;
 }
 
 QString PinClass::className() const
@@ -71,6 +74,8 @@ void PinClass::applyRule(ClassRule *rule)
         setLength(rule->length());
     if (!_prioritySet && rule->hasPrioritySet())
         setPriority(rule->priority());
+    if (!_visibilitySet && rule->hasVisibilitySet())
+        setVisibility(rule->visibilityValue());
 }
 
 void PinClass::applyRules(QList<ClassRule *> rules)
@@ -86,15 +91,6 @@ void PinClass::sortPins()
 
     QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
     QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
-
-    /*int n = 0;
-    foreach (Pin *pin, _pins)
-    {
-        QString pinName = pin->name();
-        pinName.replace("~", "");
-        if (pinName.count() > n)
-            n = pinName.count();
-    }*/
 
     foreach (PinClassItem *pinItem, _pins)
     {
@@ -164,10 +160,6 @@ void PinClass::placePins(const QPoint &basePos)
         translate = QPoint(-_length, 0);
         break;
     case ClassRule::PositionRight:
-        direction = Pin::Left;
-        offset = QPoint(0, 100);
-        translate = QPoint(_length, 0);
-        break;
     case ClassRule::PositionASide:
         direction = Pin::Left;
         offset = QPoint(0, 100);
@@ -180,6 +172,8 @@ void PinClass::placePins(const QPoint &basePos)
         pinItem->pin()->setDirection(direction);
         pinItem->pin()->setPos(pos + translate);
         pinItem->pin()->setLength(_length);
+        if (visibilityValue() == VisibilityHidden)
+            pinItem->pin()->setPinType(Pin::NotVisible);
         pos += offset;
     }
 }
@@ -207,69 +201,6 @@ QRect PinClass::rect() const
         break;
     }
     return rect;
-}
-
-ClassRule::Position PinClass::positionValue() const
-{
-    return _position;
-}
-
-QString PinClass::positionStr() const
-{
-    return ClassRule::positionEnumStr.at(_position);
-}
-
-void PinClass::setPosition(const ClassRule::Position &position)
-{
-    _position = position;
-    _positionSet = true;
-}
-
-ClassRule::Sort PinClass::sortValue() const
-{
-    return _sort;
-}
-
-QString PinClass::sortStr() const
-{
-    return ClassRule::sortEnumStr.at(_sort);
-}
-
-void PinClass::setSort(const ClassRule::Sort &sort)
-{
-    _sort = sort;
-    _sortSet = true;
-}
-
-QString PinClass::sortPattern() const
-{
-    return _sortPattern;
-}
-
-void PinClass::setSortPattern(const QString &sortPattern)
-{
-    _sortPattern = sortPattern;
-    _sortPatternSet = true;
-}
-
-int PinClass::length() const
-{
-    return _length;
-}
-
-void PinClass::setLength(int length)
-{
-    _length = length;
-}
-
-int PinClass::priority() const
-{
-    return _priority;
-}
-
-void PinClass::setPriority(int priority)
-{
-    _priority = priority;
 }
 
 void PinClass::addPinItem(PinClassItem *pin)
