@@ -25,14 +25,30 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
 {
     HighlightingRule rule;
 
+    classFormat.setForeground(QColor(64,0,255));
+    rule.pattern.setPattern("(\\..*)\\{");
+    rule.format = classFormat;
+    highlightingRules.append(rule);
+
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType";
+    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility";
     foreach (const QString &pattern, keywordPatterns)
     {
         rule.pattern.setPattern("\\b("+pattern+")\\b");
         rule.format = keywordFormat;
+        highlightingRules.append(rule);
+    }
+
+    enumvaluesFormat.setForeground(Qt::blue);
+    enumvaluesFormat.setFontWeight(QFont::Bold);
+    QStringList enumvaluesPatterns;
+    enumvaluesPatterns << "top" << "bottom" << "left" << "right" << "aside" << "none" << "asc" << "desc" << "visible" << "hidden" << "removed";
+    foreach (const QString &pattern, enumvaluesPatterns)
+    {
+        rule.pattern.setPattern("\\b("+pattern+")\\b");
+        rule.format = enumvaluesFormat;
         highlightingRules.append(rule);
     }
 
