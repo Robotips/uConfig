@@ -73,7 +73,7 @@ void PinRuler::organize(Component *component)
                     break;
                 }
             }
-            pin->setPinType(Pin::Normal); // Remove me to keep default
+            pin->setPinType(Pin::Normal);
             foreach (PinRule *rule, rules)
             {
                 if (rule->hasPinTypeSet())
@@ -98,11 +98,23 @@ void PinRuler::organize(Component *component)
     QList<PinClass *> topSide, bottomSide;
     QList<PinClass *> leftSide, rightSide;
     QList<PinClass *> aSide; // last assign
+    QList<PinClass *> removedPins; // last assign
     QSize topSize = QSize(0, 0), bottomSize = QSize(0, 0);
     QSize leftSize = QSize(0, 0), rightSize = QSize(0, 0);
+    QSize removedSize = QSize(0, 0);
     foreach (PinClass *mpinClass, _pinClasses)
     {
         QRect rect = mpinClass->rect();
+        if (mpinClass->visibilityValue() == ClassRule::VisibilityRemoved)
+        {
+            mpinClass->setPosition(PinClass::PositionLeft);
+            removedPins.append(mpinClass);
+            removedSize.rwidth() += rect.width();
+            if (rect.height() > removedSize.height())
+                removedSize.setHeight(rect.height());
+            continue;
+        }
+
         switch (mpinClass->positionValue())
         {
         case ClassRule::PositionTop:
@@ -169,14 +181,14 @@ void PinRuler::organize(Component *component)
 
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width() / 2, bottomSize.width() / 2));
-    sideX = (sideX / 100) * 100; // grid align KLC4.1
+    sideX = qCeil(sideX / 100) * 100 + 100; // grid align KLC4.1
     int sideY = qMax(leftSize.height(), rightSize.height()) / 2;
-    sideY = (qCeil(sideY / 100) + 1) * 100; // grid align KLC4.1
+    sideY = qCeil(sideY / 100) * 100 + 100; // grid align KLC4.1
 
     x = -sideX;
-    y = -sideY+100;
-    if (leftSize.height() < rightSize.height())
-        y += (rightSize.height() - leftSize.height()) / 2;
+    y = -sideY + 100;
+    if (leftSize.height() + 50 < rightSize.height())
+        y += qCeil((rightSize.height() - leftSize.height()) / 2) * 2;
     foreach (PinClass *mpinClass, leftSide)
     {
         mpinClass->placePins(QPoint(x, y));
@@ -184,9 +196,9 @@ void PinRuler::organize(Component *component)
     }
 
     x = sideX;
-    y = -sideY+100;
-    if (rightSize.height() < leftSize.height())
-        y += (leftSize.height() - rightSize.height()) / 2;
+    y = -sideY + 100;
+    if (rightSize.height() + 50 < leftSize.height())
+        y += qCeil((leftSize.height() - rightSize.height()) / 2) * 2;
     foreach (PinClass *mpinClass, rightSide)
     {
         mpinClass->placePins(QPoint(x, y));
@@ -209,6 +221,16 @@ void PinRuler::organize(Component *component)
     {
         mpinClass->placePins(QPoint(x, y));
         x += mpinClass->rect().width() + 100;
+    }
+
+    // TODO : improve me, in case of a large number of removed pins
+    // this pseudo class goes outside of the component
+    x = -qCeil(removedSize.width() / 200) * 100;
+    y = -qCeil(removedSize.height() / 200) * 100;
+    foreach (PinClass *mpinClass, removedPins)
+    {
+        mpinClass->placePins(QPoint(x, y));
+        y += mpinClass->rect().height() + 100;
     }
 
     // rect compute

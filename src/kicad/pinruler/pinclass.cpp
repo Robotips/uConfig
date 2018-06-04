@@ -172,7 +172,7 @@ void PinClass::placePins(const QPoint &basePos)
         pinItem->pin()->setDirection(direction);
         pinItem->pin()->setPos(pos + translate);
         pinItem->pin()->setLength(_length);
-        if (visibilityValue() == VisibilityHidden)
+        if (visibilityValue() != VisibilityVisible)
             pinItem->pin()->setPinType(Pin::NotVisible);
         pos += offset;
     }
