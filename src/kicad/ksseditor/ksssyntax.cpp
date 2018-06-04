@@ -57,17 +57,6 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     rule.format = quotationFormat;
     highlightingRules.append(rule);
 
-    typesFormat.setForeground(QColor(255,48,99));
-    QStringList typesPatterns;
-    typesPatterns << "a";
-
-    foreach (const QString &pattern, typesPatterns)
-    {
-        rule.pattern.setPattern("\\b("+pattern+")\\b");
-        rule.format = typesFormat;
-        highlightingRules.append(rule);
-    }
-
     numberFormat.setForeground(QColor(255,69,0));
     rule.pattern.setPattern("\\b([0-9]+)\\b");
     rule.format = numberFormat;

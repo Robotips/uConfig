@@ -55,7 +55,6 @@ protected:
     QTextCharFormat multiLineCommentFormat;
     QTextCharFormat quotationFormat;
     QTextCharFormat numberFormat;
-    QTextCharFormat typesFormat;
 
     QRegExp commentStartExpression;
     QRegExp commentEndExpression;

@@ -16,38 +16,26 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef KSSEDITOR_H
-#define KSSEDITOR_H
+#ifndef KSSEDITORMARGIN_H
+#define KSSEDITORMARGIN_H
 
 #include "kicad_global.h"
 
-#include <QPlainTextEdit>
+#include <QWidget>
 
-#include "ksssyntax.h"
-#include "ksseditormargin.h"
+class KssEditor;
 
-class KICAD_EXPORT KssEditor : public QPlainTextEdit
+class KICAD_EXPORT KssEditorMargin : public QWidget
 {
-    Q_OBJECT
 public:
-    explicit KssEditor(QWidget *parent = Q_NULLPTR);
+    KssEditorMargin(KssEditor *editor);
 
-    void lineNumberAreaPaintEvent(QPaintEvent *event);
-    int lineNumberAreaWidth();
+    QSize sizeHint() const override;
 
 protected:
-    KSSSyntax *_syntax;
+    void paintEvent(QPaintEvent *event) override;
 
-private slots:
-    void updateLineNumberAreaWidth(int);
-    void updateLineNumberArea(const QRect &, int);
-
-    // QWidget interface
-protected:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
-
-    KssEditorMargin *_kssEditorMargin;
+    KssEditor *_editor;
 };
 
-#endif // KSSEDITOR_H
+#endif // KSSEDITORMARGIN_H
