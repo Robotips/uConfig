@@ -51,7 +51,8 @@ SOURCES += \
     $$PWD/ksseditor/ksssyntax.cpp \
     $$PWD/parser/libparser.cpp \
     $$PWD/parser/kicadlibparser.cpp \
-    $$PWD/parser/abstractlibparser.cpp
+    $$PWD/parser/abstractlibparser.cpp \
+    ksseditor/ksseditormargin.cpp
 
 HEADERS += \
     $$PWD/kicad_global.h \
@@ -92,7 +93,8 @@ HEADERS += \
     $$PWD/ksseditor/ksssyntax.h \
     $$PWD/parser/libparser.h \
     $$PWD/parser/kicadlibparser.h \
-    $$PWD/parser/abstractlibparser.h
+    $$PWD/parser/abstractlibparser.h \
+    ksseditor/ksseditormargin.h
 
 unix {
     target.path = /usr/lib
