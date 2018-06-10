@@ -43,8 +43,6 @@ public:
 
     void updateData();
 
-    static const int ratio;
-
 private:
     Pin *_pin;
 };

@@ -22,23 +22,25 @@
 #include <QPainter>
 #include <QDebug>
 
+const int ComponentItem::ratio=5;
+
 ComponentItem::ComponentItem(Component *component)
 {
     setComponent(component);
 }
 
 void ComponentItem::paint(QPainter *painter,
-                          const QStyleOptionGraphicsItem * /*option*/,
-                          QWidget * /*widget*/)
+                          const QStyleOptionGraphicsItem * option,
+                          QWidget * widget)
 {
-    /*painter->setPen(QPen(QColor(132, 0, 0), 2));
-    painter->setBrush(QColor(255, 255, 194));
-    painter->drawRect(_numRect);*/
+    Q_UNUSED(painter)
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
 }
 
 QRectF ComponentItem::boundingRect() const
 {
-    return _numRect.adjusted(-10, -10, 10, 10);
+    return _numRect.adjusted(-100, -100, 100, 100);
 }
 
 Component *ComponentItem::component() const
@@ -67,7 +69,8 @@ void ComponentItem::setComponent(Component *component)
     drawItem->setParentItem(this);
     drawItem = new DrawItem(component->nameText());
     drawItem->setParentItem(this);
-    _numRect = QRect(_component->boundingRect().topLeft() / PinItem::ratio, _component->boundingRect().size() / PinItem::ratio).normalized();
+    _numRect = QRect(_component->boundingRect().topLeft() / ComponentItem::ratio,
+                     _component->boundingRect().size() / ComponentItem::ratio).normalized();
 
     update();
 }
@@ -78,4 +81,18 @@ PinItem *ComponentItem::pinItem(Pin *pin)
     if (pinIt != _pinItemMap.cend())
         return *pinIt;
     return Q_NULLPTR;
+}
+
+QFont ComponentItem::font()
+{
+    QFont font("monospace");
+    font.setStyleHint(QFont::Monospace);
+    font.setPointSizeF(12);
+    QFontMetricsF fm(font);
+    double factor = 50.0 / ComponentItem::ratio / fm.width('m');
+    if ((factor < 1) || (factor > 1.25))
+    {
+        font.setPointSizeF(font.pointSizeF() * factor);
+    }
+    return font;
 }

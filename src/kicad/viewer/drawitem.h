@@ -38,10 +38,9 @@ public:
     Draw *draw() const;
     void setDraw(Draw *draw);
 
-    static const int ratio;
-
 private:
     Draw *_draw;
+    QRectF _rect;
 };
 
 #endif // DRAWITEM_H

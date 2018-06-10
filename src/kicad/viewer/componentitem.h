@@ -45,6 +45,9 @@ public:
 
     PinItem *pinItem(Pin *pin);
 
+    static const int ratio;
+    static QFont font();
+
 private:
     Component *_component;
 

@@ -18,14 +18,14 @@
 
 #include "drawitem.h"
 
+#include "componentitem.h"
+
 #include "model/drawrect.h"
 
 #include <QPainter>
 #include <QDebug>
 
 #include <model/drawtext.h>
-
-const int DrawItem::ratio=5;
 
 DrawItem::DrawItem(Draw *draw)
 {
@@ -35,39 +35,33 @@ DrawItem::DrawItem(Draw *draw)
 
 void DrawItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
+
     QRectF rect;
     painter->setPen(QPen(QColor(132, 0, 0), 2));
     painter->setBrush(QColor(255, 255, 194));
+
+    QFont font = ComponentItem::font();
+    painter->setFont(font);
+
     if (_draw->type() == Draw::TypeDrawRect)
     {
         DrawRect *drawRect = static_cast<DrawRect*>(_draw);
         rect.setTopLeft(QPoint(0, 0));
-        rect.setSize(drawRect->rect().size() / ratio);
+        rect.setSize(drawRect->rect().size() / ComponentItem::ratio);
         painter->drawRect(rect);
     }
     else if (_draw->type() == Draw::TypeDrawText)
     {
         DrawText *drawText = static_cast<DrawText*>(_draw);
-        painter->drawText(QPoint(0, 0), drawText->text());
+        painter->drawText(_rect, drawText->text());
     }
 }
 
 QRectF DrawItem::boundingRect() const
 {
-    QRectF rect;
-    if (_draw->type() == Draw::TypeDrawRect)
-    {
-        DrawRect *drawRect = static_cast<DrawRect*>(_draw);
-        rect.setTopLeft(QPoint(0, 0));
-        rect.setSize(drawRect->rect().size() / ratio);
-    }
-    else if (_draw->type() == Draw::TypeDrawText)
-    {
-        DrawText *drawText = static_cast<DrawText*>(_draw);
-        rect.setTopLeft(QPoint(0, 0));
-        rect.setSize(QSize(drawText->text().size() * 50 / ratio, 50));
-    }
-    return rect.adjusted(-10, -10, 10, 10);
+    return _rect.adjusted(-10, -10, 10, 10);
 }
 
 Draw *DrawItem::draw() const
@@ -78,7 +72,19 @@ Draw *DrawItem::draw() const
 void DrawItem::setDraw(Draw *draw)
 {
     _draw = draw;
+    if (_draw->type() == Draw::TypeDrawRect)
+    {
+        DrawRect *drawRect = static_cast<DrawRect*>(_draw);
+        _rect.setTopLeft(QPoint(0, 0));
+        _rect.setSize(drawRect->rect().size() / ComponentItem::ratio);
+    }
+    else if (_draw->type() == Draw::TypeDrawText)
+    {
+        DrawText *drawText = static_cast<DrawText*>(_draw);
+        _rect.setTopLeft(QPoint(0, 0));
+        _rect.setSize(QSize(drawText->text().size() * 50 / ComponentItem::ratio, 50));
+    }
 
-    setPos(draw->pos() / ratio);
+    setPos(draw->pos() / ComponentItem::ratio);
     update();
 }
