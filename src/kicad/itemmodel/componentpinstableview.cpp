@@ -120,8 +120,7 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
         selectedPins.insert(_model->pin(indexComponent));
     }
 
-    if (!selectedPins.isEmpty())
-        emit pinSelected(selectedPins.toList());
+    emit pinSelected(selectedPins.toList());
 }
 
 ComponentPinsItemModel *ComponentPinsTableView::model() const

@@ -80,12 +80,15 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
 
     blockSignals(true);
     scene()->clearSelection();
+    PinItem *pinItem = Q_NULLPTR;
     foreach (Pin *pin, pins)
     {
-        PinItem *pinItem = _scene->componentItem()->pinItem(pin);
+        pinItem = _scene->componentItem()->pinItem(pin);
         if (pinItem)
             pinItem->setSelected(true);
     }
+    if (pinItem)
+        ensureVisible(pinItem);
     blockSignals(false);
 }
 
