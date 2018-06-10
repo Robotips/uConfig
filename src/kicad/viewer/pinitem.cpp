@@ -44,19 +44,23 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         textColor = QColor(132, 132, 132);
     }
 
+    /*painter->drawRect(boundingRect());
+    painter->drawPath(shape());*/
+
     // text font
-    QFont font = ComponentItem::font();
+    QFont fontName = _fontName;
+    QFont fontPad = _fontPad;
 
     // selection modifier
     if (isSelected())
     {
         painter->setPen(QPen(drawColor, 2));
-        font.setBold(true);
+        fontName.setBold(true);
+        fontPad.setBold(true);
     }
     else
         painter->setPen(QPen(drawColor, 1));
 
-    painter->setFont(font);
     painter->drawEllipse(-3, -3, 6, 6);
 
     // line invert draw
@@ -81,9 +85,12 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->drawLine(3, 0, _pin->length() / ComponentItem::ratio, 0);
 
         if (_pin->component()->showPadName())
+        {
+            painter->setFont(fontPad);
             painter->drawText(QRect(0, 3, _pin->length() / ComponentItem::ratio,
                                     -painter->fontMetrics().height()).normalized(),
                                     Qt::AlignHCenter, _pin->padName());
+        }
 
         switch (_pin->pinType())
         {
@@ -91,44 +98,46 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             break;
         case Pin::InvertedClock:
             painter->drawLine(_pin->length() / ComponentItem::ratio+8, 0,
-                              _pin->length() / ComponentItem::ratio,  5);
+                              _pin->length() / ComponentItem::ratio,   5);
             painter->drawLine(_pin->length() / ComponentItem::ratio+8, 0,
-                              _pin->length() / ComponentItem::ratio, -5);
+                              _pin->length() / ComponentItem::ratio,  -5);
         case Pin::Invert:
             painter->setBrush(Qt::white);
             painter->drawEllipse(QPoint(_pin->length() / ComponentItem::ratio-5, 0), 5, 5);
             break;
         case Pin::ClockLow:
-            painter->drawLine(_pin->length() / ComponentItem::ratio,      0,
+            painter->drawLine(_pin->length() / ComponentItem::ratio,     0,
                               _pin->length() / ComponentItem::ratio-10, -10);
             painter->drawLine(_pin->length() / ComponentItem::ratio-10, -10,
-                              _pin->length() / ComponentItem::ratio-10, 0);
+                              _pin->length() / ComponentItem::ratio-10,  0);
         case Pin::Clock:
             painter->drawLine(_pin->length() / ComponentItem::ratio+8, 0,
-                              _pin->length() / ComponentItem::ratio,  5);
+                              _pin->length() / ComponentItem::ratio,   5);
             painter->drawLine(_pin->length() / ComponentItem::ratio+8, 0,
-                              _pin->length() / ComponentItem::ratio, -5);
+                              _pin->length() / ComponentItem::ratio,  -5);
             break;
         case Pin::LowIn:
-            painter->drawLine(_pin->length() / ComponentItem::ratio, 0,
+            painter->drawLine(_pin->length() / ComponentItem::ratio,     0,
                               _pin->length() / ComponentItem::ratio-10, -10);
             painter->drawLine(_pin->length() / ComponentItem::ratio-10, -10,
-                              _pin->length() / ComponentItem::ratio-10, 0);
+                              _pin->length() / ComponentItem::ratio-10,  0);
             break;
         case Pin::LowOut:
-            painter->drawLine(_pin->length() / ComponentItem::ratio, -10,
+            painter->drawLine(_pin->length() / ComponentItem::ratio,   -10,
                               _pin->length() / ComponentItem::ratio-10, 0);
             break;
         case Pin::FallingEdge:
             painter->setBrush(Qt::white);
-            polygon << QPoint(_pin->length() / ComponentItem::ratio, 5) << QPoint(_pin->length() / ComponentItem::ratio-10, 0) << QPoint(_pin->length() / ComponentItem::ratio, -5);
+            polygon << QPoint(_pin->length() / ComponentItem::ratio, 5)
+                    << QPoint(_pin->length() / ComponentItem::ratio-10, 0)
+                    << QPoint(_pin->length() / ComponentItem::ratio, -5);
             painter->drawPolygon(polygon);
             break;
         case Pin::NonLogic:
-            painter->drawLine(_pin->length() / ComponentItem::ratio+5,
-                              -5, _pin->length() / ComponentItem::ratio-5, 5);
-            painter->drawLine(_pin->length() / ComponentItem::ratio+5,
-                              5, _pin->length() / ComponentItem::ratio-5, -5);
+            painter->drawLine(_pin->length() / ComponentItem::ratio+5, -5,
+                              _pin->length() / ComponentItem::ratio-5, 5);
+            painter->drawLine(_pin->length() / ComponentItem::ratio+5, 5,
+                              _pin->length() / ComponentItem::ratio-5, -5);
             break;
         case Pin::NotVisible:
             break;
@@ -136,8 +145,9 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->setPen(textColor);
         if (_pin->component()->showPinName())
         {
+            painter->setFont(fontName);
             painter->drawText(QRect(_pin->length() / ComponentItem::ratio+10, -painter->fontMetrics().height()/2,
-                                    name.count()*50 / ComponentItem::ratio, painter->fontMetrics().height()).normalized(),
+                                    painter->fontMetrics().width(name), painter->fontMetrics().height()).normalized(),
                                     Qt::AlignLeft, name);
             for (int l=0; l<linesInvert.count(); l+=2)
             {
@@ -153,8 +163,11 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         painter->drawLine(-3, 0, -_pin->length() / ComponentItem::ratio, 0);
 
         if (_pin->component()->showPadName())
+        {
+            painter->setFont(fontPad);
             painter->drawText(QRect(0, 3, -_pin->length() / ComponentItem::ratio, -painter->fontMetrics().height()).normalized(),
                               Qt::AlignHCenter, _pin->padName());
+        }
 
         switch (_pin->pinType())
         {
@@ -162,9 +175,9 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             break;
         case Pin::InvertedClock:
             painter->drawLine(-_pin->length() / ComponentItem::ratio-8, 0,
-                              -_pin->length() / ComponentItem::ratio,  5);
+                              -_pin->length() / ComponentItem::ratio,   5);
             painter->drawLine(-_pin->length() / ComponentItem::ratio-8, 0,
-                              -_pin->length() / ComponentItem::ratio, -5);
+                              -_pin->length() / ComponentItem::ratio,  -5);
         case Pin::Invert:
             painter->setBrush(Qt::white);
             painter->drawEllipse(QPoint(-_pin->length() / ComponentItem::ratio+5, 0), 5, 5);
@@ -176,9 +189,9 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
                               -_pin->length() / ComponentItem::ratio+10, 0);
         case Pin::Clock:
             painter->drawLine(-_pin->length() / ComponentItem::ratio-8, 0,
-                              -_pin->length() / ComponentItem::ratio,  5);
+                              -_pin->length() / ComponentItem::ratio,   5);
             painter->drawLine(-_pin->length() / ComponentItem::ratio-8, 0,
-                              -_pin->length() / ComponentItem::ratio, -5);
+                              -_pin->length() / ComponentItem::ratio,  -5);
             break;
         case Pin::LowIn:
             painter->drawLine(-_pin->length() / ComponentItem::ratio,    0,
@@ -187,19 +200,21 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
                               -_pin->length() / ComponentItem::ratio+10, 0);
             break;
         case Pin::LowOut:
-            painter->drawLine(-_pin->length() / ComponentItem::ratio, -10,
+            painter->drawLine(-_pin->length() / ComponentItem::ratio,  -10,
                               -_pin->length() / ComponentItem::ratio+10, 0);
             break;
         case Pin::FallingEdge:
             painter->setBrush(Qt::white);
-            polygon << QPoint(-_pin->length() / ComponentItem::ratio, 5) << QPoint(-_pin->length() / ComponentItem::ratio+10, 0) << QPoint(-_pin->length() / ComponentItem::ratio, -5);
+            polygon << QPoint(-_pin->length() / ComponentItem::ratio,    5)
+                    << QPoint(-_pin->length() / ComponentItem::ratio+10, 0)
+                    << QPoint(-_pin->length() / ComponentItem::ratio,   -5);
             painter->drawPolygon(polygon);
             break;
         case Pin::NonLogic:
-            painter->drawLine(-_pin->length() / ComponentItem::ratio-5,
-                              -5, -_pin->length() / ComponentItem::ratio+5,  5);
-            painter->drawLine(-_pin->length() / ComponentItem::ratio-5,
-                              5, -_pin->length() / ComponentItem::ratio+5, -5);
+            painter->drawLine(-_pin->length() / ComponentItem::ratio-5, -5,
+                              -_pin->length() / ComponentItem::ratio+5,  5);
+            painter->drawLine(-_pin->length() / ComponentItem::ratio-5, 5,
+                              -_pin->length() / ComponentItem::ratio+5, -5);
             break;
         case Pin::NotVisible:
             break;
@@ -208,8 +223,9 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
 
         if (_pin->component()->showPinName())
         {
+            painter->setFont(fontName);
             painter->drawText(QRect(-_pin->length() / ComponentItem::ratio-10, -painter->fontMetrics().height()/2,
-                                    -name.count()*50 / ComponentItem::ratio, painter->fontMetrics().height()).normalized(),
+                                    -painter->fontMetrics().width(name), painter->fontMetrics().height()).normalized(),
                                     Qt::AlignRight, name);
             for (int l=0; l<linesInvert.count(); l+=2)
             {
@@ -223,63 +239,16 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
 
 QRectF PinItem::boundingRect() const
 {
-    QRectF rect;
-    QString name = _pin->name();
-    name.remove('~');
-    QFontMetrics metrics(ComponentItem::font());
-
-    switch (_pin->direction())
-    {
-    case Pin::Left:
-        rect = QRect(4, -metrics.height()-1, -name.count()*50 / ComponentItem::ratio - _pin->length() / ComponentItem::ratio - 14, metrics.height()*3/2+2);
-        break;
-    case Pin::Right:
-        rect = QRect(-4, -metrics.height()-1, name.count()*50 / ComponentItem::ratio + _pin->length() / ComponentItem::ratio + 14, metrics.height()*3/2+2);
-        break;
-    case Pin::Up:
-        rect = QRect(-metrics.height()-1, 4, metrics.height()*3/2+2, -name.count()*50 / ComponentItem::ratio - _pin->length() / ComponentItem::ratio - 14);
-        break;
-    case Pin::Down:
-        rect = QRect(-metrics.height()-1, -4, metrics.height()*3/2+2, name.count()*50 / ComponentItem::ratio + _pin->length() / ComponentItem::ratio + 14);
-        break;
-    }
+    QRectF rect = _rectPad;
+    rect = rect.united(_rectName);
     return rect.normalized();
 }
 
 QPainterPath PinItem::shape() const
 {
-    QRectF textRect, numRect;
-    QString name = _pin->name();
-    name.remove('~');
-    QFontMetrics metrics(ComponentItem::font());
-
-    switch (_pin->direction())
-    {
-    case Pin::Left:
-        textRect = QRect(-_pin->length() / ComponentItem::ratio, -metrics.height()/2,
-                         -name.count()*50 / ComponentItem::ratio - 10, metrics.height());
-        numRect = QRect(4, 4, -_pin->length() / ComponentItem::ratio-4, -metrics.height());
-        break;
-    case Pin::Right:
-        textRect = QRect(_pin->length() / ComponentItem::ratio, -metrics.height()/2,
-                         name.count()*50 / ComponentItem::ratio + 10, metrics.height());
-        numRect = QRect(-4, 4, _pin->length() / ComponentItem::ratio+4, -metrics.height());
-        break;
-    case Pin::Up:
-        textRect = QRect(-metrics.height()/2, -_pin->length() / ComponentItem::ratio,
-                         metrics.height(), -name.count()*50 / ComponentItem::ratio - 10);
-        numRect = QRect(4, 4, -metrics.height(), -_pin->length() / ComponentItem::ratio-4);
-        break;
-    case Pin::Down:
-        textRect = QRect(-metrics.height()/2, _pin->length() / ComponentItem::ratio,
-                         metrics.height(), name.count()*50 / ComponentItem::ratio + 10);
-        numRect = QRect(4, -4, -metrics.height(), _pin->length() / ComponentItem::ratio+4);
-        break;
-    }
-
     QPainterPath path;
-    path.addRect(textRect.normalized());
-    path.addRect(numRect.normalized());
+    path.addRect(_rectPad.normalized());
+    path.addRect(_rectName.normalized());
     return path;
 }
 
@@ -307,6 +276,37 @@ Pin *PinItem::pin() const
 void PinItem::setPin(Pin *pin)
 {
     _pin = pin;
+    QString name = _pin->name();
+    name.remove('~');
+
+    _fontPad = ComponentItem::font(_pin->textPadSize() / ComponentItem::ratio);
+    _fontName = ComponentItem::font(_pin->textNameSize() / ComponentItem::ratio);
+    QFontMetrics metricsPad(_fontPad);
+    QFontMetrics metricsName(_fontName);
+
+    switch (_pin->direction())
+    {
+    case Pin::Left:
+        _rectName = QRect(-_pin->length() / ComponentItem::ratio, -metricsName.height()/2,
+                          -metricsName.width(name) - 10, metricsName.height());
+        _rectPad = QRect(4, 4, -_pin->length() / ComponentItem::ratio-4, -metricsPad.height());
+        break;
+    case Pin::Right:
+        _rectName = QRect(_pin->length() / ComponentItem::ratio, -metricsName.height()/2,
+                          metricsName.width(name) + 10, metricsName.height());
+        _rectPad = QRect(-4, 4, _pin->length() / ComponentItem::ratio+4, -metricsPad.height());
+        break;
+    case Pin::Up:
+        _rectName = QRect(-metricsName.height()/2, -_pin->length() / ComponentItem::ratio,
+                          metricsName.height(), -metricsName.width(name) - 10);
+        _rectPad = QRect(4, 4, -metricsPad.height(), -_pin->length() / ComponentItem::ratio-4);
+        break;
+    case Pin::Down:
+        _rectName = QRect(-metricsName.height()/2, _pin->length() / ComponentItem::ratio,
+                          metricsName.height(), metricsName.width(name) + 10);
+        _rectPad = QRect(4, -4, -metricsPad.height(), _pin->length() / ComponentItem::ratio+4);
+        break;
+    }
 
     setPos(pin->pos() / ComponentItem::ratio);
     update();

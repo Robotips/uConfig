@@ -40,7 +40,7 @@ public:
         DirectionHorizontal,
         DirectionVertital
     };
-
+    Q_DECLARE_FLAGS(Directions, Direction)
     Direction direction() const;
     void setDirection(const Direction &direction);
 

@@ -36,7 +36,9 @@ void DrawRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(widget)
 
     painter->setPen(QPen(QColor(132, 0, 0), 2));
-    painter->setBrush(QColor(255, 255, 194));
+
+    if (_drawRect->filled() != DrawRect::DrawNotFilled)
+        painter->setBrush(QColor(255, 255, 194));
 
     QFont font = ComponentItem::font();
     painter->setFont(font);
@@ -49,14 +51,15 @@ void DrawRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 QRectF DrawRectItem::boundingRect() const
 {
-    return _rect.adjusted(-10, -10, 10, 10);
+    return _rect.adjusted(-2, -2, 2, 2);
 }
 
 void DrawRectItem::setDraw(DrawRect *draw)
 {
     _drawRect = draw;
-    _rect.setTopLeft(QPoint(0, 0));
     _rect.setSize(_drawRect->rect().size() / ComponentItem::ratio);
+    _rect.setTopLeft(QPoint(0, 0));
+    _rect = _rect.normalized();
 
     setPos(draw->pos() / ComponentItem::ratio);
     update();

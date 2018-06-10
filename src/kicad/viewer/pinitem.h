@@ -24,6 +24,8 @@
 #include <QGraphicsItem>
 #include "model/pin.h"
 
+#include <QFont>
+
 class KICAD_EXPORT PinItem : public QGraphicsItem
 {
 public:
@@ -45,6 +47,11 @@ public:
 
 private:
     Pin *_pin;
+
+    QFont _fontPad;
+    QRectF _rectPad;
+    QFont _fontName;
+    QRectF _rectName;
 };
 
 #endif // PINITEM_H

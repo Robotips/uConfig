@@ -35,25 +35,68 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
+    painter->setRenderHint(QPainter::Antialiasing);
+    painter->setRenderHint(QPainter::TextAntialiasing);
     painter->setPen(QPen(QColor(132, 0, 0), 2));
     painter->setBrush(QColor(255, 255, 194));
 
-    QFont font = ComponentItem::font();
+    QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);
+    if (_drawText->textStyle().testFlag(DrawText::TextBold))
+        font.setBold(true);
+    if (_drawText->textStyle().testFlag(DrawText::TextItalic))
+        font.setItalic(true);
     painter->setFont(font);
+
+    if (_drawText->direction() == DrawText::DirectionVertital)
+        painter->rotate(-90);
 
     painter->drawText(_rect, _drawText->text());
 }
 
 QRectF DrawTextItem::boundingRect() const
 {
-    return _rect.adjusted(-10, -10, 10, 10);
+    return _rect.adjusted(-2, -2, 2, 2);
 }
 
 void DrawTextItem::setDraw(DrawText *draw)
 {
     _drawText = draw;
-    _rect.setTopLeft(QPoint(0, 0));
-    _rect.setSize(QSize(_drawText->text().size() * 50 / ComponentItem::ratio, 50));
+
+    QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);
+    if (_drawText->textStyle().testFlag(DrawText::TextBold))
+        font.setBold(true);
+    if (_drawText->textStyle().testFlag(DrawText::TextItalic))
+        font.setItalic(true);
+    QFontMetrics fm(font);
+
+    _rect = fm.boundingRect(_drawText->text());
+    _rect.moveTopLeft(QPoint(0,0));
+
+    switch (_drawText->textVJustify())
+    {
+    case DrawText::TextVTop:
+        _rect.translate(0, -_rect.height() / 4);
+        break;
+    case DrawText::TextVCenter:
+        _rect.translate(0, -_rect.height() / 2);
+        break;
+    case DrawText::TextVBottom:
+        _rect.translate(0, -_rect.height() / 4 * 3);
+        break;
+    }
+
+    switch (_drawText->textHJustify())
+    {
+    case DrawText::TextHLeft:
+        _rect.translate(0, 0);
+        break;
+    case DrawText::TextHCenter:
+        _rect.translate(-_rect.width() / 2, 0);
+        break;
+    case DrawText::TextHRight:
+        _rect.translate(-_rect.width(), 0);
+        break;
+    }
 
     setPos(draw->pos() / ComponentItem::ratio);
     update();

@@ -655,8 +655,8 @@ Draw *KicadLibParser::readDraw(char c)
             text = readText();
             draw->setText(text);
             DrawText::TextStyles style = DrawText::TextNormal;
-            _stream >> n;
-            if (n != 0)
+            _stream >> text;
+            if (text != "Normal" && text != "0")
                 style |= DrawText::TextItalic;
             _stream >> n;
             if (n != 0)

@@ -20,7 +20,7 @@
 
 DrawText::DrawText(const QString &text, const QPoint &pos)
 {
-    _direction = DirectionVertital;
+    _direction = DirectionHorizontal;
     _textSize = 50;
     _textStyle = TextNormal;
     _visible = true;

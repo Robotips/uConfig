@@ -21,6 +21,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QFontDatabase>
 
 const int ComponentItem::ratio=5;
 
@@ -83,16 +84,13 @@ PinItem *ComponentItem::pinItem(Pin *pin)
     return Q_NULLPTR;
 }
 
-QFont ComponentItem::font()
+QFont ComponentItem::font(double size)
 {
     QFont font("monospace");
     font.setStyleHint(QFont::Monospace);
     font.setPointSizeF(12);
     QFontMetricsF fm(font);
-    double factor = 50.0 / ComponentItem::ratio / fm.width('m');
-    if ((factor < 1) || (factor > 1.25))
-    {
-        font.setPointSizeF(font.pointSizeF() * factor);
-    }
+    double factor = 60.0 / ComponentItem::ratio / fm.width('m') * (size / 12.7);
+    font.setPointSizeF(font.pointSizeF() * factor);
     return font;
 }
