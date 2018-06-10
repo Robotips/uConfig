@@ -555,10 +555,12 @@ Pin *KicadLibParser::readPin()
     _stream >> direction;
     pin->setDirection(direction);
 
-    // two ignored fields
-    QString dummy;
-    _stream >> dummy;
-    _stream >> dummy;
+    // text size
+    int textNameSize, textPadSize;
+    _stream >> textPadSize;
+    _stream >> textNameSize;
+    pin->setTextNameSize(textNameSize);
+    pin->setTextPadSize(textPadSize);
 
     // layer
     int layer;
@@ -570,6 +572,7 @@ Pin *KicadLibParser::readPin()
     }
     pin->setLayer(layer);
 
+    QString dummy;
     _stream.skipWhiteSpace();
     _stream >> dummy;
 

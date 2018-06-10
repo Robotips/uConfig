@@ -99,6 +99,12 @@ public:
     void setElectricalType(const ElectricalType &electricalType);
     void setElectricalType(char c);
 
+    int textNameSize() const;
+    void setTextNameSize(int textNameSize);
+
+    int textPadSize() const;
+    void setTextPadSize(int textPadSize);
+
     int layer() const;
     void setLayer(int layer);
 
@@ -120,6 +126,8 @@ private:
     Direction _direction;
     PinType _pinType;
     ElectricalType _electricalType;
+    int _textNameSize;
+    int _textPadSize;
     int _layer;
     int _length;
 

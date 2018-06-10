@@ -334,6 +334,26 @@ void Pin::setElectricalType(char c)
     }
 }
 
+int Pin::textNameSize() const
+{
+    return _textNameSize;
+}
+
+void Pin::setTextNameSize(int textNameSize)
+{
+    _textNameSize = textNameSize;
+}
+
+int Pin::textPadSize() const
+{
+    return _textPadSize;
+}
+
+void Pin::setTextPadSize(int textPadSize)
+{
+    _textPadSize = textPadSize;
+}
+
 int Pin::layer() const
 {
     return _layer;
