@@ -62,12 +62,12 @@ void ComponentItem::setComponent(Component *component)
     }
     foreach (Draw *draw, component->draws())
     {
-        DrawItem *drawItem = new DrawItem(draw);
+        DrawItem *drawItem = DrawItem::fromDraw(draw);
         drawItem->setParentItem(this);
     }
-    DrawItem *drawItem = new DrawItem(component->refText());
+    DrawItem *drawItem = DrawItem::fromDraw(component->refText());
     drawItem->setParentItem(this);
-    drawItem = new DrawItem(component->nameText());
+    drawItem = DrawItem::fromDraw(component->nameText());
     drawItem->setParentItem(this);
     _numRect = QRect(_component->boundingRect().topLeft() / ComponentItem::ratio,
                      _component->boundingRect().size() / ComponentItem::ratio).normalized();

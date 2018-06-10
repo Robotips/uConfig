@@ -16,27 +16,31 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef DRAWITEM_H
-#define DRAWITEM_H
+#ifndef DRAWRECTITEM_H
+#define DRAWRECTITEM_H
 
 #include "kicad_global.h"
 
-#include <QGraphicsItem>
-#include "model/draw.h"
+#include "drawitem.h"
 
-class KICAD_EXPORT DrawItem : public QGraphicsItem
+#include "model/drawrect.h"
+
+class KICAD_EXPORT DrawRectItem : public DrawItem
 {
 public:
-    DrawItem(Draw *draw);
+    DrawRectItem(DrawRect *draw);
 
-    Draw *draw() const;
-    QRectF rect() const;
+    enum { Type = UserType + 4 };
+    int type() const {return Type;}
 
-    static DrawItem *fromDraw(Draw *draw);
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    QRectF boundingRect() const;
+
+    void setDraw(DrawRect *draw);
 
 protected:
-    Draw *_draw;
+    DrawRect *_drawRect;
     QRectF _rect;
 };
 
-#endif // DRAWITEM_H
+#endif // DRAWRECTITEM_H

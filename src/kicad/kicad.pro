@@ -32,6 +32,8 @@ SOURCES += \
     $$PWD/viewer/componentitem.cpp \
     $$PWD/viewer/pinitem.cpp \
     $$PWD/viewer/drawitem.cpp \
+    $$PWD/viewer/drawtextitem.cpp \
+    $$PWD/viewer/drawrectitem.cpp \
     $$PWD/itemmodel/componentlibitemmodel.cpp \
     $$PWD/itemmodel/componentpinsitemmodel.cpp \
     $$PWD/itemmodel/componentlibtreeview.cpp \
@@ -48,11 +50,11 @@ SOURCES += \
     $$PWD/pinruler/pinclassitem.cpp \
     $$PWD/pinruler/pinruler.cpp \
     $$PWD/ksseditor/ksseditor.cpp \
+    $$PWD/ksseditor/ksseditormargin.cpp \
     $$PWD/ksseditor/ksssyntax.cpp \
     $$PWD/parser/libparser.cpp \
     $$PWD/parser/kicadlibparser.cpp \
-    $$PWD/parser/abstractlibparser.cpp \
-    ksseditor/ksseditormargin.cpp
+    $$PWD/parser/abstractlibparser.cpp
 
 HEADERS += \
     $$PWD/kicad_global.h \
@@ -74,6 +76,8 @@ HEADERS += \
     $$PWD/viewer/componentitem.h \
     $$PWD/viewer/pinitem.h \
     $$PWD/viewer/drawitem.h \
+    $$PWD/viewer/drawtextitem.h \
+    $$PWD/viewer/drawrectitem.h \
     $$PWD/itemmodel/componentlibitemmodel.h \
     $$PWD/itemmodel/componentpinsitemmodel.h \
     $$PWD/itemmodel/componentlibtreeview.h \
@@ -90,11 +94,11 @@ HEADERS += \
     $$PWD/pinruler/pinclassitem.h \
     $$PWD/pinruler/pinruler.h \
     $$PWD/ksseditor/ksseditor.h \
+    $$PWD/ksseditor/ksseditormargin.h \
     $$PWD/ksseditor/ksssyntax.h \
     $$PWD/parser/libparser.h \
     $$PWD/parser/kicadlibparser.h \
-    $$PWD/parser/abstractlibparser.h \
-    ksseditor/ksseditormargin.h
+    $$PWD/parser/abstractlibparser.h
 
 unix {
     target.path = /usr/lib

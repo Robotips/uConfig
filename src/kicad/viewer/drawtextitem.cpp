@@ -16,49 +16,45 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "drawitem.h"
+#include "drawtextitem.h"
 
 #include "componentitem.h"
 
 #include <QPainter>
 #include <QDebug>
 
-#include "drawrectitem.h"
-#include "drawtextitem.h"
-
-DrawItem::DrawItem(Draw *draw)
+DrawTextItem::DrawTextItem(DrawText *draw)
+    : DrawItem(draw)
 {
-    _draw = draw;
+    setDraw(draw);
     setZValue(-1);
 }
 
-Draw *DrawItem::draw() const
+void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
-    return _draw;
+    Q_UNUSED(option)
+    Q_UNUSED(widget)
+
+    painter->setPen(QPen(QColor(132, 0, 0), 2));
+    painter->setBrush(QColor(255, 255, 194));
+
+    QFont font = ComponentItem::font();
+    painter->setFont(font);
+
+    painter->drawText(_rect, _drawText->text());
 }
 
-QRectF DrawItem::rect() const
+QRectF DrawTextItem::boundingRect() const
 {
-    return _rect;
+    return _rect.adjusted(-10, -10, 10, 10);
 }
 
-DrawItem *DrawItem::fromDraw(Draw *draw)
+void DrawTextItem::setDraw(DrawText *draw)
 {
-    DrawItem *item = Q_NULLPTR;
-    switch (draw->type())
-    {
-    case Draw::TypeDrawArc:
-        break;
-    case Draw::TypeDrawCircle:
-        break;
-    case Draw::TypeDrawPoly:
-        break;
-    case Draw::TypeDrawRect:
-        item = new DrawRectItem(static_cast<DrawRect*>(draw));
-        break;
-    case Draw::TypeDrawText:
-        item = new DrawTextItem(static_cast<DrawText*>(draw));
-        break;
-    }
-    return item;
+    _drawText = draw;
+    _rect.setTopLeft(QPoint(0, 0));
+    _rect.setSize(QSize(_drawText->text().size() * 50 / ComponentItem::ratio, 50));
+
+    setPos(draw->pos() / ComponentItem::ratio);
+    update();
 }
