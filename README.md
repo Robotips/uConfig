@@ -22,20 +22,24 @@ KSS files are similar to CSS files, take a look to [KSS reference variables](rul
 Actually, it exists a command line tool to extract components from datasheet :
 
 ```bash
-uconfig datasheet.pdf -o lib1.lib -r tst.kss
+uconfig datasheet.pdf -o lib1.lib -r microchip.kss
 ```
 
-It will be save in `lib1.lib` all the schematics of components found in `datasheet.pdf`.
+It will be save in `lib1.lib` all the schematics of components found in `datasheet.pdf` formated with the `microchip.kss` rule.
 
 A GUI interface is also available, called uconfig_gui.
 
+## KSS, Kicad Style Sheet
+
+An innovative way to define a theme for a schematic component inspired from CSS. This could be compare to a
+kicad library linter. You can find examples in rules/ directory or take a look to [KSS reference variables](rules/README.md).
+
 ## TODO
 
-- Kicad lib importer
 - CSV importer
+- multi-pages components
 - non regression tests for pdf extractor
 - BGA footprint
-- multi-pages components
 
 ## Bugs
 
