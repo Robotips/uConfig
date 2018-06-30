@@ -25,6 +25,7 @@
 
 #include "drawrectitem.h"
 #include "drawtextitem.h"
+#include "drawpolyitem.h"
 
 DrawItem::DrawItem(Draw *draw)
 {
@@ -52,6 +53,7 @@ DrawItem *DrawItem::fromDraw(Draw *draw)
     case Draw::TypeDrawCircle:
         break;
     case Draw::TypeDrawPoly:
+        item = new DrawPolyItem(static_cast<DrawPoly*>(draw));
         break;
     case Draw::TypeDrawRect:
         item = new DrawRectItem(static_cast<DrawRect*>(draw));

@@ -68,10 +68,11 @@ void ComponentItem::setComponent(Component *component, int layer)
     }
     foreach (Draw *draw, component->draws())
     {
-        //if (draw->layer() == _layer)
+        if (draw->unit() == _layer || draw->unit() == 0)
         {
             DrawItem *drawItem = DrawItem::fromDraw(draw);
-            drawItem->setParentItem(this);
+            if (drawItem)
+                drawItem->setParentItem(this);
         }
     }
     DrawItem *drawItem = new DrawTextItem(component->refText(), true);
