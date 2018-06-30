@@ -28,7 +28,7 @@
 class KICAD_EXPORT DrawTextItem : public DrawItem
 {
 public:
-    DrawTextItem(DrawText *draw);
+    DrawTextItem(DrawText *draw, bool internal=false);
 
     enum { Type = UserType + 3 };
     int type() const {return Type;}
@@ -41,6 +41,7 @@ public:
 protected:
     DrawText *_drawText;
     QRectF _rect;
+    bool _internal;
 };
 
 #endif // DRAWTEXTITEM_H
