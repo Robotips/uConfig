@@ -40,7 +40,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     connect(_project, &UConfigProject::activeComponentChange, _componentsTreeView, &ComponentLibTreeView::setActiveComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _pinListEditor, &PinListEditor::setComponent);
-    connect(_project, &UConfigProject::activeComponentChange, _componentViewer, &ComponentViewer::setComponent);
+    connect(_project, &UConfigProject::activeComponentChange, _componentWidget, &ComponentWidget::setComponent);
 
     resize(QApplication::primaryScreen()->size()*.7);
     setTitle();
@@ -81,13 +81,12 @@ void UConfigMainWindow::organize(QString ruleSetName)
     disconnect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     if (ruleSetName == "package")
     {
-        if (!_componentViewer->component())
+        if (!_componentWidget->component())
             return;
-        Component *component = _componentViewer->component();
-        _componentViewer->scene()->clear();
-        _componentViewer->setComponent(Q_NULLPTR);
+        Component *component = _componentWidget->component();
+        _componentWidget->setComponent(Q_NULLPTR);
         component->reorganizeToPackageStyle();
-        _componentViewer->setComponent(component);
+        _componentWidget->setComponent(component);
         _kssEditor->clear();
         return;
     }
@@ -100,13 +99,13 @@ void UConfigMainWindow::organize(QString ruleSetName)
     connect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     parser.parse(&ruleSet);
 
-    if (_componentViewer->component())
+    if (_componentWidget->component())
     {
         PinRuler ruler(&ruleSet);
-        Component *component = _componentViewer->component();
-        _componentViewer->scene()->clear();
+        Component *component = _componentWidget->component();
+        _componentWidget->setComponent(Q_NULLPTR);
         ruler.organize(component);
-        _componentViewer->setComponent(component);
+        _componentWidget->setComponent(component);
     }
 }
 
@@ -119,12 +118,12 @@ void UConfigMainWindow::updateRules()
         return;
 
     PinRuler ruler(&ruleSet);
-    if (_componentViewer->component())
+    if (_componentWidget->component())
     {
-        Component *component = _componentViewer->component();
-        _componentViewer->setComponent(Q_NULLPTR);
+        Component *component = _componentWidget->component();
+        _componentWidget->setComponent(Q_NULLPTR);
         ruler.organize(component);
-        _componentViewer->setComponent(component);
+        _componentWidget->setComponent(component);
     }
 }
 
@@ -149,14 +148,14 @@ void UConfigMainWindow::createWidgets()
     _splitterEditor->setSizes(QList<int>()<<200<<200);
 
     QTabWidget *tabWidget = new QTabWidget();
-    _componentViewer = new ComponentViewer();
+    _componentWidget = new ComponentWidget(this);
     _pdfDebug = new QLabel();
     _pdfDebug->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     _pdfDebug->setScaledContents(true);
     QScrollArea *pdfDebugArea = new QScrollArea();
     pdfDebugArea->setWidget(_pdfDebug);
     pdfDebugArea->setWidgetResizable(true);
-    tabWidget->addTab(_componentViewer, "component");
+    tabWidget->addTab(_componentWidget, "component");
     tabWidget->addTab(pdfDebugArea, "pdf debugger");
 
     _splitter = new QSplitter();
@@ -167,15 +166,15 @@ void UConfigMainWindow::createWidgets()
     setCentralWidget(_splitter);
     setStatusBar(new QStatusBar());
 
-    connect(_componentViewer, &ComponentViewer::droppedFile,
+    connect(_componentWidget->viewer(), &ComponentViewer::droppedFile,
             _project, &UConfigProject::importComponents);
 
-    connect(_componentViewer, &ComponentViewer::pinsSelected,
+    connect(_componentWidget->viewer(), &ComponentViewer::pinsSelected,
             _pinListEditor->tableView(), &ComponentPinsTableView::selectPins);
     connect(_pinListEditor->tableView(), &ComponentPinsTableView::pinSelected,
-            _componentViewer, &ComponentViewer::selectPins);
+            _componentWidget->viewer(), &ComponentViewer::selectPins);
     connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinModified,
-            _componentViewer, &ComponentViewer::updatePin);
+            _componentWidget->viewer(), &ComponentViewer::updatePin);
 }
 
 void UConfigMainWindow::createDocks()
@@ -274,7 +273,7 @@ void UConfigMainWindow::createToolbarsMenus()
     gridAction->setCheckable(true);
     gridAction->setChecked(true);
     gridAction->setShortcut(QKeySequence("Ctrl+G"));
-    connect(gridAction, SIGNAL(triggered(bool)), _componentViewer, SLOT(setGridVisible(bool)));
+    connect(gridAction, SIGNAL(triggered(bool)), _componentWidget->viewer(), SLOT(setGridVisible(bool)));
     viewMenu->addAction(gridAction);
 
     viewMenu->addSeparator();

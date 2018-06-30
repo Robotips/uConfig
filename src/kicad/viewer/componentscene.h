@@ -35,7 +35,7 @@ public:
     void setGrid(bool grid);
 
     Component *component() const;
-    void setComponent(Component *component);
+    void setComponent(Component *component, int layer=1);
 
     ComponentItem *componentItem() const;
     void setComponentItem(ComponentItem *componentItem);

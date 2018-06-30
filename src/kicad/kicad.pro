@@ -27,6 +27,7 @@ SOURCES += \
     $$PWD/model/drawcircle.cpp \
     $$PWD/model/drawpoly.cpp \
     $$PWD/model/drawrect.cpp \
+    $$PWD/viewer/componentwidget.cpp \
     $$PWD/viewer/componentviewer.cpp \
     $$PWD/viewer/componentscene.cpp \
     $$PWD/viewer/componentitem.cpp \
@@ -72,6 +73,7 @@ HEADERS += \
     $$PWD/model/drawcircle.h \
     $$PWD/model/drawpoly.h \
     $$PWD/model/drawrect.h \
+    $$PWD/viewer/componentwidget.h \
     $$PWD/viewer/componentviewer.h \
     $$PWD/viewer/componentscene.h \
     $$PWD/viewer/componentitem.h \

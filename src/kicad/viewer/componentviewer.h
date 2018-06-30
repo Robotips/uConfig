@@ -38,7 +38,7 @@ public:
     explicit ComponentViewer(QWidget *parent = Q_NULLPTR);
 
     Component *component() const;
-    void setComponent(Component *component);
+    void setComponent(Component *component, int layer=1);
 
 public slots:
     void selectPin(Pin *pin);

@@ -50,10 +50,10 @@ Component *ComponentViewer::component() const
     return _scene->component();
 }
 
-void ComponentViewer::setComponent(Component *component)
+void ComponentViewer::setComponent(Component *component, int layer)
 {
     disconnect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
-    _scene->setComponent(component);
+    _scene->setComponent(component, layer);
     if (component)
         scene()->setSceneRect(_scene->componentItem()->boundingRect());
     //fitInView(_scene->componentItem(), Qt::KeepAspectRatio);

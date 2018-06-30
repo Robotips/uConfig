@@ -46,7 +46,7 @@ Component *ComponentScene::component() const
     return _component;
 }
 
-void ComponentScene::setComponent(Component *component)
+void ComponentScene::setComponent(Component *component, int layer)
 {
     clear();
     _component = component;
@@ -57,7 +57,7 @@ void ComponentScene::setComponent(Component *component)
         return;
     }
 
-    _componentItem = new ComponentItem(component);
+    _componentItem = new ComponentItem(component, layer);
     addItem(_componentItem);
 }
 

@@ -12,7 +12,7 @@
 
 #include "project/uconfigproject.h"
 
-#include "viewer/componentviewer.h"
+#include "viewer/componentwidget.h"
 #include "itemmodel/componentlibtreeview.h"
 #include "itemmodel/pinlisteditor.h"
 #include "ksseditor/ksseditor.h"
@@ -42,7 +42,7 @@ protected:
     ComponentLibTreeView *_componentsTreeView;
     ComponentInfosEditor *_componentInfosEditor;
     PinListEditor *_pinListEditor;
-    ComponentViewer *_componentViewer;
+    ComponentWidget *_componentWidget;
     QComboBox *_ruleComboBox;
     QLabel *_pdfDebug;
 

@@ -35,7 +35,7 @@ void DrawPolyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    painter->setPen(QPen(QColor(132, 0, 0), 2));
+    painter->setPen(QPen(QColor(132, 0, 0), 0.254 * draw()->thickness()));
 
     if (_drawPoly->filled() != DrawPoly::DrawNotFilled)
         painter->setBrush(QColor(255, 255, 194));
