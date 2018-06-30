@@ -52,6 +52,7 @@ public:
     enum Column {
         Name,
         PinCount,
+        UnitCount,
         Package,
         ColumnCount
     };

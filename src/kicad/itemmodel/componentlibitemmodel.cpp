@@ -116,10 +116,12 @@ QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientat
         {
         case Name:
             return QVariant("Name");
-        case Package:
-            return QVariant("Package(s)");
         case PinCount:
             return QVariant("Pins");
+        case UnitCount:
+            return QVariant("Units");
+        case Package:
+            return QVariant("Package(s)");
         }
         break;
     }
@@ -142,10 +144,12 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
         {
         case Name:
             return QVariant(component->name());
-        case Package:
-            return QVariant(component->footPrints().join(';'));
         case PinCount:
             return QVariant(component->pins().count());
+        case UnitCount:
+            return QVariant(component->unitCount());
+        case Package:
+            return QVariant(component->footPrints().join(';'));
         }
     case Qt::CheckStateRole:
         if (index.column() == Name && _selectedMode)
