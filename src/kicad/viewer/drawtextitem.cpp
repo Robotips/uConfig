@@ -23,8 +23,8 @@
 #include <QPainter>
 #include <QDebug>
 
-DrawTextItem::DrawTextItem(DrawText *draw)
-    : DrawItem(draw)
+DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
+    : DrawItem(draw), _internal(internal)
 {
     setDraw(draw);
     setZValue(-1);
@@ -35,9 +35,15 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
+    painter->drawRect(boundingRect());
+
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::TextAntialiasing);
-    painter->setPen(QPen(QColor(132, 0, 0), 2));
+    if (!_internal)
+        painter->setPen(QPen(QColor(132, 0, 0), 2));
+    else
+        painter->setPen(QPen(QColor(0, 132, 132), 2));
+
     painter->setBrush(QColor(255, 255, 194));
 
     QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);
@@ -96,6 +102,13 @@ void DrawTextItem::setDraw(DrawText *draw)
     case DrawText::TextHRight:
         _rect.translate(-_rect.width(), 0);
         break;
+    }
+
+    if (_drawText->direction() == DrawText::DirectionVertital)
+    {
+        int swap = _rect.size().width();
+        _rect.setWidth(_rect.height());
+        _rect.setHeight(swap);
     }
 
     setPos(draw->pos() / ComponentItem::ratio);

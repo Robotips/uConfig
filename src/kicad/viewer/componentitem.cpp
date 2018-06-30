@@ -18,6 +18,7 @@
 
 #include "componentitem.h"
 #include "drawitem.h"
+#include "drawtextitem.h"
 
 #include <QPainter>
 #include <QDebug>
@@ -66,9 +67,9 @@ void ComponentItem::setComponent(Component *component)
         DrawItem *drawItem = DrawItem::fromDraw(draw);
         drawItem->setParentItem(this);
     }
-    DrawItem *drawItem = DrawItem::fromDraw(component->refText());
+    DrawItem *drawItem = new DrawTextItem(component->refText(), true);
     drawItem->setParentItem(this);
-    drawItem = DrawItem::fromDraw(component->nameText());
+    drawItem = new DrawTextItem(component->nameText(), true);
     drawItem->setParentItem(this);
     _numRect = QRect(_component->boundingRect().topLeft() / ComponentItem::ratio,
                      _component->boundingRect().size() / ComponentItem::ratio).normalized();
