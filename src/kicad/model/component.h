@@ -78,6 +78,9 @@ public:
     bool showPadName() const;
     void setShowPadName(bool showPadName);
 
+    int unitCount() const;
+    void setUnitCount(int unitCount);
+
     const QImage &debugInfo() const;
     void setDebugInfo(const QImage &debugInfo);
 
@@ -106,6 +109,7 @@ private:
     QStringList _footPrints;
     bool _showPinName;
     bool _showPadName;
+    int _unitCount;
     QImage _debugInfo;
     QRect _rect;
     DrawText *_refText;

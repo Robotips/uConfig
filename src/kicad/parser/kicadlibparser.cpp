@@ -407,6 +407,10 @@ Component *KicadLibParser::readComponent()
             _stream >> option;
             component->setShowPinName(option == "Y");
 
+            int unitsCount = 1;
+            _stream >> unitsCount;
+            component->setUnitCount(unitsCount);
+
             _stream.readLine();
         }
         else if (start.startsWith("F"))

@@ -349,6 +349,24 @@ void Component::setShowPadName(bool showPadName)
 }
 
 /**
+ * @brief Returns the number of units declared in the component
+ * @return unit count
+ */
+int Component::unitCount() const
+{
+    return _unitCount;
+}
+
+/**
+ * @brief Sets the number of units declared in the component
+ * @param unitCount Count of units
+ */
+void Component::setUnitCount(int unitCount)
+{
+    _unitCount = unitCount;
+}
+
+/**
  * @brief Image of debugger for extraction from PDF
  * @return image view of PDF with color rects
  */
