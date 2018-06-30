@@ -26,9 +26,9 @@
 
 const int ComponentItem::ratio=5;
 
-ComponentItem::ComponentItem(Component *component)
+ComponentItem::ComponentItem(Component *component, int layer)
 {
-    setComponent(component);
+    setComponent(component, layer);
 }
 
 void ComponentItem::paint(QPainter *painter,
@@ -50,22 +50,29 @@ Component *ComponentItem::component() const
     return _component;
 }
 
-void ComponentItem::setComponent(Component *component)
+void ComponentItem::setComponent(Component *component, int layer)
 {
     prepareGeometryChange();
     _component = component;
     _pinItemMap.clear();
+    _layer = layer;
 
     foreach (Pin *pin, component->pins())
     {
-        PinItem *pinItem = new PinItem(pin);
-        pinItem->setParentItem(this);
-        _pinItemMap.insert(pin, pinItem);
+        if (pin->layer() == _layer || pin->layer() == 0)
+        {
+            PinItem *pinItem = new PinItem(pin);
+            pinItem->setParentItem(this);
+            _pinItemMap.insert(pin, pinItem);
+        }
     }
     foreach (Draw *draw, component->draws())
     {
-        DrawItem *drawItem = DrawItem::fromDraw(draw);
-        drawItem->setParentItem(this);
+        //if (draw->layer() == _layer)
+        {
+            DrawItem *drawItem = DrawItem::fromDraw(draw);
+            drawItem->setParentItem(this);
+        }
     }
     DrawItem *drawItem = new DrawTextItem(component->refText(), true);
     drawItem->setParentItem(this);

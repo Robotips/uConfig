@@ -32,7 +32,7 @@ class PinItem;
 class KICAD_EXPORT ComponentItem : public QGraphicsItem
 {
 public:
-    ComponentItem(Component *component = Q_NULLPTR);
+    ComponentItem(Component *component = Q_NULLPTR, int layer=1);
 
     enum { Type = UserType + 2 };
     int type() const {return Type;}
@@ -41,7 +41,7 @@ public:
     QRectF boundingRect() const;
 
     Component *component() const;
-    void setComponent(Component *component);
+    void setComponent(Component *component, int layer=1);
 
     PinItem *pinItem(Pin *pin);
 
@@ -50,6 +50,7 @@ public:
 
 private:
     Component *_component;
+    int _layer;
 
     QRectF _numRect;
     QMap<Pin*, PinItem* > _pinItemMap;
