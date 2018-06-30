@@ -695,6 +695,45 @@ Draw *KicadLibParser::readDraw(char c)
             _stream.readLine();
             return draw;
         }
+    case 'P': // Poly
+        {
+            DrawPoly *draw = new DrawPoly();
+            int ptCount = 0;
+            _stream >> ptCount;
+            _stream >> n;
+            draw->setUnit(n);
+            _stream >> n;
+            draw->setConvert(n);
+            _stream >> n;
+            draw->setThickness(n);
+
+            for (int i=0; i<ptCount; i++)
+            {
+                QPoint pt;
+                _stream >> n;
+                pt.setX(n);
+                _stream >> n;
+                pt.setY(-n);
+                draw->points().append(pt);
+            }
+
+            _stream.skipWhiteSpace();
+            _stream >> nc;
+            switch (nc)
+            {
+            case 'F':
+                draw->setFilled(DrawText::DrawFilledForeGround);
+                break;
+            case 'f':
+                draw->setFilled(DrawText::DrawFilledBackGround);
+                break;
+            default:
+                draw->setFilled(DrawText::DrawNotFilled);
+                break;
+            }
+            _stream.readLine();
+            return draw;
+        }
     default:
         return Q_NULLPTR;
     }
