@@ -25,6 +25,8 @@ Pin::Pin()
 {
     _layer = 1;
     _length = 300;
+    _textNameSize = 50;
+    _textPadSize = 50;
     _component = Q_NULLPTR;
 }
 
@@ -34,6 +36,8 @@ Pin::Pin(const QString &name, const QString &padName)
 {
     _layer = 1;
     _length = 300;
+    _textNameSize = 50;
+    _textPadSize = 50;
     _component = Q_NULLPTR;
 }
 
@@ -52,6 +56,9 @@ Pin::Pin(const Pin &other)
     _electricalType = other._electricalType;
     _layer = other._layer;
     _length = other._length;
+
+    _textNameSize = other._textNameSize;
+    _textPadSize = other._textPadSize;
 }
 
 QString Pin::name() const
@@ -341,7 +348,8 @@ int Pin::textNameSize() const
 
 void Pin::setTextNameSize(int textNameSize)
 {
-    _textNameSize = textNameSize;
+    if (textNameSize > 0)
+        _textNameSize = textNameSize;
 }
 
 int Pin::textPadSize() const
@@ -351,7 +359,8 @@ int Pin::textPadSize() const
 
 void Pin::setTextPadSize(int textPadSize)
 {
-    _textPadSize = textPadSize;
+    if (textPadSize > 0)
+        _textPadSize = textPadSize;
 }
 
 int Pin::layer() const
@@ -361,7 +370,8 @@ int Pin::layer() const
 
 void Pin::setLayer(int layer)
 {
-    _layer = layer;
+    if (layer > 0)
+        _layer = layer;
 }
 
 int Pin::length() const
@@ -371,7 +381,8 @@ int Pin::length() const
 
 void Pin::setLength(int length)
 {
-    _length = length;
+    if (length > 0)
+        _length = length;
 }
 
 Component *Pin::component() const

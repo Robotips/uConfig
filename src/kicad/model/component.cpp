@@ -33,6 +33,7 @@ Component::Component(const QString &name)
 {
     _showPinName = true;
     _showPadName = true;
+    _unitCount = 1;
     _refText = new DrawText("U");
     _nameText = new DrawText();
     _packageText = new DrawText();
@@ -52,6 +53,7 @@ Component::Component(const Component &other)
     _footPrints = other._footPrints;
     _showPinName = other._showPinName;
     _showPadName = other._showPadName;
+    _unitCount = other._unitCount;
 
     for (int i=0; i<other._pins.size(); i++)
         addPin(new Pin(*other._pins[i]));
