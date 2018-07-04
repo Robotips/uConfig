@@ -83,13 +83,18 @@ void Datasheet::pinSearch(int numPage)
     QList<DatasheetPin *> pins;
     QList<DatasheetPackage *> packages;
 
-    QList<DatasheetBox *> labels;
     /*QList<DatasheetBox *> proc_labels;
     QList<DatasheetBox *> pack_labels;*/
 
     emit log("==============================");
-    pins = extractPins(numPage, labels);
-    //pins.append(extractPins(numPage+1, labels));
+
+    _numbers.clear();
+    _labels.clear();
+    _proc_labels.clear();
+    _pack_labels.clear();
+
+    pins = extractPins(numPage);
+    //pins.append(extractPins(numPage+1));
     QCoreApplication::processEvents();
 
     // painring pin to find package
@@ -136,8 +141,11 @@ void Datasheet::pinSearch(int numPage)
     QCoreApplication::processEvents();
 
     // unasociated label
-    foreach (DatasheetBox *label, labels)
+    foreach (DatasheetBox *label, _labels)
     {
+        if (label->associated == true)
+            continue;
+
         DatasheetPin *nearPin = NULL;
         qreal dist = 99999999999999;
         //qDebug()<<"+ unasociated label"<<label->text;
@@ -216,52 +224,30 @@ void Datasheet::pinSearch(int numPage)
         pac++;
         QDir dir;
         dir.mkdir(_name);
-        QFile file(_name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac));
-        file.open(QIODevice::WriteOnly | QIODevice::Text);
-        //qDebug() << _name+QString("/p%1_pack%2.txt").arg(numPage + 1).arg(pac);
-        QTextStream textStream(&file);
-
-        /*textStream << "Proc: ";
-        foreach (DatasheetBox *proc, proc_labels)
-        {
-            textStream << proc->text << "-";
-        }
-        textStream << endl << "Package: ";
-        foreach (DatasheetBox *pack, pack_labels)
-        {
-            textStream << pack->text << "-";
-        }
-        textStream << endl;
 
         painter.setPen(QPen(Qt::yellow, 2, Qt::DotLine));
-        foreach (DatasheetBox *number, numbers)
+        foreach (DatasheetBox *number, _numbers)
         {
-            painter.drawRect(
-                QRect((number->pos.topLeft() - rect.topLeft()).toPoint() * res,
-                      number->pos.size().toSize() * res));
+            painter.drawRect(QRect((number->pos.topLeft() - rect.topLeft()).toPoint() * res,
+                                    number->pos.size().toSize() * res));
         }
-        foreach (DatasheetBox *label, labels)
+        foreach (DatasheetBox *label, _labels)
         {
             if (label->associated == false)
                 painter.setPen(QPen(Qt::green, 2, Qt::DotLine));
             else
                 painter.setPen(QPen(Qt::blue, 2, Qt::DotLine));
-            painter.drawRect(
-                QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res,
-                      label->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
+            painter.drawRect(QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res,
+                                    label->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
 
-        }*/
+        }
         painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
         foreach (DatasheetPin *pin, package->pins)
         {
-            textStream << pin->pin << "\t" << pin->name << endl;
-            painter.drawRect(
-                QRect((pin->pos.topLeft() - rect.topLeft()).toPoint() * res,
+            painter.drawRect(QRect((pin->pos.topLeft() - rect.topLeft()).toPoint() * res,
                       pin->pos.size().toSize() * res));
         }
-        package->image.save(
-            _name+QString("/p%1_pack%2.png").arg(numPage + 1).arg(pac));
-        file.close();
+        package->image.save(_name+QString("/p%1_pack%2.png").arg(numPage + 1).arg(pac));
         QCoreApplication::processEvents();
     }
 
@@ -276,12 +262,8 @@ QRectF Datasheet::toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageN
     return rect;
 }
 
-QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> &nonassoc_label)
+QList<DatasheetPin *> Datasheet::extractPins(int numPage)
 {
-    QList<DatasheetBox *> numbers;
-    QList<DatasheetBox *> labels;
-    QList<DatasheetBox *> proc_labels;
-    QList<DatasheetBox *> pack_labels;
     QList<DatasheetPin *> pins;
 
     emit log(QString("+ find pins at page: %1").arg(numPage + 1));
@@ -301,6 +283,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
     // extracting text boxes and sort it by possible usage
     bool prev = false;
     DatasheetBox *box = new DatasheetBox();
+    box->page = numPage;
     foreach (TextBox *textBox, page->textList())
     {
         bool okNumber;
@@ -339,18 +322,20 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
                 {
                     if (!prev)
                     {
-                        numbers.push_back(box);
+                        _numbers.push_back(box);
                         box = new DatasheetBox();
+                        box->page = numPage;
                     }
                     else
                     {
                         DatasheetBox *nbox = new DatasheetBox();
+                        nbox->page = numPage;
                         if (textBox->text().startsWith("•"))
                             nbox->text = textBox->text().mid(1);
                         else
                             nbox->text = textBox->text();
                         nbox->pos = textBox->boundingBox();
-                        numbers.push_back(nbox);
+                        _numbers.push_back(nbox);
                         okNumber = false;
                     }
                 }
@@ -369,12 +354,12 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
                 {
                     // none
                 }
-                else if (box->text.startsWith("PIC", Qt::CaseInsensitive) ||
+                /*else if (box->text.startsWith("PIC", Qt::CaseInsensitive) ||
                          box->text.startsWith("DSPIC", Qt::CaseInsensitive) ||
                          box->text.startsWith("IS", Qt::CaseInsensitive) ||
                          box->text.startsWith("RX", Qt::CaseInsensitive))
                 {
-                    proc_labels.push_back(box);
+                    _proc_labels.push_back(box);
                     box = new DatasheetBox();
                 }
                 else if (box->text.contains("DIP", Qt::CaseInsensitive) ||
@@ -386,9 +371,9 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
                          box->text.contains("LGA", Qt::CaseInsensitive) ||
                          box->text.contains("QFN", Qt::CaseInsensitive))
                 {
-                    pack_labels.push_back(box);
+                    _pack_labels.push_back(box);
                     box = new DatasheetBox();
-                }
+                }*/
                 /*else if (box->text.size() > 10 && !box->text.contains("/"))
                 {
                     delete box;
@@ -396,7 +381,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
                 }*/
                 else
                 {
-                    labels.push_back(box);
+                    _labels.push_back(box);
                     box = new DatasheetBox();
                 }
             }
@@ -404,15 +389,15 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
         }
     }
     // pairing label and number to pin
-    foreach (DatasheetBox *number, numbers)
+    foreach (DatasheetBox *number, _numbers)
     {
         DatasheetPin *pin = new DatasheetPin();
         qreal dist = 999999999999;
         QPointF center = number->pos.center();
         DatasheetBox *assocLabel = NULL;
-        for (int i = 0; i < labels.count(); i++)
+        for (int i = 0; i < _labels.count(); i++)
         {
-            DatasheetBox *label = labels[i];
+            DatasheetBox *label = _labels[i];
             if (label->associated)
                 continue;
 
@@ -445,10 +430,6 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage, QList<DatasheetBox *> 
             pins.push_back(pin);
         }
     }
-
-    foreach (DatasheetBox *label, labels)
-        if (label->associated == false)
-            nonassoc_label.append(label);
 
     return pins;
 }
@@ -558,7 +539,8 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
              || text.contains("gnd", Qt::CaseInsensitive))
                 vssOk = true;
             if (text.contains("vdd", Qt::CaseInsensitive)
-             || text.contains("vcc", Qt::CaseInsensitive))
+             || text.contains("vcc", Qt::CaseInsensitive)
+             || text.contains("vs", Qt::CaseInsensitive))
                 vddOk = true;
             /* if (text.contains("bga", Qt::CaseInsensitive))
                 *bgaStyle=true;*/
@@ -636,6 +618,7 @@ QList<Component *> Datasheet::components()
         Component *component = package->toComponent();
         component->reorganizeToPackageStyle();
         components.append(component);
+        component->setDebugInfo(package->image);
     }
     return components;
 }

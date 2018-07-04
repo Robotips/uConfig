@@ -52,10 +52,10 @@ public:
     QString name() const;
 
     bool debugEnabled() const;
-    void setDebugEnabled(bool debug);
+    void setDebugEnabled(bool debug=true);
 
     bool forceEnabled() const;
-    void setForceEnabled(bool force);
+    void setForceEnabled(bool force=true);
 
     int pageCount() const;
     QImage pageThumbnail(int numPage) const;
@@ -72,7 +72,11 @@ private:
     void pinSearch(int numPage);
 
     QRectF toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageNumber);
-    QList<DatasheetPin *> extractPins(int numPage, QList<DatasheetBox *> &nonassoc_label);
+    QList<DatasheetPin *> extractPins(int numPage);
+    QList<DatasheetBox *> _numbers;
+    QList<DatasheetBox *> _labels;
+    QList<DatasheetBox *> _proc_labels;
+    QList<DatasheetBox *> _pack_labels;
 
     Poppler::Document *_doc;
     QString _name;

@@ -56,6 +56,8 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
     if (label.pos.width() > label.pos.height() || label.text.count()<3)  // Horizontal
     {
         qreal marge = label.pos.height();
+        /*if (label.page != number.page)
+            return false;*/
         if (label.pos.height() > number.pos.height()*2
          || number.pos.height() > label.pos.height()*2)
             return false;
