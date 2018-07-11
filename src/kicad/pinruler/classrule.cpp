@@ -24,7 +24,8 @@ QStringList ClassRule::propsName = QStringList()
         <<"sortpattern"
         <<"length"
         <<"priority"
-        <<"visibility";
+        <<"visibility"
+        <<"title";
 
 QStringList ClassRule::positionEnumStr = QStringList()
         <<"top"
@@ -63,6 +64,9 @@ ClassRule::ClassRule(const QString &selector)
 
     _visibility = VisibilityVisible;
     _visibilitySet = false;
+
+    _title = "";
+    _titleSet = false;
 }
 
 Rule::Type ClassRule::type() const
@@ -97,6 +101,9 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
     case 5: // visibility
         setVisibility(value);
         break;
+    case 6: // title
+        setTitle(value);
+        break;
     }
 
     return true;
@@ -119,6 +126,8 @@ bool ClassRule::hasPropertySet(const QString &name) const
         return hasPrioritySet();
     case 5: // visibility
         return hasVisibilitySet();
+    case 6: // title
+        return hasTitleSet();
     }
     return false;
 }
@@ -255,4 +264,20 @@ void ClassRule::setVisibility(const QString &visibility)
     int id = ClassRule::visibilityEnumStr.indexOf(visibility);
     if (id != -1)
         setVisibility((ClassRule::Visibility)(id));
+}
+
+QString ClassRule::title() const
+{
+    return _title;
+}
+
+bool ClassRule::hasTitleSet() const
+{
+    return _titleSet;
+}
+
+void ClassRule::setTitle(const QString &title)
+{
+    _title = title;
+    _titleSet = true;
 }

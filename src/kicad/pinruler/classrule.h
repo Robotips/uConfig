@@ -93,6 +93,10 @@ public:
     void setVisibility(Visibility visibility);
     void setVisibility(const QString &visibility);
 
+    QString title() const;
+    bool hasTitleSet() const;
+    void setTitle(const QString &title);
+
 protected:
     Position _position;
     bool _positionSet;
@@ -111,6 +115,9 @@ protected:
 
     Visibility _visibility;
     bool _visibilitySet;
+
+    QString _title;
+    bool _titleSet;
 };
 
 #endif // CLASSRULE_H
