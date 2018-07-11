@@ -33,7 +33,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility" << "title" << "rect";
+    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility" << "label" << "rect";
     foreach (const QString &pattern, keywordPatterns)
     {
         rule.pattern.setPattern("\\b("+pattern+")\\b");

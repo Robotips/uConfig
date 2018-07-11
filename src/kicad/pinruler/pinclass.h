@@ -46,7 +46,7 @@ public:
     void setPos(const QPoint &pos);
     QPoint getPos() const;
 
-    QRect boundingRect() const;
+    const QRect &boundingRect() const;
 
     void addPinItem(PinClassItem *pin);
     const QList<PinClassItem *> &pins() const;
@@ -57,6 +57,10 @@ public:
 protected:
     QString _className;
     QPoint _pos;
+
+    void computeBoundingRect() const;
+    mutable bool _brect;
+    mutable QRect _boundingRect;
 
     QList<PinClassItem *> _pins;
 };

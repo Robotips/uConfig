@@ -130,9 +130,9 @@ Visibility of the class. In case of 'hidden', all pins of the class are hidden b
 
 default: visible
 
-#### title [string]
+#### label [string]
 
-If it set, the class add a text label with this text as title. Accepts matches from class selector.
+If it set, the class add a text label with this text. Accepts matches from class selector.
 
 default: ""
 

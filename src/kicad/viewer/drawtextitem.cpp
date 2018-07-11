@@ -57,7 +57,7 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
 QRectF DrawTextItem::boundingRect() const
 {
-    return _rect.adjusted(-10, -10, 10, 10);
+    return _rect.adjusted(-20, -20, 20, 20);
 }
 
 void DrawTextItem::setDraw(DrawText *draw)
@@ -73,6 +73,7 @@ void DrawTextItem::setDraw(DrawText *draw)
 
     _rect = fm.boundingRect(_drawText->text());
     _rect.moveTopLeft(QPoint(0,0));
+    _rect.adjust(0, 0, 5, 0);
 
     switch (_drawText->textVJustify())
     {
