@@ -33,7 +33,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility";
+    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility" << "title";
     foreach (const QString &pattern, keywordPatterns)
     {
         rule.pattern.setPattern("\\b("+pattern+")\\b");
@@ -93,7 +93,7 @@ void KSSSyntax::highlightBlock(const QString &text)
         PartToHighlight partToHighlight = partsToHighlight.takeFirst();
 
         // highlight if needed
-        if (partToHighlight.index>=index)
+        if (partToHighlight.index >= index)
         {
             setFormat(partToHighlight.index, partToHighlight.length, partToHighlight.rule.format);
             index = partToHighlight.index + partToHighlight.length;

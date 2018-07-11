@@ -129,3 +129,9 @@ default: 0
 Visibility of the class. In case of 'hidden', all pins of the class are hidden but class is placed like others. With 'removed', pins are hidden and class is not placed.
 
 default: visible
+
+#### title [string]
+
+If it set, the class add a text label with this text as title. Accepts matches from class selector.
+
+default: ""
