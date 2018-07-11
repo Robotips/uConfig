@@ -27,7 +27,7 @@ DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
     : DrawItem(draw), _internal(internal)
 {
     setDraw(draw);
-    setZValue(-1);
+    setZValue(10);
 }
 
 void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -37,12 +37,10 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::TextAntialiasing);
-    if (!_internal)
+    /*if (!_internal)
         painter->setPen(QPen(QColor(132, 0, 0), 2));
-    else
+    else*/
         painter->setPen(QPen(QColor(0, 132, 132), 2));
-
-    painter->setBrush(QColor(255, 255, 194));
 
     QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);
     if (_drawText->textStyle().testFlag(DrawText::TextBold))
@@ -54,12 +52,12 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     if (_drawText->direction() == DrawText::DirectionVertital)
         painter->rotate(-90);
 
-    painter->drawText(_rect, _drawText->text());
+    painter->drawText(_textRect, _drawText->text());
 }
 
 QRectF DrawTextItem::boundingRect() const
 {
-    return _rect.adjusted(-2, -2, 2, 2);
+    return _rect.adjusted(-10, -10, 10, 10);
 }
 
 void DrawTextItem::setDraw(DrawText *draw)
@@ -102,6 +100,7 @@ void DrawTextItem::setDraw(DrawText *draw)
         break;
     }
 
+    _textRect = _rect;
     if (_drawText->direction() == DrawText::DirectionVertital)
     {
         int swap = _rect.size().width();

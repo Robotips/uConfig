@@ -41,6 +41,7 @@ public:
 protected:
     DrawText *_drawText;
     QRectF _rect;
+    QRectF _textRect;
     bool _internal;
 };
 
