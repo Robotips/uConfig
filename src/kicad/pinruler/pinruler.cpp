@@ -43,6 +43,9 @@ bool prioGreaterThan(PinClass *c1, PinClass *c2)
 void PinRuler::organize(Component *component)
 {
     int x, y;
+
+    component->clearDraws();
+
     PinClass *defaultClass = pinClass("default");
     foreach (Pin *pin, component->pins())
     {
@@ -191,7 +194,10 @@ void PinRuler::organize(Component *component)
         y += qCeil((rightSize.height() - leftSize.height()) / 2) * 2;
     foreach (PinClass *mpinClass, leftSide)
     {
-        mpinClass->placePins(QPoint(x, y));
+        mpinClass->setPos(QPoint(x, y));
+        if (mpinClass->hasTitleSet())
+            component->addDraw(mpinClass->getDrawText());
+
         y += mpinClass->rect().height() + 100;
     }
 
@@ -201,7 +207,11 @@ void PinRuler::organize(Component *component)
         y += qCeil((leftSize.height() - rightSize.height()) / 2) * 2;
     foreach (PinClass *mpinClass, rightSide)
     {
-        mpinClass->placePins(QPoint(x, y));
+        mpinClass->setPos(QPoint(x, y));
+
+        if (mpinClass->hasTitleSet())
+            component->addDraw(mpinClass->getDrawText());
+
         y += mpinClass->rect().height() + 100;
     }
 
@@ -210,7 +220,10 @@ void PinRuler::organize(Component *component)
     y = -sideY;
     foreach (PinClass *mpinClass, topSide)
     {
-        mpinClass->placePins(QPoint(x, y));
+        mpinClass->setPos(QPoint(x, y));
+        if (mpinClass->hasTitleSet())
+            component->addDraw(mpinClass->getDrawText());
+
         x += mpinClass->rect().width() + 100;
     }
 
@@ -219,7 +232,10 @@ void PinRuler::organize(Component *component)
     y = sideY;
     foreach (PinClass *mpinClass, bottomSide)
     {
-        mpinClass->placePins(QPoint(x, y));
+        mpinClass->setPos(QPoint(x, y));
+        if (mpinClass->hasTitleSet())
+            component->addDraw(mpinClass->getDrawText());
+
         x += mpinClass->rect().width() + 100;
     }
 
@@ -229,7 +245,7 @@ void PinRuler::organize(Component *component)
     y = -qCeil(removedSize.height() / 200) * 100;
     foreach (PinClass *mpinClass, removedPins)
     {
-        mpinClass->placePins(QPoint(x, y));
+        mpinClass->setPos(QPoint(x, y));
         y += mpinClass->rect().height() + 100;
     }
 
@@ -239,7 +255,6 @@ void PinRuler::organize(Component *component)
     rect.setWidth(sideX * 2 + 1);
     rect.setTop(-sideY);
     rect.setHeight(sideY * 2 + 1);
-    component->clearDraws();
     DrawRect *rectDraw = new DrawRect(rect);
     rectDraw->setFilled(DrawRect::DrawFilledBackGround);
     component->addDraw(rectDraw);

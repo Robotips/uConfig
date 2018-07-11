@@ -28,6 +28,8 @@
 #include "classrule.h"
 #include "pinclassitem.h"
 
+#include "model/drawtext.h"
+
 class KICAD_EXPORT PinClass : public ClassRule
 {
 public:
@@ -40,15 +42,19 @@ public:
 
     void sortPins();
 
-    void placePins(const QPoint &pos);
+    void setPos(const QPoint &pos);
+    QPoint getPos() const;
 
     QRect rect() const;
 
     void addPinItem(PinClassItem *pin);
     const QList<PinClassItem *> &pins() const;
 
+    DrawText *getDrawText() const;
+
 protected:
     QString _className;
+    QPoint _pos;
 
     QList<PinClassItem *> _pins;
 };

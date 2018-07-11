@@ -23,24 +23,6 @@
 PinClass::PinClass(const QString &className)
     : _className(className)
 {
-    // properties default values
-    _position = ClassRule::PositionASide;
-    _positionSet = false;
-
-    _sort = ClassRule::SortAsc;
-    _sortSet = false;
-
-    _sortPattern = ".*";
-    _sortPatternSet = false;
-
-    _length = 200;
-    _lengthSet = false;
-
-    _priority = 0;
-    _prioritySet = false;
-
-    _visibility = ClassRule::VisibilityVisible;
-    _visibilitySet = false;
 }
 
 QString PinClass::className() const
@@ -69,6 +51,22 @@ void PinClass::applyRule(ClassRule *rule)
                 newSortPatern.replace("\\3", captures[3]);
         }
         setSortPattern(newSortPatern);
+    }
+    if (!_titleSet && rule->hasTitleSet())
+    {
+        QString newTitle = rule->title();
+        QRegularExpressionMatch match = rule->selector().match(_className, 0, QRegularExpression::NormalMatch);
+        if (match.hasMatch())
+        {
+            const QStringList &captures = (match.capturedTexts());
+            if (captures.count()>1)
+                newTitle.replace("\\1", captures[1]);
+            if (captures.count()>2)
+                newTitle.replace("\\2", captures[2]);
+            if (captures.count()>3)
+                newTitle.replace("\\3", captures[3]);
+        }
+        setTitle(newTitle);
     }
     if (!_lengthSet && rule->hasLengthSet())
         setLength(rule->length());
@@ -135,9 +133,11 @@ void PinClass::sortPins()
 
 }
 
-void PinClass::placePins(const QPoint &basePos)
+void PinClass::setPos(const QPoint &basePos)
 {
-    QPoint pos = basePos;
+    _pos = basePos;
+
+    QPoint pinPos = basePos;
     QPoint offset;
     QPoint translate;
     Pin::Direction direction;
@@ -170,12 +170,17 @@ void PinClass::placePins(const QPoint &basePos)
     foreach (PinClassItem *pinItem, _pins)
     {
         pinItem->pin()->setDirection(direction);
-        pinItem->pin()->setPos(pos + translate);
+        pinItem->pin()->setPos(pinPos + translate);
         pinItem->pin()->setLength(_length);
         if (visibilityValue() != VisibilityVisible)
             pinItem->pin()->setPinType(Pin::NotVisible);
-        pos += offset;
+        pinPos += offset;
     }
+}
+
+QPoint PinClass::getPos() const
+{
+    return _pos;
 }
 
 QRect PinClass::rect() const
@@ -211,4 +216,38 @@ void PinClass::addPinItem(PinClassItem *pin)
 const QList<PinClassItem *> &PinClass::pins() const
 {
     return _pins;
+}
+
+DrawText *PinClass::getDrawText() const
+{
+    if (!hasTitleSet() || _position == ClassRule::PositionASide)
+        return Q_NULLPTR;
+
+    DrawText *drawClassTitle = new DrawText(title());
+
+    switch (_position)
+    {
+    case ClassRule::PositionTop:
+        drawClassTitle->setPos(QPoint(_pos.x() + rect().width() / 2 - 50, _pos.y() + 100 + rect().height()));
+        drawClassTitle->setDirection(DrawText::DirectionHorizontal);
+        break;
+    case ClassRule::PositionBottom:
+        drawClassTitle->setPos(QPoint(_pos.x() + rect().width() / 2 - 50, _pos.y() - 100 - rect().height()));
+        drawClassTitle->setDirection(DrawText::DirectionHorizontal);
+        break;
+    case ClassRule::PositionLeft:
+        drawClassTitle->setPos(QPoint(_pos.x() + rect().width() + 50, _pos.y() - 50 + rect().height() / 2));
+        drawClassTitle->setDirection(DrawText::DirectionVertital);
+        break;
+    case ClassRule::PositionRight:
+        drawClassTitle->setPos(QPoint(_pos.x() - rect().width() - 50, _pos.y() - 50 + rect().height() / 2));
+        drawClassTitle->setDirection(DrawText::DirectionVertital);
+        break;
+    case ClassRule::PositionASide:
+        break;
+    }
+    drawClassTitle->setTextStyle(DrawText::TextBold);
+    drawClassTitle->setTextHJustify(DrawText::TextHCenter);
+
+    return drawClassTitle;
 }
