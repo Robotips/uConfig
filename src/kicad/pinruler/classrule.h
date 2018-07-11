@@ -93,10 +93,10 @@ public:
     void setVisibility(Visibility visibility);
     void setVisibility(const QString &visibility);
 
-    // title property
-    QString title() const;
-    bool hasTitleSet() const;
-    void setTitle(const QString &title);
+    // label property
+    QString label() const;
+    bool hasLabelSet() const;
+    void setLabel(const QString &label);
 
     // rect property
     static QStringList boolEnumStr;
@@ -124,8 +124,8 @@ protected:
     Visibility _visibility;
     bool _visibilitySet;
 
-    QString _title;
-    bool _titleSet;
+    QString _label;
+    bool _labelSet;
 
     int _rect;
     bool _rectSet;

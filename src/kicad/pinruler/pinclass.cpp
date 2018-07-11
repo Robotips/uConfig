@@ -43,30 +43,30 @@ void PinClass::applyRule(ClassRule *rule)
         if (match.hasMatch())
         {
             const QStringList &captures = (match.capturedTexts());
-            if (captures.count()>1)
+            if (captures.count() > 1)
                 newSortPatern.replace("\\1", captures[1]);
-            if (captures.count()>2)
+            if (captures.count() > 2)
                 newSortPatern.replace("\\2", captures[2]);
-            if (captures.count()>3)
+            if (captures.count() > 3)
                 newSortPatern.replace("\\3", captures[3]);
         }
         setSortPattern(newSortPatern);
     }
-    if (!_titleSet && rule->hasTitleSet())
+    if (!_labelSet && rule->hasLabelSet())
     {
-        QString newTitle = rule->title();
+        QString newLabel = rule->label();
         QRegularExpressionMatch match = rule->selector().match(_className, 0, QRegularExpression::NormalMatch);
         if (match.hasMatch())
         {
             const QStringList &captures = (match.capturedTexts());
-            if (captures.count()>1)
-                newTitle.replace("\\1", captures[1]);
-            if (captures.count()>2)
-                newTitle.replace("\\2", captures[2]);
-            if (captures.count()>3)
-                newTitle.replace("\\3", captures[3]);
+            if (captures.count() > 1)
+                newLabel.replace("\\1", captures[1]);
+            if (captures.count() > 2)
+                newLabel.replace("\\2", captures[2]);
+            if (captures.count() > 3)
+                newLabel.replace("\\3", captures[3]);
         }
-        setTitle(newTitle);
+        setLabel(newLabel);
     }
     if (!_lengthSet && rule->hasLengthSet())
         setLength(rule->length());
@@ -222,36 +222,36 @@ const QList<PinClassItem *> &PinClass::pins() const
 
 DrawText *PinClass::getDrawText() const
 {
-    if (!hasTitleSet() || _position == ClassRule::PositionASide)
+    if (!hasLabelSet() || _position == ClassRule::PositionASide)
         return Q_NULLPTR;
 
-    DrawText *drawClassTitle = new DrawText(title());
+    DrawText *drawClassLabel = new DrawText(label());
 
     switch (_position)
     {
     case ClassRule::PositionTop:
-        drawClassTitle->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 100 + boundingRect().height()));
-        drawClassTitle->setDirection(DrawText::DirectionHorizontal);
+        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 100 + boundingRect().height()));
+        drawClassLabel->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionBottom:
-        drawClassTitle->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 100 - boundingRect().height()));
-        drawClassTitle->setDirection(DrawText::DirectionHorizontal);
+        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 100 - boundingRect().height()));
+        drawClassLabel->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionLeft:
-        drawClassTitle->setPos(QPoint(_pos.x() + boundingRect().width() + 50, _pos.y() - 50 + boundingRect().height() / 2));
-        drawClassTitle->setDirection(DrawText::DirectionVertital);
+        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() + 50, _pos.y() - 50 + boundingRect().height() / 2));
+        drawClassLabel->setDirection(DrawText::DirectionVertital);
         break;
     case ClassRule::PositionRight:
-        drawClassTitle->setPos(QPoint(_pos.x() - boundingRect().width() - 50, _pos.y() - 50 + boundingRect().height() / 2));
-        drawClassTitle->setDirection(DrawText::DirectionVertital);
+        drawClassLabel->setPos(QPoint(_pos.x() - boundingRect().width() - 50, _pos.y() - 50 + boundingRect().height() / 2));
+        drawClassLabel->setDirection(DrawText::DirectionVertital);
         break;
     case ClassRule::PositionASide:
         break;
     }
-    drawClassTitle->setTextStyle(DrawText::TextBold);
-    drawClassTitle->setTextHJustify(DrawText::TextHCenter);
+    drawClassLabel->setTextStyle(DrawText::TextBold);
+    drawClassLabel->setTextHJustify(DrawText::TextHCenter);
 
-    return drawClassTitle;
+    return drawClassLabel;
 }
 
 DrawRect *PinClass::getDrawRect() const

@@ -25,7 +25,7 @@ QStringList ClassRule::propsName = QStringList()
         <<"length"
         <<"priority"
         <<"visibility"
-        <<"title"
+        <<"label"
         <<"rect";
 
 QStringList ClassRule::positionEnumStr = QStringList()
@@ -70,8 +70,8 @@ ClassRule::ClassRule(const QString &selector)
     _visibility = VisibilityVisible;
     _visibilitySet = false;
 
-    _title = "";
-    _titleSet = false;
+    _label = "";
+    _labelSet = false;
 
     _rect = 0;
     _rectSet = false;
@@ -109,8 +109,8 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
     case 5: // visibility
         setVisibility(value);
         break;
-    case 6: // title
-        setTitle(value);
+    case 6: // label
+        setLabel(value);
         break;
     case 7: // rect
         setRect(value.toInt());
@@ -137,8 +137,8 @@ bool ClassRule::hasPropertySet(const QString &name) const
         return hasPrioritySet();
     case 5: // visibility
         return hasVisibilitySet();
-    case 6: // title
-        return hasTitleSet();
+    case 6: // label
+        return hasLabelSet();
     case 7: // rect
         return hasRectSet();
     }
@@ -279,20 +279,20 @@ void ClassRule::setVisibility(const QString &visibility)
         setVisibility((ClassRule::Visibility)(id));
 }
 
-QString ClassRule::title() const
+QString ClassRule::label() const
 {
-    return _title;
+    return _label;
 }
 
-bool ClassRule::hasTitleSet() const
+bool ClassRule::hasLabelSet() const
 {
-    return _titleSet;
+    return _labelSet;
 }
 
-void ClassRule::setTitle(const QString &title)
+void ClassRule::setLabel(const QString &label)
 {
-    _title = title;
-    _titleSet = true;
+    _label = label;
+    _labelSet = true;
 }
 
 bool ClassRule::rect() const

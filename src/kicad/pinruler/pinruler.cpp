@@ -198,7 +198,7 @@ void PinRuler::organize(Component *component)
     foreach (PinClass *mpinClass, leftSide)
     {
         mpinClass->setPos(QPoint(x, y));
-        if (mpinClass->hasTitleSet())
+        if (mpinClass->hasLabelSet())
             component->addDraw(mpinClass->getDrawText());
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
             component->addDraw(mpinClass->getDrawRect());
@@ -214,7 +214,7 @@ void PinRuler::organize(Component *component)
     {
         mpinClass->setPos(QPoint(x, y));
 
-        if (mpinClass->hasTitleSet())
+        if (mpinClass->hasLabelSet())
             component->addDraw(mpinClass->getDrawText());
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
             component->addDraw(mpinClass->getDrawRect());
@@ -228,7 +228,7 @@ void PinRuler::organize(Component *component)
     foreach (PinClass *mpinClass, topSide)
     {
         mpinClass->setPos(QPoint(x, y));
-        if (mpinClass->hasTitleSet())
+        if (mpinClass->hasLabelSet())
             component->addDraw(mpinClass->getDrawText());
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
             component->addDraw(mpinClass->getDrawRect());
@@ -242,7 +242,7 @@ void PinRuler::organize(Component *component)
     foreach (PinClass *mpinClass, bottomSide)
     {
         mpinClass->setPos(QPoint(x, y));
-        if (mpinClass->hasTitleSet())
+        if (mpinClass->hasLabelSet())
             component->addDraw(mpinClass->getDrawText());
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
             component->addDraw(mpinClass->getDrawRect());
