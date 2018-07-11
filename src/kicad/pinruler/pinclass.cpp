@@ -74,6 +74,8 @@ void PinClass::applyRule(ClassRule *rule)
         setPriority(rule->priority());
     if (!_visibilitySet && rule->hasVisibilitySet())
         setVisibility(rule->visibilityValue());
+    if (!_rectSet && rule->hasRectSet())
+        setRect(rule->rect());
 }
 
 void PinClass::applyRules(QList<ClassRule *> rules)
@@ -183,7 +185,7 @@ QPoint PinClass::getPos() const
     return _pos;
 }
 
-QRect PinClass::rect() const
+QRect PinClass::boundingRect() const
 {
     QRect rect;
     int maxLenght = 0;
@@ -228,19 +230,19 @@ DrawText *PinClass::getDrawText() const
     switch (_position)
     {
     case ClassRule::PositionTop:
-        drawClassTitle->setPos(QPoint(_pos.x() + rect().width() / 2 - 50, _pos.y() + 100 + rect().height()));
+        drawClassTitle->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 100 + boundingRect().height()));
         drawClassTitle->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionBottom:
-        drawClassTitle->setPos(QPoint(_pos.x() + rect().width() / 2 - 50, _pos.y() - 100 - rect().height()));
+        drawClassTitle->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 100 - boundingRect().height()));
         drawClassTitle->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionLeft:
-        drawClassTitle->setPos(QPoint(_pos.x() + rect().width() + 50, _pos.y() - 50 + rect().height() / 2));
+        drawClassTitle->setPos(QPoint(_pos.x() + boundingRect().width() + 50, _pos.y() - 50 + boundingRect().height() / 2));
         drawClassTitle->setDirection(DrawText::DirectionVertital);
         break;
     case ClassRule::PositionRight:
-        drawClassTitle->setPos(QPoint(_pos.x() - rect().width() - 50, _pos.y() - 50 + rect().height() / 2));
+        drawClassTitle->setPos(QPoint(_pos.x() - boundingRect().width() - 50, _pos.y() - 50 + boundingRect().height() / 2));
         drawClassTitle->setDirection(DrawText::DirectionVertital);
         break;
     case ClassRule::PositionASide:
@@ -250,4 +252,38 @@ DrawText *PinClass::getDrawText() const
     drawClassTitle->setTextHJustify(DrawText::TextHCenter);
 
     return drawClassTitle;
+}
+
+DrawRect *PinClass::getDrawRect() const
+{
+    if (!hasRectSet() || _rect <= 0)
+        return Q_NULLPTR;
+
+    DrawRect *drawRect = new DrawRect();
+
+    drawRect->setThickness(_rect / 0.254);
+
+    switch (_position)
+    {
+    case ClassRule::PositionTop:
+        drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
+        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + boundingRect().height() + 50));
+        break;
+    case ClassRule::PositionBottom:
+        drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
+        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - boundingRect().height() - 50));
+        break;
+    case ClassRule::PositionLeft:
+        drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
+        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + boundingRect().height()));
+        break;
+    case ClassRule::PositionRight:
+        drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
+        drawRect->setEndPos(QPoint(_pos.x() - boundingRect().width(), _pos.y() + boundingRect().height()));
+        break;
+    case ClassRule::PositionASide:
+        break;
+    }
+
+    return drawRect;
 }

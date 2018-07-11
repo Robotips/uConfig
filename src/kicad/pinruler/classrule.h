@@ -93,9 +93,17 @@ public:
     void setVisibility(Visibility visibility);
     void setVisibility(const QString &visibility);
 
+    // title property
     QString title() const;
     bool hasTitleSet() const;
     void setTitle(const QString &title);
+
+    // rect property
+    static QStringList boolEnumStr;
+    bool rect() const;
+    void setRect(int showrect);
+    void setRect(const QString &showrect);
+    bool hasRectSet() const;
 
 protected:
     Position _position;
@@ -118,6 +126,9 @@ protected:
 
     QString _title;
     bool _titleSet;
+
+    int _rect;
+    bool _rectSet;
 };
 
 #endif // CLASSRULE_H

@@ -169,6 +169,16 @@ const QList<Draw *> &Component::draws() const
 }
 
 /**
+ * @brief Adds a item draw to the component at the first position
+ * @param draw draw pointer to add
+ */
+void Component::prependDraw(Draw *draw)
+{
+    draw->setComponent(this);
+    _draws.prepend(draw);
+}
+
+/**
  * @brief Adds a item draw to the component
  * @param draw draw pointer to add
  */

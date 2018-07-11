@@ -53,6 +53,7 @@ public:
 
     QList<Draw *> &draws();
     const QList<Draw *> &draws() const;
+    void prependDraw(Draw *draw);
     void addDraw(Draw *draw);
     void removeDraw(Draw *draw);
     void clearDraws();

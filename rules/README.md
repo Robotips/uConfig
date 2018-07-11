@@ -135,3 +135,9 @@ default: visible
 If it set, the class add a text label with this text as title. Accepts matches from class selector.
 
 default: ""
+
+#### rect [int]
+
+If greater than 0, draws a rect arround the class with the thikness of this value.
+
+default: 0

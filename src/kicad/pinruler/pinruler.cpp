@@ -30,7 +30,7 @@ PinRuler::PinRuler(RulesSet *ruleSet)
 
 bool heightGreaterThan(PinClass *c1, PinClass *c2)
 {
-    return c1->rect().height() > c2->rect().height();
+    return c1->boundingRect().height() > c2->boundingRect().height();
 }
 
 bool prioGreaterThan(PinClass *c1, PinClass *c2)
@@ -107,7 +107,10 @@ void PinRuler::organize(Component *component)
     QSize removedSize = QSize(0, 0);
     foreach (PinClass *mpinClass, _pinClasses)
     {
-        QRect rect = mpinClass->rect();
+        if (mpinClass->pins().count() == 0)
+            continue;
+
+        QRect rect = mpinClass->boundingRect();
         if (mpinClass->visibilityValue() == ClassRule::VisibilityRemoved)
         {
             mpinClass->setPosition(PinClass::PositionLeft);
@@ -154,7 +157,7 @@ void PinRuler::organize(Component *component)
     qSort(aSide.begin(), aSide.end(), heightGreaterThan);
     foreach (PinClass *mpinClass, aSide)
     {
-        QRect rect = mpinClass->rect();
+        QRect rect = mpinClass->boundingRect();
         if (leftSize.height() < rightSize.height())
         {
             mpinClass->setPosition(ClassRule::PositionLeft);
@@ -197,8 +200,10 @@ void PinRuler::organize(Component *component)
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasTitleSet())
             component->addDraw(mpinClass->getDrawText());
+        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+            component->addDraw(mpinClass->getDrawRect());
 
-        y += mpinClass->rect().height() + 100;
+        y += mpinClass->boundingRect().height() + 100;
     }
 
     x = sideX;
@@ -211,8 +216,10 @@ void PinRuler::organize(Component *component)
 
         if (mpinClass->hasTitleSet())
             component->addDraw(mpinClass->getDrawText());
+        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+            component->addDraw(mpinClass->getDrawRect());
 
-        y += mpinClass->rect().height() + 100;
+        y += mpinClass->boundingRect().height() + 100;
     }
 
     x = -topSize.width() / 2;
@@ -223,8 +230,10 @@ void PinRuler::organize(Component *component)
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasTitleSet())
             component->addDraw(mpinClass->getDrawText());
+        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+            component->addDraw(mpinClass->getDrawRect());
 
-        x += mpinClass->rect().width() + 100;
+        x += mpinClass->boundingRect().width() + 100;
     }
 
     x = -bottomSize.width() / 2;
@@ -235,8 +244,10 @@ void PinRuler::organize(Component *component)
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasTitleSet())
             component->addDraw(mpinClass->getDrawText());
+        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+            component->addDraw(mpinClass->getDrawRect());
 
-        x += mpinClass->rect().width() + 100;
+        x += mpinClass->boundingRect().width() + 100;
     }
 
     // TODO : improve me, in case of a large number of removed pins
@@ -246,7 +257,7 @@ void PinRuler::organize(Component *component)
     foreach (PinClass *mpinClass, removedPins)
     {
         mpinClass->setPos(QPoint(x, y));
-        y += mpinClass->rect().height() + 100;
+        y += mpinClass->boundingRect().height() + 100;
     }
 
     // rect compute
@@ -257,7 +268,7 @@ void PinRuler::organize(Component *component)
     rect.setHeight(sideY * 2 + 1);
     DrawRect *rectDraw = new DrawRect(rect);
     rectDraw->setFilled(DrawRect::DrawFilledBackGround);
-    component->addDraw(rectDraw);
+    component->prependDraw(rectDraw);
     component->nameText()->setPos(QPoint(rect.right(), rect.bottom() + 50));
     component->nameText()->setTextHJustify(DrawText::TextHRight);
     component->nameText()->setDirection(DrawText::DirectionHorizontal);
