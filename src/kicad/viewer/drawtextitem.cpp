@@ -37,9 +37,9 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::TextAntialiasing);
-    /*if (!_internal)
+    if (!_internal)
         painter->setPen(QPen(QColor(132, 0, 0), 2));
-    else*/
+    else
         painter->setPen(QPen(QColor(0, 132, 132), 2));
 
     QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);

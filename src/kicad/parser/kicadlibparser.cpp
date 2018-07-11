@@ -261,13 +261,13 @@ void KicadLibParser::writeDraw(Draw *draw)
         break;
 
     case Draw::TypeDrawText:
-        // T direction posx posy text_size text_type unit convert text text_italic text_hjustify text_vjustify
+        // T direction posx posy text_size text_type unit convert text text_italic text_bold text_hjustify text_vjustify
         drawText = static_cast<DrawText*>(draw);
         _stream << "T ";
         if (drawText->direction() == DrawText::DirectionHorizontal)
-            _stream << "H ";
+            _stream << "0 ";
         else
-            _stream << "V ";
+            _stream << "900 ";
 
         _stream << drawText->pos().x() << " "
                 << -drawText->pos().y() << " "
@@ -275,7 +275,17 @@ void KicadLibParser::writeDraw(Draw *draw)
                 << "0 "
                 << drawText->unit() << " "
                 << drawText->convert() << " "
-                << drawText->text() << " ";
+                << "\"" << drawText->text()<< "\"" << " ";
+
+        if (drawText->textStyle().testFlag(DrawText::TextItalic))
+            _stream << "Italic ";
+        else
+            _stream << "Normal ";
+
+        if (drawText->textStyle().testFlag(DrawText::TextBold))
+            _stream << "1 ";
+        else
+            _stream << "0 ";
 
         switch (drawText->textHJustify())
         {
@@ -302,16 +312,6 @@ void KicadLibParser::writeDraw(Draw *draw)
             _stream << "T";
             break;
         }
-
-        if (drawText->textStyle().testFlag(DrawText::TextItalic))
-            _stream << "I";
-        else
-            _stream << "N";
-
-        if (drawText->textStyle().testFlag(DrawText::TextBold))
-            _stream << "B";
-        else
-            _stream << "N";
 
         break;
     default:
@@ -645,23 +645,31 @@ Draw *KicadLibParser::readDraw(char c)
                 draw->setDirection(DrawText::DirectionHorizontal);
             else
                 draw->setDirection(DrawText::DirectionVertital);
+
             _stream >> n;
             draw->pos().setX(n);
+
             _stream >> n;
             draw->pos().setY(-n);
+
             _stream >> n;
             draw->setTextSize(n);
+
             _stream >> n;
             _stream >> n;
             draw->setUnit(n);
+
             _stream >> n;
             draw->setConvert(n);
+
             text = readText();
             draw->setText(text);
+
             DrawText::TextStyles style = DrawText::TextNormal;
             _stream >> text;
             if (text != "Normal" && text != "0")
                 style |= DrawText::TextItalic;
+
             _stream >> n;
             if (n != 0)
                 style |= DrawText::TextBold;
