@@ -62,7 +62,6 @@ bool RulesParser::parse(RulesSet *ruleSet)
             _errorLine = _line;
             return false; // error
         }
-        //qDebug()<<"> "<<selector<<lineSelector;
 
         if (selector.startsWith('.') && !selector.startsWith(".*"))
             rule = new ClassRule(selector.mid(1));
@@ -91,6 +90,11 @@ bool RulesParser::parse(RulesSet *ruleSet)
             _id++;
             skipSpaceAndComments();
         }
+        else
+        {
+            delete rule;
+        }
+
         selector = getSelector();
     }
     return true;
@@ -162,10 +166,11 @@ QString RulesParser::getSelector()
     {
         lineSelector = _line;
         skipSpaceAndComments();
-        if (_data[_id] != '{') // start of rule
+        selectors.append(selector);
+        if (_data[_id] == '{') // start of rule
         {
-            qDebug()<<"error at line"<<_line;
-            return false; // error
+            _id ++;
+            return selectors; // error
         }
         qDebug()<<"> "<<selector<<lineSelector;
         _id ++;
@@ -187,12 +192,13 @@ QString RulesParser::getPropertyName()
 
 QString RulesParser::getPropertyValue()
 {
-    QRegularExpression rule("\"?([a-zA-Z0-9\\_\\-\\+\\\\\\[\\]\\(\\)\\.\\*]*)\"?;?", QRegularExpression::MultilineOption
+    QRegularExpression rule("\"?([a-zA-Z0-9\\_\\-\\+\\\\\\[\\]\\(\\)\\.\\* ]*)\"?;?", QRegularExpression::MultilineOption
                                     | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
         return QString();
     _id += ruleMath.capturedEnd();
+
     return  ruleMath.captured(1);
 }
 
