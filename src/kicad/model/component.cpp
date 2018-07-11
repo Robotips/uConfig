@@ -37,7 +37,9 @@ Component::Component(const QString &name)
     _refText = new DrawText("U");
     _nameText = new DrawText();
     _packageText = new DrawText();
+    _packageText->setVisible(false);
     _docText = new DrawText();
+    _docText->setVisible(false);
     setName(name);
 }
 

@@ -138,7 +138,7 @@ void KicadLibParser::writeComponent(Component *component)
     _stream << "#" << '\n' << "# " << component->name() << '\n' << "#" << '\n';
 
     // def
-    _stream << "DEF " << component->name() << " " << component->prefix() << " 0 40 ";
+    _stream << "DEF " << component->name() << " " << component->prefix() << " 0 20 ";
     _stream << (component->showPadName() ? "Y " : "N ");
     _stream << (component->showPinName() ? "Y " : "N ");
     _stream << "1 F N" << '\n';

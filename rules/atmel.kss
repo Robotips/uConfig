@@ -1,55 +1,52 @@
 
 /* pins */
-(A?)(VCC|VDD) {
+([AU]?)(VCC|VDD) {
+    elecType: pin;
     class: "\1power+";
-    elecType: pin;
+    length: 200;
 }
-(A?)(VSS|GND) {
-    class: "\1power-";
+([AU]?)(VSS|GND) {
     elecType: pin;
+    class: "\1power-";
+    length: 200;
 }
 
 (D[0-9]?\+|D[0-9]?\-|VUSB.*|VBUS) {
     class: "USB";
 }
 
-(^|[^A-Z])R([A-L])[0-9]+ {
-    class: "gpio\2";
+P([A-L])[0-9]+ {
+    class: "gpio\1";
 }
-(MCLR|VCAP|OSC[1-2]|VBAT) {
+(RESET|NRST|BOOT[12]*|VCAP|XTAL[1-2]|AREF|UCAP|PEN) {
     class: "special";
-}
-MCLR {
-    priority: 1;
 }
 
 /* classes */
 .special {
     position: left;
     priority: 10;
-    length: 100;
 }
 .power\+ {
     sort: asc;
     position: top;
-    length: 100;
 }
 .power\- {
     sort: asc;
     position: bottom;
-    length: 100;
 }
 
 .gpio([A-L]) {
     sort: asc;
-    sortpattern: "R\1[0-9]+";
+    sortpattern: "P\1[0-9]+";
     label: "PORT \1";
     rect: 10;
-    length: 100;
 }
-
 .USB {
     position: left;
     sort: asc;
-    length: 100;
+}
+
+.others {
+    position: top;
 }
