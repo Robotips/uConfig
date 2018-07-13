@@ -50,8 +50,12 @@ private:
 
     QFont _fontPad;
     QRectF _rectPad;
+
     QFont _fontName;
     QRectF _rectName;
+
+    QFont _fontType;
+    QRectF _rectType;
 };
 
 #endif // PINITEM_H

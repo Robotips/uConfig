@@ -75,6 +75,8 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         linesInvert.append(_pin->name().length()-linesInvert.count());
 
     QPolygon polygon;
+    QString type = Pin::electricalTypeDesc(_pin->electricalType());
+    type[0] = type[0].toUpper();
     QString name = _pin->name();
     name.remove('~');
     switch (_pin->direction())
@@ -142,9 +144,9 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         case Pin::NotVisible:
             break;
         }
-        painter->setPen(textColor);
         if (_pin->component()->showPinName())
         {
+            painter->setPen(textColor);
             painter->setFont(fontName);
             painter->drawText(QRect(_pin->length() / ComponentItem::ratio+10, -painter->fontMetrics().height()/2,
                                     painter->fontMetrics().width(name), painter->fontMetrics().height()).normalized(),
@@ -155,6 +157,10 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
                                   _pin->length() / ComponentItem::ratio+10 +painter->fontMetrics().width(name.left(linesInvert[l+1])), -painter->fontMetrics().height()/2);
             }
         }
+
+        painter->setFont(_fontType);
+        painter->setPen(QColor(0, 0, 255));
+        painter->drawText(QRect(-5, painter->fontMetrics().height()/2, -painter->fontMetrics().width(type), -painter->fontMetrics().height()).normalized(), Qt::AlignLeft, type);
         break;
 
     case Pin::Down:
@@ -233,6 +239,10 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
                                   -_pin->length() / ComponentItem::ratio-10 -painter->fontMetrics().width(name) +painter->fontMetrics().width(name.left(linesInvert[l+1])), -painter->fontMetrics().height()/2);
             }
         }
+
+        painter->setFont(_fontType);
+        painter->setPen(QColor(0, 0, 255));
+        painter->drawText(QRect(5, painter->fontMetrics().height()/2, painter->fontMetrics().width(type), -painter->fontMetrics().height()).normalized(), Qt::AlignLeft, type);
         break;
     }
 }
@@ -241,6 +251,7 @@ QRectF PinItem::boundingRect() const
 {
     QRectF rect = _rectPad;
     rect = rect.united(_rectName);
+    rect = rect.united(_rectType);
     return rect.normalized();
 }
 
@@ -279,10 +290,15 @@ void PinItem::setPin(Pin *pin)
     QString name = _pin->name();
     name.remove('~');
 
+    QString type = Pin::electricalTypeDesc(_pin->electricalType());
+    type[0] = type[0].toUpper();
+
     _fontPad = ComponentItem::font(_pin->textPadSize() / ComponentItem::ratio);
-    _fontName = ComponentItem::font(_pin->textNameSize() / ComponentItem::ratio);
     QFontMetrics metricsPad(_fontPad);
+    _fontName = ComponentItem::font(_pin->textNameSize() / ComponentItem::ratio);
     QFontMetrics metricsName(_fontName);
+    _fontType = ComponentItem::font(30.0 / ComponentItem::ratio);
+    QFontMetrics metricsType(_fontType);
 
     switch (_pin->direction())
     {
@@ -290,21 +306,25 @@ void PinItem::setPin(Pin *pin)
         _rectName = QRect(-_pin->length() / ComponentItem::ratio, -metricsName.height()/2,
                           -metricsName.width(name) - 10, metricsName.height());
         _rectPad = QRect(4, 4, -_pin->length() / ComponentItem::ratio-4, -metricsPad.height());
+        _rectType = QRect(5, metricsType.height()/2, metricsType.width(type), -metricsType.height()).normalized();
         break;
     case Pin::Right:
         _rectName = QRect(_pin->length() / ComponentItem::ratio, -metricsName.height()/2,
                           metricsName.width(name) + 10, metricsName.height());
         _rectPad = QRect(-4, 4, _pin->length() / ComponentItem::ratio+4, -metricsPad.height());
+        _rectType = QRect(-5, metricsType.height()/2, -metricsType.width(type), -metricsType.height()).normalized();
         break;
     case Pin::Up:
         _rectName = QRect(-metricsName.height()/2, -_pin->length() / ComponentItem::ratio,
                           metricsName.height(), -metricsName.width(name) - 10);
         _rectPad = QRect(4, 4, -metricsPad.height(), -_pin->length() / ComponentItem::ratio-4);
+        _rectType = QRect(metricsType.height()/2, 5, -metricsType.height(), metricsType.width(type)).normalized();
         break;
     case Pin::Down:
         _rectName = QRect(-metricsName.height()/2, _pin->length() / ComponentItem::ratio,
                           metricsName.height(), metricsName.width(name) + 10);
         _rectPad = QRect(4, -4, -metricsPad.height(), _pin->length() / ComponentItem::ratio+4);
+        _rectType = QRect(metricsType.height()/2, -5, -metricsType.height(), -metricsType.width(type)).normalized();
         break;
     }
 
