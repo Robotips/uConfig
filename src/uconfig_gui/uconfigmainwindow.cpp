@@ -37,6 +37,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
 
     connect(_project, &UConfigProject::libChanged, _componentsTreeView, &ComponentLibTreeView::setLib);
     connect(_project, &UConfigProject::libChanged, this, &UConfigMainWindow::setTitle);
+    connect(_project, &UConfigProject::activeComponentChange, this, &UConfigMainWindow::setActiveComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentsTreeView, &ComponentLibTreeView::setActiveComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _pinListEditor, &PinListEditor::setComponent);
@@ -106,6 +107,7 @@ void UConfigMainWindow::organize(QString ruleSetName)
         _componentWidget->setComponent(Q_NULLPTR);
         ruler.organize(component);
         _componentWidget->setComponent(component);
+        _pinListEditor->setComponent(component);
     }
 }
 
@@ -136,6 +138,14 @@ void UConfigMainWindow::reloadRuleSetList()
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
     }
+}
+
+void UConfigMainWindow::setActiveComponent(Component *component)
+{
+    if (component)
+        _pdfDebug->setPixmap(QPixmap::fromImage(component->debugInfo()));
+    else
+        _pdfDebug->setText("No pdf informations");
 }
 
 void UConfigMainWindow::createWidgets()
@@ -269,12 +279,8 @@ void UConfigMainWindow::createToolbarsMenus()
     // ============= View =============
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
-    QAction *gridAction = new QAction(tr("&Grid"), this);
-    gridAction->setCheckable(true);
-    gridAction->setChecked(true);
-    gridAction->setShortcut(QKeySequence("Ctrl+G"));
-    connect(gridAction, SIGNAL(triggered(bool)), _componentWidget->viewer(), SLOT(setGridVisible(bool)));
-    viewMenu->addAction(gridAction);
+    viewMenu->addAction(_componentWidget->ationGrid());
+    viewMenu->addAction(_componentWidget->ationElecType());
 
     viewMenu->addSeparator();
     QAction *componentsListDockAction = _componentsListDock->toggleViewAction();
@@ -318,3 +324,4 @@ along with this program. If not, see <a href=\"http://www.gnu.org/licenses/\">ww
 <br>\
 Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
 }
+

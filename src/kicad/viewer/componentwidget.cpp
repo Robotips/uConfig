@@ -1,5 +1,24 @@
+/**
+ ** This file is part of the uConfig project.
+ ** Copyright 2018 Robotips sebastien.caux@robotips.fr.
+ **
+ ** This program is free software: you can redistribute it and/or modify
+ ** it under the terms of the GNU General Public License as published by
+ ** the Free Software Foundation, either version 3 of the License, or
+ ** (at your option) any later version.
+ **
+ ** This program is distributed in the hope that it will be useful,
+ ** but WITHOUT ANY WARRANTY; without even the implied warranty of
+ ** MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ ** GNU General Public License for more details.
+ **
+ ** You should have received a copy of the GNU General Public License
+ ** along with this program. If not, see <http://www.gnu.org/licenses/>.
+ **/
+
 #include "componentwidget.h"
 
+#include <QAction>
 #include <QLabel>
 #include <QLayout>
 
@@ -39,21 +58,27 @@ void ComponentWidget::createWidgets()
     _layout->setMargin(0);
     QLayout *_toolsLayout = new QHBoxLayout();
 
-    _toolGrid = new QToolButton();
-    _toolGrid->setText("grid");
-    _toolGrid->setCheckable(true);
-    _toolGrid->setChecked(true);
-    _toolGrid->setMinimumSize(30, 30);
-    _toolsLayout->addWidget(_toolGrid);
-    connect(_toolGrid, &QToolButton::toggled, _viewer, &ComponentViewer::setGridVisible);
+    _ationGrid = new QAction();
+    _ationGrid->setText(tr("Toggle grid view"));
+    _ationGrid->setCheckable(true);
+    _ationGrid->setChecked(true);
+    _ationGrid->setIcon(QIcon(":/icons/img/view-grid"));
+    connect(_ationGrid, &QAction::toggled, _viewer, &ComponentViewer::setGridVisible);
+    QToolButton *toolGrid = new QToolButton();
+    toolGrid->setMinimumSize(30, 30);
+    toolGrid->setDefaultAction(_ationGrid);
+    _toolsLayout->addWidget(toolGrid);
 
-    _toolElecType = new QToolButton();
-    _toolElecType->setText("elec type");
-    _toolElecType->setCheckable(true);
-    _toolElecType->setChecked(true);
-    _toolElecType->setMinimumSize(30, 30);
-    _toolsLayout->addWidget(_toolElecType);
-    connect(_toolElecType, &QToolButton::toggled, _viewer, &ComponentViewer::setElecTypeVisible);
+    _ationElecType = new QAction();
+    _ationElecType->setText(tr("Toggle electrical type view"));
+    _ationElecType->setCheckable(true);
+    _ationElecType->setChecked(true);
+    _ationElecType->setIcon(QIcon(":/icons/img/view-electype"));
+    connect(_ationElecType, &QAction::toggled, _viewer, &ComponentViewer::setElecTypeVisible);
+    QToolButton *toolElecType = new QToolButton();
+    toolElecType->setMinimumSize(30, 30);
+    toolElecType->setDefaultAction(_ationElecType);
+    _toolsLayout->addWidget(toolElecType);
 
     _toolsLayout->addItem(new QSpacerItem(5, 5));
     _toolsLayout->addWidget(new QLabel("Unit: "));
@@ -67,6 +92,16 @@ void ComponentWidget::createWidgets()
     _layout->addWidget(_viewer);
 
     setLayout(_layout);
+}
+
+QAction *ComponentWidget::ationElecType() const
+{
+    return _ationElecType;
+}
+
+QAction *ComponentWidget::ationGrid() const
+{
+    return _ationGrid;
 }
 
 ComponentViewer *ComponentWidget::viewer() const

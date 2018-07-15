@@ -104,6 +104,9 @@ HEADERS += \
     $$PWD/parser/kicadlibparser.h \
     $$PWD/parser/abstractlibparser.h
 
+RESOURCES += \
+        $$PWD/img.qrc
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

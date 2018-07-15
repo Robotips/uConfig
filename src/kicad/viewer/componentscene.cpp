@@ -70,6 +70,7 @@ void ComponentScene::setComponent(Component *component, int layer)
     }
 
     _componentItem = new ComponentItem(component, layer);
+    _componentItem->setShowElectricalType(_elecType);
     addItem(_componentItem);
 }
 

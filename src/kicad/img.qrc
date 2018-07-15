@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>img/view-electype.png</file>
+        <file>img/view-grid.png</file>
+    </qresource>
+</RCC>

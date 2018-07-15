@@ -31,6 +31,7 @@ protected slots:
     void organize(QString ruleSetName);
     void updateRules();
     void reloadRuleSetList();
+    void setActiveComponent(Component *component);
 
     void about();
 
