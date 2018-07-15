@@ -45,12 +45,16 @@ public:
 
     PinItem *pinItem(Pin *pin);
 
+    bool showElectricalType() const;
+    void setShowElectricalType(bool showElectricalType);
+
     static const int ratio;
     static QFont font(double size = 1.27);
 
 private:
     Component *_component;
     int _layer;
+    bool _showElectricalType;
 
     QRectF _numRect;
     QMap<Pin*, PinItem* > _pinItemMap;

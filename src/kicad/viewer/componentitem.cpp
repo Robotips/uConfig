@@ -29,6 +29,7 @@ const int ComponentItem::ratio=5;
 ComponentItem::ComponentItem(Component *component, int layer)
 {
     setComponent(component, layer);
+    _showElectricalType = true;
 }
 
 void ComponentItem::paint(QPainter *painter,
@@ -91,6 +92,21 @@ PinItem *ComponentItem::pinItem(Pin *pin)
     if (pinIt != _pinItemMap.cend())
         return *pinIt;
     return Q_NULLPTR;
+}
+
+bool ComponentItem::showElectricalType() const
+{
+    return _showElectricalType;
+}
+
+void ComponentItem::setShowElectricalType(bool showElectricalType)
+{
+    if (showElectricalType != _showElectricalType)
+    {
+        foreach (PinItem *pinItem, _pinItemMap)
+            pinItem->setShowElectricalType(showElectricalType);
+    }
+    _showElectricalType = showElectricalType;
 }
 
 QFont ComponentItem::font(double size)

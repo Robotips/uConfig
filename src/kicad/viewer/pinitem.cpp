@@ -31,6 +31,7 @@ PinItem::PinItem(Pin *pin)
     setPin(pin);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setCursor(Qt::CrossCursor);
+    _showElectricalType = true;
 }
 
 void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
@@ -43,9 +44,6 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
         drawColor = QColor(132, 132, 132);
         textColor = QColor(132, 132, 132);
     }
-
-    /*painter->drawRect(boundingRect());
-    painter->drawPath(shape());*/
 
     // text font
     QFont fontName = _fontName;
@@ -158,9 +156,12 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             }
         }
 
-        painter->setFont(_fontType);
-        painter->setPen(QColor(0, 0, 255));
-        painter->drawText(QRect(-5, painter->fontMetrics().height()/2, -painter->fontMetrics().width(type), -painter->fontMetrics().height()).normalized(), Qt::AlignLeft, type);
+        if (_showElectricalType)
+        {
+            painter->setFont(_fontType);
+            painter->setPen(QColor(0, 0, 255));
+            painter->drawText(QRect(-5, painter->fontMetrics().height()/2, -painter->fontMetrics().width(type), -painter->fontMetrics().height()).normalized(), Qt::AlignLeft, type);
+        }
         break;
 
     case Pin::Down:
@@ -240,9 +241,12 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             }
         }
 
-        painter->setFont(_fontType);
-        painter->setPen(QColor(0, 0, 255));
-        painter->drawText(QRect(5, painter->fontMetrics().height()/2, painter->fontMetrics().width(type), -painter->fontMetrics().height()).normalized(), Qt::AlignLeft, type);
+        if (_showElectricalType)
+        {
+            painter->setFont(_fontType);
+            painter->setPen(QColor(0, 0, 255));
+            painter->drawText(QRect(5, painter->fontMetrics().height()/2, painter->fontMetrics().width(type), -painter->fontMetrics().height()).normalized(), Qt::AlignLeft, type);
+        }
         break;
     }
 }
@@ -330,6 +334,17 @@ void PinItem::setPin(Pin *pin)
 
     setPos(pin->pos() / ComponentItem::ratio);
     update();
+}
+
+bool PinItem::showElectricalType() const
+{
+    return _showElectricalType;
+}
+
+void PinItem::setShowElectricalType(bool showElectricalType)
+{
+    prepareGeometryChange();
+    _showElectricalType = showElectricalType;
 }
 
 void PinItem::updateData()

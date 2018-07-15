@@ -43,6 +43,9 @@ public:
     Pin *pin() const;
     void setPin(Pin *pin);
 
+    bool showElectricalType() const;
+    void setShowElectricalType(bool showElectricalType);
+
     void updateData();
 
 private:
@@ -56,6 +59,8 @@ private:
 
     QFont _fontType;
     QRectF _rectType;
+
+    bool _showElectricalType;
 };
 
 #endif // PINITEM_H

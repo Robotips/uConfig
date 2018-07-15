@@ -104,6 +104,11 @@ void ComponentViewer::setGridVisible(bool visible)
     _scene->setGrid(visible);
 }
 
+void ComponentViewer::setElecTypeVisible(bool visible)
+{
+    _scene->setElecType(visible);
+}
+
 void ComponentViewer::wheelEvent(QWheelEvent *event)
 {
     int numDegrees = event->delta() / 8;

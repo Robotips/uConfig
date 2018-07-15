@@ -31,6 +31,7 @@ protected:
     Component *_component;
     ComponentViewer *_viewer;
     QToolButton *_toolGrid;
+    QToolButton *_toolElecType;
     QComboBox *_comboUnit;
 };
 

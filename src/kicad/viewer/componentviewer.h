@@ -46,6 +46,7 @@ public slots:
     void updatePin(Pin *pin);
 
     void setGridVisible(bool visible);
+    void setElecTypeVisible(bool visible);
 
 signals:
     void pinsSelected(QList<Pin *>pins);

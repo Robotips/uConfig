@@ -36,6 +36,7 @@ void ComponentWidget::createWidgets()
     _viewer = new ComponentViewer();
 
     QLayout *_layout = new QVBoxLayout();
+    _layout->setMargin(0);
     QLayout *_toolsLayout = new QHBoxLayout();
 
     _toolGrid = new QToolButton();
@@ -45,6 +46,14 @@ void ComponentWidget::createWidgets()
     _toolGrid->setMinimumSize(30, 30);
     _toolsLayout->addWidget(_toolGrid);
     connect(_toolGrid, &QToolButton::toggled, _viewer, &ComponentViewer::setGridVisible);
+
+    _toolElecType = new QToolButton();
+    _toolElecType->setText("elec type");
+    _toolElecType->setCheckable(true);
+    _toolElecType->setChecked(true);
+    _toolElecType->setMinimumSize(30, 30);
+    _toolsLayout->addWidget(_toolElecType);
+    connect(_toolElecType, &QToolButton::toggled, _viewer, &ComponentViewer::setElecTypeVisible);
 
     _toolsLayout->addItem(new QSpacerItem(5, 5));
     _toolsLayout->addWidget(new QLabel("Unit: "));

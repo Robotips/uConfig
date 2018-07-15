@@ -34,6 +34,9 @@ public:
     bool grid() const;
     void setGrid(bool grid);
 
+    bool elecType() const;
+    void setElecType(bool elecType);
+
     Component *component() const;
     void setComponent(Component *component, int layer=1);
 
@@ -46,6 +49,8 @@ public:
 protected:
     bool _grid;
     int _prevGridSize;
+
+    bool _elecType;
 
     Component *_component;
     ComponentItem *_componentItem;

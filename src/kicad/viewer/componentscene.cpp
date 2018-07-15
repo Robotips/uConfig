@@ -41,6 +41,18 @@ void ComponentScene::setGrid(bool grid)
     update();
 }
 
+bool ComponentScene::elecType() const
+{
+    return _elecType;
+}
+
+void ComponentScene::setElecType(bool elecType)
+{
+    _elecType = elecType;
+    if (_componentItem)
+        _componentItem->setShowElectricalType(elecType);
+}
+
 Component *ComponentScene::component() const
 {
     return _component;
