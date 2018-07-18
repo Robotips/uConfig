@@ -97,8 +97,9 @@ void UConfigMainWindow::organize(QString ruleSetName)
     kssFile.open(QIODevice::ReadOnly | QIODevice::Text);
     _kssEditor->clear();
     _kssEditor->appendPlainText(kssFile.readAll());
-    connect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     parser.parse(&ruleSet);
+    _kssEditor->setLineError(parser.errorLine());
+    connect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
 
     if (_componentWidget->component())
     {
@@ -116,9 +117,14 @@ void UConfigMainWindow::updateRules()
     RulesSet ruleSet;
     RulesParser parser;
     parser.setData(_kssEditor->document()->toPlainText());
+    _kssEditor->setLineError(parser.errorLine());
     if (!parser.parse(&ruleSet))
+    {
+        _kssEditor->setLineError(parser.errorLine());
         return;
+    }
 
+    _kssEditor->setLineError(0);
     PinRuler ruler(&ruleSet);
     if (_componentWidget->component())
     {
@@ -324,4 +330,3 @@ along with this program. If not, see <a href=\"http://www.gnu.org/licenses/\">ww
 <br>\
 Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
 }
-

@@ -34,13 +34,17 @@ public:
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
+
+    void setLineError(int lineError);
+    int lineError() const;
+
 protected:
     KSSSyntax *_syntax;
 
 private slots:
     void updateLineNumberAreaWidth(int);
     void updateLineNumberArea(const QRect &, int);
-    void highlightCurrentLine();
+    void updateExtraSelection();
 
     // QWidget interface
 protected:

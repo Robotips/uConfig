@@ -29,15 +29,15 @@ KssEditor::KssEditor(QWidget *parent)
     _kssEditorMargin = new KssEditorMargin(this);
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(updateExtraSelection()));
 
     QFont font("Consolas");
     font.setPixelSize(12);
     font.setStyleHint(QFont::Monospace);
     setFont(font);
 
-    highlightCurrentLine();
     _lineError = -1;
+    updateExtraSelection();
 }
 
 void KssEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -83,6 +83,17 @@ int KssEditor::lineNumberAreaWidth()
     return space;
 }
 
+void KssEditor::setLineError(int lineError)
+{
+    _lineError = lineError;
+    updateExtraSelection();
+}
+
+int KssEditor::lineError() const
+{
+    return _lineError;
+}
+
 void KssEditor::updateLineNumberAreaWidth(int /*newBlockCount*/)
 {
     setViewportMargins(lineNumberAreaWidth(), 0, 0, 0);
@@ -112,19 +123,31 @@ void KssEditor::resizeEvent(QResizeEvent *event)
     _kssEditorMargin->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
 }
 
-void KssEditor::highlightCurrentLine()
+void KssEditor::updateExtraSelection()
 {
     QList<QTextEdit::ExtraSelection> extraSelections;
 
     QTextEdit::ExtraSelection selection;
 
+    // highligh current line
     QColor lineColor = QColor(Qt::yellow).lighter(180);
-
     selection.format.setBackground(lineColor);
     selection.format.setProperty(QTextFormat::FullWidthSelection, true);
     selection.cursor = textCursor();
     selection.cursor.clearSelection();
     extraSelections.append(selection);
+
+    // highligh error line
+    if (_lineError > 0)
+    {
+        QTextCursor cursorError(document()->findBlockByLineNumber(_lineError-1));
+        QColor errorColor = QColor(Qt::red).lighter(180);
+        selection.format.setBackground(errorColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = cursorError;
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
 
     setExtraSelections(extraSelections);
 }
