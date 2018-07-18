@@ -21,7 +21,7 @@
 
 #include "kicad_global.h"
 
-#include "abstractlibparser.h"
+#include "libparser.h"
 
 #include <QTextStream>
 
