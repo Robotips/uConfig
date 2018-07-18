@@ -25,6 +25,7 @@
 ComponentWidget::ComponentWidget(QWidget *parent)
     : QWidget(parent)
 {
+    Q_INIT_RESOURCE(imgviewer);
     _component = Q_NULLPTR;
     createWidgets();
 }
@@ -62,7 +63,7 @@ void ComponentWidget::createWidgets()
     _ationGrid->setText(tr("Toggle grid view"));
     _ationGrid->setCheckable(true);
     _ationGrid->setChecked(true);
-    _ationGrid->setIcon(QIcon(":/icons/img/view-grid"));
+    _ationGrid->setIcon(QIcon(":/iconsviewer/img/view-grid.png"));
     connect(_ationGrid, &QAction::toggled, _viewer, &ComponentViewer::setGridVisible);
     QToolButton *toolGrid = new QToolButton();
     toolGrid->setMinimumSize(30, 30);
@@ -73,7 +74,7 @@ void ComponentWidget::createWidgets()
     _ationElecType->setText(tr("Toggle electrical type view"));
     _ationElecType->setCheckable(true);
     _ationElecType->setChecked(true);
-    _ationElecType->setIcon(QIcon(":/icons/img/view-electype"));
+    _ationElecType->setIcon(QIcon(":/iconsviewer/img/view-electype.png"));
     connect(_ationElecType, &QAction::toggled, _viewer, &ComponentViewer::setElecTypeVisible);
     QToolButton *toolElecType = new QToolButton();
     toolElecType->setMinimumSize(30, 30);
