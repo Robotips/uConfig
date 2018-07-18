@@ -26,14 +26,14 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     HighlightingRule rule;
 
     classFormat.setForeground(QColor(64,0,255));
-    rule.pattern.setPattern("(\\..*)\\{");
+    rule.pattern.setPattern("(^\\..*)\\{");
     rule.format = classFormat;
     highlightingRules.append(rule);
 
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility" << "label" << "rect";
+    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility" << "label" << "rect" << "priority";
     foreach (const QString &pattern, keywordPatterns)
     {
         rule.pattern.setPattern("\\b("+pattern+")\\b");
@@ -44,7 +44,10 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     enumvaluesFormat.setForeground(Qt::blue);
     enumvaluesFormat.setFontWeight(QFont::Bold);
     QStringList enumvaluesPatterns;
-    enumvaluesPatterns << "top" << "bottom" << "left" << "right" << "aside" << "none" << "asc" << "desc" << "visible" << "hidden" << "removed";
+    enumvaluesPatterns << "top" << "bottom" << "left" << "right" << "aside" << "none" << "asc" << "desc" << "visible" << "hidden" << "removed"
+                       << "in" << "out" << "bidir" << "tri" << "passive" << "unspecified" << "pin" << "pout" << "opcol" << "opem" << "nc"
+                       << "norm" << "novisible" << "inverted" << "clock" << "iclock" << "lowin" << "clocklow" << "lowout" << "faledge" << "nologic";
+
     foreach (const QString &pattern, enumvaluesPatterns)
     {
         rule.pattern.setPattern("\\b("+pattern+")\\b");

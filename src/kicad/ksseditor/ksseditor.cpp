@@ -29,11 +29,15 @@ KssEditor::KssEditor(QWidget *parent)
     _kssEditorMargin = new KssEditorMargin(this);
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
     connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(highlightCurrentLine()));
 
     QFont font("Consolas");
     font.setPixelSize(12);
     font.setStyleHint(QFont::Monospace);
     setFont(font);
+
+    highlightCurrentLine();
+    _lineError = -1;
 }
 
 void KssEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
@@ -44,12 +48,16 @@ void KssEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     int blockNumber = block.blockNumber();
     int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
     int bottom = top + (int) blockBoundingRect(block).height();
+    QFont font = painter.font();
+
     while (block.isValid() && top <= event->rect().bottom())
     {
         if (block.isVisible() && bottom >= event->rect().top())
         {
             QString number = QString::number(blockNumber + 1);
             painter.setPen(Qt::black);
+            font.setBold(blockNumber == textCursor().blockNumber());
+            painter.setFont(font);
             painter.drawText(0, top, _kssEditorMargin->width() - 5, fontMetrics().height(), Qt::AlignRight, number);
         }
 
@@ -102,4 +110,21 @@ void KssEditor::resizeEvent(QResizeEvent *event)
 
     QRect cr = contentsRect();
     _kssEditorMargin->setGeometry(QRect(cr.left(), cr.top(), lineNumberAreaWidth(), cr.height()));
+}
+
+void KssEditor::highlightCurrentLine()
+{
+    QList<QTextEdit::ExtraSelection> extraSelections;
+
+    QTextEdit::ExtraSelection selection;
+
+    QColor lineColor = QColor(Qt::yellow).lighter(180);
+
+    selection.format.setBackground(lineColor);
+    selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+    selection.cursor = textCursor();
+    selection.cursor.clearSelection();
+    extraSelections.append(selection);
+
+    setExtraSelections(extraSelections);
 }

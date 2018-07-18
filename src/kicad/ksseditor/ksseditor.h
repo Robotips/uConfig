@@ -34,13 +34,13 @@ public:
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();
-
 protected:
     KSSSyntax *_syntax;
 
 private slots:
     void updateLineNumberAreaWidth(int);
     void updateLineNumberArea(const QRect &, int);
+    void highlightCurrentLine();
 
     // QWidget interface
 protected:
@@ -48,6 +48,7 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 
     KssEditorMargin *_kssEditorMargin;
+    int _lineError;
 };
 
 #endif // KSSEDITOR_H
