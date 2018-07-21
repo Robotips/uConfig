@@ -22,11 +22,15 @@
 #include "kicad_global.h"
 
 #include <QItemDelegate>
+#include <QRegularExpression>
 
 class KICAD_EXPORT ComponentPinDelegate : public QItemDelegate
 {
 public:
     ComponentPinDelegate(QObject *parent = Q_NULLPTR);
+
+    QRegularExpression searchPattern() const;
+    void setSearchPattern(const QRegularExpression &searchPattern);
 
     // QAbstractItemDelegate interface
 public:
@@ -34,6 +38,10 @@ public:
     virtual void setEditorData(QWidget *editor, const QModelIndex &index) const;
     virtual void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
     virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+    virtual void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const;
+
+protected:
+    QRegularExpression _searchPattern;
 };
 
 #endif // COMPONENTPINDELEGATE_H

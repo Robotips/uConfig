@@ -25,6 +25,7 @@
 
 #include "numericalsortfilterproxymodel.h"
 #include "componentpinsitemmodel.h"
+#include "componentpindelegate.h"
 
 class KICAD_EXPORT ComponentPinsTableView : public QTableView
 {
@@ -50,6 +51,7 @@ protected slots:
 
 protected:
     ComponentPinsItemModel *_model;
+    ComponentPinDelegate *_delegate;
     NumericalSortFilterProxyModel *_sortProxy;
 };
 

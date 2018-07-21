@@ -22,10 +22,21 @@
 
 #include <QDebug>
 #include <QComboBox>
+#include <QPainter>
 
 ComponentPinDelegate::ComponentPinDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
+}
+
+QRegularExpression ComponentPinDelegate::searchPattern() const
+{
+    return _searchPattern;
+}
+
+void ComponentPinDelegate::setSearchPattern(const QRegularExpression &searchPattern)
+{
+    _searchPattern = searchPattern;
 }
 
 QWidget *ComponentPinDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
@@ -102,5 +113,57 @@ void ComponentPinDelegate::updateEditorGeometry(QWidget *editor, const QStyleOpt
         }
     default:
         QItemDelegate::updateEditorGeometry(editor, option, index);
+    }
+}
+
+void ComponentPinDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
+{
+    if (index.column() != ComponentPinsItemModel::PinName)
+    {
+        QItemDelegate::paint(painter, option, index);
+        return;
+    }
+
+    drawBackground(painter, option, index);
+    drawFocus(painter, option, option.rect);
+
+    // draw text
+    painter->setFont(option.font);
+    if (option.state.testFlag(QStyle::State_Selected) && option.widget->hasFocus())
+        painter->setPen(option.palette.color(QPalette::HighlightedText));
+    else
+        painter->setPen(option.palette.color(QPalette::Text));
+    int margin = option.widget->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, option.widget) + 1;
+    QRect textRect = option.rect.adjusted(margin, 0, -margin, 0);
+    QString text = index.model()->data(index).toString();
+    if (!_searchPattern.isValid() || _searchPattern.pattern().isEmpty())
+    {
+        painter->drawText(textRect, option.displayAlignment, text);
+    }
+    else
+    {
+        int start = 0;
+        QFont bold = option.font;
+        bold.setBold(true);
+
+        QRegularExpressionMatch match = _searchPattern.match(text, start);
+        while (match.hasMatch())
+        {
+            QString pre = text.mid(start, match.capturedStart() - start);
+            painter->setFont(option.font);
+            painter->drawText(textRect, option.displayAlignment, pre);
+            textRect.adjust(painter->fontMetrics().width(pre), 0, 0, 0);
+
+            QString part = match.captured();
+            painter->setFont(bold);
+            painter->drawText(textRect, option.displayAlignment, part);
+            textRect.adjust(painter->fontMetrics().width(part), 0, 0, 0);
+
+            start = match.capturedEnd();
+            match = _searchPattern.match(text, start);
+        }
+        QString post = text.mid(start);
+        painter->setFont(option.font);
+        painter->drawText(textRect, option.displayAlignment, post);
     }
 }
