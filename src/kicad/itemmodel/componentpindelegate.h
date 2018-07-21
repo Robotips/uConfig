@@ -16,17 +16,17 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef COMPONENTELECTRICALDELEGATE_H
-#define COMPONENTELECTRICALDELEGATE_H
+#ifndef COMPONENTPINDELEGATE_H
+#define COMPONENTPINDELEGATE_H
 
 #include "kicad_global.h"
 
 #include <QItemDelegate>
 
-class KICAD_EXPORT ComponentElectricalDelegate : public QItemDelegate
+class KICAD_EXPORT ComponentPinDelegate : public QItemDelegate
 {
 public:
-    ComponentElectricalDelegate(QObject *parent = Q_NULLPTR);
+    ComponentPinDelegate(QObject *parent = Q_NULLPTR);
 
     // QAbstractItemDelegate interface
 public:
@@ -36,4 +36,4 @@ public:
     virtual void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const;
 };
 
-#endif // COMPONENTELECTRICALDELEGATE_H
+#endif // COMPONENTPINDELEGATE_H

@@ -16,19 +16,19 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "componentelectricaldelegate.h"
+#include "componentpindelegate.h"
 
 #include "componentpinsitemmodel.h"
 
 #include <QDebug>
 #include <QComboBox>
 
-ComponentElectricalDelegate::ComponentElectricalDelegate(QObject *parent)
+ComponentPinDelegate::ComponentPinDelegate(QObject *parent)
     : QItemDelegate(parent)
 {
 }
 
-QWidget *ComponentElectricalDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget *ComponentPinDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     switch (index.column())
     {
@@ -51,7 +51,7 @@ QWidget *ComponentElectricalDelegate::createEditor(QWidget *parent, const QStyle
     }
 }
 
-void ComponentElectricalDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
+void ComponentPinDelegate::setEditorData(QWidget *editor, const QModelIndex &index) const
 {
     switch (index.column())
     {
@@ -70,7 +70,7 @@ void ComponentElectricalDelegate::setEditorData(QWidget *editor, const QModelInd
     }
 }
 
-void ComponentElectricalDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void ComponentPinDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
 {
     switch (index.column())
     {
@@ -87,7 +87,7 @@ void ComponentElectricalDelegate::setModelData(QWidget *editor, QAbstractItemMod
     }
 }
 
-void ComponentElectricalDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
+void ComponentPinDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     switch (index.column())
     {

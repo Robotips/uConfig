@@ -21,7 +21,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 
-#include "componentelectricaldelegate.h"
+#include "componentpindelegate.h"
 
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
     : QTableView(parent)
@@ -42,7 +42,7 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
     _sortProxy->setFilterRole(Qt::DisplayRole);
     _sortProxy->setFilterKeyColumn(ComponentPinsItemModel::PinName);
 
-    setItemDelegate(new ComponentElectricalDelegate(this));
+    setItemDelegate(new ComponentPinDelegate(this));
 }
 
 Component *ComponentPinsTableView::component() const
@@ -99,7 +99,7 @@ void ComponentPinsTableView::selectPins(QList<Pin *> pins)
 
 void ComponentPinsTableView::setPinFilter(const QString &filter)
 {
-    _sortProxy->setFilterRegExp(filter);
+    _sortProxy->setFilterRegExp(QRegExp(filter, Qt::CaseInsensitive));
 }
 
 void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const QItemSelection &deselected)
