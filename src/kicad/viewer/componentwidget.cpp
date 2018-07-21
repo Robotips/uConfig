@@ -59,6 +59,7 @@ void ComponentWidget::createWidgets()
     _layout->setMargin(0);
     QLayout *_toolsLayout = new QHBoxLayout();
 
+    _toolsLayout->addItem(new QSpacerItem(5, 5));
     _ationGrid = new QAction(this);
     _ationGrid->setText(tr("Toggle grid view"));
     _ationGrid->setCheckable(true);
@@ -70,6 +71,7 @@ void ComponentWidget::createWidgets()
     toolGrid->setDefaultAction(_ationGrid);
     _toolsLayout->addWidget(toolGrid);
 
+    _toolsLayout->addItem(new QSpacerItem(2, 2));
     _ationElecType = new QAction(this);
     _ationElecType->setText(tr("Toggle electrical type view"));
     _ationElecType->setCheckable(true);

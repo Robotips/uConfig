@@ -181,3 +181,15 @@ Qt::ItemFlags ComponentPinsItemModel::flags(const QModelIndex &index) const
         return baseFlags | Qt::ItemIsEditable;
     return baseFlags;
 }
+
+void ComponentPinsItemModel::remove(const QModelIndex &index)
+{
+    Pin *mpin = pin(index);
+    if (!mpin)
+        return;
+
+    emit layoutAboutToBeChanged();
+    emit pinRemoved(mpin);
+    _component->removePin(mpin);
+    emit layoutChanged();
+}

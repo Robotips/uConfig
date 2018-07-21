@@ -191,6 +191,8 @@ void UConfigMainWindow::createWidgets()
             _componentWidget->viewer(), &ComponentViewer::selectPins);
     connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinModified,
             _componentWidget->viewer(), &ComponentViewer::updatePin);
+    connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinRemoved,
+            _componentWidget->viewer(), &ComponentViewer::removePin);
 }
 
 void UConfigMainWindow::createDocks()
@@ -329,4 +331,13 @@ You should have received a copy of the GNU General Public License \
 along with this program. If not, see <a href=\"http://www.gnu.org/licenses/\">www.gnu.org/licenses</a><br>\
 <br>\
 Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
+}
+
+bool UConfigMainWindow::event(QEvent *event)
+{
+    /*if (event->type() == QEvent::Close)
+    {
+        _project->closeLib();
+    }*/
+    return QMainWindow::event(event);
 }

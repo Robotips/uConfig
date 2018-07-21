@@ -27,7 +27,7 @@ ComponentScene::ComponentScene(qreal x, qreal y, qreal w, qreal h)
     _grid = true;
     _prevGridSize = 0;
 
-    _component = Q_NULLPTR;
+    setComponent(Q_NULLPTR);
 }
 
 bool ComponentScene::grid() const

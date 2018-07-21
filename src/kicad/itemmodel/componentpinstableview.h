@@ -22,6 +22,7 @@
 #include "kicad_global.h"
 
 #include <QTableView>
+#include <QAction>
 
 #include "numericalsortfilterproxymodel.h"
 #include "componentpinsitemmodel.h"
@@ -38,10 +39,13 @@ public:
 
     ComponentPinsItemModel *model() const;
 
+    QAction *removeAction() const;
+
 public slots:
     void selectPin(Pin *pin);
     void selectPins(QList<Pin *> pins);
     void setPinFilter(const QString &filter);
+    void remove();
 
 signals:
     void pinSelected(QList<Pin *> pins);
@@ -50,9 +54,15 @@ protected slots:
     void updateSelect(const QItemSelection &selected, const QItemSelection &deselected);
 
 protected:
+    virtual void contextMenuEvent(QContextMenuEvent *event);
+
+protected:
     ComponentPinsItemModel *_model;
     ComponentPinDelegate *_delegate;
     NumericalSortFilterProxyModel *_sortProxy;
+
+    void createActions();
+    QAction *_removeAction;
 };
 
 #endif // COMPONENTPINSTABLEVIEW_H

@@ -350,4 +350,5 @@ void PinItem::setShowElectricalType(bool showElectricalType)
 void PinItem::updateData()
 {
     prepareGeometryChange();
+    setPin(_pin);
 }

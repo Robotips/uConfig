@@ -22,6 +22,7 @@
 
 #include <QPainter>
 #include <QDebug>
+#include <QGraphicsScene>
 #include <QFontDatabase>
 
 const int ComponentItem::ratio=5;
@@ -92,6 +93,16 @@ PinItem *ComponentItem::pinItem(Pin *pin)
     if (pinIt != _pinItemMap.cend())
         return *pinIt;
     return Q_NULLPTR;
+}
+
+void ComponentItem::removePin(Pin *pin)
+{
+    PinItem *mpinItem = pinItem(pin);
+    if (mpinItem)
+    {
+        _pinItemMap.remove(pin);
+        scene()->removeItem(mpinItem);
+    }
 }
 
 bool ComponentItem::showElectricalType() const

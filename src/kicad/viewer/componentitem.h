@@ -44,6 +44,7 @@ public:
     void setComponent(Component *component, int layer=1);
 
     PinItem *pinItem(Pin *pin);
+    void removePin(Pin *pin);
 
     bool showElectricalType() const;
     void setShowElectricalType(bool showElectricalType);

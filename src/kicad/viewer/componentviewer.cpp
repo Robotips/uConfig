@@ -94,9 +94,19 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
 
 void ComponentViewer::updatePin(Pin *pin)
 {
+    if (!_scene->componentItem())
+        return;
+
     PinItem *pinItem = _scene->componentItem()->pinItem(pin);
     if (pinItem)
         pinItem->updateData();
+}
+
+void ComponentViewer::removePin(Pin *pin)
+{
+    if (!_scene->componentItem())
+        return;
+    _scene->componentItem()->removePin(pin);
 }
 
 void ComponentViewer::setGridVisible(bool visible)

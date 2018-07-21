@@ -18,6 +18,8 @@
 
 #include "componentpinstableview.h"
 
+#include <QMenu>
+#include <QMessageBox>
 #include <QMouseEvent>
 
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
@@ -30,6 +32,7 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
 
     _sortProxy = new NumericalSortFilterProxyModel();
     _sortProxy->setSourceModel(_model);
+    setSelectionBehavior(QAbstractItemView::SelectRows);
     setModel(_sortProxy);
     connect(selectionModel(), &QItemSelectionModel::selectionChanged, this, &ComponentPinsTableView::updateSelect);
 
@@ -41,6 +44,8 @@ ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *pa
 
     _delegate = new ComponentPinDelegate(this);
     setItemDelegate(_delegate);
+
+    createActions();
 }
 
 Component *ComponentPinsTableView::component() const
@@ -103,13 +108,39 @@ void ComponentPinsTableView::setPinFilter(const QString &filter)
     viewport()->update();
 }
 
+void ComponentPinsTableView::remove()
+{
+    QModelIndexList selection = selectionModel()->selectedIndexes();
+    if (selection.isEmpty())
+        return;
+
+    if (selection.size() > 0)
+    {
+        QList<QPersistentModelIndex> pindex;
+        foreach (QModelIndex selected, selection)
+        {
+            const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
+            if (!indexComponent.isValid())
+                continue;
+
+            pindex.append(indexComponent);
+        }
+        if (QMessageBox::question(this, tr("Remove pins?"), tr("Do you realy want to remove theses %1 pins?")
+                                 .arg(pindex.count() / ComponentPinsItemModel::ColumnCount)) != QMessageBox::Yes)
+            return;
+        selectionModel()->clearSelection();
+        //emit openedComponent(Q_NULLPTR);
+        foreach (QPersistentModelIndex index, pindex)
+            _model->remove(index);
+    }
+}
+
 void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(selected)
     Q_UNUSED(deselected)
 
     QSet<Pin*> selectedPins;
-
     foreach (const QModelIndex &index, selectionModel()->selectedIndexes())
     {
         if (!index.isValid())
@@ -120,8 +151,27 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
 
         selectedPins.insert(_model->pin(indexComponent));
     }
+    _removeAction->setEnabled(!selectedPins.isEmpty());
 
     emit pinSelected(selectedPins.toList());
+}
+
+void ComponentPinsTableView::contextMenuEvent(QContextMenuEvent *event)
+{
+    QMenu menu;
+    menu.addAction(_removeAction);
+    menu.exec(event->globalPos());
+}
+
+void ComponentPinsTableView::createActions()
+{
+    _removeAction = new QAction(this);
+    _removeAction->setText(tr("Remove"));
+    _removeAction->setShortcut(QKeySequence::Delete);
+    _removeAction->setShortcutContext(Qt::WidgetShortcut);
+    _removeAction->setEnabled(false);
+    connect(_removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
+    addAction(_removeAction);
 }
 
 ComponentPinsItemModel *ComponentPinsTableView::model() const

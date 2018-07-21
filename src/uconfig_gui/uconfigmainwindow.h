@@ -59,6 +59,10 @@ protected:
 protected:
     void dragEnterEvent(QDragEnterEvent *event);
     void dropEvent(QDropEvent *event);
+
+    // QObject interface
+public:
+    virtual bool event(QEvent *event);
 };
 
 #endif // UCONFIGMAINWINDOW_H
