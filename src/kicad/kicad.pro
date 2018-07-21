@@ -41,7 +41,7 @@ SOURCES += \
     $$PWD/itemmodel/componentlibtreeview.cpp \
     $$PWD/itemmodel/componentpinstableview.cpp \
     $$PWD/itemmodel/numericalsortfilterproxymodel.cpp \
-    $$PWD/itemmodel/componentelectricaldelegate.cpp \
+    $$PWD/itemmodel/componentpindelegate.cpp \
     $$PWD/itemmodel/pinlisteditor.cpp \
     $$PWD/pinruler/rulesparser.cpp \
     $$PWD/pinruler/rule.cpp \
@@ -86,7 +86,7 @@ HEADERS += \
     $$PWD/itemmodel/componentlibtreeview.h \
     $$PWD/itemmodel/componentpinstableview.h \
     $$PWD/itemmodel/numericalsortfilterproxymodel.h \
-    $$PWD/itemmodel/componentelectricaldelegate.h \
+    $$PWD/itemmodel/componentpindelegate.h \
     $$PWD/itemmodel/pinlisteditor.h \
     $$PWD/pinruler/rulesparser.h \
     $$PWD/pinruler/rule.h \
