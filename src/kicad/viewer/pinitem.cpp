@@ -309,7 +309,7 @@ void PinItem::setPin(Pin *pin)
     _fontName = new KicadFont(_pin->textNameSize() / ComponentItem::ratio);
     QFontMetrics metricsName(_fontName->font());
     delete _fontType;
-    _fontType = new KicadFont(30.0 / ComponentItem::ratio);
+    _fontType = new KicadFont(25.0 / ComponentItem::ratio);
     QFontMetrics metricsType(_fontType->font());
 
     switch (_pin->direction())
@@ -318,7 +318,7 @@ void PinItem::setPin(Pin *pin)
         _rectName = QRect(-_pin->length() / ComponentItem::ratio - 5, -metricsName.height()/2,
                           -_fontName->textWidth(name), metricsName.height()).normalized();
         _brectName = _rectName;
-        _rectPad = QRect(4, 0, -_pin->length() / ComponentItem::ratio-4, -metricsPad.height()).normalized();
+        _rectPad = QRect(0, 0, -_pin->length() / ComponentItem::ratio, -metricsPad.height()).normalized();
         _brectPad = _rectPad;
         _rectType = QRect(6, metricsType.height()/2, _fontType->textWidth(type), -metricsType.height()).normalized();
         _brectType = _rectType;
@@ -327,7 +327,7 @@ void PinItem::setPin(Pin *pin)
         _rectName = QRect(_pin->length() / ComponentItem::ratio + 5, -metricsName.height()/2,
                           _fontName->textWidth(name), metricsName.height()).normalized();
         _brectName = _rectName;
-        _rectPad = QRect(-4, 0, _pin->length() / ComponentItem::ratio+4, -metricsPad.height()).normalized();
+        _rectPad = QRect(0, 0, _pin->length() / ComponentItem::ratio, -metricsPad.height()).normalized();
         _brectPad = _rectPad;
         _rectType = QRect(-6, metricsType.height()/2, -_fontType->textWidth(type), -metricsType.height()).normalized();
         _brectType = _rectType;
@@ -337,8 +337,8 @@ void PinItem::setPin(Pin *pin)
                           metricsName.height(), -_fontName->textWidth(name)).normalized();
         _rectName = QRect(_pin->length() / ComponentItem::ratio + 5, -metricsName.height()/2,
                           _fontName->textWidth(name), metricsName.height()).normalized();
-        _brectPad = QRect(0, 4, -metricsPad.height(), -_pin->length() / ComponentItem::ratio-4).normalized();
-        _rectPad = QRect(-4, 0, _pin->length() / ComponentItem::ratio+4, -metricsPad.height()).normalized();
+        _brectPad = QRect(0, 0, -metricsPad.height(), -_pin->length() / ComponentItem::ratio).normalized();
+        _rectPad = QRect(0, 0, _pin->length() / ComponentItem::ratio, -metricsPad.height()).normalized();
         _brectType = QRect(metricsType.height()/2, 6, -metricsType.height(), _fontType->textWidth(type)).normalized();
         _rectType = QRect(-6, metricsType.height()/2, -_fontType->textWidth(type), -metricsType.height()).normalized();
         break;
@@ -347,8 +347,8 @@ void PinItem::setPin(Pin *pin)
                           metricsName.height(), _fontName->textWidth(name)).normalized();
         _rectName = QRect(-_pin->length() / ComponentItem::ratio - 5, -metricsName.height()/2,
                           -_fontName->textWidth(name), metricsName.height()).normalized();
-        _brectPad = QRect(0, -4, -metricsPad.height(), _pin->length() / ComponentItem::ratio + 4).normalized();
-        _rectPad = QRect(4, 0, -_pin->length() / ComponentItem::ratio - 4, -metricsPad.height()).normalized();
+        _brectPad = QRect(0, 0, -metricsPad.height(), _pin->length() / ComponentItem::ratio).normalized();
+        _rectPad = QRect(0, 0, -_pin->length() / ComponentItem::ratio, -metricsPad.height()).normalized();
         _brectType = QRect(metricsType.height()/2, -6, -metricsType.height(), -_fontType->textWidth(type)).normalized();
         _rectType = QRect(6, metricsType.height()/2, _fontType->textWidth(type), -metricsType.height()).normalized();
         break;

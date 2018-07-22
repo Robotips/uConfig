@@ -275,17 +275,17 @@ QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
     case Pin::Output:
         return QStringLiteral("output");
     case Pin::Bidir:
-        return QStringLiteral("bi-directional");
+        return QStringLiteral("bidirectional");
     case Pin::Tristate:
-        return QStringLiteral("tristate");
+        return QStringLiteral("tri-state");
     case Pin::Passive:
         return QStringLiteral("passive");
     case Pin::Unspecified:
         return QStringLiteral("unspecified");
     case Pin::PowerIn:
-        return QStringLiteral("power in");
+        return QStringLiteral("power input");
     case Pin::PowerOut:
-        return QStringLiteral("power out");
+        return QStringLiteral("power output");
     case Pin::OpenCollector:
         return QStringLiteral("open collector");
     case Pin::OpenEmitter:
