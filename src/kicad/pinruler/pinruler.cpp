@@ -182,8 +182,8 @@ void PinRuler::organize(Component *component)
     // margins
     leftSize.rheight() += (leftSide.size() - 1) * 100;
     rightSize.rheight() += (rightSide.size() - 1) * 100;
-    leftSize.rwidth() += 100;
-    rightSize.rwidth() += 100;
+    /*leftSize.rwidth() += 100;
+    rightSize.rwidth() += 100;*/
 
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width() / 2, bottomSize.width() / 2));

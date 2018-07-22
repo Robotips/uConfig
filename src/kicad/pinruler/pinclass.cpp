@@ -21,6 +21,8 @@
 #include <QDebug>
 #include <qmath.h>
 
+#include "viewer/kicadfont.h"
+
 PinClass::PinClass(const QString &className)
     : _className(className)
 {
@@ -197,23 +199,25 @@ const QRect &PinClass::boundingRect() const
 void PinClass::computeBoundingRect() const
 {
     QRect rect;
-    int maxLenght = 0;
+    KicadFont kicadFont;
+    int maxWidth = 0;
     foreach (PinClassItem *pinItem, _pins)
     {
-        if (pinItem->pin()->name().size() > maxLenght)
-            maxLenght = pinItem->pin()->name().size();
+        int width = kicadFont.textWidth(pinItem->pin()->name());
+        if (width > maxWidth)
+            maxWidth = width + 100;
     }
 
     switch (_position)
     {
     case ClassRule::PositionTop:
     case ClassRule::PositionBottom:
-        rect = QRect(0, 0, _pins.size() * 100, maxLenght * 50);
+        rect = QRect(0, 0, _pins.size() * 100, maxWidth + 20);
         break;
     case ClassRule::PositionLeft:
     case ClassRule::PositionRight:
     case ClassRule::PositionASide:
-        rect = QRect(0, 0, maxLenght * 50, _pins.size() * 100);
+        rect = QRect(0, 0, maxWidth + 20, _pins.size() * 100);
         break;
     }
     _boundingRect = rect;
@@ -244,12 +248,12 @@ DrawText *PinClass::getDrawText() const
     {
     case ClassRule::PositionTop:
         height = qCeil(boundingRect().height() / 100) * 100;
-        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 100 + height));
+        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 50 + height));
         drawClassLabel->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionBottom:
         height = qCeil(boundingRect().height() / 100) * 100;
-        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 100 - height));
+        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 50 - height));
         drawClassLabel->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionLeft:
@@ -287,12 +291,12 @@ DrawRect *PinClass::getDrawRect() const
     case ClassRule::PositionTop:
         drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
         height = qCeil(boundingRect().height() / 100) * 100;
-        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + height + 100));
+        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + height));
         break;
     case ClassRule::PositionBottom:
         drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
         height = qCeil(boundingRect().height() / 100) * 100;
-        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - height - 100));
+        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - height));
         break;
     case ClassRule::PositionLeft:
         drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
