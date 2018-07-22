@@ -16,36 +16,34 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef DRAWTEXTITEM_H
-#define DRAWTEXTITEM_H
+#ifndef KICADFONT_H
+#define KICADFONT_H
 
 #include "kicad_global.h"
 
-#include "drawitem.h"
-#include "kicadfont.h"
+#include <QString>
+#include <QFont>
+#include <QPainter>
 
-#include "model/drawtext.h"
-
-class KICAD_EXPORT DrawTextItem : public DrawItem
+class KICAD_EXPORT KicadFont
 {
 public:
-    DrawTextItem(DrawText *draw, bool internal=false);
-    ~DrawTextItem();
+    KicadFont(double size = 50);
 
-    enum { Type = UserType + 3 };
-    int type() const {return Type;}
+    double size() const;
+    void setSize(double size);
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QRectF boundingRect() const;
+    double charWidth(QChar c) const;
+    double textWidth(const QString &text) const;
 
-    void setDraw(DrawText *draw);
+    QFont font();
+    static QFont font(double size);
+    void drawText(QPainter *painter, const QRectF &rect, int flags, const QString &text);
 
 protected:
-    DrawText *_drawText;
-    QRectF _rect;
-    QRectF _textRect;
-    KicadFont *_fontText;
-    bool _internal;
+    static const int charWidthTable[];
+    double _size;
+    QFont _font;
 };
 
-#endif // DRAWTEXTITEM_H
+#endif // KICADFONT_H

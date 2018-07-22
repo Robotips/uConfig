@@ -26,8 +26,14 @@
 DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
     : DrawItem(draw), _internal(internal)
 {
+    _fontText = Q_NULLPTR;
     setDraw(draw);
     setZValue(10);
+}
+
+DrawTextItem::~DrawTextItem()
+{
+    delete _fontText;
 }
 
 void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -42,7 +48,7 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     else
         painter->setPen(QPen(QColor(0, 132, 132), 2));
 
-    QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);
+    QFont font = _fontText->font();
     if (_drawText->textStyle().testFlag(DrawText::TextBold))
         font.setBold(true);
     if (_drawText->textStyle().testFlag(DrawText::TextItalic))
@@ -52,7 +58,7 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     if (_drawText->direction() == DrawText::DirectionVertital)
         painter->rotate(-90);
 
-    painter->drawText(_textRect, _drawText->text());
+    _fontText->drawText(painter, _textRect, Qt::AlignLeft, _drawText->text());
 }
 
 QRectF DrawTextItem::boundingRect() const
@@ -64,7 +70,10 @@ void DrawTextItem::setDraw(DrawText *draw)
 {
     _drawText = draw;
 
-    QFont font = ComponentItem::font(_drawText->textSize() / ComponentItem::ratio);
+    delete _fontText;
+    _fontText = new KicadFont(_drawText->textSize() / ComponentItem::ratio);
+
+    QFont font = _fontText->font();
     if (_drawText->textStyle().testFlag(DrawText::TextBold))
         font.setBold(true);
     if (_drawText->textStyle().testFlag(DrawText::TextItalic))
@@ -72,8 +81,8 @@ void DrawTextItem::setDraw(DrawText *draw)
     QFontMetrics fm(font);
 
     _rect = fm.boundingRect(_drawText->text());
+    _rect.setWidth(_fontText->textWidth(_drawText->text()));
     _rect.moveTopLeft(QPoint(0,0));
-    _rect.adjust(0, 0, 5, 0);
 
     switch (_drawText->textVJustify())
     {

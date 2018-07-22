@@ -50,7 +50,6 @@ public:
     void setShowElectricalType(bool showElectricalType);
 
     static const int ratio;
-    static QFont font(double size = 1.27);
 
 private:
     Component *_component;

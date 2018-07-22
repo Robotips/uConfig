@@ -22,14 +22,16 @@
 #include "kicad_global.h"
 
 #include <QGraphicsItem>
+
 #include "model/pin.h"
 
-#include <QFont>
+#include "kicadfont.h"
 
 class KICAD_EXPORT PinItem : public QGraphicsItem
 {
 public:
     PinItem(Pin *pin);
+    ~PinItem();
 
     enum { Type = UserType + 1 };
     int type() const {return Type;}
@@ -51,14 +53,17 @@ public:
 private:
     Pin *_pin;
 
-    QFont _fontPad;
+    KicadFont *_fontPad;
     QRectF _rectPad;
+    QRectF _brectPad;
 
-    QFont _fontName;
+    KicadFont *_fontName;
     QRectF _rectName;
+    QRectF _brectName;
 
-    QFont _fontType;
+    KicadFont *_fontType;
     QRectF _rectType;
+    QRectF _brectType;
 
     bool _showElectricalType;
 };

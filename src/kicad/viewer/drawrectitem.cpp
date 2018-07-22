@@ -40,7 +40,7 @@ void DrawRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     if (_drawRect->filled() != DrawRect::DrawNotFilled)
         painter->setBrush(QColor(255, 255, 194));
 
-    QFont font = ComponentItem::font();
+    QFont font = KicadFont::font(50);
     painter->setFont(font);
 
     QRect rect;

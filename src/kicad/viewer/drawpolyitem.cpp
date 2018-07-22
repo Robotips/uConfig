@@ -40,9 +40,6 @@ void DrawPolyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     if (_drawPoly->filled() != DrawPoly::DrawNotFilled)
         painter->setBrush(QColor(255, 255, 194));
 
-    QFont font = ComponentItem::font();
-    painter->setFont(font);
-
     QPolygon poly;
     foreach (QPoint pt, _drawPoly->points())
         poly.append(pt / ComponentItem::ratio);

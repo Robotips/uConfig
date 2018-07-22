@@ -119,14 +119,3 @@ void ComponentItem::setShowElectricalType(bool showElectricalType)
     }
     _showElectricalType = showElectricalType;
 }
-
-QFont ComponentItem::font(double size)
-{
-    QFont font("monospace");
-    font.setStyleHint(QFont::Monospace);
-    font.setPointSizeF(12);
-    QFontMetricsF fm(font);
-    double factor = 60.0 / ComponentItem::ratio / fm.width('m') * (size / 12.7);
-    font.setPointSizeF(font.pointSizeF() * factor);
-    return font;
-}
