@@ -61,6 +61,7 @@ public:
     const QString &prefix() const;
     void setPrefix(const QString &prefix);
 
+    QStringList &aliases();
     const QStringList &aliases() const;
     void addAlias(const QString &alias);
     void addAlias(const QStringList &aliases);
@@ -68,6 +69,7 @@ public:
     QStringList &footPrints();
     const QStringList &footPrints() const;
     void addFootPrint(const QString &footprint);
+    void addFootPrint(const QStringList &footprints);
 
     QRect boundingRect() const;
     QRect rect() const;

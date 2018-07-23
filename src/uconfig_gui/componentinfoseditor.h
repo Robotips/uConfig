@@ -4,7 +4,7 @@
 #include <QWidget>
 
 #include <QLineEdit>
-#include <QComboBox>
+#include <QPlainTextEdit>
 
 #include "project/uconfigproject.h"
 
@@ -24,6 +24,8 @@ public slots:
 protected slots:
     void setComponentName();
     void setComponentReference();
+    void setComponentPackages();
+    void setComponentAliases();
 
 protected:
     UConfigProject *_project;
@@ -31,8 +33,9 @@ protected:
 
     void createWidgets();
     QLineEdit *_nameEdit;
-    QComboBox *_packageCombo;
+    QPlainTextEdit *_packageEdit;
     QLineEdit *_referenceEdit;
+    QPlainTextEdit *_aliasesEdit;
 };
 
 #endif // COMPONENTINFOSEDITOR_H

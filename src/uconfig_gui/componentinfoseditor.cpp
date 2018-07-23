@@ -20,20 +20,23 @@ void ComponentInfosEditor::setComponent(Component *component)
     if (_component == Q_NULLPTR)
     {
         _nameEdit->setEnabled(false);
-        _packageCombo->setEnabled(false);
+        _packageEdit->setEnabled(false);
         _referenceEdit->setEnabled(false);
+        _aliasesEdit->setEnabled(false);
         return;
     }
 
     _nameEdit->setEnabled(true);
     _nameEdit->setText(component->name());
 
-    _packageCombo->setEnabled(true);
-    _packageCombo->clear();
-    _packageCombo->addItems(component->footPrints());
+    _packageEdit->setEnabled(true);
+    _packageEdit->setPlainText(component->footPrints().join('\n'));
 
     _referenceEdit->setEnabled(true);
     _referenceEdit->setText(component->prefix());
+
+    _aliasesEdit->setEnabled(true);
+    _aliasesEdit->setPlainText(component->aliases().join('\n'));
 }
 
 void ComponentInfosEditor::setComponentName()
@@ -46,6 +49,16 @@ void ComponentInfosEditor::setComponentReference()
     _project->setComponentInfo(UConfigProject::ComponentReferenceInfo, _referenceEdit->text());
 }
 
+void ComponentInfosEditor::setComponentPackages()
+{
+    _project->setComponentInfo(UConfigProject::ComponentPackagesInfo, _packageEdit->toPlainText().split('\n', QString::SkipEmptyParts));
+}
+
+void ComponentInfosEditor::setComponentAliases()
+{
+    _project->setComponentInfo(UConfigProject::ComponentAliasesInfo, _aliasesEdit->toPlainText().split('\n', QString::SkipEmptyParts));
+}
+
 void ComponentInfosEditor::createWidgets()
 {
     QFormLayout *layout = new QFormLayout();
@@ -55,13 +68,19 @@ void ComponentInfosEditor::createWidgets()
     connect(_nameEdit, &QLineEdit::editingFinished, this, &ComponentInfosEditor::setComponentName);
     layout->addRow(tr("Name"), _nameEdit);
 
-    _packageCombo = new QComboBox();
-    _packageCombo->setEditable(true);
-    layout->addRow(tr("Package"), _packageCombo);
+    _packageEdit = new QPlainTextEdit();
+    _packageEdit->setMaximumHeight(100);
+    connect(_packageEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
+    layout->addRow(tr("Package"), _packageEdit);
 
     _referenceEdit = new QLineEdit();
     connect(_referenceEdit, &QLineEdit::editingFinished, this, &ComponentInfosEditor::setComponentReference);
     layout->addRow(tr("Reference"), _referenceEdit);
+
+    _aliasesEdit = new QPlainTextEdit();
+    _aliasesEdit->setMaximumHeight(100);
+    connect(_aliasesEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
+    layout->addRow(tr("Aliases"), _aliasesEdit);
 
     setLayout(layout);
 }

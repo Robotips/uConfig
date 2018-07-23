@@ -229,6 +229,15 @@ void Component::setPrefix(const QString &prefix)
 }
 
 /**
+ * @brief Returns a reference to the list of component aliases name for identical pin package configuration
+ * @return aliases list
+ */
+QStringList &Component::aliases()
+{
+    return _alias;
+}
+
+/**
  * @brief Returns the list of component aliases name for identical pin package configuration
  * @return aliases list
  */
@@ -280,6 +289,15 @@ const QStringList &Component::footPrints() const
 void Component::addFootPrint(const QString &footprint)
 {
     _footPrints.append(footprint);
+}
+
+/**
+ * @brief Adds a footprint list to the list of possible footprints for this component
+ * @param footprint list to add
+ */
+void Component::addFootPrint(const QStringList &footprints)
+{
+    _footPrints.append(footprints);
 }
 
 /**
