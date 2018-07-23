@@ -17,12 +17,23 @@ Component *ComponentInfosEditor::component() const
 void ComponentInfosEditor::setComponent(Component *component)
 {
     _component = component;
+
+    disconnect(_packageEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
+    disconnect(_aliasesEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
+
     if (_component == Q_NULLPTR)
     {
         _nameEdit->setEnabled(false);
+        _nameEdit->setText("");
+
         _packageEdit->setEnabled(false);
+        _packageEdit->setPlainText("");
+
         _referenceEdit->setEnabled(false);
+        _referenceEdit->setText("U");
+
         _aliasesEdit->setEnabled(false);
+        _aliasesEdit->setPlainText("");
         return;
     }
 
@@ -31,12 +42,14 @@ void ComponentInfosEditor::setComponent(Component *component)
 
     _packageEdit->setEnabled(true);
     _packageEdit->setPlainText(component->footPrints().join('\n'));
+    connect(_packageEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
 
     _referenceEdit->setEnabled(true);
     _referenceEdit->setText(component->prefix());
 
     _aliasesEdit->setEnabled(true);
     _aliasesEdit->setPlainText(component->aliases().join('\n'));
+    connect(_aliasesEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
 }
 
 void ComponentInfosEditor::setComponentName()
@@ -70,7 +83,6 @@ void ComponentInfosEditor::createWidgets()
 
     _packageEdit = new QPlainTextEdit();
     _packageEdit->setMaximumHeight(100);
-    connect(_packageEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
     layout->addRow(tr("Package"), _packageEdit);
 
     _referenceEdit = new QLineEdit();
@@ -79,7 +91,6 @@ void ComponentInfosEditor::createWidgets()
 
     _aliasesEdit = new QPlainTextEdit();
     _aliasesEdit->setMaximumHeight(100);
-    connect(_aliasesEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
     layout->addRow(tr("Aliases"), _aliasesEdit);
 
     setLayout(layout);

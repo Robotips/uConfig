@@ -21,7 +21,8 @@ public:
     enum ComponentInfoType {
         ComponentNameInfo,
         ComponentPackagesInfo,
-        ComponentReferenceInfo
+        ComponentReferenceInfo,
+        ComponentAliasesInfo
     };
 
     Component *activeComponent() const;
@@ -32,6 +33,7 @@ public slots:
     void saveLib();
     void saveLibAs(const QString &fileName=QString());
     void importComponents(const QString &fileName=QString());
+    void closeLib();
 
     void selectComponent(Component *component);
 

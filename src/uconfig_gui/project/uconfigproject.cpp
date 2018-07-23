@@ -1,6 +1,7 @@
 #include "uconfigproject.h"
 
 #include <QFileDialog>
+#include <QMessageBox>
 
 #include "importer/pinlistimporter.h"
 
@@ -45,6 +46,8 @@ void UConfigProject::openLib(const QString &libFileName)
         fileDialog.setDefaultSuffix(".lib");
         fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
         fileDialog.setWindowTitle(tr("Open Kicad library"));
+        if (!_libFileName.isEmpty())
+            fileDialog.setDirectory(QFileInfo(_libFileName).dir());
         if (fileDialog.exec())
             mlibFileName = fileDialog.selectedFiles().first();
         if (mlibFileName.isEmpty())
@@ -122,6 +125,18 @@ void UConfigProject::importComponents(const QString &fileName)
         selectComponent(_lib->components()[0]);
 }
 
+void UConfigProject::closeLib()
+{
+    if (!_lib)
+        return;
+    if (_libName == tr("newlib") && _lib->componentsCount() == 0)
+        return;
+    if (QMessageBox::question(_window, tr("Saves lib?"), tr("Do you want to save '%1' library? Modifications will be losted.")
+                             .arg(_lib->name()),
+                              QMessageBox::Yes | QMessageBox::Default, QMessageBox::No) == QMessageBox::Yes)
+        saveLib();
+}
+
 void UConfigProject::selectComponent(Component *component)
 {
     if (component != _activeComponent)
@@ -129,17 +144,6 @@ void UConfigProject::selectComponent(Component *component)
         _activeComponent = component;
         emit activeComponentChange(component);
     }
-
-    if (!component)
-        return;
-
-    /*organize(_ruleComboBox->currentText());
-    if (!component->debugInfo().isNull())
-    {
-        QImage image = component->debugInfo();
-        image = image.scaledToHeight(QApplication::primaryScreen()->size().height());
-        _pdfDebug->setPixmap(QPixmap::fromImage(image));
-    }*/
 }
 
 void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType, const QVariant &value)
@@ -157,6 +161,9 @@ void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType
         break;
     case UConfigProject::ComponentReferenceInfo:
         _activeComponent->setPrefix(value.toString());
+        break;
+    case UConfigProject::ComponentAliasesInfo:
+        _activeComponent->aliases() = value.toStringList();
         break;
     }
 }
