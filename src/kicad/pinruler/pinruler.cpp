@@ -187,14 +187,14 @@ void PinRuler::organize(Component *component)
 
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width() / 2, bottomSize.width() / 2));
-    sideX = qCeil(sideX / 100) * 100 + 100; // grid align KLC4.1
+    sideX = qCeil(sideX / 100.0) * 100 + 100; // grid align KLC4.1
     int sideY = qMax(leftSize.height(), rightSize.height()) / 2;
-    sideY = qCeil(sideY / 100) * 100 + 100; // grid align KLC4.1
+    sideY = qCeil(sideY / 100.0) * 100 + 100; // grid align KLC4.1
 
     x = -sideX;
     y = -sideY + 100;
     if (leftSize.height() + 50 < rightSize.height())
-        y += qCeil((rightSize.height() - leftSize.height()) / 2) * 2;
+        y += qCeil((rightSize.height() - leftSize.height()) / 2.0) * 2;
     foreach (PinClass *mpinClass, leftSide)
     {
         mpinClass->setPos(QPoint(x, y));
@@ -209,7 +209,7 @@ void PinRuler::organize(Component *component)
     x = sideX;
     y = -sideY + 100;
     if (rightSize.height() + 50 < leftSize.height())
-        y += qCeil((leftSize.height() - rightSize.height()) / 2) * 2;
+        y += qCeil((leftSize.height() - rightSize.height()) / 2.0) * 2;
     foreach (PinClass *mpinClass, rightSide)
     {
         mpinClass->setPos(QPoint(x, y));
@@ -223,7 +223,7 @@ void PinRuler::organize(Component *component)
     }
 
     x = -topSize.width() / 2;
-    x = qCeil(x / 100) * 100; // grid align KLC4.1
+    x = qCeil(x / 100.0) * 100; // grid align KLC4.1
     y = -sideY;
     foreach (PinClass *mpinClass, topSide)
     {
@@ -237,7 +237,7 @@ void PinRuler::organize(Component *component)
     }
 
     x = -bottomSize.width() / 2;
-    x = qCeil(x / 100) * 100; // grid align KLC4.1
+    x = qCeil(x / 100.0) * 100; // grid align KLC4.1
     y = sideY;
     foreach (PinClass *mpinClass, bottomSide)
     {
@@ -252,8 +252,8 @@ void PinRuler::organize(Component *component)
 
     // TODO : improve me, in case of a large number of removed pins
     // this pseudo class goes outside of the component
-    x = -qCeil(removedSize.width() / 200) * 100;
-    y = -qCeil(removedSize.height() / 200) * 100;
+    x = -qCeil(removedSize.width() / 200.0) * 100;
+    y = -qCeil(removedSize.height() / 200.0) * 100;
     foreach (PinClass *mpinClass, removedPins)
     {
         mpinClass->setPos(QPoint(x, y));

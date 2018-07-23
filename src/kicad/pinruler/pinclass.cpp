@@ -205,7 +205,7 @@ void PinClass::computeBoundingRect() const
     {
         int width = kicadFont.textWidth(pinItem->pin()->name());
         if (width > maxWidth)
-            maxWidth = width + 100;
+            maxWidth = width;
     }
 
     switch (_position)
@@ -247,22 +247,22 @@ DrawText *PinClass::getDrawText() const
     switch (_position)
     {
     case ClassRule::PositionTop:
-        height = qCeil(boundingRect().height() / 100) * 100;
+        height = qCeil(boundingRect().height() / 100.0) * 100;
         drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 50 + height));
         drawClassLabel->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionBottom:
-        height = qCeil(boundingRect().height() / 100) * 100;
+        height = qCeil(boundingRect().height() / 100.0) * 100;
         drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 50 - height));
         drawClassLabel->setDirection(DrawText::DirectionHorizontal);
         break;
     case ClassRule::PositionLeft:
-        width = qCeil(boundingRect().width() / 100) * 100;
+        width = qCeil(boundingRect().width() / 100.0) * 100;
         drawClassLabel->setPos(QPoint(_pos.x() + width + 50, _pos.y() - 50 + boundingRect().height() / 2));
         drawClassLabel->setDirection(DrawText::DirectionVertital);
         break;
     case ClassRule::PositionRight:
-        width = qCeil(boundingRect().width() / 100) * 100;
+        width = qCeil(boundingRect().width() / 100.0) * 100;
         drawClassLabel->setPos(QPoint(_pos.x() - width - 50, _pos.y() - 50 + boundingRect().height() / 2));
         drawClassLabel->setDirection(DrawText::DirectionVertital);
         break;
@@ -290,22 +290,22 @@ DrawRect *PinClass::getDrawRect() const
     {
     case ClassRule::PositionTop:
         drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
-        height = qCeil(boundingRect().height() / 100) * 100;
+        height = qCeil(boundingRect().height() / 100.0) * 100;
         drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + height));
         break;
     case ClassRule::PositionBottom:
         drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
-        height = qCeil(boundingRect().height() / 100) * 100;
+        height = qCeil(boundingRect().height() / 100.0) * 100;
         drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - height));
         break;
     case ClassRule::PositionLeft:
         drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
-        width = qCeil(boundingRect().width() / 100) * 100;
+        width = qCeil(boundingRect().width() / 100.0) * 100;
         drawRect->setEndPos(QPoint(_pos.x() + width, _pos.y() + boundingRect().height()));
         break;
     case ClassRule::PositionRight:
         drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
-        width = qCeil(boundingRect().width() / 100) * 100;
+        width = qCeil(boundingRect().width() / 100.0) * 100;
         drawRect->setEndPos(QPoint(_pos.x() - width, _pos.y() + boundingRect().height()));
         break;
     case ClassRule::PositionASide:
