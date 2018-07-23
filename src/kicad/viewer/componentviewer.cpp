@@ -88,7 +88,7 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
             pinItem->setSelected(true);
     }
     if (pinItem)
-        ensureVisible(pinItem);
+        ensureVisible(pinItem, 5, 5);
     blockSignals(false);
 }
 

@@ -260,8 +260,9 @@ QRectF PinItem::boundingRect() const
 {
     QRectF rect = _brectPad;
     rect = rect.united(_brectName);
-    rect = rect.united(_brectType);
-    return rect.normalized();
+    if (_showElectricalType)
+        rect = rect.united(_brectType);
+    return rect.adjusted(-5, -5, 5, 5);
 }
 
 QPainterPath PinItem::shape() const
