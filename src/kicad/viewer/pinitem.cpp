@@ -159,8 +159,8 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             _fontName->drawText(painter, _rectName, Qt::AlignLeft, name);
             for (int l=0; l<linesInvert.count(); l+=2)
             {
-                painter->drawLine(_pin->length() / ComponentItem::ratio+10 +painter->fontMetrics().width(name.left(linesInvert[l])), -painter->fontMetrics().height()/2,
-                                  _pin->length() / ComponentItem::ratio+10 +painter->fontMetrics().width(name.left(linesInvert[l+1])), -painter->fontMetrics().height()/2);
+                painter->drawLine(_pin->length() / ComponentItem::ratio+5 + _fontName->textWidth(name.left(linesInvert[l])), -painter->fontMetrics().height()/2,
+                                  _pin->length() / ComponentItem::ratio+5 + _fontName->textWidth(name.left(linesInvert[l+1])), -painter->fontMetrics().height()/2);
             }
         }
 
@@ -241,8 +241,8 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget
             _fontName->drawText(painter, _rectName, Qt::AlignRight, name);
             for (int l=0; l<linesInvert.count(); l+=2)
             {
-                painter->drawLine(-_pin->length() / ComponentItem::ratio-10 -painter->fontMetrics().width(name) +painter->fontMetrics().width(name.left(linesInvert[l])), -painter->fontMetrics().height()/2,
-                                  -_pin->length() / ComponentItem::ratio-10 -painter->fontMetrics().width(name) +painter->fontMetrics().width(name.left(linesInvert[l+1])), -painter->fontMetrics().height()/2);
+                painter->drawLine(-_pin->length() / ComponentItem::ratio-5 -_fontName->textWidth(name) + _fontName->textWidth(name.left(linesInvert[l])), -painter->fontMetrics().height()/2,
+                                  -_pin->length() / ComponentItem::ratio-5 -_fontName->textWidth(name) + _fontName->textWidth(name.left(linesInvert[l+1])), -painter->fontMetrics().height()/2);
             }
         }
 
