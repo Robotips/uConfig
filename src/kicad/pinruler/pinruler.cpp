@@ -33,10 +33,15 @@ bool heightGreaterThan(PinClass *c1, PinClass *c2)
     return c1->boundingRect().height() > c2->boundingRect().height();
 }
 
+bool nameGreaterThan(PinClass *c1, PinClass *c2)
+{
+    return c1->className() < c2->className();
+}
+
 bool prioGreaterThan(PinClass *c1, PinClass *c2)
 {
     if (c1->priority() == c2->priority())
-        return heightGreaterThan(c1, c2);
+        return nameGreaterThan(c1, c2);
     return c1->priority() > c2->priority();
 }
 
@@ -182,8 +187,6 @@ void PinRuler::organize(Component *component)
     // margins
     leftSize.rheight() += (leftSide.size() - 1) * 100;
     rightSize.rheight() += (rightSide.size() - 1) * 100;
-    /*leftSize.rwidth() += 100;
-    rightSize.rwidth() += 100;*/
 
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width() / 2, bottomSize.width() / 2));
@@ -213,7 +216,6 @@ void PinRuler::organize(Component *component)
     foreach (PinClass *mpinClass, rightSide)
     {
         mpinClass->setPos(QPoint(x, y));
-
         if (mpinClass->hasLabelSet())
             component->addDraw(mpinClass->getDrawText());
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
