@@ -274,8 +274,8 @@ void PinRuler::organize(Component *component)
     component->nameText()->setPos(QPoint(rect.right(), rect.bottom() + 50));
     component->nameText()->setTextHJustify(DrawText::TextHRight);
     component->nameText()->setDirection(DrawText::DirectionHorizontal);
-    component->refText()->setPos(QPoint(0, 0));
-    component->refText()->setTextHJustify(DrawText::TextHCenter);
+    component->refText()->setPos(QPoint(rect.left(), rect.bottom() + 50));
+    component->refText()->setTextHJustify(DrawText::TextHLeft);
     component->refText()->setDirection(DrawText::DirectionHorizontal);
 
     foreach (PinClass *mpinClass, _pinClasses)
