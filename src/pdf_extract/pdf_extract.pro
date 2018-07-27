@@ -1,14 +1,13 @@
+QT     += core gui widgets xml
 
 TARGET = pdf_extract
 TEMPLATE = lib
 DEFINES += DATASHEET_EXTRACTOR_EXPORT_LIB
 DESTDIR = "$$PWD/../../bin"
 
-CONFIG += optimize_full
-
-QT       += core gui
-
-QT       += xml
+CONFIG(release, debug|release) {
+    CONFIG += optimize_full
+}
 
 SOURCES += \
     $$PWD/datasheet.cpp \

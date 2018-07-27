@@ -52,12 +52,13 @@ void PIC32::test_casePIC32MM_GPM()
         {
             Pin *pin1 = comp1->pins()[p];
             Pin *pin2 = comp2->pins()[p];
+            qDebug()<<pin1->name() << pin2->name();
             QVERIFY(pin1->name() == pin2->name());
             QVERIFY(pin1->padName() == pin2->padName());
         }
     }
 }
 
-QTEST_MAIN(PIC32)
+QTEST_GUILESS_MAIN(PIC32)
 
 #include "tst_pic32.moc"

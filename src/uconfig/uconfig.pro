@@ -1,5 +1,4 @@
-QT       += core gui
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui xml widgets
 
 CONFIG += optimize_full
 
@@ -11,7 +10,10 @@ SOURCES += $$PWD/uconfig.cpp
 
 HEADERS  +=
 
-LIBS += -Wl,-R.
+unix:{
+    QMAKE_LFLAGS_RPATH=
+    QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
+}
 
 LIBS += -L"$$PWD/../../bin"
 LIBS += -lkicad -lpdf_extract
