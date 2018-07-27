@@ -6,4 +6,5 @@ SUBDIRS += \
     pdf_extract \
     uconfig \
     uconfig_gui \
-    test
+    test \
+    autotest
