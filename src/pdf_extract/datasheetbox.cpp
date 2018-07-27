@@ -18,6 +18,8 @@
 
 #include "datasheetbox.h"
 
+#include <QDebug>
+
 DatasheetBox::DatasheetBox()
     : associated(false)
 {
@@ -53,13 +55,14 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 
 bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number)
 {
-    if (label.pos.width() > label.pos.height() || label.text.count()<3)  // Horizontal
+    if (label.page != number.page)
+        return false;
+
+    if (label.pos.width() > label.pos.height() || label.text.count() < 3)  // Horizontal
     {
         qreal marge = label.pos.height();
-        /*if (label.page != number.page)
-            return false;*/
-        if (label.pos.height() > number.pos.height()*2
-         || number.pos.height() > label.pos.height()*2)
+        if (label.pos.height() > number.pos.height() * 2
+         || number.pos.height() > label.pos.height() * 2)
             return false;
         if (label.pos.top() - marge < number.pos.top() &&
             label.pos.bottom() + marge > number.pos.bottom())
