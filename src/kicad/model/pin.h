@@ -111,6 +111,9 @@ public:
     int length() const;
     void setLength(int length);
 
+    QString className() const;
+    void setClassName(const QString &className);
+
     Component *component() const;
     void setComponent(Component *component);
 
@@ -130,6 +133,8 @@ private:
     int _textPadSize;
     int _layer;
     int _length;
+
+    QString _className;
 
     Component *_component;
 };

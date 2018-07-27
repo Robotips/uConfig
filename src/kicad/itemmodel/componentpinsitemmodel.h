@@ -42,6 +42,7 @@ public:
         PinName,
         PinElecType,
         PinStyle,
+        PinClass,
         ColumnCount
     };
 

@@ -98,6 +98,11 @@ void PinRuler::organize(Component *component)
                     break;
                 }
             }
+            if (mpinClass->label().isEmpty())
+                pin->setClassName(mpinClass->className());
+            else
+                pin->setClassName(mpinClass->label());
+
             mpinClass->addPinItem(pinClassItem);
         }
     }

@@ -74,6 +74,8 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
             return QVariant("Elec type");
         case PinStyle:
             return QVariant("Style");
+        case PinClass:
+            return QVariant("Class");
         }
         break;
     }
@@ -100,6 +102,8 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
             return QVariant(Pin::electricalTypeDesc(pin->electricalType()));
         case PinStyle:
             return QVariant(Pin::pinTypeDesc(pin->pinType()));
+        case PinClass:
+            return QVariant(pin->className());
         }
     case Qt::EditRole:
         switch (index.column())
@@ -112,6 +116,8 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
             return QVariant(pin->electricalType());
         case PinStyle:
             return QVariant(pin->pinType());
+        case PinClass:
+            return QVariant();
         }
     }
     return QVariant();
@@ -166,6 +172,8 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
         case PinStyle:
             pin->setPinType(static_cast<Pin::PinType>(value.toInt()));
             break;
+        case PinClass:
+            return false;
         }
         emit pinModified(pin);
         return true;

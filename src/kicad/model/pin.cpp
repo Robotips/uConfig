@@ -385,6 +385,16 @@ void Pin::setLength(int length)
         _length = length;
 }
 
+QString Pin::className() const
+{
+    return _className;
+}
+
+void Pin::setClassName(const QString &className)
+{
+    _className = className;
+}
+
 Component *Pin::component() const
 {
     return _component;
