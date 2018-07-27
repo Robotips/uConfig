@@ -27,3 +27,4 @@ script:
   - cd build/
   - qmake ../src/uConfig.pro
   - make -j2
+  - make check

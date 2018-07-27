@@ -33,6 +33,7 @@ before_build:
 build_script:
   - cd %APPVEYOR_BUILD_FOLDER%\build
   - mingw32-make.exe -j2
+  - mingw32-make.exe check
 
 after_build:
   - cd %APPVEYOR_BUILD_FOLDER%

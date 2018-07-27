@@ -32,11 +32,11 @@ void PIC32::cleanup()
 void PIC32::test_casePIC32MM_GPM()
 {
     //dt.setDebugEnabled(true);
-    QVERIFY(dt.open("../../src/autotest/PIC32MM_GPM_pins.pdf"));
+    QVERIFY(dt.open("../src/autotest/PIC32MM_GPM_pins.pdf"));
     dt.analyse();
 
     Lib lib;
-    QVERIFY(lib.readFrom("../../src/autotest/PIC32MM_GPM_pins.lib"));
+    QVERIFY(lib.readFrom("../src/autotest/PIC32MM_GPM_pins.lib"));
 
     QVERIFY(dt.components().count() == lib.componentsCount());
     for (int i=0; i<dt.components().count(); i++)
