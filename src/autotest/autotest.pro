@@ -11,7 +11,7 @@ LIBS += -lkicad -lpdf_extract
 INCLUDEPATH += $$PWD/../kicad $$PWD/../pdf_extract
 DEPENDPATH += $$PWD/../kicad $$PWD/../pdf_extract
 
-SOURCES +=  tst_pic32.cpp
+SOURCES +=  tst_pdf_extract.cpp
 
 unix:{
     QMAKE_LFLAGS_RPATH=
