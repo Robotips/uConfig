@@ -40,9 +40,6 @@ Datasheet::Datasheet()
 Datasheet::~Datasheet()
 {
     close();
-    foreach (DatasheetPackage *box, _packages)
-        delete box;
-    _packages.clear();
     clean();
 }
 
@@ -524,6 +521,9 @@ void Datasheet::clean()
         if (!box->associated)
             delete box;*/
     _pack_labels.clear();
+    foreach (DatasheetPackage *box, _packages)
+        delete box;
+    _packages.clear();
 }
 
 QString Datasheet::name() const
