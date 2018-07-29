@@ -16,9 +16,9 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     setPage(PageFile, new FilePage());
 
     // PDF
-    DatasheetProcessPage *datasheetProcess= new DatasheetProcessPage();
-    setPage(PagePDFFile, new PDFFilePage(datasheetProcess->datasheetThread()));
-    setPage(PagePDFProcess, datasheetProcess);
+    _datasheetProcess = new DatasheetProcessPage();
+    setPage(PagePDFFile, new PDFFilePage(_datasheetProcess->datasheetThread()));
+    setPage(PagePDFProcess, _datasheetProcess);
 
     // Components
     setPage(PageComponents, new ComponentsPage());
@@ -47,7 +47,14 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
 
 PinListImporter::~PinListImporter()
 {
-
+    try
+    {
+        _datasheetProcess->datasheetThread()->terminate();
+        _datasheetProcess->datasheetThread()->wait();
+    }
+    catch (...) {
+    }
+    _datasheetProcess->datasheetThread()->deleteLater();
 }
 
 QList<Component *> &PinListImporter::components()

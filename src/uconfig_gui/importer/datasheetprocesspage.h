@@ -26,7 +26,7 @@ protected:
     void addLog(QString str);
 
 private:
-    Datasheet _datasheet;
+    Datasheet *_datasheet;
     DataSheetThread *_thread;
     QLabel *_statusLabel;
     QLabel *_progressLabel;

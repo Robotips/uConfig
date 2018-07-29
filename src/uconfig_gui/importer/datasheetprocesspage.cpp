@@ -26,11 +26,12 @@ DatasheetProcessPage::DatasheetProcessPage()
     layout->addWidget(_logger);
     setLayout(layout);
 
-    _thread = new DataSheetThread(&_datasheet);
+    _datasheet = new Datasheet();
+    _thread = new DataSheetThread(_datasheet);
     _complete = false;
 
-    connect(&_datasheet, &Datasheet::pageChanged, this, &DatasheetProcessPage::changePage);
-    connect(&_datasheet, &Datasheet::log, this, &DatasheetProcessPage::addLog);
+    connect(_datasheet, &Datasheet::pageChanged, this, &DatasheetProcessPage::changePage);
+    connect(_datasheet, &Datasheet::log, this, &DatasheetProcessPage::addLog);
 }
 
 int DatasheetProcessPage::nextId() const
@@ -45,7 +46,7 @@ void DatasheetProcessPage::initializePage()
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
 
-    _datasheet.setDebugEnabled(true);
+    _datasheet->setDebugEnabled(true);
     setTitle(tr("Extracting packages in %1...").arg(fileName.right(30)));
 
 
@@ -54,7 +55,7 @@ void DatasheetProcessPage::initializePage()
     if (_thread->pageBegin() == -1 && _thread->pageEnd() == -1) // whole document
     {
         _pageStart = 0;
-        _pageCount = _datasheet.pageCount();
+        _pageCount = _datasheet->pageCount();
     }
     else if (_thread->pageEnd() == -1)
     {
@@ -70,7 +71,7 @@ void DatasheetProcessPage::initializePage()
     _progressBar->setMaximum(_pageStart + _pageCount +1);
 
     _logger->clear();
-    _datasheet.clean();
+    _datasheet->clean();
     _thread->start();
     connect(_thread, &QThread::finished, this, &DatasheetProcessPage::finish);
 }

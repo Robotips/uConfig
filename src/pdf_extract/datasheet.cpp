@@ -40,6 +40,9 @@ Datasheet::Datasheet()
 Datasheet::~Datasheet()
 {
     close();
+    foreach (DatasheetPackage *box, _packages)
+        delete box;
+    _packages.clear();
     clean();
 }
 
@@ -83,14 +86,23 @@ void Datasheet::pinSearch(int numPage)
     QList<DatasheetPin *> pins;
     QList<DatasheetPackage *> packages;
 
-    /*QList<DatasheetBox *> proc_labels;
-    QList<DatasheetBox *> pack_labels;*/
-
     emit log("==============================");
 
-    _numbers.clear();
+    /*foreach (DatasheetBox *box, _labels)
+        if (!box->associated)
+            delete box;*/
     _labels.clear();
+    /*foreach (DatasheetBox *box, _numbers)
+        if (!box->associated)
+            delete box;*/
+    _numbers.clear();
+    /*foreach (DatasheetBox *box, _proc_labels)
+        if (!box->associated)
+            delete box;*/
     _proc_labels.clear();
+    /*foreach (DatasheetBox *box, _pack_labels)
+        if (!box->associated)
+            delete box;*/
     _pack_labels.clear();
 
     pins = extractPins(numPage);
@@ -404,7 +416,9 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             }
             prev = false;
         }
+        delete textBox;
     }
+
     // pairing label and number to pin
     foreach (DatasheetBox *number, _numbers)
     {
@@ -434,6 +448,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
         if (assocLabel)
         {
             assocLabel->associated = true;
+            number->associated = true;
 
             pin->pin = number->text.toInt();
             pin->numPos = number->pos;
@@ -450,6 +465,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
         }
     }
 
+    delete page;
     return pins;
 }
 
@@ -492,11 +508,22 @@ QImage Datasheet::pageThumbnail(int numPage) const
 
 void Datasheet::clean()
 {
-    foreach (DatasheetPackage *package, _packages)
-    {
-        delete package;
-    }
-    _packages.clear();
+    /*foreach (DatasheetBox *box, _labels)
+        if (!box->associated)
+            delete box;*/
+    _labels.clear();
+    /*foreach (DatasheetBox *box, _numbers)
+        if (!box->associated)
+            delete box;*/
+    _numbers.clear();
+    /*foreach (DatasheetBox *box, _proc_labels)
+        if (!box->associated)
+            delete box;*/
+    _proc_labels.clear();
+    /*foreach (DatasheetBox *box, _pack_labels)
+        if (!box->associated)
+            delete box;*/
+    _pack_labels.clear();
 }
 
 QString Datasheet::name() const
@@ -573,12 +600,19 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
                     break;
                 }
             }
+            delete textBox;
 
             if (labelOk && vssOk && vddOk)
+            {
+                delete page;
                 return i;
+            }
+
         }
+        delete page;
         QCoreApplication::processEvents();
     }
+
     return -1;
 }
 

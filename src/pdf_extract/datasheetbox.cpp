@@ -20,9 +20,17 @@
 
 #include <QDebug>
 
+int DatasheetBox::created = 0;
+
 DatasheetBox::DatasheetBox()
     : associated(false)
 {
+    created++;
+}
+
+DatasheetBox::~DatasheetBox()
+{
+    created--;
 }
 
 qreal DatasheetBox::distanceToPoint(const QPointF &center) const

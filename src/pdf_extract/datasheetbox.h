@@ -28,6 +28,7 @@ class DATASHEET_EXTRACTOR_EXPORT DatasheetBox
 {
 public:
     DatasheetBox();
+    ~DatasheetBox();
 
     qreal distanceToPoint(const QPointF &center) const;
 
@@ -37,6 +38,9 @@ public:
     bool associated;
 
     static bool isAlign(const DatasheetBox &label, const DatasheetBox &number);
+
+    static int created;
+    static int deleted;
 };
 
 

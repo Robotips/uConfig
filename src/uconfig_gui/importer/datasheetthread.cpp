@@ -5,13 +5,15 @@
 DataSheetThread::DataSheetThread(Datasheet *datasheet)
 {
     _datasheet = datasheet;
+    _datasheet->moveToThread(this);
     _pageBegin = -1;
     _pageEnd = -1;
 }
 
 DataSheetThread::~DataSheetThread()
 {
-    qDebug()<<"DataSheetThread::delete";
+    quit();
+    terminate();
     delete _datasheet;
 }
 
@@ -53,5 +55,6 @@ int DataSheetThread::pageEnd() const
 
 void DataSheetThread::run()
 {
+    setTerminationEnabled();
     _datasheet->analyse(_pageBegin, _pageEnd);
 }

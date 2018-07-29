@@ -5,6 +5,8 @@
 
 #include "../kicad/model/component.h"
 
+class DatasheetProcessPage;
+
 class PinListImporter : public QWizard
 {
     Q_OBJECT
@@ -43,6 +45,7 @@ private:
     ImportType _type;
     QString _filePath;
     QList<Component *> _components;
+    DatasheetProcessPage *_datasheetProcess;
 };
 
 #endif // PINLISTIMPORTER_H
