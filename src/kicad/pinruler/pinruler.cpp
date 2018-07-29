@@ -28,14 +28,16 @@ PinRuler::PinRuler(RulesSet *ruleSet)
     _ruleSet = ruleSet;
 }
 
-bool heightGreaterThan(PinClass *c1, PinClass *c2)
-{
-    return c1->boundingRect().height() > c2->boundingRect().height();
-}
-
 bool nameGreaterThan(PinClass *c1, PinClass *c2)
 {
     return c1->className() < c2->className();
+}
+
+bool heightGreaterThan(PinClass *c1, PinClass *c2)
+{
+    if (c1->boundingRect().height() == c2->boundingRect().height())
+        return nameGreaterThan(c1, c2);
+    return c1->boundingRect().height() > c2->boundingRect().height();
 }
 
 bool prioGreaterThan(PinClass *c1, PinClass *c2)
@@ -196,11 +198,11 @@ void PinRuler::organize(Component *component)
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width(), bottomSize.width()) / 2);
     sideX = qCeil(sideX / 100.0) * 100 + 100; // grid align KLC4.1
-    int sideY = qMax(leftSize.height(), rightSize.height()) / 2 + qMax(topSize.height(), bottomSize.height()) / 2;
+    int sideY = (qMax(leftSize.height(), rightSize.height()) + qCeil(qMax(topSize.height(), bottomSize.height())) / 100.0 * 100) / 2;
     sideY = qCeil(sideY / 100.0) * 100 + 100; // grid align KLC4.1
 
     x = -sideX;
-    y = -sideY + 100 + topSize.height();
+    y = -sideY + qCeil(topSize.height() / 100.0) * 100;
     if (leftSize.height() + 50 < rightSize.height())
         y += qCeil((rightSize.height() - leftSize.height()) / 2.0);
     foreach (PinClass *mpinClass, leftSide)
@@ -215,7 +217,7 @@ void PinRuler::organize(Component *component)
     }
 
     x = sideX;
-    y = -sideY + 100 + topSize.height();
+    y = -sideY + qCeil(topSize.height() / 100.0) * 100;
     if (rightSize.height() + 50 < leftSize.height())
         y += qCeil((leftSize.height() - rightSize.height()) / 2.0);
     foreach (PinClass *mpinClass, rightSide)
