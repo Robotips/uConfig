@@ -16,9 +16,17 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "pdfdebugwidget.h"
+#ifndef PDFDEBUGITEMPIN_H
+#define PDFDEBUGITEMPIN_H
 
-PdfDebugWidget::PdfDebugWidget(QWidget *parent) : QWidget(parent)
+#include "../pdf_extract_common.h"
+
+#include <QGraphicsItem>
+
+class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemPin : public QGraphicsItem
 {
+public:
+    PdfDebugItemPin();
+};
 
-}
+#endif // PDFDEBUGITEMPIN_H

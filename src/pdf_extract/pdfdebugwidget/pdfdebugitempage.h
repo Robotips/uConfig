@@ -16,17 +16,17 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef PDFDEBUGITEMPIN_H
-#define PDFDEBUGITEMPIN_H
+#ifndef PDFDEBUGITEMPAGE_H
+#define PDFDEBUGITEMPAGE_H
 
-#include "pdf_extract_common.h"
+#include "../pdf_extract_common.h"
 
 #include <QGraphicsItem>
 
-class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemPin : public QGraphicsItem
+class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemPage : public QGraphicsItem
 {
 public:
-    PdfDebugItemPin();
+    PdfDebugItemPage();
 };
 
-#endif // PDFDEBUGITEMPIN_H
+#endif // PDFDEBUGITEMPAGE_H

@@ -16,22 +16,22 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef PDFDEBUGVIEWER_H
-#define PDFDEBUGVIEWER_H
+#ifndef PDFDEBUGWIDGET_H
+#define PDFDEBUGWIDGET_H
 
-#include "pdf_extract_common.h"
+#include "../pdf_extract_common.h"
 
-#include <QGraphicsView>
+#include <QWidget>
 
-class DATASHEET_EXTRACTOR_EXPORT PdfDebugViewer : public QGraphicsView
+class DATASHEET_EXTRACTOR_EXPORT PdfDebugWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PdfDebugViewer(QWidget *parent = Q_NULLPTR);
+    explicit PdfDebugWidget(QWidget *parent = Q_NULLPTR);
 
 signals:
 
 public slots:
 };
 
-#endif // PDFDEBUGVIEWER_H
+#endif // PDFDEBUGWIDGET_H
