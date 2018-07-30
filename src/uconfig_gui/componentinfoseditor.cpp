@@ -81,17 +81,17 @@ void ComponentInfosEditor::createWidgets()
     connect(_nameEdit, &QLineEdit::editingFinished, this, &ComponentInfosEditor::setComponentName);
     layout->addRow(tr("Name"), _nameEdit);
 
-    _packageEdit = new QPlainTextEdit();
-    _packageEdit->setMaximumHeight(100);
-    layout->addRow(tr("Package"), _packageEdit);
+    _aliasesEdit = new QPlainTextEdit();
+    _aliasesEdit->setMaximumHeight(100);
+    layout->addRow(tr("Alias(es)"), _aliasesEdit);
 
     _referenceEdit = new QLineEdit();
     connect(_referenceEdit, &QLineEdit::editingFinished, this, &ComponentInfosEditor::setComponentReference);
     layout->addRow(tr("Reference"), _referenceEdit);
 
-    _aliasesEdit = new QPlainTextEdit();
-    _aliasesEdit->setMaximumHeight(100);
-    layout->addRow(tr("Aliases"), _aliasesEdit);
+    _packageEdit = new QPlainTextEdit();
+    _packageEdit->setMaximumHeight(100);
+    layout->addRow(tr("Package(s)"), _packageEdit);
 
     setLayout(layout);
 }

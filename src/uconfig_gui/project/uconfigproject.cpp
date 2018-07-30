@@ -1,15 +1,25 @@
 #include "uconfigproject.h"
 
+#include <QApplication>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "importer/pinlistimporter.h"
+
+const int UConfigProject::MaxOldProject = 8;
 
 UConfigProject::UConfigProject(QWidget *window)
 {
     setWindow(window);
+    readSettings();
     _lib = Q_NULLPTR;
     _activeComponent = Q_NULLPTR;
+}
+
+UConfigProject::~UConfigProject()
+{
+    writeSettings();
 }
 
 Lib *UConfigProject::lib() const
@@ -64,6 +74,10 @@ void UConfigProject::openLib(const QString &libFileName)
         selectComponent(_lib->components()[0]);
     else
         selectComponent(Q_NULLPTR);
+
+    _oldProjects.removeOne(mlibFileName);
+    _oldProjects.prepend(mlibFileName);
+    emit oldProjectChanged();
 }
 
 void UConfigProject::saveLib()
@@ -103,6 +117,9 @@ void UConfigProject::saveLibAs(const QString &fileName)
     _libName = _lib->name();
     emit libChanged(_lib);
 
+    _oldProjects.removeOne(_libFileName);
+    _oldProjects.prepend(_libFileName);
+    emit oldProjectChanged();
     _lib->saveTo(libFileName);
 }
 
@@ -125,16 +142,19 @@ void UConfigProject::importComponents(const QString &fileName)
         selectComponent(_lib->components()[0]);
 }
 
-void UConfigProject::closeLib()
+bool UConfigProject::closeLib()
 {
     if (!_lib)
-        return;
+        return true;
     if (_libName == tr("newlib") && _lib->componentsCount() == 0)
-        return;
-    if (QMessageBox::question(_window, tr("Saves lib?"), tr("Do you want to save '%1' library? Modifications will be losted.")
-                             .arg(_lib->name()),
-                              QMessageBox::Yes | QMessageBox::Default, QMessageBox::No) == QMessageBox::Yes)
+        return true;
+    int ret = QMessageBox::question(_window, tr("Saves lib?"), tr("Do you want to save '%1' library? Modifications will be losted.").arg(_lib->name()),
+                                    QMessageBox::Yes | QMessageBox::Default, QMessageBox::No, QMessageBox::Cancel);
+    if (ret == QMessageBox::Yes)
         saveLib();
+    if (ret == QMessageBox::Cancel)
+        return false;
+    return true;
 }
 
 void UConfigProject::selectComponent(Component *component)
@@ -166,6 +186,42 @@ void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType
         _activeComponent->aliases() = value.toStringList();
         break;
     }
+}
+
+void UConfigProject::writeSettings()
+{
+    QSettings settings(QApplication::organizationName(), QApplication::applicationName());
+
+    // old projects write
+    settings.beginWriteArray("projects");
+    for (int i = 0; i < _oldProjects.size() && i < MaxOldProject; ++i)
+    {
+        settings.setArrayIndex(i);
+        QString path = _oldProjects[i];
+        settings.setValue("path", path);
+    }
+    settings.endArray();
+}
+
+void UConfigProject::readSettings()
+{
+    QSettings settings(QApplication::organizationName(), QApplication::applicationName());
+
+    // old projects read
+    int size = settings.beginReadArray("projects");
+    for (int i = 0; i < size && i < MaxOldProject; ++i)
+    {
+        settings.setArrayIndex(i);
+        QString path = settings.value("path", "").toString();
+        if (!_oldProjects.contains(path) && !path.isEmpty())
+            _oldProjects.append(path);
+    }
+    settings.endArray();
+}
+
+QList<QString> UConfigProject::oldProjects() const
+{
+    return _oldProjects;
 }
 
 Component *UConfigProject::activeComponent() const

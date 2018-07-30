@@ -17,6 +17,7 @@
 #include <QTabWidget>
 #include <QPixmap>
 #include <QScrollArea>
+#include <QSettings>
 
 #include <QDebug>
 
@@ -37,6 +38,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
 
     connect(_project, &UConfigProject::libChanged, _componentsTreeView, &ComponentLibTreeView::setLib);
     connect(_project, &UConfigProject::libChanged, this, &UConfigMainWindow::setTitle);
+    connect(_project, &UConfigProject::oldProjectChanged, this, &UConfigMainWindow::updateOldProjects);
     connect(_project, &UConfigProject::activeComponentChange, this, &UConfigMainWindow::setActiveComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentsTreeView, &ComponentLibTreeView::setActiveComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
@@ -45,6 +47,8 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
 
     resize(QApplication::primaryScreen()->size()*.7);
     setTitle();
+
+    readSettings();
 }
 
 UConfigMainWindow::~UConfigMainWindow()
@@ -114,6 +118,17 @@ void UConfigMainWindow::organize(QString ruleSetName)
 
 void UConfigMainWindow::updateRules()
 {
+    if (_ruleComboBox->currentText() == "package")
+    {
+        if (_componentWidget->component())
+        {
+            Component *component = _componentWidget->component();
+            _componentWidget->setComponent(Q_NULLPTR);
+            component->reorganizeToPackageStyle();
+            _componentWidget->setComponent(component);
+        }
+        return;
+    }
     RulesSet ruleSet;
     RulesParser parser;
     parser.setData(_kssEditor->document()->toPlainText());
@@ -198,6 +213,7 @@ void UConfigMainWindow::createWidgets()
 void UConfigMainWindow::createDocks()
 {
     _componentsListDock = new QDockWidget(tr("Components list"), this);
+    _componentsListDock->setObjectName("componentsList");
     QWidget *componentsListContent = new QWidget(_componentsListDock);
     QLayout *componentsListLayout = new QVBoxLayout();
     componentsListLayout->setContentsMargins(5, 5, 5, 5);
@@ -210,6 +226,7 @@ void UConfigMainWindow::createDocks()
     addDockWidget(Qt::LeftDockWidgetArea, _componentsListDock);
 
     _componentInfosDock = new QDockWidget(tr("Component infos"), this);
+    _componentInfosDock->setObjectName("componentInfo");
     QWidget *componentInfosContent = new QWidget(_componentsListDock);
     QLayout *componentInfosLayout = new QVBoxLayout();
     componentInfosLayout->setContentsMargins(5, 5, 5, 5);
@@ -220,10 +237,47 @@ void UConfigMainWindow::createDocks()
     addDockWidget(Qt::LeftDockWidgetArea, _componentInfosDock);
 }
 
+void UConfigMainWindow::writeSettings()
+{
+    QSettings settings(QApplication::organizationName(), QApplication::applicationName());
+
+    // MainWindow position/size/maximized
+    settings.beginGroup("MainWindow");
+    settings.setValue("geometry", saveGeometry());
+    settings.setValue("windowState", saveState());
+    settings.endGroup();
+}
+
+void UConfigMainWindow::readSettings()
+{
+    QSettings settings(QApplication::organizationName(), QApplication::applicationName());
+
+    // MainWindow position/size/maximized
+    settings.beginGroup("MainWindow");
+    restoreGeometry(settings.value("geometry").toByteArray());
+    restoreState(settings.value("windowState").toByteArray());
+    settings.endGroup();
+
+    updateOldProjects();
+}
+
+void UConfigMainWindow::updateOldProjects()
+{
+    for (int i=0; i<_project->oldProjects().size(); i++)
+    {
+        QString path = _project->oldProjects()[i];
+        _oldProjectsActions[i]->setVisible(true);
+        _oldProjectsActions[i]->setData(path);
+        _oldProjectsActions[i]->setText(QString("&%1. %2").arg(i+1).arg(path));
+        _oldProjectsActions[i]->setStatusTip(tr("Open recent project '")+path+"'");
+    }
+}
+
 void UConfigMainWindow::createToolbarsMenus()
 {
     setMenuBar(new QMenuBar(this));
     QToolBar *toolBar = new QToolBar(this);
+    toolBar->setObjectName("toolbar");
     toolBar->setIconSize(QSize(32, 32));
     addToolBar(toolBar);
 
@@ -270,6 +324,16 @@ void UConfigMainWindow::createToolbarsMenus()
     connect(saveFileAsAction, SIGNAL(triggered()), _project, SLOT(saveLibAs()));
 
     fileMenu->addSeparator();
+    for (int i=0; i< UConfigProject::MaxOldProject; i++)
+    {
+        QAction *recentAction = new QAction(this);
+        fileMenu->addAction(recentAction);
+        recentAction->setVisible(false);
+        connect(recentAction, SIGNAL(triggered()), this, SLOT(openRecentFile()));
+        _oldProjectsActions.append(recentAction);
+    }
+
+    fileMenu->addSeparator();
     QAction *exitAction = new QAction(tr("E&xit"), this);
     exitAction->setStatusTip(tr("Exits uConfig"));
     exitAction->setShortcut(QKeySequence::Quit);
@@ -283,6 +347,10 @@ void UConfigMainWindow::createToolbarsMenus()
     toolBar->addWidget(new QLabel(tr(" pin ruler: ")));
     QAction *actionRuleCombox = toolBar->addWidget(_ruleComboBox);
     actionRuleCombox->setStatusTip(tr("Change the rule for pin organisation"));
+    QAction *ruleAction = new QAction(tr("Organize"), this);
+    ruleAction->setStatusTip(tr("Organize with the current rule"));
+    toolBar->addAction(ruleAction);
+    connect(ruleAction, &QAction::triggered, this, &UConfigMainWindow::updateRules);
 
     // ============= View =============
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
@@ -307,6 +375,13 @@ void UConfigMainWindow::createToolbarsMenus()
     QAction *aboutQtAction = new QAction(tr("About &Qt"), this);
     connect(aboutQtAction, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt()));
     helpMenu->addAction(aboutQtAction);
+}
+
+void UConfigMainWindow::openRecentFile()
+{
+    QAction *action = qobject_cast<QAction *>(sender());
+    if (action)
+        _project->openLib(action->data().toString());
 }
 
 void UConfigMainWindow::about()
@@ -335,9 +410,14 @@ Build date: ") + __DATE__ + QString(" time: ")+__TIME__);
 
 bool UConfigMainWindow::event(QEvent *event)
 {
-    /*if (event->type() == QEvent::Close)
+    if (event->type() == QEvent::Close)
     {
-        _project->closeLib();
-    }*/
+        writeSettings();
+        if (!_project->closeLib())
+        {
+            event->ignore();
+            return false;
+        }
+    }
     return QMainWindow::event(event);
 }

@@ -10,6 +10,7 @@ class UConfigProject : public QObject
     Q_OBJECT
 public:
     explicit UConfigProject(QWidget *window=Q_NULLPTR);
+    ~UConfigProject();
 
     Lib *lib() const;
     const QString &libFileName() const;
@@ -27,13 +28,16 @@ public:
 
     Component *activeComponent() const;
 
+    QList<QString> oldProjects() const;
+    static const int MaxOldProject;
+
 public slots:
     void newLib();
     void openLib(const QString &libFileName=QString());
     void saveLib();
     void saveLibAs(const QString &fileName=QString());
     void importComponents(const QString &fileName=QString());
-    void closeLib();
+    bool closeLib();
 
     void selectComponent(Component *component);
 
@@ -41,10 +45,9 @@ public slots:
 
 signals:
     void libChanged(Lib *lib);
-
     void activeComponentChange(Component *component);
-
     void pinChanged();
+    void oldProjectChanged();
 
 protected:
     Lib *_lib;
@@ -55,6 +58,10 @@ protected:
     Component *_activeComponent;
 
     QWidget *_window;
+
+    void writeSettings();
+    void readSettings();
+    QList<QString> _oldProjects;
 };
 
 #endif // UCONFIGPROJECT_H

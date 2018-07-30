@@ -54,7 +54,15 @@ protected:
     QDockWidget *_componentsListDock;
     QDockWidget *_componentInfosDock;
 
+    void writeSettings();
+    void readSettings();
+    QList<QAction*> _oldProjectsActions;
+
     void createToolbarsMenus();
+
+protected slots:
+    void openRecentFile();
+    void updateOldProjects();
 
 protected:
     void dragEnterEvent(QDragEnterEvent *event);

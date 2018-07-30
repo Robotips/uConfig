@@ -7,6 +7,9 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
+    app.setOrganizationName("Robotips");
+    app.setOrganizationDomain("Robotips");
+    app.setApplicationName("uConfig");
 
     UConfigProject project;
     UConfigMainWindow mainWindow(&project);
