@@ -37,19 +37,23 @@ PDFPage *PdfDebugItemPage::page() const
 
 QRectF PdfDebugItemPage::boundingRect() const
 {
-    return _page->pageRect();
+    return _page->pageRect().adjusted(-10, -10, 10, 10);
 }
 
 void PdfDebugItemPage::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
-    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
-
-    //_page->page()->renderToPainter(painter, 72.0 * 4, 72.0 * 4, 0 ,0);
-    QImage image = _page->page()->renderToImage(72.0 * lod, 72.0 * lod, 0 ,0);
-    painter->drawImage(boundingRect(), image);
 
     painter->setPen(Qt::black);
-    painter->drawRect(boundingRect());
+
+    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+
+    _page->page()->renderToPainter(painter, 72.0 * lod, 72.0 * lod, -painter->worldTransform().m31(), -painter->worldTransform().m32(),
+                                   _page->pageRect().width(), _page->pageRect().width(),
+                                   Poppler::Page::Rotate0 /*,Poppler::Page::DontSaveAndRestore*/);
+    //QImage image = _page->page()->renderToImage(72.0 * lod, 72.0 * lod, 0 ,0);
+    //painter->drawImage(_page->pageRect(), image);
+
+    painter->drawRect(_page->pageRect());
 }

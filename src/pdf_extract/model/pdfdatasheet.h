@@ -32,6 +32,7 @@ class DATASHEET_EXTRACTOR_EXPORT PDFDatasheet
 {
 public:
     PDFDatasheet(const QString &fileName);
+    ~PDFDatasheet();
 
     const QString &fileName() const;
     const QString &title() const;

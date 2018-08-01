@@ -32,6 +32,7 @@ class DATASHEET_EXTRACTOR_EXPORT PDFLoader
 {
 public:
     PDFLoader(PDFDatasheet *pdfDatasheet);
+    ~PDFLoader();
 
     bool loadPage(PDFPage *pdfPage);
 

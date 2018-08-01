@@ -27,6 +27,15 @@ PDFLoader::PDFLoader(PDFDatasheet *pdfDatasheet)
     _document = Poppler::Document::load(_pdfDatasheet->_fileName);
     _pdfDatasheet->_pageCount = _document->numPages();
     _pdfDatasheet->_title = _document->info("Title");
+
+    _document->setRenderBackend(Poppler::Document::ArthurBackend);
+    _document->setRenderHint(Poppler::Document::Antialiasing, true);
+    _document->setRenderHint(Poppler::Document::TextAntialiasing, true);
+}
+
+PDFLoader::~PDFLoader()
+{
+    delete _document;
 }
 
 bool PDFLoader::loadPage(PDFPage *pdfPage)
@@ -38,12 +47,7 @@ bool PDFLoader::loadPage(PDFPage *pdfPage)
     if (page == Q_NULLPTR)
         return false;
     pdfPage->_page = page;
-
     pdfPage->_pageRect = QRect(QPoint(0, 0), page->pageSize());
-    int res = 4;
-    pdfPage->_image = page->renderToImage(
-        72.0 * res, 72.0 * res, 0, 0,
-        pdfPage->_pageRect.width() * res, pdfPage->_pageRect.height() * res);
 
     return true;
 }

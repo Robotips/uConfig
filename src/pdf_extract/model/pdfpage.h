@@ -35,6 +35,7 @@ class DATASHEET_EXTRACTOR_EXPORT PDFPage
 {
 public:
     PDFPage(PDFDatasheet *datasheet, int numPage=0);
+    ~PDFPage();
 
     int numPage() const;
     const QRect &pageRect() const;

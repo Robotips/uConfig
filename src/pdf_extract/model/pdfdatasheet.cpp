@@ -26,6 +26,11 @@ PDFDatasheet::PDFDatasheet(const QString &fileName)
     _pdfLoader = new PDFLoader(this);
 }
 
+PDFDatasheet::~PDFDatasheet()
+{
+    delete _pdfLoader;
+}
+
 const QString &PDFDatasheet::fileName() const
 {
     return _fileName;
