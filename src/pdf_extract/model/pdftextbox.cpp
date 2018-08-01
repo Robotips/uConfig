@@ -21,6 +21,9 @@
 PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
     : _text(text), _boundingRect(boundingRect)
 {
+    _page = Q_NULLPTR;
+    _parentBox = Q_NULLPTR;
+    _type = Text;
 }
 
 const QList<PDFTextBox *> &PDFTextBox::subBoxes() const
@@ -36,4 +39,29 @@ const QString &PDFTextBox::text() const
 const QRectF &PDFTextBox::boundingRect() const
 {
     return _boundingRect;
+}
+
+bool PDFTextBox::isPadName() const
+{
+    bool okNumber;
+    _text.toInt(&okNumber);
+    if (okNumber)
+        return true;
+    // TODO add BGA pad name filter
+    return false;
+}
+
+PDFTextBox::Type PDFTextBox::type() const
+{
+    return _type;
+}
+
+PDFTextBox *PDFTextBox::parentBox() const
+{
+    return _parentBox;
+}
+
+PDFPage *PDFTextBox::page() const
+{
+    return _page;
 }

@@ -21,6 +21,8 @@
 #include <poppler/qt5/poppler-qt5.h>
 #include <poppler/qt5/poppler-form.h>
 
+#include <QDebug>
+
 PDFLoader::PDFLoader(PDFDatasheet *pdfDatasheet)
     : _pdfDatasheet(pdfDatasheet)
 {
@@ -54,11 +56,67 @@ bool PDFLoader::loadPage(PDFPage *pdfPage)
 
 void PDFLoader::loadBoxes(PDFPage *pdfPage)
 {
+    PDFTextBox *parentTextBox = Q_NULLPTR;
     foreach (Poppler::TextBox *ptextBox, pdfPage->page()->textList())
     {
         PDFTextBox *textBox = new PDFTextBox(ptextBox->text(), ptextBox->boundingBox());
+        textBox->_page = pdfPage;
 
-        pdfPage->_textBoxes.append(textBox);
+        bool padName = textBox->isPadName();
+        if (padName)
+        {
+            textBox->_type = PDFTextBox::Pad;
+        }
+        if (parentTextBox == Q_NULLPTR)
+        {
+            if (ptextBox->nextWord() == Q_NULLPTR || padName)
+            {
+                pdfPage->_textBoxes.append(textBox);
+            }
+            else
+            {
+                parentTextBox = new PDFTextBox(QString(), ptextBox->boundingBox());
+                parentTextBox->_page = pdfPage;
+                if (ptextBox->hasSpaceAfter())
+                    textBox->_text.append(QChar(' '));
+                textBox->_parentBox = parentTextBox;
+                textBox->_type = PDFTextBox::SubText;
+                parentTextBox->_subBoxes.append(textBox);
+            }
+        }
+        else
+        {
+            if (padName)
+            {
+                pdfPage->_textBoxes.append(textBox);
+            }
+            else
+            {
+                textBox->_parentBox = parentTextBox;
+                textBox->_type = PDFTextBox::SubText;
+                parentTextBox->_subBoxes.append(textBox);
+            }
+            if (ptextBox->nextWord() == Q_NULLPTR || padName)
+            {
+                QRectF boundingRect;
+                QString text;
+                foreach (PDFTextBox *subBox, parentTextBox->subBoxes())
+                {
+                    text.append(subBox->text());
+                    boundingRect = boundingRect.united(subBox->boundingRect());
+                }
+                parentTextBox->_text = text;
+                parentTextBox->_boundingRect = boundingRect.adjusted(-1, -1, 1, 1);
+
+                pdfPage->_textBoxes.append(parentTextBox);
+                parentTextBox = Q_NULLPTR;
+            }
+            else
+            {
+                if (ptextBox->hasSpaceAfter())
+                    textBox->_text.append(QChar(' '));
+            }
+        }
     }
     pdfPage->_boxesLoaded = true;
 }
