@@ -68,3 +68,8 @@ PDFPage *PDFDatasheet::page(int numPage)
         return Q_NULLPTR;
     return *itFind;
 }
+
+PDFLoader *PDFDatasheet::pdfLoader() const
+{
+    return _pdfLoader;
+}

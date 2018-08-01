@@ -21,7 +21,10 @@
 
 #include "../pdf_extract_common.h"
 
+#include "pdftextbox.h"
+
 #include <QImage>
+#include <QList>
 #include <QRect>
 
 namespace Poppler
@@ -37,17 +40,26 @@ public:
     PDFPage(PDFDatasheet *datasheet, int numPage=0);
     ~PDFPage();
 
+    PDFDatasheet *datasheet() const;
+
     int numPage() const;
     const QRect &pageRect() const;
     const QImage &image() const;
 
     Poppler::Page *page() const;
 
+    void loadBoxes();
+    bool boxesLoaded() const;
+    const QList<PDFTextBox *> &textBoxes() const;
+
 protected:
     PDFDatasheet *_datasheet;
     int _numPage;
     QRect _pageRect;
     QImage _image;
+
+    bool _boxesLoaded;
+    QList<PDFTextBox *> _textBoxes;
 
     friend class PDFLoader;
     Poppler::Page *_page;

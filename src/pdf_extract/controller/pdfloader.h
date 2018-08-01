@@ -35,6 +35,7 @@ public:
     ~PDFLoader();
 
     bool loadPage(PDFPage *pdfPage);
+    void loadBoxes(PDFPage *pdfPage);
 
 protected:
     Poppler::Document *_document;

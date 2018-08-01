@@ -43,6 +43,8 @@ public:
     int loadedPageCount() const;
     PDFPage *page(int numPage);
 
+    PDFLoader *pdfLoader() const;
+
 protected:
     int _pageCount;
     QMap<int, PDFPage *> _pagesLoaded;

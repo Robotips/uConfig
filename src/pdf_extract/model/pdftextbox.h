@@ -16,15 +16,30 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef PDFRECT_H
-#define PDFRECT_H
+#ifndef PDFTEXTBOX_H
+#define PDFTEXTBOX_H
 
 #include "../pdf_extract_common.h"
 
-class DATASHEET_EXTRACTOR_EXPORT PDFRect
+#include <QList>
+#include <QRect>
+#include <QString>
+
+class DATASHEET_EXTRACTOR_EXPORT PDFTextBox
 {
 public:
-    PDFRect();
+    PDFTextBox(const QString &text, const QRectF &boundingRect);
+
+    const QList<PDFTextBox *> &subBoxes() const;
+
+    const QString &text() const;
+    const QRectF &boundingRect() const;
+
+protected:
+    QString _text;
+    QRectF _boundingRect;
+
+    QList<PDFTextBox *> _subBoxes;
 };
 
-#endif // PDFRECT_H
+#endif // PDFTEXTBOX_H

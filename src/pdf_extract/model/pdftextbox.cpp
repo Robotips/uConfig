@@ -16,9 +16,24 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "pdfrect.h"
+#include "pdftextbox.h"
 
-PDFRect::PDFRect()
+PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
+    : _text(text), _boundingRect(boundingRect)
 {
+}
 
+const QList<PDFTextBox *> &PDFTextBox::subBoxes() const
+{
+    return _subBoxes;
+}
+
+const QString &PDFTextBox::text() const
+{
+    return _text;
+}
+
+const QRectF &PDFTextBox::boundingRect() const
+{
+    return _boundingRect;
 }

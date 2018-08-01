@@ -21,7 +21,7 @@ SOURCES += \
     $$PWD/pdfdebugwidget/pdfdebugitempin.cpp \
     $$PWD/model/pdfdatasheet.cpp \
     $$PWD/model/pdfpage.cpp \
-    $$PWD/model/pdfrect.cpp \
+    $$PWD/model/pdftextbox.cpp \
     $$PWD/model/pdfpin.cpp \
     $$PWD/model/pdfcomponent.cpp \
     $$PWD/controller/pdfloader.cpp
@@ -39,7 +39,7 @@ HEADERS += \
     $$PWD/pdfdebugwidget/pdfdebugitempin.h \
     $$PWD/model/pdfdatasheet.h \
     $$PWD/model/pdfpage.h \
-    $$PWD/model/pdfrect.h \
+    $$PWD/model/pdftextbox.h \
     $$PWD/model/pdfpin.h \
     $$PWD/model/pdfcomponent.h \
     $$PWD/controller/pdfloader.h

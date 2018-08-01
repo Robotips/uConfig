@@ -51,3 +51,14 @@ bool PDFLoader::loadPage(PDFPage *pdfPage)
 
     return true;
 }
+
+void PDFLoader::loadBoxes(PDFPage *pdfPage)
+{
+    foreach (Poppler::TextBox *ptextBox, pdfPage->page()->textList())
+    {
+        PDFTextBox *textBox = new PDFTextBox(ptextBox->text(), ptextBox->boundingBox());
+
+        pdfPage->_textBoxes.append(textBox);
+    }
+    pdfPage->_boxesLoaded = true;
+}
