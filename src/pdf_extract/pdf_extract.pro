@@ -19,6 +19,7 @@ SOURCES += \
     $$PWD/pdfdebugwidget/pdfdebugscene.cpp \
     $$PWD/pdfdebugwidget/pdfdebugitempage.cpp \
     $$PWD/pdfdebugwidget/pdfdebugitempin.cpp \
+    $$PWD/pdfdebugwidget/pdfdebugitemtextbox.cpp \
     $$PWD/model/pdfdatasheet.cpp \
     $$PWD/model/pdfpage.cpp \
     $$PWD/model/pdftextbox.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     $$PWD/pdfdebugwidget/pdfdebugscene.h \
     $$PWD/pdfdebugwidget/pdfdebugitempage.h \
     $$PWD/pdfdebugwidget/pdfdebugitempin.h \
+    $$PWD/pdfdebugwidget/pdfdebugitemtextbox.h \
     $$PWD/model/pdfdatasheet.h \
     $$PWD/model/pdfpage.h \
     $$PWD/model/pdftextbox.h \
