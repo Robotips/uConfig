@@ -24,6 +24,11 @@
 #include <QImage>
 #include <QRect>
 
+namespace Poppler
+{
+class Page;
+}
+
 class PDFDatasheet;
 
 class DATASHEET_EXTRACTOR_EXPORT PDFPage
@@ -35,11 +40,16 @@ public:
     const QRect &pageRect() const;
     const QImage &image() const;
 
+    Poppler::Page *page() const;
+
 protected:
     PDFDatasheet *_datasheet;
     int _numPage;
     QRect _pageRect;
     QImage _image;
+
+    friend class PDFLoader;
+    Poppler::Page *_page;
 };
 
 #endif // PDFPAGE_H

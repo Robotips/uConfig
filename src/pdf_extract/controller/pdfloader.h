@@ -16,29 +16,28 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef PDFDEBUGITEMPAGE_H
-#define PDFDEBUGITEMPAGE_H
+#ifndef PAGELOADER_H
+#define PAGELOADER_H
 
 #include "../pdf_extract_common.h"
 
-#include <QGraphicsItem>
+#include "model/pdfdatasheet.h"
 
-#include "model/pdfpage.h"
+namespace Poppler
+{
+class Document;
+}
 
-class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemPage : public QGraphicsItem
+class DATASHEET_EXTRACTOR_EXPORT PDFLoader
 {
 public:
-    PdfDebugItemPage(PDFPage *page);
+    PDFLoader(PDFDatasheet *pdfDatasheet);
 
-    PDFPage *page() const;
-
-    // QGraphicsItem interface
-public:
-    QRectF boundingRect() const;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
+    bool loadPage(PDFPage *pdfPage);
 
 protected:
-    PDFPage *_page;
+    Poppler::Document *_document;
+    PDFDatasheet *_pdfDatasheet;
 };
 
-#endif // PDFDEBUGITEMPAGE_H
+#endif // PAGELOADER_H

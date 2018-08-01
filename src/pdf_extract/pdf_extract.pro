@@ -21,9 +21,10 @@ SOURCES += \
     $$PWD/pdfdebugwidget/pdfdebugitempin.cpp \
     $$PWD/model/pdfdatasheet.cpp \
     $$PWD/model/pdfpage.cpp \
-    model/pdfrect.cpp \
-    model/pdfpin.cpp \
-    model/pdfcomponent.cpp
+    $$PWD/model/pdfrect.cpp \
+    $$PWD/model/pdfpin.cpp \
+    $$PWD/model/pdfcomponent.cpp \
+    $$PWD/controller/pdfloader.cpp
 
 HEADERS += \
     $$PWD/datasheet_extractor_common.h \
@@ -38,9 +39,10 @@ HEADERS += \
     $$PWD/pdfdebugwidget/pdfdebugitempin.h \
     $$PWD/model/pdfdatasheet.h \
     $$PWD/model/pdfpage.h \
-    model/pdfrect.h \
-    model/pdfpin.h \
-    model/pdfcomponent.h
+    $$PWD/model/pdfrect.h \
+    $$PWD/model/pdfpin.h \
+    $$PWD/model/pdfcomponent.h \
+    $$PWD/controller/pdfloader.h
 
 LIBS += -L"$$PWD/../../bin"
 LIBS += -lpoppler-qt5

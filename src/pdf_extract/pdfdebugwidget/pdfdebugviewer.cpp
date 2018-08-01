@@ -18,8 +18,44 @@
 
 #include "pdfdebugviewer.h"
 
+#include <qmath.h>
+#include <QMouseEvent>
+
 PdfDebugViewer::PdfDebugViewer(QWidget *parent)
     : QGraphicsView(parent)
 {
+    setScene(new QGraphicsScene(this));
 
+    setDragMode(QGraphicsView::ScrollHandDrag);
+    setCursor(Qt::ArrowCursor);
+
+    setResizeAnchor(QGraphicsView::AnchorUnderMouse);
+    setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
+    setRenderHint(QPainter::Antialiasing, true);
+    setRenderHint(QPainter::SmoothPixmapTransform, true);
+    setRenderHint(QPainter::TextAntialiasing, true);
+}
+
+void PdfDebugViewer::setPage(PDFPage *page)
+{
+    _page = page;
+    scene()->clear();
+
+    PdfDebugItemPage *pageItem = new PdfDebugItemPage(_page);
+    scene()->addItem(pageItem);
+}
+
+void PdfDebugViewer::wheelEvent(QWheelEvent *event)
+{
+    int numDegrees = event->delta() / 8;
+    int numSteps = numDegrees / 15;
+
+    double mscale = qPow(1.25, numSteps);
+
+    if (transform().m11() < 0.5 && mscale < 1)
+        return;
+    if (transform().m11() > 4 && mscale > 1)
+        return;
+
+    scale(mscale, mscale);
 }

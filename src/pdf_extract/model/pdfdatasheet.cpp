@@ -18,13 +18,32 @@
 
 #include "pdfdatasheet.h"
 
-PDFDatasheet::PDFDatasheet()
+#include "controller/pdfloader.h"
+
+PDFDatasheet::PDFDatasheet(const QString &fileName)
+    : _fileName(fileName)
 {
+    _pdfLoader = new PDFLoader(this);
 }
 
-const QString &PDFDatasheet::filename() const
+const QString &PDFDatasheet::fileName() const
 {
-    return _filename;
+    return _fileName;
+}
+
+const QString &PDFDatasheet::title() const
+{
+    return _title;
+}
+
+bool PDFDatasheet::loadPage(int numPage)
+{
+    if (numPage >= _pageCount)
+        return false;
+
+    PDFPage *page = new PDFPage(this, numPage);
+    _pagesLoaded.insert(numPage, page);
+    return _pdfLoader->loadPage(page);
 }
 
 int PDFDatasheet::pageCount() const
@@ -35,4 +54,12 @@ int PDFDatasheet::pageCount() const
 int PDFDatasheet::loadedPageCount() const
 {
     return _pagesLoaded.size();
+}
+
+PDFPage *PDFDatasheet::page(int numPage)
+{
+    QMap<int, PDFPage *>::const_iterator itFind = _pagesLoaded.constFind(numPage);
+    if (itFind == _pagesLoaded.cend())
+        return Q_NULLPTR;
+    return *itFind;
 }

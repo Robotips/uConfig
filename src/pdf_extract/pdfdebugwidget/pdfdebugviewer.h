@@ -23,6 +23,9 @@
 
 #include <QGraphicsView>
 
+#include "model/pdfpage.h"
+#include "pdfdebugitempage.h"
+
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugViewer : public QGraphicsView
 {
     Q_OBJECT
@@ -31,7 +34,14 @@ public:
 
 signals:
 
+protected:
+    void wheelEvent(QWheelEvent *event);
+
 public slots:
+    void setPage(PDFPage *page);
+
+protected:
+    PDFPage *_page;
 };
 
 #endif // PDFDEBUGVIEWER_H

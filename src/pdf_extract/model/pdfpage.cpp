@@ -37,3 +37,8 @@ const QImage &PDFPage::image() const
 {
     return _image;
 }
+
+Poppler::Page *PDFPage::page() const
+{
+    return _page;
+}

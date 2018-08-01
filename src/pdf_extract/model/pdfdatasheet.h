@@ -26,21 +26,30 @@
 #include <QMap>
 #include <QString>
 
+class PDFLoader;
+
 class DATASHEET_EXTRACTOR_EXPORT PDFDatasheet
 {
 public:
-    PDFDatasheet();
+    PDFDatasheet(const QString &fileName);
 
-    const QString &filename() const;
+    const QString &fileName() const;
+    const QString &title() const;
+
+    bool loadPage(int numPage);
 
     int pageCount() const;
     int loadedPageCount() const;
-    PDFPage *page;
+    PDFPage *page(int numPage);
 
 protected:
     int _pageCount;
     QMap<int, PDFPage *> _pagesLoaded;
-    QString _filename;
+    QString _fileName;
+    QString _title;
+
+    friend class PDFLoader;
+    PDFLoader *_pdfLoader;
 };
 
 #endif // PDFDATASHEET_H

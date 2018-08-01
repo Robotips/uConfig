@@ -16,40 +16,34 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "pdfdebugitempage.h"
-
-#include <QPainter>
-#include <QDebug>
-#include <QStyleOptionGraphicsItem>
+#include "pdfloader.h"
 
 #include <poppler/qt5/poppler-qt5.h>
 #include <poppler/qt5/poppler-form.h>
 
-PdfDebugItemPage::PdfDebugItemPage(PDFPage *page)
+PDFLoader::PDFLoader(PDFDatasheet *pdfDatasheet)
+    : _pdfDatasheet(pdfDatasheet)
 {
-    _page = page;
+    _document = Poppler::Document::load(_pdfDatasheet->_fileName);
+    _pdfDatasheet->_pageCount = _document->numPages();
+    _pdfDatasheet->_title = _document->title();
 }
 
-PDFPage *PdfDebugItemPage::page() const
+bool PDFLoader::loadPage(PDFPage *pdfPage)
 {
-    return _page;
-}
+    if (pdfPage->numPage() >= _document->numPages())
+        return false;
 
-QRectF PdfDebugItemPage::boundingRect() const
-{
-    return _page->pageRect();
-}
+    Poppler::Page *page = _document->page(pdfPage->numPage());
+    if (page == Q_NULLPTR)
+        return false;
+    pdfPage->_page = page;
 
-void PdfDebugItemPage::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
-{
-    Q_UNUSED(option)
-    Q_UNUSED(widget)
-    const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+    pdfPage->_pageRect = QRect(QPoint(0, 0), page->pageSize());
+    int res = 4;
+    pdfPage->_image = page->renderToImage(
+        72.0 * res, 72.0 * res, 0, 0,
+        pdfPage->_pageRect.width() * res, pdfPage->_pageRect.height() * res);
 
-    //_page->page()->renderToPainter(painter, 72.0 * 4, 72.0 * 4, 0 ,0);
-    QImage image = _page->page()->renderToImage(72.0 * lod, 72.0 * lod, 0 ,0);
-    painter->drawImage(boundingRect(), image);
-
-    painter->setPen(Qt::black);
-    painter->drawRect(boundingRect());
+    return true;
 }
