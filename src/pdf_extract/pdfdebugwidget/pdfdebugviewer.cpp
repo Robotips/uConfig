@@ -45,6 +45,11 @@ void PdfDebugViewer::setPage(PDFPage *page)
     scene()->addItem(pageItem);
 }
 
+PDFPage *PdfDebugViewer::page() const
+{
+    return _page;
+}
+
 void PdfDebugViewer::wheelEvent(QWheelEvent *event)
 {
     int numDegrees = event->delta() / 8;

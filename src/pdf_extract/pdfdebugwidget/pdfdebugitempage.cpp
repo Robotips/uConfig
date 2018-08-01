@@ -25,9 +25,14 @@
 #include <poppler/qt5/poppler-qt5.h>
 #include <poppler/qt5/poppler-form.h>
 
+#include "pdfdebugitemtextbox.h"
+
 PdfDebugItemPage::PdfDebugItemPage(PDFPage *page)
 {
     _page = page;
+
+    foreach (PDFTextBox *textBox, _page->textBoxes())
+        new PdfDebugItemTextBox(textBox, this);
 }
 
 PDFPage *PdfDebugItemPage::page() const

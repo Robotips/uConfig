@@ -16,34 +16,29 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef PDFDEBUGVIEWER_H
-#define PDFDEBUGVIEWER_H
+#ifndef PDFDEBUGITEMTEXTBOX_H
+#define PDFDEBUGITEMTEXTBOX_H
 
 #include "../pdf_extract_common.h"
 
-#include <QGraphicsView>
+#include <QGraphicsItem>
 
-#include "model/pdfpage.h"
-#include "pdfdebugitempage.h"
+#include "model/pdftextbox.h"
 
-class DATASHEET_EXTRACTOR_EXPORT PdfDebugViewer : public QGraphicsView
+class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemTextBox : public QGraphicsItem
 {
-    Q_OBJECT
 public:
-    explicit PdfDebugViewer(QWidget *parent = Q_NULLPTR);
+    PdfDebugItemTextBox(PDFTextBox *textBox, QGraphicsItem *parent = Q_NULLPTR);
 
-    PDFPage *page() const;
+    PDFTextBox *textBox() const;
 
-signals:
-
-protected:
-    void wheelEvent(QWheelEvent *event);
-
-public slots:
-    void setPage(PDFPage *page);
+    // QGraphicsItem interface
+public:
+    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
 
 protected:
-    PDFPage *_page;
+    PDFTextBox *_textBox;
 };
 
-#endif // PDFDEBUGVIEWER_H
+#endif // PDFDEBUGITEMTEXTBOX_H
