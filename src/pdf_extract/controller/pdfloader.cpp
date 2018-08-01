@@ -26,7 +26,7 @@ PDFLoader::PDFLoader(PDFDatasheet *pdfDatasheet)
 {
     _document = Poppler::Document::load(_pdfDatasheet->_fileName);
     _pdfDatasheet->_pageCount = _document->numPages();
-    _pdfDatasheet->_title = _document->title();
+    _pdfDatasheet->_title = _document->info("Title");
 }
 
 bool PDFLoader::loadPage(PDFPage *pdfPage)
