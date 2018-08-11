@@ -29,6 +29,8 @@ PDFPage::PDFPage(PDFDatasheet *datasheet, int numPage)
 
 PDFPage::~PDFPage()
 {
+    foreach (PDFTextBox *textBox, _textBoxes)
+        delete textBox;
     delete _page;
 }
 
@@ -59,7 +61,8 @@ Poppler::Page *PDFPage::page() const
 
 void PDFPage::loadBoxes()
 {
-    _datasheet->pdfLoader()->loadBoxes(this);
+    if (!_boxesLoaded)
+        _datasheet->pdfLoader()->loadBoxes(this);
 }
 
 bool PDFPage::boxesLoaded() const

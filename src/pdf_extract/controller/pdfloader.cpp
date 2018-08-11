@@ -117,6 +117,7 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
                     textBox->_text.append(QChar(' '));
             }
         }
+        delete ptextBox;
     }
     pdfPage->_boxesLoaded = true;
 }

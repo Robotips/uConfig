@@ -26,6 +26,12 @@ PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
     _type = Text;
 }
 
+PDFTextBox::~PDFTextBox()
+{
+    foreach (PDFTextBox *textBox, _subBoxes)
+        delete textBox;
+}
+
 const QList<PDFTextBox *> &PDFTextBox::subBoxes() const
 {
     return _subBoxes;

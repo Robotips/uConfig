@@ -43,8 +43,10 @@ const QString &PDFDatasheet::title() const
 
 bool PDFDatasheet::loadPage(int numPage)
 {
-    if (numPage >= _pageCount)
+    if (numPage >= _pageCount | numPage < 0)
         return false;
+    if (page(numPage))
+        return true;
 
     PDFPage *page = new PDFPage(this, numPage);
     _pagesLoaded.insert(numPage, page);
