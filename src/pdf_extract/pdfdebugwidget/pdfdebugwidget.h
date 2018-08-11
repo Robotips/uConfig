@@ -22,16 +22,46 @@
 #include "../pdf_extract_common.h"
 
 #include <QWidget>
+#include <QAction>
+#include <QLineEdit>
+#include <QLabel>
+
+#include "model/pdfdatasheet.h"
+#include "pdfdebugviewer.h"
 
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugWidget : public QWidget
 {
     Q_OBJECT
 public:
     explicit PdfDebugWidget(QWidget *parent = Q_NULLPTR);
+    PdfDebugWidget(PDFDatasheet *datasheet, QWidget *parent = Q_NULLPTR);
+
+    PDFDatasheet *datasheet() const;
+    void setDatasheet(PDFDatasheet *datasheet);
+
+    PDFPage *currentPage() const;
+    int currentNumPage() const;
 
 signals:
+    void pageChanged(int page);
 
 public slots:
+    void showPage(int page);
+    void showPage(PDFPage *page);
+
+    void previous();
+    void next();
+
+protected:
+    PDFDatasheet *_datasheet;
+    PDFPage *_currentPage;
+
+    void createWidgets();
+    PdfDebugViewer *_viewer;
+    QAction *_ationPrev;
+    QAction *_ationNext;
+    QLineEdit *_pageLineEdit;
+    QLabel *_pageLabel;
 };
 
 #endif // PDFDEBUGWIDGET_H

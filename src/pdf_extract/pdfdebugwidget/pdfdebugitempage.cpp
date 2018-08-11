@@ -50,13 +50,12 @@ void PdfDebugItemPage::paint(QPainter *painter, const QStyleOptionGraphicsItem *
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    painter->setPen(Qt::black);
-
     const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
+    painter->setPen(Qt::black);
 
     _page->page()->renderToPainter(painter, 72.0 * lod, 72.0 * lod, -painter->worldTransform().m31(), -painter->worldTransform().m32(),
                                    _page->pageRect().width(), _page->pageRect().width(),
-                                   Poppler::Page::Rotate0 /*,Poppler::Page::DontSaveAndRestore*/);
+                                   Poppler::Page::Rotate0);
     //QImage image = _page->page()->renderToImage(72.0 * lod, 72.0 * lod, 0 ,0);
     //painter->drawImage(_page->pageRect(), image);
 
