@@ -6,26 +6,28 @@
 
 An old personal project resurrected to extract pinout from PDF datasheet and create Kicad schematics.
 
-![Screenshot](uConfig.png)
+![Screenshot](uConfig_gui.png)
 
 Directly save Kicad library files. Work better with huge number of pins.
 
-## How does it work
+## PDF extraction, how does it work ?
 
 The extraction of pin mapping from PDF files is done by parsing datasheet. Poppler is used to extract blocks of text and with magic rules,
 it sorts the pin numbers and pin labels. Labels and numbers are associated by most relevant pair to create pins. Then, the list of pins is
 also sorted and associated by packages. This list of package could be save as a kicad library.
 
+![Screenshot](uConfig.png)
+
 The second part of the tool is named `pinruler`, to permit a reorganization following a set of rules named `KSS` (Kicad Style Sheet).
 KSS files are similar to CSS files, take a look to [KSS reference variables](rules/README.md).
 
-Actually, it exists a command line tool to extract components from datasheet :
+It exists a command line tool to extract components from a datasheet :
 
 ```bash
 uconfig datasheet.pdf -o lib1.lib -r microchip.kss
 ```
 
-It will be save in `lib1.lib` all the schematics of components found in `datasheet.pdf` formated with the `microchip.kss` rule.
+It will be save in `lib1.lib` all the schematics of components found in `datasheet.pdf` formated with the `microchip.kss` KSS file rules.
 
 A GUI interface is also available, called uconfig_gui.
 
@@ -38,7 +40,6 @@ kicad library linter. You can find examples in rules/ directory or take a look t
 
 - CSV importer
 - multi-pages components
-- non regression tests for pdf extractor
 - BGA footprint
 
 ## Bugs
@@ -63,18 +64,26 @@ To know your Qt version :
 qmake -query QT_VERSION
 ```
 
+To install on Ubuntu :
+
+```bash
+sudo apt install qt5-default qttools5-dev-tools
+```
+
 ### poppler
 
 poppler is a pdf parser library under GPL v3 license. v0.41 is the minimal supported with qt5 frontend.
 
-To install on linux :
+To install on Ubuntu :
 
 ```bash
 sudo apt install libpoppler-qt5-dev
 ```
 
 For windows, build from sources (very annoying) or find a built version here :
-[http://blog.alivate.com.au/poppler-windows/](http://blog.alivate.com.au/poppler-windows/)
+
+- includes : [http://robotips.fr/data/bin-poppler-win32.tar.gz](http://robotips.fr/data/bin-poppler-win32.tar.gz)
+- DLLs : [http://robotips.fr/data/include-poppler.tar.gz](http://robotips.fr/data/include-poppler.tar.gz)
 
 ### build
 
