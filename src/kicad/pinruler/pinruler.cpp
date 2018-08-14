@@ -190,6 +190,8 @@ void PinRuler::organize(Component *component)
 
     qSort(leftSide.begin(), leftSide.end(), prioGreaterThan);
     qSort(rightSide.begin(), rightSide.end(), prioGreaterThan);
+    qSort(topSide.begin(), topSide.end(), prioGreaterThan);
+    qSort(bottomSide.begin(), bottomSide.end(), prioGreaterThan);
 
     // margins
     leftSize.rheight() += (leftSide.size() - 1) * 100;
