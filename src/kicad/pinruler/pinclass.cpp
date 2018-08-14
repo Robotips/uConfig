@@ -200,24 +200,28 @@ void PinClass::computeBoundingRect() const
 {
     QRect rect;
     KicadFont kicadFont;
-    int maxWidth = 0;
+    int maxLength = 0;
     foreach (PinClassItem *pinItem, _pins)
     {
         int width = kicadFont.textWidth(pinItem->pin()->name());
-        if (width > maxWidth)
-            maxWidth = width;
+        if (width > maxLength)
+            maxLength = width;
     }
 
     switch (_position)
     {
     case ClassRule::PositionTop:
     case ClassRule::PositionBottom:
-        rect = QRect(0, 0, _pins.size() * 100, maxWidth + 20);
+        rect = QRect(0, 0, _pins.size() * 100, maxLength + 20);
+        if (hasLabelSet() && !_label.isEmpty())
+            rect.adjust(0, 0, 0, 50);
         break;
     case ClassRule::PositionLeft:
     case ClassRule::PositionRight:
     case ClassRule::PositionASide:
-        rect = QRect(0, 0, maxWidth + 20, _pins.size() * 100);
+        rect = QRect(0, 0, maxLength + 20, _pins.size() * 100);
+        if (hasLabelSet() && !_label.isEmpty())
+            rect.adjust(0, 0, 50, 0);
         break;
     }
     _boundingRect = rect;

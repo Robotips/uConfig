@@ -206,7 +206,7 @@ void PinRuler::organize(Component *component)
     x = -sideX;
     y = -sideY + qCeil(topSize.height() / 100.0) * 100;
     if (leftSize.height() + 50 < rightSize.height())
-        y += qCeil((rightSize.height() - leftSize.height()) / 2.0);
+        y += qCeil((rightSize.height() - leftSize.height()) / 200.0) * 100; // grid align KLC4.1
     foreach (PinClass *mpinClass, leftSide)
     {
         mpinClass->setPos(QPoint(x, y));
@@ -221,7 +221,7 @@ void PinRuler::organize(Component *component)
     x = sideX;
     y = -sideY + qCeil(topSize.height() / 100.0) * 100;
     if (rightSize.height() + 50 < leftSize.height())
-        y += qCeil((leftSize.height() - rightSize.height()) / 2.0);
+        y += qCeil((leftSize.height() - rightSize.height()) / 200.0) * 100; // grid align KLC4.1
     foreach (PinClass *mpinClass, rightSide)
     {
         mpinClass->setPos(QPoint(x, y));
