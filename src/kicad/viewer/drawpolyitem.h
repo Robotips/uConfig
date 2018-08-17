@@ -30,7 +30,7 @@ class KICAD_EXPORT DrawPolyItem : public DrawItem
 public:
     DrawPolyItem(DrawPoly *draw);
 
-    enum { Type = UserType + 4 };
+    enum { Type = UserType + 5 };
     int type() const {return Type;}
 
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);

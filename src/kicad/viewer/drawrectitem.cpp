@@ -35,18 +35,15 @@ void DrawRectItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     Q_UNUSED(option)
     Q_UNUSED(widget)
 
-    painter->setPen(QPen(QColor(132, 0, 0), 0.254 * draw()->thickness()));
+    double thickness = draw()->thickness();
+    if (thickness == 0)
+        thickness = 1 / 0.254;
+    painter->setPen(QPen(QColor(132, 0, 0), 0.254 * thickness));
 
     if (_drawRect->filled() != DrawRect::DrawNotFilled)
         painter->setBrush(QColor(255, 255, 194));
 
-    QFont font = KicadFont::font(50);
-    painter->setFont(font);
-
-    QRect rect;
-    rect.setTopLeft(QPoint(0, 0));
-    rect.setSize(_drawRect->rect().size() / ComponentItem::ratio);
-    painter->drawRect(rect);
+    painter->drawRect(_rect);
 }
 
 QRectF DrawRectItem::boundingRect() const
