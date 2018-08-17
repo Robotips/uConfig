@@ -746,6 +746,39 @@ Draw *KicadLibParser::readDraw(char c)
             _stream.readLine();
             return draw;
         }
+    case 'C': // circle
+        {
+            DrawCircle *draw = new DrawCircle();
+            _stream >> n;
+            draw->pos().setX(n);
+            _stream >> n;
+            draw->pos().setY(-n);
+            _stream >> n;
+            draw->setRadius(n);
+            _stream >> n;
+            draw->setUnit(n);
+            _stream >> n;
+            draw->setConvert(n);
+            _stream >> n;
+            draw->setThickness(n);
+
+            _stream.skipWhiteSpace();
+            _stream >> nc;
+            switch (nc)
+            {
+            case 'F':
+                draw->setFilled(Draw::DrawFilledForeGround);
+                break;
+            case 'f':
+                draw->setFilled(Draw::DrawFilledBackGround);
+                break;
+            default:
+                draw->setFilled(Draw::DrawNotFilled);
+                break;
+            }
+            _stream.readLine();
+            return draw;
+        }
     default:
         return Q_NULLPTR;
     }

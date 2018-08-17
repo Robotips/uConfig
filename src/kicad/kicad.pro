@@ -37,6 +37,7 @@ SOURCES += \
     $$PWD/viewer/drawtextitem.cpp \
     $$PWD/viewer/drawrectitem.cpp \
     $$PWD/viewer/drawpolyitem.cpp \
+    $$PWD/viewer/drawcircleitem.cpp \
     $$PWD/itemmodel/componentlibitemmodel.cpp \
     $$PWD/itemmodel/componentpinsitemmodel.cpp \
     $$PWD/itemmodel/componentlibtreeview.cpp \
@@ -83,6 +84,7 @@ HEADERS += \
     $$PWD/viewer/drawtextitem.h \
     $$PWD/viewer/drawrectitem.h \
     $$PWD/viewer/drawpolyitem.h \
+    $$PWD/viewer/drawcircleitem.h \
     $$PWD/itemmodel/componentlibitemmodel.h \
     $$PWD/itemmodel/componentpinsitemmodel.h \
     $$PWD/itemmodel/componentlibtreeview.h \
