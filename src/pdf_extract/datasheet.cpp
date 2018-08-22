@@ -397,7 +397,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                     box = new DatasheetBox();
                     box->page = numPage;
                 }
-                else if (box->text.size() > 10 && !box->text.contains("/"))
+                else if (box->text.size() > 10 && (!box->text.contains("/") && !box->text.contains("_")))
                 {
                     //qDebug()<<"filter long label"<<box->text;
                     delete box;
@@ -538,6 +538,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
              << "PIN DESCRIPTION"
              << "PIN NAMES"
              << "Pin Assignment"
+             << "lead Assignment"
              << "PIN CONFIGURATION"
              << "Pinouts"
              << "PACKAGE"
@@ -602,7 +603,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
             }
             delete textBox;
 
-            if (labelOk && vssOk && vddOk)
+            if (labelOk && (vssOk || vddOk))
             {
                 delete page;
                 return i;
@@ -653,7 +654,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
     {
         if (mpageEnd == -1)
             mpageEnd = pageCount();
-        for (; page<mpageEnd; page++)
+        for (; page <= mpageEnd; page++)
             pinSearch(page);
     }
 }
