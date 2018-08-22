@@ -397,7 +397,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                     box = new DatasheetBox();
                     box->page = numPage;
                 }
-                else if (box->text.size() > 10 && (!box->text.contains("/") && !box->text.contains("_")))
+                else if (box->text.size() > 10 && (!box->text.contains("/") && !box->text.contains("_") && !box->text.contains(",")))
                 {
                     //qDebug()<<"filter long label"<<box->text;
                     delete box;
