@@ -28,7 +28,7 @@ SOURCES += \
     $$PWD/controller/pdfloader.cpp
 
 HEADERS += \
-    $$PWD/datasheet_extractor_common.h \
+    $$PWD/pdf_extract_common.h \
     $$PWD/datasheet.h \
     $$PWD/datasheetpackage.h \
     $$PWD/datasheetpin.h \
