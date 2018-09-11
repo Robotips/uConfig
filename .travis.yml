@@ -1,9 +1,21 @@
-sudo: required
-dist: trusty
-group: edge
+os:
+  - linux
+  - osx
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      group: edge
+      compiler: 
+        - gcc
+    - os: osx
+      compiler: 
+        - clang
 
 before_install:
-  - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
             && sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty main"
             && sudo apt-get install debian-keyring debian-archive-keyring
             && sudo apt-key update
@@ -11,13 +23,12 @@ before_install:
             && sudo apt-get install -qq qt5-qmake qtbase5-dev qt5-default qttools5-dev-tools libqt5serialport5-dev
             && sudo apt-get install -qq zlib1g-dev libudev-dev
             && sudo apt-get install -qq libpoppler-qt5-dev
-            && echo "Qt5/poppler installed";
+            && echo "Qt5/poppler installed"; fi;
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update 
+            && brew install qt 
+            && brew install --with-qt poppler; fi;
 
 language: cpp
-
-# Compiler selection
-compiler:
-  - gcc
 
 install: true
 
