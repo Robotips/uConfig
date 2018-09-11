@@ -51,10 +51,7 @@ LIBS += -lpoppler-qt5
 INCLUDEPATH += $$PWD/../../
 LIBS += -lkicad
 
-ifneq ($(OS),Windows_NT)
-    UNAME_S = $(shell uname -s)
-    ifeq ($(UNAME_S),Darwin)
-        LIBS += -L /usr/local/lib
-        INCLUDEPATH += /usr/local/include
-    endif
-endif
+macx {
+    LIBS += -L /usr/local/lib
+    INCLUDEPATH += /usr/local/include 
+}
