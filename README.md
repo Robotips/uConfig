@@ -94,3 +94,18 @@ cd build
 qmake ../src/uConfig.pro
 make -j4
 ```
+
+### build on macOS
+
+```bash
+brew install qt
+brew install --with-qt poppler
+cd uConfig
+mkdir build
+cd build
+qmake ../src/uConfig.pro
+make -j4
+cd ../bin
+macdeployqt uconfig_gui.app -libpath=./
+# the uconfig_gui.app can the easily be started as a normal mac application
+```
