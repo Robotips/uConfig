@@ -50,3 +50,8 @@ LIBS += -L"$$PWD/../../bin"
 LIBS += -lpoppler-qt5
 INCLUDEPATH += $$PWD/../../
 LIBS += -lkicad
+
+macx {
+    LIBS += -L /usr/local/lib
+    INCLUDEPATH += /usr/local/include 
+}
