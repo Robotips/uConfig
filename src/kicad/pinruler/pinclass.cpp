@@ -214,14 +214,14 @@ void PinClass::computeBoundingRect() const
     case ClassRule::PositionBottom:
         rect = QRect(0, 0, _pins.size() * 100, maxLength + 20);
         if (hasLabelSet() && !_label.isEmpty())
-            rect.adjust(0, 0, 0, 50);
+            rect.adjust(0, 0, 0, 100);
         break;
     case ClassRule::PositionLeft:
     case ClassRule::PositionRight:
     case ClassRule::PositionASide:
         rect = QRect(0, 0, maxLength + 20, _pins.size() * 100);
         if (hasLabelSet() && !_label.isEmpty())
-            rect.adjust(0, 0, 50, 0);
+            rect.adjust(0, 0, 100, 0);
         break;
     }
     _boundingRect = rect;
