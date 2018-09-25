@@ -63,9 +63,6 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 
 bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number)
 {
-    if (label.page != number.page)
-        return false;
-
     if (label.pos.width() > label.pos.height() || label.text.count() < 2)  // Horizontal
     {
         qreal marge = label.pos.height();

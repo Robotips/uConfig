@@ -37,6 +37,7 @@ public:
     QString name;
     int pin;
     QRectF pos;
+    int page;
     QRectF numPos;
 
     DatasheetBox *numberBox;

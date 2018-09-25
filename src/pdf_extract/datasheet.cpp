@@ -103,13 +103,13 @@ void Datasheet::pinSearch(int numPage)
     _pack_labels.clear();
 
     pins = extractPins(numPage);
-    //pins.append(extractPins(numPage+1));
+    //pins.append(extractPins(numPage + 1));
     QCoreApplication::processEvents();
 
     // painring pin to find package
     foreach (DatasheetPin *pin, pins)
     {
-        if (pin->pin == 1)
+        if (pin->pin == 1 && pin->page == numPage)
         {
             DatasheetPackage *package;
             package = new DatasheetPackage();
@@ -161,6 +161,10 @@ void Datasheet::pinSearch(int numPage)
         for (int i = 0; i < pins.count(); i++)
         {
             DatasheetPin *pin = pins[i];
+
+            if (pin->page != label->page)
+                continue;
+
             if (pin->name.endsWith("/"))
             {
                 qreal newdist = label->distanceToPoint(pin->nameBox->pos.bottomLeft());
@@ -171,7 +175,7 @@ void Datasheet::pinSearch(int numPage)
                 }
             }
         }
-        if (nearPin != NULL && dist < nearPin->numPos.height()*2)
+        if (nearPin != NULL && dist < nearPin->numPos.height() * 2)
         {
             //qDebug()<<"  > pin"<<nearPin->name<<nearPin->numberBox->text<<dist;
             nearPin->name += label->text;
@@ -431,6 +435,9 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             if (label->associated)
                 continue;
 
+            if (label->page != number->page)
+                continue;
+
             if (!DatasheetBox::isAlign(*label, *number))
                 continue;
 
@@ -456,6 +463,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             pin->name.remove(QRegExp(" +"));
             pin->nameBox = assocLabel;
 
+            pin->page = number->page;
             pin->pos = number->pos.united(assocLabel->pos);
 
             pins.push_back(pin);
