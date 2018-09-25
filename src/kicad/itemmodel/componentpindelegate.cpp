@@ -127,13 +127,17 @@ void ComponentPinDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     drawBackground(painter, option, index);
     drawFocus(painter, option, option.rect);
 
-    // draw text
-    painter->setFont(option.font);
+    // compute colors and margins
+    QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
+    if (cg == QPalette::Normal && !(option.state & QStyle::State_Active))
+        cg = QPalette::Inactive;
     if (option.state.testFlag(QStyle::State_Selected) && option.widget->hasFocus())
-        painter->setPen(option.palette.color(QPalette::HighlightedText));
+        painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
     else
-        painter->setPen(option.palette.color(QPalette::Text));
+        painter->setPen(option.palette.color(cg, QPalette::Text));
     int margin = option.widget->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, option.widget) + 1;
+
+    // draw text
     QRect textRect = option.rect.adjusted(margin, 0, -margin, 0);
     QString text = index.model()->data(index).toString();
     if (!_searchPattern.isValid() || _searchPattern.pattern().isEmpty())

@@ -18,8 +18,6 @@
 
 #include "numericalsortfilterproxymodel.h"
 
-#include <QDebug>
-
 NumericalSortFilterProxyModel::NumericalSortFilterProxyModel()
     : _numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption)
 {

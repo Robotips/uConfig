@@ -18,10 +18,17 @@
 
 #include "componentpinsitemmodel.h"
 
+#include "numericalsortfilterproxymodel.h"
+
+#include <QBrush>
+#include <QDebug>
+
 ComponentPinsItemModel::ComponentPinsItemModel(Component *component, QObject *parent) :
     QAbstractItemModel(parent)
 {
-    _component = component;
+    setComponent(component);
+    _isExpendable = true;
+    _higherPin = QString();
 }
 
 Component *ComponentPinsItemModel::component() const
@@ -33,6 +40,9 @@ void ComponentPinsItemModel::setComponent(Component *component)
 {
     emit layoutAboutToBeChanged();
     _component = component;
+
+    updateHigherPin();
+
     emit layoutChanged();
 }
 
@@ -87,7 +97,18 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
     if (!_component)
         return QVariant();
 
-    Pin *pin = _component->pins().at(index.row());
+    Pin *pin = Q_NULLPTR;
+    if (index.row() < _component->pins().count())
+        pin = _component->pins().at(index.row());
+
+    if (pin == Q_NULLPTR)
+    {
+        if ((role == Qt::DisplayRole || role == Qt::EditRole) && index.column() == PinNumber)
+            return QVariant(_higherPin);
+        if (role == Qt::ForegroundRole)
+            return QVariant(QBrush(Qt::gray));
+        return QVariant();
+    }
 
     switch (role)
     {
@@ -125,10 +146,14 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 
 QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex &parent) const
 {
+    Q_UNUSED(parent)
     if (!_component)
         return QModelIndex();
-    Q_UNUSED(parent)
-    return createIndex(row, column, _component->pins()[row]);
+
+    if (row >= _component->pins().count())
+        return createIndex(row, column, Q_NULLPTR);
+    else
+        return createIndex(row, column, _component->pins()[row]);
 }
 
 QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const
@@ -141,8 +166,14 @@ int ComponentPinsItemModel::rowCount(const QModelIndex &parent) const
 {
     if (!_component)
         return 0;
+
     if (!parent.isValid())
-        return _component->pins().count();
+    {
+        if (_isExpendable)
+            return _component->pins().count() + 1;
+        else
+            return _component->pins().count();
+    }
     return 0;
 }
 
@@ -152,7 +183,27 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
     if (!_component)
         return false;
 
-    Pin *pin = _component->pins().at(index.row());
+    Pin *pin;
+    if (index.row() >= _component->pins().count())
+    {
+        if (index.column() != PinNumber && index.column() != PinName)
+            return false;
+        if (value.isNull() || !value.isValid() || value.toString() == QString())
+            return false;
+
+        // new pin
+        pin = new Pin();
+        if (index.column() == PinNumber)
+            pin->setPadName(value.toString());
+        else if (index.column() != PinName)
+        {
+            pin->setPadName(_higherPin);
+            pin->setName(value.toString());
+        }
+        //_component->addPin(pin);
+        return true;
+    }
+    pin = _component->pins().at(index.row());
 
     switch (role)
     {
@@ -200,4 +251,47 @@ void ComponentPinsItemModel::remove(const QModelIndex &index)
     emit pinRemoved(mpin);
     _component->removePin(mpin);
     emit layoutChanged();
+}
+
+QString ComponentPinsItemModel::toNumeric(const QString &str)
+{
+    QString sortPatern = str;
+
+    QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
+
+    QRegularExpressionMatchIterator numMatchIt = numPattern.globalMatch(str);
+    if (numMatchIt.hasNext())
+        sortPatern.clear();
+    while (numMatchIt.hasNext())
+    {
+        QRegularExpressionMatch numMatch = numMatchIt.next();
+        sortPatern.append(numMatch.captured(1) + QString('0').repeated(5 - numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
+    }
+
+    return sortPatern;
+}
+
+void ComponentPinsItemModel::updateHigherPin()
+{
+    _higherPin = QString();
+    QString higherNumPin = QString();
+    if (_component)
+    {
+        foreach (Pin *pin, _component->pins())
+        {
+            QString numPin = toNumeric(pin->padName());
+            if (numPin > higherNumPin)
+            {
+                _higherPin = pin->padName();
+                higherNumPin = numPin;
+            }
+        }
+        QRegularExpression higherNumPinPattern("([A-Z]*0*)([1-9][0-9]*)", QRegularExpression::CaseInsensitiveOption);
+        QRegularExpressionMatchIterator higherNumPinMatchIt = higherNumPinPattern.globalMatch(_higherPin);
+        if (higherNumPinMatchIt.hasNext())
+        {
+            QRegularExpressionMatch numMatch = higherNumPinMatchIt.next();
+            _higherPin = numMatch.captured(1) + QString::number(numMatch.captured(2).toInt() + 1);
+        }
+    }
 }

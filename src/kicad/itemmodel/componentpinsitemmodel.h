@@ -62,8 +62,15 @@ signals:
     void pinModified(Pin *pin);
     void pinRemoved(Pin *pin);
 
+protected:
+    static QString toNumeric(const QString &str);
+
 private:
     Component *_component;
+    bool _isExpendable;
+
+    QString _higherPin;
+    void updateHigherPin();
 };
 
 #endif // COMPONENTPINSITEMMODEL_H

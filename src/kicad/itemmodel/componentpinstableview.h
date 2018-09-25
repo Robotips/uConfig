@@ -24,7 +24,7 @@
 #include <QTableView>
 #include <QAction>
 
-#include "numericalsortfilterproxymodel.h"
+#include "componentpinssortfilterproxymodel.h"
 #include "componentpinsitemmodel.h"
 #include "componentpindelegate.h"
 
@@ -59,7 +59,7 @@ protected:
 protected:
     ComponentPinsItemModel *_model;
     ComponentPinDelegate *_delegate;
-    NumericalSortFilterProxyModel *_sortProxy;
+    ComponentPinsSortFilterProxyModel *_sortProxy;
 
     void createActions();
     QAction *_removeAction;

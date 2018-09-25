@@ -25,12 +25,9 @@
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
     : QTableView(parent)
 {
-    if (component)
-        _model = new ComponentPinsItemModel(component);
-    else
-        _model = new ComponentPinsItemModel(new Component());
+    _model = new ComponentPinsItemModel(component);
 
-    _sortProxy = new NumericalSortFilterProxyModel();
+    _sortProxy = new ComponentPinsSortFilterProxyModel();
     _sortProxy->setSourceModel(_model);
     setSelectionBehavior(QAbstractItemView::SelectRows);
     setModel(_sortProxy);
@@ -129,7 +126,6 @@ void ComponentPinsTableView::remove()
                                  .arg(pindex.count() / ComponentPinsItemModel::ColumnCount)) != QMessageBox::Yes)
             return;
         selectionModel()->clearSelection();
-        //emit openedComponent(Q_NULLPTR);
         foreach (QPersistentModelIndex index, pindex)
             _model->remove(index);
     }

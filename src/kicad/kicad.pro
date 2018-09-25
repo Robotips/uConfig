@@ -39,10 +39,11 @@ SOURCES += \
     $$PWD/viewer/drawpolyitem.cpp \
     $$PWD/viewer/drawcircleitem.cpp \
     $$PWD/itemmodel/componentlibitemmodel.cpp \
-    $$PWD/itemmodel/componentpinsitemmodel.cpp \
-    $$PWD/itemmodel/componentlibtreeview.cpp \
-    $$PWD/itemmodel/componentpinstableview.cpp \
     $$PWD/itemmodel/numericalsortfilterproxymodel.cpp \
+    $$PWD/itemmodel/componentlibtreeview.cpp \
+    $$PWD/itemmodel/componentpinsitemmodel.cpp \
+    $$PWD/itemmodel/componentpinssortfilterproxymodel.cpp \
+    $$PWD/itemmodel/componentpinstableview.cpp \
     $$PWD/itemmodel/componentpindelegate.cpp \
     $$PWD/itemmodel/pinlisteditor.cpp \
     $$PWD/pinruler/rulesparser.cpp \
@@ -86,10 +87,11 @@ HEADERS += \
     $$PWD/viewer/drawpolyitem.h \
     $$PWD/viewer/drawcircleitem.h \
     $$PWD/itemmodel/componentlibitemmodel.h \
-    $$PWD/itemmodel/componentpinsitemmodel.h \
-    $$PWD/itemmodel/componentlibtreeview.h \
-    $$PWD/itemmodel/componentpinstableview.h \
     $$PWD/itemmodel/numericalsortfilterproxymodel.h \
+    $$PWD/itemmodel/componentlibtreeview.h \
+    $$PWD/itemmodel/componentpinsitemmodel.h \
+    $$PWD/itemmodel/componentpinssortfilterproxymodel.h \
+    $$PWD/itemmodel/componentpinstableview.h \
     $$PWD/itemmodel/componentpindelegate.h \
     $$PWD/itemmodel/pinlisteditor.h \
     $$PWD/pinruler/rulesparser.h \
