@@ -48,8 +48,8 @@ private slots:
 
     // QWidget interface
 protected:
-    void dragEnterEvent(QDragEnterEvent *event) override;
-    void resizeEvent(QResizeEvent *event) override;
+    void dragEnterEvent(QDragEnterEvent *event) Q_DECL_OVERRIDE;
+    void resizeEvent(QResizeEvent *event) Q_DECL_OVERRIDE;
 
     KssEditorMargin *_kssEditorMargin;
     int _lineError;

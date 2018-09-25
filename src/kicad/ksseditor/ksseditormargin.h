@@ -30,10 +30,10 @@ class KICAD_EXPORT KssEditorMargin : public QWidget
 public:
     KssEditorMargin(KssEditor *editor);
 
-    QSize sizeHint() const override;
+    QSize sizeHint() const Q_DECL_OVERRIDE;
 
 protected:
-    void paintEvent(QPaintEvent *event) override;
+    void paintEvent(QPaintEvent *event) Q_DECL_OVERRIDE;
 
     KssEditor *_editor;
 };
