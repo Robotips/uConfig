@@ -96,8 +96,8 @@ void UConfigMainWindow::organize(QString ruleSetName)
         return;
     }
     RulesSet ruleSet;
-    RulesParser parser(QString("../rules/%1.kss").arg(ruleSetName));
-    QFile kssFile(QString("../rules/%1.kss").arg(ruleSetName));
+    RulesParser parser(QString(qApp->applicationDirPath() + "/../rules/%1.kss").arg(ruleSetName));
+    QFile kssFile(QString(qApp->applicationDirPath() + "/../rules/%1.kss").arg(ruleSetName));
     kssFile.open(QIODevice::ReadOnly | QIODevice::Text);
     _kssEditor->clear();
     _kssEditor->appendPlainText(kssFile.readAll());
@@ -154,7 +154,7 @@ void UConfigMainWindow::reloadRuleSetList()
 {
     _ruleComboBox->clear();
     _ruleComboBox->addItem("package");
-    QDir dir("../rules/");
+    QDir dir(qApp->applicationDirPath() + "/../rules/");
     foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList()<<"*.kss", QDir::NoDotAndDotDot | QDir::Files))
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
