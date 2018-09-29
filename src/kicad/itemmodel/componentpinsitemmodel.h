@@ -61,6 +61,7 @@ public:
 signals:
     void pinModified(Pin *pin);
     void pinRemoved(Pin *pin);
+    void pinInserted(Pin *pin);
 
 protected:
     static QString toNumeric(const QString &str);

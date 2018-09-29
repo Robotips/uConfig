@@ -195,12 +195,18 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
         pin = new Pin();
         if (index.column() == PinNumber)
             pin->setPadName(value.toString());
-        else if (index.column() != PinName)
+        else if (index.column() == PinName)
         {
             pin->setPadName(_higherPin);
             pin->setName(value.toString());
         }
-        //_component->addPin(pin);
+        else
+            return false;
+        beginInsertRows(QModelIndex(), _component->pins().count(), _component->pins().count());
+        _component->addPin(pin);
+        endInsertRows();
+        updateHigherPin();
+        emit pinInserted(pin);
         return true;
     }
     pin = _component->pins().at(index.row());
@@ -213,6 +219,7 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
         {
         case PinNumber:
             pin->setPadName(value.toString());
+            updateHigherPin();
             break;
         case PinName:
             pin->setName(value.toString());
@@ -250,6 +257,7 @@ void ComponentPinsItemModel::remove(const QModelIndex &index)
     emit layoutAboutToBeChanged();
     emit pinRemoved(mpin);
     _component->removePin(mpin);
+    updateHigherPin();
     emit layoutChanged();
 }
 
