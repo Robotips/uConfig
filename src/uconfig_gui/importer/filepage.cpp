@@ -112,7 +112,7 @@ void FilePage::checkEntry(const QString &text)
 {
     QFileInfo info(text);
     QPalette palette = _fileEdit->palette();
-    if (!_suffixes.contains(info.completeSuffix(), Qt::CaseInsensitive) || !info.exists())
+    if (!_suffixes.contains(info.suffix(), Qt::CaseInsensitive) || !info.exists())
     {
         _complete = false;
         emit completeChanged();
