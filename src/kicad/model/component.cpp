@@ -337,7 +337,7 @@ bool pinPadLessThan(const Pin *pin1, const Pin *pin2)
 }
 
 /**
- * @brief Sorts the component by pin name
+ * @brief Sorts the component by pad name
  */
 void Component::sort()
 {
@@ -554,9 +554,16 @@ void Component::reorganizeToPackageStyle()
     }
 
     clearDraws();
-    QRect rect = QRect(QPoint(-margin + 200,
-                         -qMax(leftOffset, rightOffset) - 100),
-                  QPoint(margin - 200,
-                         qMax(leftOffset, rightOffset) + 100));
+    // added draw outside rect
+    QRect rect = QRect(QPoint(-margin + 200, -qMax(leftOffset, rightOffset) - 100),
+                       QPoint(margin - 200, qMax(leftOffset, rightOffset) + 100));
     addDraw(new DrawRect(rect));
+
+    // set position of ref and name text
+    _nameText->setPos(QPoint(rect.right(), rect.top() - 50));
+    _nameText->setTextHJustify(DrawText::TextHRight);
+    _nameText->setDirection(DrawText::DirectionHorizontal);
+    _refText->setPos(QPoint(rect.left(), rect.bottom() + 50));
+    _refText->setTextHJustify(DrawText::TextHLeft);
+    _refText->setDirection(DrawText::DirectionHorizontal);
 }
