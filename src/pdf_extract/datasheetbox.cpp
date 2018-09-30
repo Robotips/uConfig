@@ -63,7 +63,7 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 
 bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number)
 {
-    if (label.pos.width() > label.pos.height() || label.text.count() < 2)  // Horizontal
+    if (label.pos.width() > label.pos.height() || label.text.count() <= 2)  // Horizontal TODO replace this small label test with a real margin test
     {
         qreal marge = label.pos.height();
         if (label.pos.height() > number.pos.height() * 2
