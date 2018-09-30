@@ -17,6 +17,9 @@ private slots:
 
     void test_casePIC32MM_GPM();
     void test_casedsPIC33EPGS();
+    void test_ucc27212a_q1();
+    void test_ATtiny24();
+    void test_IFX9201SG();
 
 protected:
     Datasheet dt;
@@ -24,7 +27,7 @@ protected:
 
 void PdfExtract::comparePdfTolib(const QString &fileName)
 {
-    dt.setDebugEnabled(true);
+    //dt.setDebugEnabled(true);
     QVERIFY(dt.open(QString("../src/autotest/%1.pdf").arg(fileName)));
     dt.analyse();
 
@@ -69,6 +72,21 @@ void PdfExtract::test_casePIC32MM_GPM()
 void PdfExtract::test_casedsPIC33EPGS()
 {
     comparePdfTolib("dsPIC33EPXXGS50X_pins");
+}
+
+void PdfExtract::test_ucc27212a_q1()
+{
+    comparePdfTolib("ucc27212a-q1_pins");
+}
+
+void PdfExtract::test_ATtiny24()
+{
+    comparePdfTolib("ATtiny24_pins");
+}
+
+void PdfExtract::test_IFX9201SG()
+{
+    comparePdfTolib("IFX9201SG_pins");
 }
 
 QTEST_GUILESS_MAIN(PdfExtract)
