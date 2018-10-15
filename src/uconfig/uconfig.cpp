@@ -45,9 +45,9 @@ void processFileLib(QString file, Lib *lib)
 
 int main(int argc, char *argv[])
 {
-    QCoreApplication app(argc, argv);
-    QCoreApplication::setApplicationName("uconfig");
-    QCoreApplication::setApplicationVersion("1.0");
+    QApplication app(argc, argv);
+    QApplication::setApplicationName("uconfig");
+    QApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
     parser.setApplicationDescription("Test helper");
@@ -98,9 +98,9 @@ int main(int argc, char *argv[])
         }
     }
     PinRuler ruler;
+    RulesSet ruleSet;
     if (!ruleFile.isEmpty())
     {
-        RulesSet ruleSet;
         RulesParser ruleParser(ruleFile);
         if (!ruleParser.parse(&ruleSet))
         {
