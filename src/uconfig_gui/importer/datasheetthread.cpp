@@ -12,8 +12,11 @@ DataSheetThread::DataSheetThread(Datasheet *datasheet)
 
 DataSheetThread::~DataSheetThread()
 {
-    quit();
-    terminate();
+    if (isRunning())
+    {
+        quit();
+        terminate();
+    }
     delete _datasheet;
 }
 

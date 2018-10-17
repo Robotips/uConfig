@@ -68,7 +68,7 @@ void DatasheetProcessPage::initializePage()
         _pageCount = _thread->pageEnd() - _thread->pageBegin();
     }
     _progressBar->setMinimum(_pageStart + 1);
-    _progressBar->setMaximum(_pageStart + _pageCount +1);
+    _progressBar->setMaximum(_pageStart + _pageCount + 1);
 
     _logger->clear();
     _datasheet->clean();

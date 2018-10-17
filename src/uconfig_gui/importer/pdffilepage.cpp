@@ -43,6 +43,7 @@ PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread) :
 
     _forceCheckBox = new QCheckBox(tr("Force détection\n(try to build component in each page,\nvery expensive)"));
     _allRadio->setChecked(true);
+    connect(_forceCheckBox, SIGNAL(toggled(bool)), this, SLOT(check()));
     rangeGroupLayout->addWidget(_forceCheckBox);
     rangeGroupLayout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
@@ -80,7 +81,6 @@ void PDFFilePage::check()
     _forceCheckBox->setEnabled(!_allRadio->isChecked());
     _rangeEdit->setEnabled(!_allRadio->isChecked());
     _complete = _rangeEdit->hasAcceptableInput() || _allRadio->isChecked();
-    emit completeChanged();
 
     if (_complete)
     {
@@ -89,15 +89,24 @@ void PDFFilePage::check()
             _datasheetThread->setRange();
         else
         {
-            int start=-1, stop=-1;
+            int start = -1, stop = -1;
             QRegularExpression reg("^([0-9]+)(\\-[0-9]+)?$");
             QRegularExpressionMatch match = reg.match(_rangeEdit->text());
-            start = match.captured(1).toInt()-1;
-            if (match.capturedTexts().count()>2)
-                stop = -match.captured(2).toInt()-1;
+            start = match.captured(1).toInt() - 1;
+            if (start >= _datasheetThread->datasheet()->pageCount() || start < 0)
+                _complete = false;
+            if (match.capturedTexts().count() > 2)
+            {
+                stop = -match.captured(2).toInt() - 1;
+                if (stop >= _datasheetThread->datasheet()->pageCount() || stop < 0)
+                    _complete = false;
+                if (start > stop)
+                    _complete = false;
+            }
             _datasheetThread->setRange(start, stop);
         }
     }
+    emit completeChanged();
 }
 
 bool PDFFilePage::isComplete() const
