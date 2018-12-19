@@ -106,9 +106,16 @@ void PinClass::sortPins()
         {
             QRegularExpressionMatch match = pattern.match(pinName);
             if (match.hasMatch())
-                sortPatern = match.captured(0);
+            {
+                if (match.lastCapturedIndex() > 0)
+                    sortPatern = match.captured(1);
+                else
+                    sortPatern = match.captured(0);
+            }
             else
+            {
                 sortPatern = pinName;
+            }
         }
         else
             sortPatern = pinName;

@@ -53,7 +53,7 @@ MCLR {
 
 .gpio([A-L]) {
     sort: asc;
-    sortpattern: "R\1[0-9]+";
+    sortpattern: "(?:^|\/)(R\1[0-9]+)";
     label: "PORT \1";
     rect: 10;
     length: 200;
