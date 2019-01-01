@@ -199,7 +199,7 @@ void PinRuler::organize(Component *component)
 
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width(), bottomSize.width()) / 2);
-    sideX = qCeil(sideX / 100.0) * 100 + 100; // grid align KLC4.1
+    sideX = qCeil(sideX / 100.0) * 100; // grid align KLC4.1
     int sideY = (qMax(leftSize.height(), rightSize.height()) + qCeil(qMax(topSize.height(), bottomSize.height())) / 100.0 * 100) / 2;
     sideY = qCeil(sideY / 100.0) * 100 + 100; // grid align KLC4.1
 
