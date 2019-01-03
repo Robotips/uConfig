@@ -34,6 +34,9 @@ public:
     bool grid() const;
     void setGrid(bool grid);
 
+    bool gridFront() const;
+    void setGridFront(bool front);
+
     bool elecType() const;
     void setElecType(bool elecType);
 
@@ -48,6 +51,7 @@ public:
 
 protected:
     bool _grid;
+    bool _gridFront;
     int _prevGridSize;
 
     bool _elecType;
@@ -55,7 +59,9 @@ protected:
     Component *_component;
     ComponentItem *_componentItem;
 
+    void drawGrid(QPainter *painter, const QRectF &rect);
     void drawBackground(QPainter *painter, const QRectF &rect);
+    void drawForeground(QPainter *painter, const QRectF &rect);
 };
 
 #endif // COMPONENTSCENE_H

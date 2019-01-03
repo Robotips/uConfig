@@ -114,6 +114,11 @@ void ComponentViewer::setGridVisible(bool visible)
     _scene->setGrid(visible);
 }
 
+void ComponentViewer::setGridFront(bool front)
+{
+    _scene->setGridFront(front);
+}
+
 void ComponentViewer::setElecTypeVisible(bool visible)
 {
     _scene->setElecType(visible);

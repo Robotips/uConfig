@@ -47,6 +47,7 @@ public slots:
     void removePin(Pin *pin);
 
     void setGridVisible(bool visible);
+    void setGridFront(bool front);
     void setElecTypeVisible(bool visible);
 
 signals:

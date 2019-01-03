@@ -1,6 +1,8 @@
 <RCC>
     <qresource prefix="/iconsviewer">
         <file>img/view-electype.png</file>
+        <file>img/view-nogrid.png</file>
         <file>img/view-grid.png</file>
+        <file>img/view-grid-front.png</file>
     </qresource>
 </RCC>
