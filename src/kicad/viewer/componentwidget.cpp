@@ -126,9 +126,19 @@ QAction *ComponentWidget::ationElecType() const
     return _actionElecType;
 }
 
+QAction *ComponentWidget::ationNoGrid() const
+{
+    return _actionNoGrid;
+}
+
 QAction *ComponentWidget::ationGrid() const
 {
     return _actionGrid;
+}
+
+QAction *ComponentWidget::ationGridFront() const
+{
+    return _actionGridFront;
 }
 
 ComponentViewer *ComponentWidget::viewer() const

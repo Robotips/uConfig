@@ -39,7 +39,9 @@ public:
 
     ComponentViewer *viewer() const;
 
+    QAction *ationNoGrid() const;
     QAction *ationGrid() const;
+    QAction *ationGridFront() const;
     QAction *ationElecType() const;
 
 public slots:

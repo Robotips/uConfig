@@ -355,7 +355,9 @@ void UConfigMainWindow::createToolbarsMenus()
     // ============= View =============
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
+    viewMenu->addAction(_componentWidget->ationNoGrid());
     viewMenu->addAction(_componentWidget->ationGrid());
+    viewMenu->addAction(_componentWidget->ationGridFront());
     viewMenu->addAction(_componentWidget->ationElecType());
 
     viewMenu->addSeparator();
