@@ -44,7 +44,7 @@ public:
     void sortPins();
 
     void setPos(const QPoint &pos);
-    QPoint getPos() const;
+    QPoint pos() const;
 
     const QRect &boundingRect() const;
 

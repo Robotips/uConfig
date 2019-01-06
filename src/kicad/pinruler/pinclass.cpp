@@ -191,7 +191,7 @@ void PinClass::setPos(const QPoint &basePos)
     }
 }
 
-QPoint PinClass::getPos() const
+QPoint PinClass::pos() const
 {
     return _pos;
 }
@@ -219,14 +219,14 @@ void PinClass::computeBoundingRect() const
     {
     case ClassRule::PositionTop:
     case ClassRule::PositionBottom:
-        rect = QRect(0, 0, _pins.size() * 100, qCeil((maxLength + 20) / 100.0) * 100);
+        rect = QRect(0, 0, _pins.size() * 100, qCeil((maxLength + 30) / 100.0) * 100);
         if (hasLabelSet() && !_label.isEmpty())
             rect.adjust(0, 0, 0, 100);
         break;
     case ClassRule::PositionLeft:
     case ClassRule::PositionRight:
     case ClassRule::PositionASide:
-        rect = QRect(0, 0, qCeil((maxLength + 20) / 100.0) * 100, _pins.size() * 100);
+        rect = QRect(0, 0, qCeil((maxLength + 30) / 100.0) * 100, _pins.size() * 100);
         if (hasLabelSet() && !_label.isEmpty())
             rect.adjust(0, 0, 100, 0);
         break;

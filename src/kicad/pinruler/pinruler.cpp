@@ -65,6 +65,7 @@ void PinRuler::organize(Component *component)
         }
         else
         {
+            pin->setLayer(1);
             QString className;// = rules.first()->className(pin->name());
             foreach (PinRule *rule, rules)
             {
@@ -200,11 +201,11 @@ void PinRuler::organize(Component *component)
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width(), bottomSize.width()) / 2);
     sideX = qCeil(sideX / 100.0) * 100; // grid align KLC4.1
-    int sideY = (qMax(leftSize.height(), rightSize.height()) + qCeil(qMax(topSize.height(), bottomSize.height())) / 100.0 * 100) / 2;
-    sideY = qCeil(sideY / 100.0) * 100 + 100; // grid align KLC4.1
+    int sideY = (qMax(leftSize.height(), rightSize.height()) + (topSize.height() + bottomSize.height() + 50)) / 2;
+    sideY = qCeil(sideY / 100.0) * 100; // grid align KLC4.1
 
     x = -sideX;
-    y = -sideY + qCeil(topSize.height() / 100.0) * 100;
+    y = -sideY + qCeil(topSize.height() / 100.0) * 100 + 100;
     if (leftSize.height() + 50 < rightSize.height())
         y += qCeil((rightSize.height() - leftSize.height()) / 200.0) * 100; // grid align KLC4.1
     foreach (PinClass *mpinClass, leftSide)
@@ -219,7 +220,7 @@ void PinRuler::organize(Component *component)
     }
 
     x = sideX;
-    y = -sideY + qCeil(topSize.height() / 100.0) * 100;
+    y = -sideY + qCeil(topSize.height() / 100.0) * 100 + 100;
     if (rightSize.height() + 50 < leftSize.height())
         y += qCeil((leftSize.height() - rightSize.height()) / 200.0) * 100; // grid align KLC4.1
     foreach (PinClass *mpinClass, rightSide)
