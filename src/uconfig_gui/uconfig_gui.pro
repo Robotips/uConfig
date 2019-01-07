@@ -1,6 +1,7 @@
 QT       += core gui xml widgets
 
 CONFIG += optimize_full
+CONFIG += c++11
 
 TARGET = uconfig_gui
 TEMPLATE = app
