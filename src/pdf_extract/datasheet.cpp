@@ -284,6 +284,37 @@ QRectF Datasheet::toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageN
     return rect;
 }
 
+// use lowercase letters in when extending the map!
+QMap <QString, Pin::ElectricalType> Datasheet::_pinDirectionToElectricalPinTypeMap = {
+    {QStringLiteral("nc"), Pin::NotConnected},
+    {QStringLiteral("n/c"), Pin::NotConnected},
+    {QStringLiteral("oe"), Pin::OpenEmitter},
+    {QStringLiteral("open-emitter"), Pin::OpenEmitter},
+    {QStringLiteral("oc"), Pin::OpenCollector},
+    {QStringLiteral("open-collector"), Pin::OpenCollector},
+    {QStringLiteral("od"), Pin::OpenCollector},
+    {QStringLiteral("open-drain"), Pin::OpenCollector},
+    {QStringLiteral("tris"), Pin::Tristate},
+    {QStringLiteral("sup"), Pin::PowerIn},
+    {QStringLiteral("p"), Pin::Passive},
+    {QStringLiteral("pas"), Pin::Passive},
+    {QStringLiteral("passive"), Pin::Passive},
+    {QStringLiteral("io"), Pin::Bidir},
+    {QStringLiteral("i/o"), Pin::Bidir},
+    {QStringLiteral("i"), Pin::Input},
+    {QStringLiteral("in"), Pin::Input},
+    {QStringLiteral("o"), Pin::Output},
+    {QStringLiteral("out"), Pin::Output},
+
+    // direction names from Qualcomm docs
+    {QStringLiteral("ai"), Pin::Input},
+    {QStringLiteral("ao"), Pin::Output},
+    {QStringLiteral("b"), Pin::Bidir},
+    {QStringLiteral("di"), Pin::Input},
+    {QStringLiteral("do"), Pin::Output},
+    {QStringLiteral("z"), Pin::Tristate},
+};
+
 QList<DatasheetPin *> Datasheet::extractPins(int numPage)
 {
     QList<DatasheetPin *> pins;
@@ -426,7 +457,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
         DatasheetPin *pin = new DatasheetPin();
         qreal dist = 999999999999;
         QPointF center = number->pos.center();
-        DatasheetBox *assocLabel = NULL;
+        DatasheetBox *pinNameLabel = nullptr;
 
         for (int i = 0; i < _labels.count(); i++)
         {
@@ -445,28 +476,70 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             if (newdist < dist)
             {
                 dist = newdist;
-                assocLabel = label;
+                pinNameLabel = label;
             }
         }
 
-        if (assocLabel)
+        if (pinNameLabel)
         {
-            assocLabel->associated = true;
+            pinNameLabel->associated = true;
             number->associated = true;
 
             pin->pin = number->text.toInt();
             pin->numPos = number->pos;
             pin->numberBox = number;
 
-            pin->name = assocLabel->text;
+            pin->name = pinNameLabel->text;
             pin->name.remove(QRegExp("\\([0-9]+\\)"));
             pin->name.remove(QRegExp(" +"));
-            pin->nameBox = assocLabel;
+            pin->nameBox = pinNameLabel;
 
             pin->page = number->page;
-            pin->pos = number->pos.united(assocLabel->pos);
+            pin->pos = number->pos.united(pinNameLabel->pos);
 
             pins.push_back(pin);
+        }
+    }
+
+    for (DatasheetPin *pin : pins) {
+        qreal dist = 999999999999;
+        qreal nameX = pin->nameBox->pos.center().x();
+        DatasheetBox *directionLabel = nullptr;
+        DatasheetBox *pinNameLabel = pin->nameBox;
+        DatasheetBox *pinNumberLabel = pin->numberBox;
+        // loop over the labels to see if there is a pin direction label
+        // in the following columns
+        for (DatasheetBox *label : _labels) {
+            if (label->page != pinNumberLabel->page)
+                continue;
+
+            if (!DatasheetBox::isAlign(*label, *pinNameLabel) || !DatasheetBox::isAlign(*label, *pinNumberLabel))
+                continue;
+
+            if (label == pinNameLabel)
+                continue;
+
+            if (label == pinNumberLabel)
+                continue;
+
+            // look for the horizontally closest text to the pin name
+            qreal newdist = fabs(label->pos.x() - nameX);
+            if (newdist < dist)
+            {
+                dist = newdist;
+                if (label->associated)
+                    continue;
+
+                if (!_pinDirectionToElectricalPinTypeMap.contains(label->text.toLower()))
+                    continue;
+
+                directionLabel = label;
+            }
+        }
+
+        if (directionLabel) {
+            directionLabel->associated = true;
+            pin->electricalType = _pinDirectionToElectricalPinTypeMap.value(directionLabel->text.toLower());
         }
     }
 

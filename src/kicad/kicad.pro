@@ -13,6 +13,8 @@ DESTDIR = "$$PWD/../../bin"
 
 DEFINES += KICAD_EXPORT_LIB
 
+CONFIG += c++11
+
 SOURCES += \
     $$PWD/model/kicad.cpp \
     $$PWD/model/lib.cpp \

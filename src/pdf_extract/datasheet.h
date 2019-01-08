@@ -23,6 +23,7 @@
 
 #include <QObject>
 #include <QImage>
+#include <QMap>
 
 #include "datasheetpackage.h"
 #include "datasheetbox.h"
@@ -84,6 +85,7 @@ private:
     QList<DatasheetPackage *> _packages;
     bool _debug;
     bool _force;
+    static QMap <QString, Pin::ElectricalType> _pinDirectionToElectricalPinTypeMap;
 };
 
 #endif  // DATASHEET_H

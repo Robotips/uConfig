@@ -8,7 +8,8 @@ QT       += core gui printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += optimize_full
-
+CONFIG += c++11
+ 
 TARGET = test
 TEMPLATE = app
 DESTDIR = "$$PWD/../../bin"
