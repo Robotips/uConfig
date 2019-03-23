@@ -15,6 +15,10 @@ public:
     PinListImporter(const QString &fileName, QWidget *parent = 0);
     ~PinListImporter();
 
+    /**
+     * When extending this enum make sure to extend
+     * FilePage::_importTypeSettingsKeymap in the filepage.cpp as well!
+     */
     enum ImportType
     {
         CSV,
