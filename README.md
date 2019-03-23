@@ -101,7 +101,7 @@ make -j4
 
 ```bash
 brew install qt
-brew install --with-qt poppler
+brew install poppler
 cd uConfig
 mkdir build
 cd build
