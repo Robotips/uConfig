@@ -22,7 +22,7 @@ before_install:
             && echo "Qt5/poppler installed"; fi;
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update 
             && brew install qt 
-            && brew install --with-qt poppler
+            && brew install poppler --with-qt
             && export PATH="/usr/local/opt/qt/bin:$PATH"
             && echo 'export PATH="/usr/local/opt/qt/bin:$PATH"' >> ~/.bash_profile; fi;
 
