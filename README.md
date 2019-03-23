@@ -4,6 +4,8 @@
 [![Build Status](https://travis-ci.org/Robotips/uConfig.svg?branch=master)](https://travis-ci.org/Robotips/uConfig)
 [![Build status](https://ci.appveyor.com/api/projects/status/6nh5atkhvi9w3dfy?svg=true)](https://ci.appveyor.com/project/sebcaux/uconfig)
 
+[![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-black.svg)](https://snapcraft.io/uconfig)
+
 An old personal project resurrected to extract pinout from PDF datasheet and create Kicad schematics.
 
 ![Screenshot](uConfig_gui.png)
@@ -99,7 +101,7 @@ make -j4
 
 ```bash
 brew install qt
-brew install --with-qt poppler
+brew install poppler
 cd uConfig
 mkdir build
 cd build

@@ -8,6 +8,7 @@ DESTDIR = "$$PWD/../../bin"
 CONFIG(release, debug|release) {
     CONFIG += optimize_full
 }
+CONFIG += c++11
 
 SOURCES += \
     $$PWD/datasheet.cpp \
