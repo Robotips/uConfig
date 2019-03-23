@@ -60,27 +60,51 @@ void ComponentWidget::createWidgets()
     QLayout *_toolsLayout = new QHBoxLayout();
 
     _toolsLayout->addItem(new QSpacerItem(5, 5));
-    _ationGrid = new QAction(this);
-    _ationGrid->setText(tr("Toggle grid view"));
-    _ationGrid->setCheckable(true);
-    _ationGrid->setChecked(true);
-    _ationGrid->setIcon(QIcon(":/iconsviewer/img/view-grid.png"));
-    connect(_ationGrid, &QAction::toggled, _viewer, &ComponentViewer::setGridVisible);
+    _gridGroup = new QActionGroup(this);
+    _gridGroup->setExclusive(true);
+
+    _actionNoGrid = new QAction(this);
+    _actionNoGrid->setText(tr("Hide grid"));
+    _actionNoGrid->setCheckable(true);
+    _actionNoGrid->setIcon(QIcon(":/iconsviewer/img/view-nogrid.png"));
+    _gridGroup->addAction(_actionNoGrid);
+    QToolButton *toolNoGrid = new QToolButton();
+    toolNoGrid->setMinimumSize(30, 30);
+    toolNoGrid->setDefaultAction(_actionNoGrid);
+    _toolsLayout->addWidget(toolNoGrid);
+
+    _actionGrid = new QAction(this);
+    _actionGrid->setText(tr("Show grid"));
+    _actionGrid->setCheckable(true);
+    _actionGrid->setChecked(true);
+    _actionGrid->setIcon(QIcon(":/iconsviewer/img/view-grid.png"));
+    _gridGroup->addAction(_actionGrid);
     QToolButton *toolGrid = new QToolButton();
     toolGrid->setMinimumSize(30, 30);
-    toolGrid->setDefaultAction(_ationGrid);
+    toolGrid->setDefaultAction(_actionGrid);
     _toolsLayout->addWidget(toolGrid);
 
+    _actionGridFront = new QAction(this);
+    _actionGridFront->setText(tr("Show grid front"));
+    _actionGridFront->setCheckable(true);
+    _actionGridFront->setIcon(QIcon(":/iconsviewer/img/view-grid-front.png"));
+    _gridGroup->addAction(_actionGridFront);
+    QToolButton *toolGridFront = new QToolButton();
+    toolGridFront->setMinimumSize(30, 30);
+    toolGridFront->setDefaultAction(_actionGridFront);
+    _toolsLayout->addWidget(toolGridFront);
+    connect(_gridGroup, &QActionGroup::triggered, this, &ComponentWidget::setGridVisible);
+
     _toolsLayout->addItem(new QSpacerItem(2, 2));
-    _ationElecType = new QAction(this);
-    _ationElecType->setText(tr("Toggle electrical type view"));
-    _ationElecType->setCheckable(true);
-    _ationElecType->setChecked(true);
-    _ationElecType->setIcon(QIcon(":/iconsviewer/img/view-electype.png"));
-    connect(_ationElecType, &QAction::toggled, _viewer, &ComponentViewer::setElecTypeVisible);
+    _actionElecType = new QAction(this);
+    _actionElecType->setText(tr("Toggle electrical type view"));
+    _actionElecType->setCheckable(true);
+    _actionElecType->setChecked(true);
+    _actionElecType->setIcon(QIcon(":/iconsviewer/img/view-electype.png"));
+    connect(_actionElecType, &QAction::toggled, _viewer, &ComponentViewer::setElecTypeVisible);
     QToolButton *toolElecType = new QToolButton();
     toolElecType->setMinimumSize(30, 30);
-    toolElecType->setDefaultAction(_ationElecType);
+    toolElecType->setDefaultAction(_actionElecType);
     _toolsLayout->addWidget(toolElecType);
 
     _toolsLayout->addItem(new QSpacerItem(5, 5));
@@ -99,12 +123,22 @@ void ComponentWidget::createWidgets()
 
 QAction *ComponentWidget::ationElecType() const
 {
-    return _ationElecType;
+    return _actionElecType;
+}
+
+QAction *ComponentWidget::ationNoGrid() const
+{
+    return _actionNoGrid;
 }
 
 QAction *ComponentWidget::ationGrid() const
 {
-    return _ationGrid;
+    return _actionGrid;
+}
+
+QAction *ComponentWidget::ationGridFront() const
+{
+    return _actionGridFront;
 }
 
 ComponentViewer *ComponentWidget::viewer() const
@@ -114,5 +148,24 @@ ComponentViewer *ComponentWidget::viewer() const
 
 void ComponentWidget::setUnit(int unit)
 {
-    _viewer->setComponent(_component, unit+1);
+    _viewer->setComponent(_component, unit + 1);
+}
+
+void ComponentWidget::setGridVisible(QAction *action)
+{
+    if (action == _actionNoGrid)
+    {
+        _viewer->setGridVisible(false);
+        _viewer->setGridFront(false);
+    }
+    else if (action == _actionGrid)
+    {
+        _viewer->setGridVisible(true);
+        _viewer->setGridFront(false);
+    }
+    else if (action == _actionGridFront)
+    {
+        _viewer->setGridVisible(true);
+        _viewer->setGridFront(true);
+    }
 }

@@ -1,6 +1,7 @@
 #include "filepage.h"
 
 #include <QLabel>
+#include <QDir>
 #include <QToolButton>
 #include <QHBoxLayout>
 #include <QVariant>
@@ -98,9 +99,27 @@ void FilePage::dropEvent(QDropEvent *event)
     setFile(event->mimeData()->urls().first().toLocalFile());
 }
 
+QMap<PinListImporter::ImportType, QString> FilePage::_importTypeSettingsKeymap = {
+    {PinListImporter::Kicad, "Kicad"},
+    {PinListImporter::PDF, "PDF"},
+    {PinListImporter::Table, "Table"},
+    {PinListImporter::CSV, "CSV"},
+};
+
 void FilePage::fileExplore()
 {
-    QString fileName = QFileDialog::getOpenFileName(this, QString("Choose a %1 file").arg(_fileTitle), QString(),
+    QString lastPath;
+    if (_importTypeSettingsKeymap.contains(static_cast<PinListImporter*>(wizard())->type())) {
+        _settings.beginGroup("FilePage");
+        _settings.beginGroup(_importTypeSettingsKeymap.value(static_cast<PinListImporter*>(wizard())->type()));
+        lastPath = _settings.value("lastPath", QDir::homePath()).toString();
+        _settings.endGroup();
+        _settings.endGroup();
+    }
+
+    QString fileName = QFileDialog::getOpenFileName(this,
+                                                    QString("Choose a %1 file").arg(_fileTitle),
+                                                    lastPath,
                                                     QString("%1 (%2)").arg(_fileTitle).arg("*."+_suffixes.join(" *.")));
     if (!fileName.isEmpty())
     {
@@ -130,6 +149,13 @@ void FilePage::checkEntry(const QString &text)
 void FilePage::setFile(const QString &file)
 {
     _fileEdit->setText(file);
+    if (_importTypeSettingsKeymap.contains(static_cast<PinListImporter*>(wizard())->type())) {
+        _settings.beginGroup("FilePage");
+        _settings.beginGroup(_importTypeSettingsKeymap.value(static_cast<PinListImporter*>(wizard())->type()));
+        _settings.setValue("lastPath", file);
+        _settings.endGroup();
+        _settings.endGroup();
+    }
 }
 
 bool FilePage::isComplete() const

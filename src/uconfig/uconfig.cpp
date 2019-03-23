@@ -43,29 +43,35 @@ void processFileLib(QString file, Lib *lib)
     }
 }
 
+enum UConfigSource {
+    FromPdf,
+    FromLib
+} source;
+
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    QApplication::setApplicationName("uconfig");
+    QApplication::setApplicationName("uConfig");
     QApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription("Test helper");
+    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.") +
+                                                                 QString("\nuconfig datasheet.pdf -o lib1.lib [-r rule.kss] [-d]"));
     parser.addHelpOption();
     parser.addVersionOption();
-    parser.addPositionalArgument("file", "Source file to extract pins (pdf).", "file");
+    parser.addPositionalArgument("file", QCoreApplication::translate("main", "Source file to extract pins (pdf)."), "file");
 
     QCommandLineOption outOption(QStringList() << "o" << "out",
-                                 "Outpout file with pin list",
+                                 QCoreApplication::translate("main", "Output file with pin list."),
                                  "out");
     parser.addOption(outOption);
 
     QCommandLineOption debugOption(QStringList() << "d" << "debug",
-                                   "Debug option to view intermediate steps");
+                                   QCoreApplication::translate("main", "Debug option to view intermediate steps."));
     parser.addOption(debugOption);
 
     QCommandLineOption kssOption(QStringList() << "r" << "rule",
-                                 "KSS rule file to organize component",
+                                 QCoreApplication::translate("main", "KSS rule file to organize component."),
                                  "rule");
     parser.addOption(kssOption);
 
@@ -78,7 +84,10 @@ int main(int argc, char *argv[])
 
     parser.process(app);
 
+    // rule file
     QString ruleFile = parser.value("rule");
+    PinRuler ruler;
+    RulesSet ruleSet;
     if (!ruleFile.isEmpty())
     {
         if (!ruleFile.endsWith(".kss"))
@@ -96,11 +105,6 @@ int main(int argc, char *argv[])
                 return -3;
             }
         }
-    }
-    PinRuler ruler;
-    RulesSet ruleSet;
-    if (!ruleFile.isEmpty())
-    {
         RulesParser ruleParser(ruleFile);
         if (!ruleParser.parse(&ruleSet))
         {
@@ -110,6 +114,7 @@ int main(int argc, char *argv[])
         ruler.setRuleSet(&ruleSet);
     }
 
+    // input file
     const QStringList files = parser.positionalArguments();
     if (files.isEmpty())
     {
@@ -118,18 +123,25 @@ int main(int argc, char *argv[])
     }
     const QString &file = files.at(0);
 
+    // output file
     QString outFile = parser.value("out");
     if (outFile.isEmpty())
         outFile = QFileInfo(file).baseName() + ".lib";
 
+    // creates lib model and fill it
+    qint64 d = QDateTime::currentMSecsSinceEpoch();
     Lib lib;
     out << "> " << file << endl;
-    qint64 d = QDateTime::currentMSecsSinceEpoch();
-
     if (file.endsWith(".pdf"))
+    {
         processFilePdf(file, &lib, parser.isSet(debugOption));
+        source = FromPdf;
+    }
     else if (file.endsWith(".lib"))
+    {
         processFileLib(file, &lib);
+        source = FromLib;
+    }
     else
     {
         out << "error (2): input file cannot be opened" << endl;
@@ -137,12 +149,18 @@ int main(int argc, char *argv[])
     }
     out << lib.componentsCount() << " packages extracted, saved in " << outFile << endl;
 
+    // apply pinruler if needed
     foreach(Component *component, lib.components())
     {
         if (ruleFile.isEmpty())
-            component->reorganizeToPackageStyle();
+        {
+            if (source == FromPdf)
+                component->reorganizeToPackageStyle();
+        }
         else
+        {
             ruler.organize(component);
+        }
     }
 
     out << "Elapsed time: " << QDateTime::currentMSecsSinceEpoch() - d << "ms" << endl;

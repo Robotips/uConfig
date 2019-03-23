@@ -15,7 +15,7 @@
     class: "USB";
 }
 
-P([A-L])[0-9]+ {
+(?:^|\/)P([A-L])[0-9]+ {
     class: "gpio\1";
 }
 (RESET|NRST|BOOT[12]*|VCAP|XTAL[1-2]|AREF|UCAP|PEN) {

@@ -24,6 +24,7 @@
 #include <QWidget>
 #include <QToolButton>
 #include <QComboBox>
+#include <QActionGroup>
 
 #include "componentviewer.h"
 
@@ -38,21 +39,27 @@ public:
 
     ComponentViewer *viewer() const;
 
+    QAction *ationNoGrid() const;
     QAction *ationGrid() const;
+    QAction *ationGridFront() const;
     QAction *ationElecType() const;
-
-signals:
 
 public slots:
     void setUnit(int unit);
+
+protected slots:
+    void setGridVisible(QAction *action);
 
 protected:
     void createWidgets();
 
     Component *_component;
     ComponentViewer *_viewer;
-    QAction *_ationGrid;
-    QAction *_ationElecType;
+    QActionGroup *_gridGroup;
+    QAction *_actionNoGrid;
+    QAction *_actionGrid;
+    QAction *_actionGridFront;
+    QAction *_actionElecType;
     QComboBox *_comboUnit;
 };
 

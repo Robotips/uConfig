@@ -25,6 +25,7 @@ ComponentScene::ComponentScene(qreal x, qreal y, qreal w, qreal h)
     : QGraphicsScene(x, y, w, h)
 {
     _grid = true;
+    _gridFront = false;
     _prevGridSize = 0;
 
     setComponent(Q_NULLPTR);
@@ -38,6 +39,17 @@ bool ComponentScene::grid() const
 void ComponentScene::setGrid(bool grid)
 {
     _grid = grid;
+    update();
+}
+
+bool ComponentScene::gridFront() const
+{
+    return _gridFront;
+}
+
+void ComponentScene::setGridFront(bool front)
+{
+    _gridFront = front;
     update();
 }
 
@@ -118,11 +130,8 @@ void ComponentScene::saveAsImage(const QString &fileName, const QSize &size)
     image.save(fileName);
 }
 
-void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
+void ComponentScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
-    if (!_grid)
-        return;
-
     int gridSize = 20;
     if (rect.width() > 4000)
         gridSize = 40;
@@ -147,4 +156,22 @@ void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
     painter->setPen(Qt::darkGray);
     painter->drawLine(QLineF(rect.left(), 0, rect.right(), 0));
     painter->drawLine(QLineF(0, rect.top(), 0, rect.bottom()));
+}
+
+void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
+{
+    if (!_grid)
+        return;
+
+    if (!_gridFront)
+        drawGrid(painter, rect);
+}
+
+void ComponentScene::drawForeground(QPainter *painter, const QRectF &rect)
+{
+    if (!_grid)
+        return;
+
+    if (_gridFront)
+        drawGrid(painter, rect);
 }

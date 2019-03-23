@@ -37,10 +37,28 @@ bool NumericalSortFilterProxyModel::filterAcceptsColumn(int source_column, const
 
 bool NumericalSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
-    QString leftSortPatern = toNumeric(sourceModel()->data(source_left, Qt::DisplayRole).toString());
-    QString rightSortPatern = toNumeric(sourceModel()->data(source_right, Qt::DisplayRole).toString());
+    int compare = compareColumn(source_left, source_right, source_left.column());
+    if (compare != 0)
+        return (compare < 0);
 
-    return (leftSortPatern.compare(rightSortPatern, Qt::CaseInsensitive) < 0);
+    for (int column = 0; column < columnCount(); column++)
+    {
+        if (column == source_left.column())
+            continue;
+        compare = compareColumn(source_left, source_right, column);
+        if (compare != 0)
+            return (compare < 0);
+    }
+
+    return source_left.internalId() < source_right.internalId();
+}
+
+int NumericalSortFilterProxyModel::compareColumn(const QModelIndex &source_left, const QModelIndex &source_right, const int column) const
+{
+    QString leftSortPatern = toNumeric(sourceModel()->data(sourceModel()->index(source_left.row(), column, source_left.parent()), Qt::DisplayRole).toString());
+    QString rightSortPatern = toNumeric(sourceModel()->data(sourceModel()->index(source_right.row(), column, source_right.parent()), Qt::DisplayRole).toString());
+
+    return leftSortPatern.compare(rightSortPatern, Qt::CaseInsensitive);
 }
 
 QString NumericalSortFilterProxyModel::toNumeric(const QString &str) const
@@ -53,7 +71,7 @@ QString NumericalSortFilterProxyModel::toNumeric(const QString &str) const
     while (numMatchIt.hasNext())
     {
         QRegularExpressionMatch numMatch = numMatchIt.next();
-        sortPatern.append(numMatch.captured(1) + QString('0').repeated(5-numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
+        sortPatern.append(numMatch.captured(1) + QString('0').repeated(5 - numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
     }
 
     return sortPatern;

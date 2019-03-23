@@ -7,6 +7,8 @@
 QT       += gui printsupport
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+CONFIG += optimize_full c++11
+
 TARGET = kicad
 TEMPLATE = lib
 DESTDIR = "$$PWD/../../bin"

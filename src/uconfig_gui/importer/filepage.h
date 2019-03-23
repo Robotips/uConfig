@@ -4,6 +4,8 @@
 #include <QWizardPage>
 #include <QLineEdit>
 #include <QLabel>
+#include <QMap>
+#include <QSettings>
 
 #include "pinlistimporter.h"
 
@@ -34,8 +36,9 @@ private:
     QString _fileTitle;
     QLineEdit *_fileEdit;
     QStringList _suffixes;
-
+    QSettings _settings;
     void setFile(const QString &file);
+    static QMap<PinListImporter::ImportType, QString> _importTypeSettingsKeymap;
 };
 
 #endif // FILEPAGE_H
