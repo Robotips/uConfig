@@ -3,6 +3,7 @@ QT += testlib xml
 TEMPLATE = app
 DESTDIR = "$$PWD/../../bin"
 
+CONFIG += optimize_full c++11
 CONFIG += qt console warn_on depend_includepath testcase
 CONFIG -= app_bundle
 
