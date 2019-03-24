@@ -316,7 +316,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             textBox->text().mid(1).toInt(&okNumber);
         else
             textBox->text().toInt(&okNumber);
-        if (textBox->nextWord() != NULL && okNumber == false)
+
+        if (textBox->nextWord() != NULL && okNumber == false && DatasheetBox::isAlign(DatasheetBox(*textBox->nextWord()), DatasheetBox(*textBox)))
         {
             box->text.append(textBox->text());
             if (textBox->hasSpaceAfter())
@@ -328,7 +329,6 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
         {
             if (prev && !okNumber)
             {
-                //qDebug()<<box->text<<textBox->text()<<textBox->boundingBox()<<box->pos;
                 box->text = box->text + textBox->text();
                 box->pos = toGlobalPos(textBox->boundingBox(), page, numPage).united(box->pos);
             }
@@ -341,6 +341,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                     else
                         box->text = textBox->text();
                     box->pos = toGlobalPos(textBox->boundingBox(), page, numPage);
+                    prev = false;
                 }
 
                 if (okNumber)
@@ -363,8 +364,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                         _numbers.push_back(nbox);
                         okNumber = false;
                     }
+                    prev = false;
                 }
-                prev = false;
             }
 
             // remove notes
@@ -542,15 +543,9 @@ QString Datasheet::name() const
 int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
 {
     QStringList keyWords;
-    keyWords << "Pin Diagram"
-             << "PIN DESCRIPTION"
-             << "PIN NAMES"
-             << "Pin Assignment"
-             << "lead Assignment"
-             << "PIN CONFIGURATION"
-             << "Pinouts"
-             << "PACKAGE"
-             << "TQFP"
+    keyWords << "Pin Diagram" << "PIN DESCRIPTION" << "PIN NAMES" << "Pin Assignment" << "lead Assignment"
+             << "PIN CONFIGURATION" << "Pinouts" << "PACKAGE"
+             << "TQFP" << "Flatpack"
              << "MLF"
              << "DIP"
              << "PLCC"
