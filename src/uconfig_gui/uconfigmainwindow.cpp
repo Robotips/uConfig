@@ -44,6 +44,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _pinListEditor, &PinListEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentWidget, &ComponentWidget::setComponent);
+    connect(_project, &UConfigProject::componentChange, _componentsTreeView, &ComponentLibTreeView::updateComponent);
 
     resize(QApplication::primaryScreen()->size()*.7);
     setTitle();

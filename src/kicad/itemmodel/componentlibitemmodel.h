@@ -57,6 +57,9 @@ public:
         ColumnCount
     };
 
+public slots:
+    void updateComponent(Component * component);
+
     // QAbstractItemModel interface
 public:
     int columnCount(const QModelIndex &parent) const;

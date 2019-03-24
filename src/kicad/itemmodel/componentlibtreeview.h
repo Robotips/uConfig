@@ -52,6 +52,7 @@ public slots:
     void setLib(Lib *lib);
     void setActiveComponent(Component * component);
     void selectAll(bool selected=true);
+    void updateComponent(Component * component);
     void remove();
 
 signals:

@@ -41,6 +41,7 @@ void UConfigProject::newLib()
 {
     _lib = new Lib();
     _libName = tr("newlib");
+    _libFileName = QString();
     selectComponent(Q_NULLPTR);
     emit libChanged(_lib);
 }
@@ -186,6 +187,8 @@ void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType
         _activeComponent->aliases() = value.toStringList();
         break;
     }
+
+    emit componentChange(_activeComponent);
 }
 
 void UConfigProject::writeSettings()

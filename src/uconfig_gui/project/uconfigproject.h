@@ -46,6 +46,7 @@ public slots:
 signals:
     void libChanged(Lib *lib);
     void activeComponentChange(Component *component);
+    void componentChange(Component *component);
     void pinChanged();
     void oldProjectChanged();
 
