@@ -84,8 +84,8 @@ sudo apt install libpoppler-qt5-dev
 
 For windows, build from sources (very annoying) or find a built version here :
 
-- includes : [http://robotips.fr/data/bin-poppler-win32.tar.gz](http://robotips.fr/data/bin-poppler-win32.tar.gz)
-- DLLs : [http://robotips.fr/data/include-poppler.tar.gz](http://robotips.fr/data/include-poppler.tar.gz)
+- includes : [http://robotips.fr/data/bin-poppler-win32.tar.gz](http://robotips.fr/data/bin-poppler-win32.tar.gz) (uncompress to uconfig/bin/)
+- DLLs : [http://robotips.fr/data/include-poppler.tar.gz](http://robotips.fr/data/include-poppler.tar.gz) (uncompress to uconfig/)
 
 ### build
 
