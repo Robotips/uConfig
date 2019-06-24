@@ -46,6 +46,7 @@ public slots:
     void selectPins(QList<Pin *> pins);
     void setPinFilter(const QString &filter);
     void remove();
+    void copy();
 
 signals:
     void pinSelected(QList<Pin *> pins);
@@ -53,6 +54,7 @@ signals:
 protected slots:
     void updateSelect(const QItemSelection &selected, const QItemSelection &deselected);
 
+    // QWidget interface
 protected:
     virtual void contextMenuEvent(QContextMenuEvent *event);
 
@@ -63,6 +65,7 @@ protected:
 
     void createActions();
     QAction *_removeAction;
+    QAction *_copyAction;
 };
 
 #endif // COMPONENTPINSTABLEVIEW_H

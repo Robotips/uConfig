@@ -18,6 +18,8 @@
 
 #include "componentpinstableview.h"
 
+#include <QApplication>
+#include <QClipboard>
 #include <QMenu>
 #include <QMessageBox>
 #include <QMouseEvent>
@@ -131,6 +133,21 @@ void ComponentPinsTableView::remove()
     }
 }
 
+void ComponentPinsTableView::copy()
+{
+    QString text;
+    QItemSelectionRange range = selectionModel()->selection().first();
+    for (int i = range.top(); i <= range.bottom(); ++i)
+    {
+        QStringList rowContents;
+        for (int j = range.left(); j <= range.right(); ++j)
+        rowContents << model()->index(i,j).data().toString();
+        text += rowContents.join("\t");
+        text += "\n";
+    }
+    QApplication::clipboard()->setText(text);
+}
+
 void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const QItemSelection &deselected)
 {
     Q_UNUSED(selected)
@@ -148,6 +165,7 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
         selectedPins.insert(_model->pin(indexComponent));
     }
     _removeAction->setEnabled(!selectedPins.isEmpty());
+    _copyAction->setEnabled(!selectedPins.isEmpty());
 
     emit pinSelected(selectedPins.toList());
 }
@@ -156,6 +174,7 @@ void ComponentPinsTableView::contextMenuEvent(QContextMenuEvent *event)
 {
     QMenu menu;
     menu.addAction(_removeAction);
+    menu.addAction(_copyAction);
     menu.exec(event->globalPos());
 }
 
@@ -168,6 +187,14 @@ void ComponentPinsTableView::createActions()
     _removeAction->setEnabled(false);
     connect(_removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
     addAction(_removeAction);
+
+    _copyAction = new QAction(this);
+    _copyAction->setText(tr("Copy"));
+    _copyAction->setShortcut(QKeySequence::Copy);
+    _copyAction->setShortcutContext(Qt::WidgetShortcut);
+    _copyAction->setEnabled(false);
+    connect(_copyAction, SIGNAL(triggered(bool)), this, SLOT(copy()));
+    addAction(_copyAction);
 }
 
 ComponentPinsItemModel *ComponentPinsTableView::model() const
