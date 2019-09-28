@@ -224,6 +224,7 @@ void Datasheet::pinSearch(int numPage)
 
         package->name = QString("p.%1_pack%2").arg(numPage + 1).arg(pac);
         _packages.push_back(package);
+        pac++;
 
         if (!_debug)
             continue;
@@ -234,7 +235,6 @@ void Datasheet::pinSearch(int numPage)
             72.0 * res, 72.0 * res, rect.x() * res, rect.y() * res,
             rect.width() * res, rect.height() * res);
         QPainter painter(&package->image);
-        pac++;
         QDir dir;
         dir.mkdir(_name);
 
