@@ -158,7 +158,7 @@ void ComponentViewer::dragEnterEvent(QDragEnterEvent *event)
         return;
 
     QString fileName = event->mimeData()->urls().first().toLocalFile();
-    if (fileName.endsWith("pdf"))
+    if (fileName.endsWith(".pdf", Qt::CaseInsensitive) || fileName.endsWith(".lib", Qt::CaseInsensitive))
         event->accept();
 }
 

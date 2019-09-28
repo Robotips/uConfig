@@ -111,7 +111,7 @@ void UConfigProject::saveLibAs(const QString &fileName)
     else
         libFileName = fileName;
 
-    if (!libFileName.endsWith(".lib"))
+    if (!libFileName.endsWith(".lib", Qt::CaseInsensitive))
         libFileName.append(".lib");
     _libFileName = libFileName;
 
