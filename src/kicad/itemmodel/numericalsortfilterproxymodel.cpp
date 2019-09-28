@@ -41,22 +41,25 @@ bool NumericalSortFilterProxyModel::lessThan(const QModelIndex &source_left, con
     if (compare != 0)
         return (compare < 0);
 
-    for (int column = 0; column < columnCount(); column++)
+    /*for (int column = 0; column < columnCount(); column++)
     {
         if (column == source_left.column())
             continue;
         compare = compareColumn(source_left, source_right, column);
         if (compare != 0)
             return (compare < 0);
-    }
+    }*/
 
     return source_left.internalId() < source_right.internalId();
 }
 
 int NumericalSortFilterProxyModel::compareColumn(const QModelIndex &source_left, const QModelIndex &source_right, const int column) const
 {
-    QString leftSortPatern = toNumeric(sourceModel()->data(sourceModel()->index(source_left.row(), column, source_left.parent()), Qt::DisplayRole).toString());
-    QString rightSortPatern = toNumeric(sourceModel()->data(sourceModel()->index(source_right.row(), column, source_right.parent()), Qt::DisplayRole).toString());
+    QString leftStr = sourceModel()->data(sourceModel()->index(source_left.row(), column, source_left.parent()), Qt::DisplayRole).toString();
+    QString rightStr = sourceModel()->data(sourceModel()->index(source_right.row(), column, source_right.parent()), Qt::DisplayRole).toString();
+
+    QString leftSortPatern = toNumeric(leftStr);
+    QString rightSortPatern = toNumeric(rightStr);
 
     return leftSortPatern.compare(rightSortPatern, Qt::CaseInsensitive);
 }
