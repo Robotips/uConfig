@@ -66,7 +66,7 @@ To know your Qt version :
 qmake -query QT_VERSION
 ```
 
-To install on Ubuntu :
+To install on Ubuntu (or Debian):
 
 ```bash
 sudo apt install qt5-default qttools5-dev-tools
@@ -76,7 +76,7 @@ sudo apt install qt5-default qttools5-dev-tools
 
 poppler is a pdf parser library under GPL v3 license. v0.41 is the minimal supported with qt5 frontend.
 
-To install on Ubuntu :
+To install on Ubuntu (or Debian):
 
 ```bash
 sudo apt install libpoppler-qt5-dev
