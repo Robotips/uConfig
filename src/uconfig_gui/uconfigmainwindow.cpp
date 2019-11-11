@@ -356,10 +356,10 @@ void UConfigMainWindow::createToolbarsMenus()
     // ============= View =============
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
-    viewMenu->addAction(_componentWidget->ationNoGrid());
-    viewMenu->addAction(_componentWidget->ationGrid());
-    viewMenu->addAction(_componentWidget->ationGridFront());
-    viewMenu->addAction(_componentWidget->ationElecType());
+    viewMenu->addAction(_componentWidget->actionNoGrid());
+    viewMenu->addAction(_componentWidget->actionGrid());
+    viewMenu->addAction(_componentWidget->actionGridFront());
+    viewMenu->addAction(_componentWidget->actionElecType());
 
     viewMenu->addSeparator();
     QAction *componentsListDockAction = _componentsListDock->toggleViewAction();

@@ -121,22 +121,22 @@ void ComponentWidget::createWidgets()
     setLayout(_layout);
 }
 
-QAction *ComponentWidget::ationElecType() const
+QAction *ComponentWidget::actionElecType() const
 {
     return _actionElecType;
 }
 
-QAction *ComponentWidget::ationNoGrid() const
+QAction *ComponentWidget::actionNoGrid() const
 {
     return _actionNoGrid;
 }
 
-QAction *ComponentWidget::ationGrid() const
+QAction *ComponentWidget::actionGrid() const
 {
     return _actionGrid;
 }
 
-QAction *ComponentWidget::ationGridFront() const
+QAction *ComponentWidget::actionGridFront() const
 {
     return _actionGridFront;
 }
