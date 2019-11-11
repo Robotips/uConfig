@@ -126,6 +126,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
         case PinClass:
             return QVariant(pin->className());
         }
+        break;
     case Qt::EditRole:
         switch (index.column())
         {
@@ -140,6 +141,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
         case PinClass:
             return QVariant();
         }
+        break;
     }
     return QVariant();
 }

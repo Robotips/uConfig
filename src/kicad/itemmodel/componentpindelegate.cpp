@@ -156,12 +156,20 @@ void ComponentPinDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
             QString pre = text.mid(start, match.capturedStart() - start);
             painter->setFont(option.font);
             painter->drawText(textRect, static_cast<int>(option.displayAlignment), pre);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+            textRect.adjust(painter->fontMetrics().width(pre), 0, 0, 0);
+#else
             textRect.adjust(painter->fontMetrics().horizontalAdvance(pre), 0, 0, 0);
+#endif
 
             QString part = match.captured();
             painter->setFont(bold);
             painter->drawText(textRect, static_cast<int>(option.displayAlignment), part);
+#if QT_VERSION < QT_VERSION_CHECK(5, 11, 0)
+            textRect.adjust(painter->fontMetrics().width(part), 0, 0, 0);
+#else
             textRect.adjust(painter->fontMetrics().horizontalAdvance(part), 0, 0, 0);
+#endif
 
             start = match.capturedEnd();
             match = _searchPattern.match(text, start);
