@@ -131,18 +131,18 @@ void ComponentPinDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
     if (cg == QPalette::Normal && !(option.state & QStyle::State_Active))
         cg = QPalette::Inactive;
-    if (option.state.testFlag(QStyle::State_Selected) && option.widget->hasFocus())
+    if (option.state.testFlag(QStyle::State_Selected) /*&& option.widget->hasFocus()*/)
         painter->setPen(option.palette.color(cg, QPalette::HighlightedText));
     else
         painter->setPen(option.palette.color(cg, QPalette::Text));
-    int margin = option.widget->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, 0, option.widget) + 1;
+    int margin = option.widget->style()->pixelMetric(QStyle::PM_FocusFrameHMargin, nullptr, option.widget) + 1;
 
     // draw text
     QRect textRect = option.rect.adjusted(margin, 0, -margin, 0);
     QString text = index.model()->data(index).toString();
     if (!_searchPattern.isValid() || _searchPattern.pattern().isEmpty())
     {
-        painter->drawText(textRect, option.displayAlignment, text);
+        painter->drawText(textRect, static_cast<int>(option.displayAlignment), text);
     }
     else
     {
@@ -155,19 +155,19 @@ void ComponentPinDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
         {
             QString pre = text.mid(start, match.capturedStart() - start);
             painter->setFont(option.font);
-            painter->drawText(textRect, option.displayAlignment, pre);
-            textRect.adjust(painter->fontMetrics().width(pre), 0, 0, 0);
+            painter->drawText(textRect, static_cast<int>(option.displayAlignment), pre);
+            textRect.adjust(painter->fontMetrics().horizontalAdvance(pre), 0, 0, 0);
 
             QString part = match.captured();
             painter->setFont(bold);
-            painter->drawText(textRect, option.displayAlignment, part);
-            textRect.adjust(painter->fontMetrics().width(part), 0, 0, 0);
+            painter->drawText(textRect, static_cast<int>(option.displayAlignment), part);
+            textRect.adjust(painter->fontMetrics().horizontalAdvance(part), 0, 0, 0);
 
             start = match.capturedEnd();
             match = _searchPattern.match(text, start);
         }
         QString post = text.mid(start);
         painter->setFont(option.font);
-        painter->drawText(textRect, option.displayAlignment, post);
+        painter->drawText(textRect, static_cast<int>(option.displayAlignment), post);
     }
 }
