@@ -119,31 +119,45 @@ void Datasheet::pinSearch(int numPage)
     }
     for (int pinNumber = 2; pinNumber < 200; pinNumber++)
     {
+        QList<QPair<DatasheetPin *, QList<QPair<DatasheetPackage *, qreal> > > > pinNumberPackage;
         for (int i = 0; i < pins.count(); i++)
         {
             DatasheetPin *pin = pins.at(i);
             if (pin->pin == pinNumber)
             {
-                DatasheetPackage *nearPackage = NULL;
-                qreal dist = 99999999999999;
-                QPointF center = pin->numPos.center();
+                pinNumberPackage.append(qMakePair(pin, QList<QPair<DatasheetPackage *, qreal> >()));
                 foreach (DatasheetPackage *package, packages)
                 {
                     DatasheetPin *lastpin = package->pins.last();
                     if (lastpin->pin == pin->pin || lastpin->pin + 4 < pin->pin)
                         continue;
 
-                    qreal newdist = lastpin->distanceToPoint(center);
-                    if (newdist < dist)
+                    QPointF centerPin = pin->numPos.center();
+                    qreal dist = lastpin->distanceToPoint(centerPin);
+                    pinNumberPackage.last().second.append(qMakePair(package, dist));
+                }
+            }
+        }
+
+        for (int p = 0; p < packages.count(); p++)
+        {
+            qreal nearDist = 99999999999999;
+            DatasheetPin *nearPin = NULL;
+            for (int pn = 0; pn < pinNumberPackage.count(); pn++)
+            {
+                if (p < pinNumberPackage.at(pn).second.count())
+                {
+                    qreal dist = pinNumberPackage.at(pn).second.at(p).second;
+                    if (dist < nearDist)
                     {
-                        dist = newdist;
-                        nearPackage = package;
+                        nearPin = pinNumberPackage.at(pn).first;
+                        nearDist = dist;
                     }
                 }
-                if (nearPackage != NULL)
-                {
-                    nearPackage->pins.push_back(pin);
-                }
+            }
+            if (nearPin != NULL)
+            {
+                packages.at(p)->pins.push_back(nearPin);
             }
         }
     }
