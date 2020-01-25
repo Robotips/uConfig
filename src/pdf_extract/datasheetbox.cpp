@@ -18,12 +18,20 @@
 
 #include "datasheetbox.h"
 
+#include "poppler/qt5/poppler-qt5.h"
+
 #include <QDebug>
 
 int DatasheetBox::created = 0;
 
 DatasheetBox::DatasheetBox()
-    : associated(false)
+    : page(0), associated(false)
+{
+    created++;
+}
+
+DatasheetBox::DatasheetBox(const Poppler::TextBox &textBox)
+    : text(textBox.text()), pos(textBox.boundingBox()), page(0), associated(false)
 {
     created++;
 }
@@ -63,12 +71,25 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 
 bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number)
 {
-    if (label.pos.width() > label.pos.height() || label.text.count() <= 2)  // Horizontal TODO replace this small label test with a real margin test
+    qreal marge;
+    if (label.text.count() <= 2) // small label test align
     {
-        qreal marge = label.pos.height();
+        marge = label.pos.height() / 2.0;
+        if (label.pos.top() - marge < number.pos.top() &&
+            label.pos.bottom() + marge > number.pos.bottom())
+            return true;
+        marge = label.pos.width() / 2.0;
+        if (label.pos.left() - marge < number.pos.left() &&
+            label.pos.right() + marge > number.pos.right())
+            return true;
+        return false;
+    }
+    if (label.pos.width() > label.pos.height())  // Horizontal
+    {
         if (label.pos.height() > number.pos.height() * 2
          || number.pos.height() > label.pos.height() * 2)
             return false;
+        marge = label.pos.height();
         if (label.pos.top() - marge < number.pos.top() &&
             label.pos.bottom() + marge > number.pos.bottom())
             return true;
@@ -77,7 +98,7 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
     }
     else  // Vertical
     {
-        qreal marge = label.pos.width();
+        marge = label.pos.width();
         if (label.pos.left() - marge < number.pos.left() &&
             label.pos.right() + marge > number.pos.right())
             return true;

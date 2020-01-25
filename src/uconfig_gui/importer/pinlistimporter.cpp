@@ -30,13 +30,13 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
     {
         setStartId(PageStart);
     }
-    else if (fileName.endsWith(".pdf"))
+    else if (fileName.endsWith(".pdf", Qt::CaseInsensitive))
     {
         setField("file", fileName);
         setStartId(PagePDFFile);
         _type = PDF;
     }
-    else if (fileName.endsWith(".lib"))
+    else if (fileName.endsWith(".lib", Qt::CaseInsensitive))
     {
         setField("file", fileName);
         setStartId(PageComponents);

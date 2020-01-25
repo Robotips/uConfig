@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     if (app.arguments().size() > 1)
     {
         QString fileArg = app.arguments()[1];
-        if (fileArg.endsWith(".lib"))
+        if (fileArg.endsWith(".lib", Qt::CaseInsensitive))
             project.openLib(fileArg);
         else
             project.importComponents(fileArg);

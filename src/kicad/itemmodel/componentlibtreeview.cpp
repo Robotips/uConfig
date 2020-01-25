@@ -95,6 +95,11 @@ void ComponentLibTreeView::selectAll(bool selected)
     _model->selectAll(selected);
 }
 
+void ComponentLibTreeView::updateComponent(Component *component)
+{
+    _model->updateComponent(component);
+}
+
 void ComponentLibTreeView::remove()
 {
     if (!_editMode)

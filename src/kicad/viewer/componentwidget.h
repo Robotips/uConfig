@@ -39,10 +39,10 @@ public:
 
     ComponentViewer *viewer() const;
 
-    QAction *ationNoGrid() const;
-    QAction *ationGrid() const;
-    QAction *ationGridFront() const;
-    QAction *ationElecType() const;
+    QAction *actionNoGrid() const;
+    QAction *actionGrid() const;
+    QAction *actionGridFront() const;
+    QAction *actionElecType() const;
 
 public slots:
     void setUnit(int unit);

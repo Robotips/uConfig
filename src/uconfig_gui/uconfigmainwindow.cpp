@@ -44,6 +44,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     connect(_project, &UConfigProject::activeComponentChange, _componentInfosEditor, &ComponentInfosEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _pinListEditor, &PinListEditor::setComponent);
     connect(_project, &UConfigProject::activeComponentChange, _componentWidget, &ComponentWidget::setComponent);
+    connect(_project, &UConfigProject::componentChange, _componentsTreeView, &ComponentLibTreeView::updateComponent);
 
     resize(QApplication::primaryScreen()->size()*.7);
     setTitle();
@@ -66,7 +67,7 @@ void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
         return;
 
     QString fileName = event->mimeData()->urls().first().toLocalFile();
-    if (fileName.endsWith(".pdf") || fileName.endsWith(".lib"))
+    if (fileName.endsWith(".pdf", Qt::CaseInsensitive) || fileName.endsWith(".lib", Qt::CaseInsensitive))
         event->accept();
 }
 
@@ -355,10 +356,10 @@ void UConfigMainWindow::createToolbarsMenus()
     // ============= View =============
     QMenu *viewMenu = menuBar()->addMenu(tr("&View"));
 
-    viewMenu->addAction(_componentWidget->ationNoGrid());
-    viewMenu->addAction(_componentWidget->ationGrid());
-    viewMenu->addAction(_componentWidget->ationGridFront());
-    viewMenu->addAction(_componentWidget->ationElecType());
+    viewMenu->addAction(_componentWidget->actionNoGrid());
+    viewMenu->addAction(_componentWidget->actionGrid());
+    viewMenu->addAction(_componentWidget->actionGridFront());
+    viewMenu->addAction(_componentWidget->actionElecType());
 
     viewMenu->addSeparator();
     QAction *componentsListDockAction = _componentsListDock->toggleViewAction();

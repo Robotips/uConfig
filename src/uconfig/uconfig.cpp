@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
     RulesSet ruleSet;
     if (!ruleFile.isEmpty())
     {
-        if (!ruleFile.endsWith(".kss"))
+        if (!ruleFile.endsWith(".kss", Qt::CaseInsensitive))
             ruleFile.append(".kss");
         if (!QFileInfo(ruleFile).exists())
         {
@@ -132,12 +132,12 @@ int main(int argc, char *argv[])
     qint64 d = QDateTime::currentMSecsSinceEpoch();
     Lib lib;
     out << "> " << file << endl;
-    if (file.endsWith(".pdf"))
+    if (file.endsWith(".pdf", Qt::CaseInsensitive))
     {
         processFilePdf(file, &lib, parser.isSet(debugOption));
         source = FromPdf;
     }
-    else if (file.endsWith(".lib"))
+    else if (file.endsWith(".lib", Qt::CaseInsensitive))
     {
         processFileLib(file, &lib);
         source = FromLib;

@@ -150,6 +150,8 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
             return QVariant(component->unitCount());
         case Package:
             return QVariant(component->footPrints().join(';'));
+        default:
+            return QVariant();
         }
     case Qt::CheckStateRole:
         if (index.column() == Name && _selectedMode)
@@ -272,4 +274,10 @@ void ComponentLibItemModel::setSelectedMode(bool selectedMode)
 const QList<Component *> &ComponentLibItemModel::selectedComponents() const
 {
     return _selectedComponents;
+}
+
+void ComponentLibItemModel::updateComponent(Component *component)
+{
+    if (component)
+        emit dataChanged(index(component, 0), index(component, ColumnCount - 1));
 }

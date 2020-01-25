@@ -24,10 +24,16 @@
 #include <QRectF>
 #include <QString>
 
+namespace Poppler
+{
+class TextBox;
+}
+
 class DATASHEET_EXTRACTOR_EXPORT DatasheetBox
 {
 public:
     DatasheetBox();
+    DatasheetBox(const Poppler::TextBox &textBox);
     ~DatasheetBox();
 
     qreal distanceToPoint(const QPointF &center) const;

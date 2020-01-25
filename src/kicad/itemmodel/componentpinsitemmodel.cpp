@@ -126,6 +126,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
         case PinClass:
             return QVariant(pin->className());
         }
+        break;
     case Qt::EditRole:
         switch (index.column())
         {
@@ -140,6 +141,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
         case PinClass:
             return QVariant();
         }
+        break;
     }
     return QVariant();
 }
@@ -151,7 +153,7 @@ QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex
         return QModelIndex();
 
     if (row >= _component->pins().count())
-        return createIndex(row, column, (void *)Q_NULLPTR);
+        return createIndex(row, column, nullptr);
     else
         return createIndex(row, column, _component->pins()[row]);
 }

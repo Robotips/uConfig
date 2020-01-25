@@ -48,11 +48,10 @@ void PinListEditor::createWidgets()
     layout->setContentsMargins(0, 5, 0, 0);
     layout->setSpacing(5);
 
-    QHBoxLayout *headerLayout = new QHBoxLayout();
-    headerLayout->addWidget(new QLabel(tr("Pin name filter: ")));
     _nameFilterEdit = new QLineEdit();
-    headerLayout->addWidget(_nameFilterEdit);
-    layout->addItem(headerLayout);
+    _nameFilterEdit->setClearButtonEnabled(true);
+    _nameFilterEdit->setPlaceholderText("Pin name filter...");
+    layout->addWidget(_nameFilterEdit);
 
     _componentPinsTableView = new ComponentPinsTableView();
     layout->addWidget(_componentPinsTableView);

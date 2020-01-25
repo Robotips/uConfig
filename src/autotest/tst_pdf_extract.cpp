@@ -21,6 +21,7 @@ private slots:
     void test_ATtiny24();
     void test_IFX9201SG();
     void test_bq76920();
+    void test_ticc();
 
 protected:
     Datasheet dt;
@@ -95,6 +96,11 @@ void PdfExtract::test_IFX9201SG()
 void PdfExtract::test_bq76920()
 {
     comparePdfTolib("bq76920_pins", true);
+}
+
+void PdfExtract::test_ticc()
+{
+    comparePdfTolib("ticc_pins");
 }
 
 QTEST_GUILESS_MAIN(PdfExtract)

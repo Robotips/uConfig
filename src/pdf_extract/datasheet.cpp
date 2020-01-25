@@ -119,31 +119,45 @@ void Datasheet::pinSearch(int numPage)
     }
     for (int pinNumber = 2; pinNumber < 200; pinNumber++)
     {
+        QList<QPair<DatasheetPin *, QList<QPair<DatasheetPackage *, qreal> > > > pinNumberPackage;
         for (int i = 0; i < pins.count(); i++)
         {
             DatasheetPin *pin = pins.at(i);
             if (pin->pin == pinNumber)
             {
-                DatasheetPackage *nearPackage = NULL;
-                qreal dist = 99999999999999;
-                QPointF center = pin->numPos.center();
+                pinNumberPackage.append(qMakePair(pin, QList<QPair<DatasheetPackage *, qreal> >()));
                 foreach (DatasheetPackage *package, packages)
                 {
                     DatasheetPin *lastpin = package->pins.last();
                     if (lastpin->pin == pin->pin || lastpin->pin + 4 < pin->pin)
                         continue;
 
-                    qreal newdist = lastpin->distanceToPoint(center);
-                    if (newdist < dist)
+                    QPointF centerPin = pin->numPos.center();
+                    qreal dist = lastpin->distanceToPoint(centerPin);
+                    pinNumberPackage.last().second.append(qMakePair(package, dist));
+                }
+            }
+        }
+
+        for (int p = 0; p < packages.count(); p++)
+        {
+            qreal nearDist = 99999999999999;
+            DatasheetPin *nearPin = NULL;
+            for (int pn = 0; pn < pinNumberPackage.count(); pn++)
+            {
+                if (p < pinNumberPackage.at(pn).second.count())
+                {
+                    qreal dist = pinNumberPackage.at(pn).second.at(p).second;
+                    if (dist < nearDist)
                     {
-                        dist = newdist;
-                        nearPackage = package;
+                        nearPin = pinNumberPackage.at(pn).first;
+                        nearDist = dist;
                     }
                 }
-                if (nearPackage != NULL)
-                {
-                    nearPackage->pins.push_back(pin);
-                }
+            }
+            if (nearPin != NULL)
+            {
+                packages.at(p)->pins.push_back(nearPin);
             }
         }
     }
@@ -224,6 +238,7 @@ void Datasheet::pinSearch(int numPage)
 
         package->name = QString("p.%1_pack%2").arg(numPage + 1).arg(pac);
         _packages.push_back(package);
+        pac++;
 
         if (!_debug)
             continue;
@@ -234,7 +249,6 @@ void Datasheet::pinSearch(int numPage)
             72.0 * res, 72.0 * res, rect.x() * res, rect.y() * res,
             rect.width() * res, rect.height() * res);
         QPainter painter(&package->image);
-        pac++;
         QDir dir;
         dir.mkdir(_name);
 
@@ -347,7 +361,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             textBox->text().mid(1).toInt(&okNumber);
         else
             textBox->text().toInt(&okNumber);
-        if (textBox->nextWord() != NULL && okNumber == false)
+
+        if (textBox->nextWord() != NULL && okNumber == false && DatasheetBox::isAlign(DatasheetBox(*textBox->nextWord()), DatasheetBox(*textBox)))
         {
             box->text.append(textBox->text());
             if (textBox->hasSpaceAfter())
@@ -359,7 +374,6 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
         {
             if (prev && !okNumber)
             {
-                //qDebug()<<box->text<<textBox->text()<<textBox->boundingBox()<<box->pos;
                 box->text = box->text + textBox->text();
                 box->pos = toGlobalPos(textBox->boundingBox(), page, numPage).united(box->pos);
             }
@@ -372,6 +386,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                     else
                         box->text = textBox->text();
                     box->pos = toGlobalPos(textBox->boundingBox(), page, numPage);
+                    prev = false;
                 }
 
                 if (okNumber)
@@ -394,8 +409,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                         _numbers.push_back(nbox);
                         okNumber = false;
                     }
+                    prev = false;
                 }
-                prev = false;
             }
 
             // remove notes
@@ -615,15 +630,9 @@ QString Datasheet::name() const
 int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
 {
     QStringList keyWords;
-    keyWords << "Pin Diagram"
-             << "PIN DESCRIPTION"
-             << "PIN NAMES"
-             << "Pin Assignment"
-             << "lead Assignment"
-             << "PIN CONFIGURATION"
-             << "Pinouts"
-             << "PACKAGE"
-             << "TQFP"
+    keyWords << "Pin Diagram" << "PIN DESCRIPTION" << "PIN NAMES" << "Pin Assignment" << "lead Assignment"
+             << "PIN CONFIGURATION" << "Pinouts" << "PACKAGE"
+             << "TQFP" << "Flatpack"
              << "MLF"
              << "DIP"
              << "PLCC"
