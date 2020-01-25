@@ -22,6 +22,7 @@
 #include "pdf_extract_common.h"
 
 #include "datasheetbox.h"
+#include "../kicad/model/pin.h"
 
 #include <QString>
 #include <QRectF>
@@ -39,6 +40,7 @@ public:
     QRectF pos;
     int page;
     QRectF numPos;
+    Pin::ElectricalType electricalType = Pin::Input;
 
     DatasheetBox *numberBox;
     DatasheetBox *nameBox;

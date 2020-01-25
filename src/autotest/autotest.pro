@@ -6,6 +6,7 @@ DESTDIR = "$$PWD/../../bin"
 CONFIG += optimize_full c++11
 CONFIG += qt console warn_on depend_includepath testcase
 CONFIG -= app_bundle
+CONFIG += c++11
 
 LIBS += -L"$$PWD/../../bin"
 LIBS += -lkicad -lpdf_extract

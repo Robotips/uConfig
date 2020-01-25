@@ -9,7 +9,7 @@ class PdfExtract : public QObject
 {
     Q_OBJECT
 
-    void comparePdfTolib(const QString &fileName);
+    void comparePdfTolib(const QString &fileName, bool checkDirections = false);
 
 private slots:
     void init();
@@ -20,13 +20,14 @@ private slots:
     void test_ucc27212a_q1();
     void test_ATtiny24();
     void test_IFX9201SG();
+    void test_bq76920();
     void test_ticc();
 
 protected:
     Datasheet dt;
 };
 
-void PdfExtract::comparePdfTolib(const QString &fileName)
+void PdfExtract::comparePdfTolib(const QString &fileName, bool checkDirections)
 {
     //dt.setDebugEnabled(true);
     QVERIFY(dt.open(QString("../src/autotest/%1.pdf").arg(fileName)));
@@ -51,6 +52,8 @@ void PdfExtract::comparePdfTolib(const QString &fileName)
             Pin *pin2 = comp2->pins()[p];
             QCOMPARE(pin1->name(), pin2->name());
             QCOMPARE(pin1->padName(), pin2->padName());
+            if (checkDirections)
+                QCOMPARE(pin1->electricalType(), pin2->electricalType());
         }
     }
 }
@@ -88,6 +91,11 @@ void PdfExtract::test_ATtiny24()
 void PdfExtract::test_IFX9201SG()
 {
     comparePdfTolib("IFX9201SG_pins");
+}
+
+void PdfExtract::test_bq76920()
+{
+    comparePdfTolib("bq76920_pins", true);
 }
 
 void PdfExtract::test_ticc()

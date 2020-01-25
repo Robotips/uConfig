@@ -43,6 +43,7 @@ Component *DatasheetPackage::toComponent() const
     {
         Pin *pin = new Pin();
         pin->setName(dpin->name);
+        pin->setElectricalType(dpin->electricalType);
         pin->setPadName(QString::number(dpin->pin));
         comp->addPin(pin);
     }
