@@ -1,6 +1,6 @@
 /**
  ** This file is part of the uConfig project.
- ** Copyright 2018 Robotips sebastien.caux@robotips.fr.
+ ** Copyright 2017-2020 Robotips, Sebastien CAUX (sebcaux)
  **
  ** This program is free software: you can redistribute it and/or modify
  ** it under the terms of the GNU General Public License as published by
