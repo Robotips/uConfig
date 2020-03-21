@@ -37,7 +37,8 @@ public:
     const QRectF &boundingRect() const;
 
     bool isPadName() const;
-    enum Type {
+    enum Type
+    {
         Text,
         SubText,
         Pad

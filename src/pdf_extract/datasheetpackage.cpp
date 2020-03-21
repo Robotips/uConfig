@@ -32,12 +32,18 @@ Component *DatasheetPackage::toComponent() const
 {
     Component *comp = new Component();
     if (!icname.isEmpty())
+    {
         comp->setName(icname.first());
+    }
     else
+    {
         comp->setName(name);
+    }
 
     for (int i = 1; i < icname.count(); i++)
+    {
         comp->addAlias(icname.at(i));
+    }
 
     foreach (DatasheetPin *dpin, pins)
     {

@@ -3,7 +3,8 @@
 #include <QPainter>
 
 PdfDebugItemTextBox::PdfDebugItemTextBox(PDFTextBox *textBox, QGraphicsItem *parent)
-    : QGraphicsItem(parent), _textBox(textBox)
+    : QGraphicsItem(parent)
+    , _textBox(textBox)
 {
     foreach (PDFTextBox *textBox, _textBox->subBoxes())
         new PdfDebugItemTextBox(textBox, this);

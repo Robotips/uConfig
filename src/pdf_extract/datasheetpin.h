@@ -23,8 +23,8 @@
 
 #include "datasheetbox.h"
 
-#include <QString>
 #include <QRectF>
+#include <QString>
 
 class DATASHEET_EXTRACTOR_EXPORT DatasheetPin
 {

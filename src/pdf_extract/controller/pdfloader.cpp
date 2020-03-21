@@ -18,8 +18,8 @@
 
 #include "pdfloader.h"
 
-#include <poppler/qt5/poppler-qt5.h>
 #include <poppler/qt5/poppler-form.h>
+#include <poppler/qt5/poppler-qt5.h>
 
 #include <QDebug>
 
@@ -43,11 +43,15 @@ PDFLoader::~PDFLoader()
 bool PDFLoader::loadPage(PDFPage *pdfPage)
 {
     if (pdfPage->numPage() >= _document->numPages())
+    {
         return false;
+    }
 
     Poppler::Page *page = _document->page(pdfPage->numPage());
     if (page == Q_NULLPTR)
+    {
         return false;
+    }
     pdfPage->_page = page;
     pdfPage->_pageRect = QRect(QPoint(0, 0), page->pageSize());
 
@@ -78,7 +82,9 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
                 parentTextBox = new PDFTextBox(QString(), ptextBox->boundingBox());
                 parentTextBox->_page = pdfPage;
                 if (ptextBox->hasSpaceAfter())
+                {
                     textBox->_text.append(QChar(' '));
+                }
                 textBox->_parentBox = parentTextBox;
                 textBox->_type = PDFTextBox::SubText;
                 parentTextBox->_subBoxes.append(textBox);
@@ -114,7 +120,9 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
             else
             {
                 if (ptextBox->hasSpaceAfter())
+                {
                     textBox->_text.append(QChar(' '));
+                }
             }
         }
         delete ptextBox;

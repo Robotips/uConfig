@@ -44,9 +44,13 @@ const QString &PDFDatasheet::title() const
 bool PDFDatasheet::loadPage(int numPage)
 {
     if (numPage >= _pageCount || numPage < 0)
+    {
         return false;
+    }
     if (page(numPage))
+    {
         return true;
+    }
 
     PDFPage *page = new PDFPage(this, numPage);
     _pagesLoaded.insert(numPage, page);
@@ -67,7 +71,9 @@ PDFPage *PDFDatasheet::page(int numPage)
 {
     QMap<int, PDFPage *>::const_iterator itFind = _pagesLoaded.constFind(numPage);
     if (itFind == _pagesLoaded.cend())
+    {
         return Q_NULLPTR;
+    }
     return *itFind;
 }
 

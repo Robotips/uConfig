@@ -18,8 +18,8 @@
 
 #include "pdfdebugviewer.h"
 
-#include <qmath.h>
 #include <QMouseEvent>
+#include <qmath.h>
 
 PdfDebugViewer::PdfDebugViewer(QWidget *parent)
     : QGraphicsView(parent)
@@ -61,9 +61,13 @@ void PdfDebugViewer::wheelEvent(QWheelEvent *event)
     double mscale = qPow(1.25, numSteps);
 
     if (transform().m11() < 0.5 && mscale < 1)
+    {
         return;
+    }
     if (transform().m11() > 4 && mscale > 1)
+    {
         return;
+    }
 
     scale(mscale, mscale);
 }

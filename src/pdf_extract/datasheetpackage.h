@@ -21,14 +21,14 @@
 
 #include "pdf_extract_common.h"
 
-#include "datasheetpin.h"
 #include "../kicad/model/component.h"
+#include "datasheetpin.h"
 
+#include <QImage>
+#include <QList>
+#include <QRectF>
 #include <QString>
 #include <QStringList>
-#include <QRectF>
-#include <QList>
-#include <QImage>
 
 class DATASHEET_EXTRACTOR_EXPORT DatasheetPackage
 {

@@ -21,10 +21,10 @@
 
 #include "../pdf_extract_common.h"
 
-#include <QWidget>
 #include <QAction>
-#include <QLineEdit>
 #include <QLabel>
+#include <QLineEdit>
+#include <QWidget>
 
 #include "model/pdfdatasheet.h"
 #include "pdfdebugviewer.h"

@@ -19,7 +19,8 @@
 #include "pdftextbox.h"
 
 PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
-    : _text(text), _boundingRect(boundingRect)
+    : _text(text)
+    , _boundingRect(boundingRect)
 {
     _page = Q_NULLPTR;
     _parentBox = Q_NULLPTR;
@@ -52,7 +53,9 @@ bool PDFTextBox::isPadName() const
     bool okNumber;
     _text.toInt(&okNumber);
     if (okNumber)
+    {
         return true;
+    }
     // TODO add BGA pad name filter
     return false;
 }

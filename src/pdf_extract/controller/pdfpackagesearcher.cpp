@@ -20,5 +20,4 @@
 
 PDFPackageSearcher::PDFPackageSearcher()
 {
-
 }

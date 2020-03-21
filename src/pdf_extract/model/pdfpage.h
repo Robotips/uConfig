@@ -37,7 +37,7 @@ class PDFDatasheet;
 class DATASHEET_EXTRACTOR_EXPORT PDFPage
 {
 public:
-    PDFPage(PDFDatasheet *datasheet, int numPage=0);
+    PDFPage(PDFDatasheet *datasheet, int numPage = 0);
     ~PDFPage();
 
     PDFDatasheet *datasheet() const;

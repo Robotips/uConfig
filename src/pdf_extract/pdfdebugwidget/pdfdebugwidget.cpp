@@ -18,21 +18,22 @@
 
 #include "pdfdebugwidget.h"
 
+#include <QToolBar>
 #include <QToolButton>
 #include <QVBoxLayout>
-#include <QToolBar>
 
 PdfDebugWidget::PdfDebugWidget(QWidget *parent)
-    : QWidget(parent), _datasheet(Q_NULLPTR)
+    : QWidget(parent)
+    , _datasheet(Q_NULLPTR)
 {
-    _currentPage = 0;
+    _currentPage = nullptr;
     createWidgets();
 }
 
 PdfDebugWidget::PdfDebugWidget(PDFDatasheet *datasheet, QWidget *parent)
     : QWidget(parent)
 {
-    _currentPage = 0;
+    _currentPage = nullptr;
     createWidgets();
     setDatasheet(datasheet);
 }
@@ -47,29 +48,41 @@ void PdfDebugWidget::setDatasheet(PDFDatasheet *datasheet)
     _datasheet = datasheet;
 
     if (_datasheet)
+    {
         _pageLabel->setText(QString(" / %1").arg(_datasheet->pageCount()));
+    }
 }
 
 void PdfDebugWidget::showPage(int page)
 {
     if (!_datasheet)
+    {
         return;
+    }
     if (!_datasheet->loadPage(page))
+    {
         return;
+    }
 
     PDFPage *pdfPage = _datasheet->page(page);
     if (!pdfPage)
+    {
         return;
+    }
     showPage(pdfPage);
 }
 
 void PdfDebugWidget::showPage(PDFPage *page)
 {
     if (page->datasheet() != _datasheet)
+    {
         setDatasheet(page->datasheet());
+    }
 
     if (!page->boxesLoaded())
+    {
         page->loadBoxes();
+    }
 
     _currentPage = page;
     _viewer->setPage(page);
@@ -95,7 +108,9 @@ PDFPage *PdfDebugWidget::currentPage() const
 int PdfDebugWidget::currentNumPage() const
 {
     if (!_currentPage)
+    {
         return 0;
+    }
     return _currentPage->numPage();
 }
 

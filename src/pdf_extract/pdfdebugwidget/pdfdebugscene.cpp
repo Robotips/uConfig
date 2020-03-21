@@ -21,5 +21,4 @@
 PdfDebugScene::PdfDebugScene(QObject *parent)
     : QGraphicsScene(parent)
 {
-
 }

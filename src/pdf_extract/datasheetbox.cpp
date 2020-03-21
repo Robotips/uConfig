@@ -25,13 +25,17 @@
 int DatasheetBox::created = 0;
 
 DatasheetBox::DatasheetBox()
-    : page(0), associated(false)
+    : page(0)
+    , associated(false)
 {
     created++;
 }
 
 DatasheetBox::DatasheetBox(const Poppler::TextBox &textBox)
-    : text(textBox.text()), pos(textBox.boundingBox()), page(0), associated(false)
+    : text(textBox.text())
+    , pos(textBox.boundingBox())
+    , page(0)
+    , associated(false)
 {
     created++;
 }
@@ -49,22 +53,32 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 
     newdist = (center - pos.bottomLeft()).manhattanLength();
     if (newdist < dist)
+    {
         dist = newdist;
+    }
 
     newdist = (center - pos.topRight()).manhattanLength();
     if (newdist < dist)
+    {
         dist = newdist;
+    }
     newdist = (center - QPointF(pos.left(), pos.center().y())).manhattanLength();
     if (newdist < dist)
+    {
         dist = newdist;
+    }
 
     newdist = (center - pos.bottomRight()).manhattanLength();
     if (newdist < dist)
+    {
         dist = newdist;
+    }
 
     newdist = (center - pos.topLeft()).manhattanLength();
     if (newdist < dist)
+    {
         dist = newdist;
+    }
 
     return dist;
 }
@@ -75,34 +89,43 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
     if (label.text.count() <= 2) // small label test align
     {
         marge = label.pos.height() / 2.0;
-        if (label.pos.top() - marge < number.pos.top() &&
-            label.pos.bottom() + marge > number.pos.bottom())
+        if (label.pos.top() - marge < number.pos.top() && label.pos.bottom() + marge > number.pos.bottom())
+        {
             return true;
+        }
         marge = label.pos.width() / 2.0;
-        if (label.pos.left() - marge < number.pos.left() &&
-            label.pos.right() + marge > number.pos.right())
+        if (label.pos.left() - marge < number.pos.left() && label.pos.right() + marge > number.pos.right())
+        {
             return true;
+        }
         return false;
     }
-    if (label.pos.width() > label.pos.height())  // Horizontal
+    if (label.pos.width() > label.pos.height()) // Horizontal
     {
-        if (label.pos.height() > number.pos.height() * 2
-         || number.pos.height() > label.pos.height() * 2)
+        if (label.pos.height() > number.pos.height() * 2 || number.pos.height() > label.pos.height() * 2)
+        {
             return false;
+        }
         marge = label.pos.height();
-        if (label.pos.top() - marge < number.pos.top() &&
-            label.pos.bottom() + marge > number.pos.bottom())
+        if (label.pos.top() - marge < number.pos.top() && label.pos.bottom() + marge > number.pos.bottom())
+        {
             return true;
+        }
         else
+        {
             return false;
+        }
     }
-    else  // Vertical
+    else // Vertical
     {
         marge = label.pos.width();
-        if (label.pos.left() - marge < number.pos.left() &&
-            label.pos.right() + marge > number.pos.right())
+        if (label.pos.left() - marge < number.pos.left() && label.pos.right() + marge > number.pos.right())
+        {
             return true;
+        }
         else
+        {
             return false;
+        }
     }
 }

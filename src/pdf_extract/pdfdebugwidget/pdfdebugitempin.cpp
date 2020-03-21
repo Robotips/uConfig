@@ -20,5 +20,4 @@
 
 PdfDebugItemPin::PdfDebugItemPin()
 {
-
 }

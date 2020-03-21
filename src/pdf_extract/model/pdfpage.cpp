@@ -16,14 +16,17 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include "pdfdatasheet.h"
 #include "pdfpage.h"
 #include "controller/pdfloader.h"
+#include "pdfdatasheet.h"
 
 #include <poppler/qt5/poppler-qt5.h>
 
 PDFPage::PDFPage(PDFDatasheet *datasheet, int numPage)
-    : _datasheet(datasheet), _numPage(numPage), _boxesLoaded(false), _page(Q_NULLPTR)
+    : _datasheet(datasheet)
+    , _numPage(numPage)
+    , _boxesLoaded(false)
+    , _page(Q_NULLPTR)
 {
 }
 
@@ -62,7 +65,9 @@ Poppler::Page *PDFPage::page() const
 void PDFPage::loadBoxes()
 {
     if (!_boxesLoaded)
+    {
         _datasheet->pdfLoader()->loadBoxes(this);
+    }
 }
 
 bool PDFPage::boxesLoaded() const

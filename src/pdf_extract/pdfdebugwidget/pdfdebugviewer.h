@@ -37,7 +37,7 @@ public:
 signals:
 
 protected:
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QWheelEvent *event) override;
 
 public slots:
     void setPage(PDFPage *page);

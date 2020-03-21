@@ -21,25 +21,25 @@
 
 #include "pdf_extract_common.h"
 
-#include <QObject>
 #include <QImage>
+#include <QObject>
 
-#include "datasheetpackage.h"
-#include "datasheetbox.h"
 #include "../kicad/model/component.h"
+#include "datasheetbox.h"
+#include "datasheetpackage.h"
 
 namespace Poppler
 {
 class Document;
 class Page;
-}
+} // namespace Poppler
 
 class DATASHEET_EXTRACTOR_EXPORT Datasheet : public QObject
 {
     Q_OBJECT
 public:
     Datasheet();
-    ~Datasheet();
+    ~Datasheet() override;
 
     bool open(QString fileName);
     void close();
@@ -52,10 +52,10 @@ public:
     QString name() const;
 
     bool debugEnabled() const;
-    void setDebugEnabled(bool debug=true);
+    void setDebugEnabled(bool debug = true);
 
     bool forceEnabled() const;
-    void setForceEnabled(bool force=true);
+    void setForceEnabled(bool force = true);
 
     int pageCount() const;
     QImage pageThumbnail(int numPage) const;
@@ -86,4 +86,4 @@ private:
     bool _force;
 };
 
-#endif  // DATASHEET_H
+#endif // DATASHEET_H
