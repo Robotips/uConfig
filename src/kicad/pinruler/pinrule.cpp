@@ -20,36 +20,33 @@
 
 #include <QDebug>
 
-QStringList PinRule::propsName = QStringList()
-        <<"class"
-        <<"elecType"
-        <<"pinType"
-        <<"priority";
+QStringList PinRule::propsName = QStringList() << "class"
+                                               << "elecType"
+                                               << "pinType"
+                                               << "priority";
 
-QStringList PinRule::elecTypeEnumStr = QStringList()
-        <<"in"
-        <<"out"
-        <<"bidir"
-        <<"tri"
-        <<"passive"
-        <<"unspecified"
-        <<"pin"
-        <<"pout"
-        <<"opcol"
-        <<"opem"
-        <<"nc";
+QStringList PinRule::elecTypeEnumStr = QStringList() << "in"
+                                                     << "out"
+                                                     << "bidir"
+                                                     << "tri"
+                                                     << "passive"
+                                                     << "unspecified"
+                                                     << "pin"
+                                                     << "pout"
+                                                     << "opcol"
+                                                     << "opem"
+                                                     << "nc";
 
-QStringList PinRule::pinTypeEnumStr = QStringList()
-        <<"norm"
-        <<"novisible"
-        <<"inverted"
-        <<"clock"
-        <<"iclock"
-        <<"lowin"
-        <<"clocklow"
-        <<"lowout"
-        <<"faledge"
-        <<"nologic";
+QStringList PinRule::pinTypeEnumStr = QStringList() << "norm"
+                                                    << "novisible"
+                                                    << "inverted"
+                                                    << "clock"
+                                                    << "iclock"
+                                                    << "lowin"
+                                                    << "clocklow"
+                                                    << "lowout"
+                                                    << "faledge"
+                                                    << "nologic";
 
 PinRule::PinRule(const QString &selector)
     : Rule(selector)
@@ -76,7 +73,9 @@ bool PinRule::setProperty(const QString &name, const QString &value)
     int id = PinRule::propsName.indexOf(name);
 
     if (id == -1)
+    {
         return false;
+    }
 
     switch (id)
     {
@@ -117,11 +116,17 @@ bool PinRule::hasPropertySet(const QString &name) const
 QString PinRule::className(const QString &pinName) const
 {
     if (pinName.isEmpty())
+    {
         return _className;
+    }
     if (!_selector.isValid())
+    {
         return _className;
+    }
     if (!_className.contains("\\"))
+    {
         return _className;
+    }
 
     QRegularExpressionMatch match = _selector.match(pinName, 0, QRegularExpression::NormalMatch);
     if (match.hasMatch())
@@ -129,12 +134,18 @@ QString PinRule::className(const QString &pinName) const
         QString newClassName;
         const QStringList &captures = (match.capturedTexts());
         newClassName = _className;
-        if (captures.count()>1)
+        if (captures.count() > 1)
+        {
             newClassName.replace("\\1", captures[1]);
-        if (captures.count()>2)
+        }
+        if (captures.count() > 2)
+        {
             newClassName.replace("\\2", captures[2]);
-        if (captures.count()>3)
+        }
+        if (captures.count() > 3)
+        {
             newClassName.replace("\\3", captures[3]);
+        }
         return newClassName;
     }
     return _className;
@@ -166,7 +177,9 @@ void PinRule::setElecType(const QString &elecType)
 {
     int id = PinRule::elecTypeEnumStr.indexOf(elecType);
     if (id != -1)
+    {
         setElecType((Pin::ElectricalType)(id));
+    }
 }
 
 bool PinRule::hasElecTypeSet() const
@@ -189,7 +202,9 @@ void PinRule::setPinType(const QString &pinType)
 {
     int id = PinRule::pinTypeEnumStr.indexOf(pinType);
     if (id != -1)
+    {
         setPinType((Pin::PinType)(id));
+    }
 }
 
 bool PinRule::hasPinTypeSet() const

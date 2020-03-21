@@ -23,8 +23,8 @@
 
 #include <QPlainTextEdit>
 
-#include "ksssyntax.h"
 #include "ksseditormargin.h"
+#include "ksssyntax.h"
 
 class KICAD_EXPORT KssEditor : public QPlainTextEdit
 {

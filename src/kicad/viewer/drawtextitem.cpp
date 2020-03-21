@@ -20,11 +20,12 @@
 
 #include "componentitem.h"
 
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
 DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
-    : DrawItem(draw), _internal(internal)
+    : DrawItem(draw)
+    , _internal(internal)
 {
     _fontText = Q_NULLPTR;
     setDraw(draw);
@@ -44,19 +45,29 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::TextAntialiasing);
     if (!_internal)
+    {
         painter->setPen(QPen(QColor(132, 0, 0), 2));
+    }
     else
+    {
         painter->setPen(QPen(QColor(0, 132, 132), 2));
+    }
 
     QFont font = _fontText->font();
     if (_drawText->textStyle().testFlag(DrawText::TextBold))
+    {
         font.setBold(true);
+    }
     if (_drawText->textStyle().testFlag(DrawText::TextItalic))
+    {
         font.setItalic(true);
+    }
     painter->setFont(font);
 
     if (_drawText->direction() == DrawText::DirectionVertital)
+    {
         painter->rotate(-90);
+    }
 
     _fontText->drawText(painter, _textRect, Qt::AlignLeft, _drawText->text());
 }
@@ -75,14 +86,18 @@ void DrawTextItem::setDraw(DrawText *draw)
 
     QFont font = _fontText->font();
     if (_drawText->textStyle().testFlag(DrawText::TextBold))
+    {
         font.setBold(true);
+    }
     if (_drawText->textStyle().testFlag(DrawText::TextItalic))
+    {
         font.setItalic(true);
+    }
     QFontMetrics fm(font);
 
     _rect = fm.boundingRect(_drawText->text());
     _rect.setWidth(_fontText->textWidth(_drawText->text()));
-    _rect.moveTopLeft(QPoint(0,0));
+    _rect.moveTopLeft(QPoint(0, 0));
 
     switch (_drawText->textVJustify())
     {

@@ -20,8 +20,8 @@
 
 #include "componentitem.h"
 
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
 DrawPolyItem::DrawPolyItem(DrawPoly *draw)
     : DrawItem(draw)
@@ -37,11 +37,15 @@ void DrawPolyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 
     double thickness = draw()->thickness();
     if (thickness == 0)
+    {
         thickness = 1 / 0.254;
+    }
     painter->setPen(QPen(QColor(132, 0, 0), 0.254 * thickness));
 
     if (_drawPoly->filled() != DrawPoly::DrawNotFilled)
+    {
         painter->setBrush(QColor(255, 255, 194));
+    }
 
     QPolygon poly;
     foreach (QPoint pt, _drawPoly->points())

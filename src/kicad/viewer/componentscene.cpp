@@ -62,7 +62,9 @@ void ComponentScene::setElecType(bool elecType)
 {
     _elecType = elecType;
     if (_componentItem)
+    {
         _componentItem->setShowElectricalType(elecType);
+    }
 }
 
 Component *ComponentScene::component() const
@@ -107,7 +109,9 @@ void ComponentScene::saveAsPdf(const QString &fileName)
     QPainter p;
 
     if (!p.begin(&printer))
+    {
         return;
+    }
 
     render(&p);
     p.end();
@@ -120,7 +124,9 @@ void ComponentScene::saveAsImage(const QString &fileName, const QSize &size)
     QPainter p;
 
     if (!p.begin(&image))
+    {
         return;
+    }
     p.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 
     p.fillRect(QRect(QPoint(0, 0), size), Qt::white);
@@ -134,9 +140,13 @@ void ComponentScene::drawGrid(QPainter *painter, const QRectF &rect)
 {
     int gridSize = 20;
     if (rect.width() > 4000)
+    {
         gridSize = 40;
+    }
     if (_prevGridSize != gridSize)
+    {
         update();
+    }
     _prevGridSize = gridSize;
 
     qreal left = int(rect.left()) - (int(rect.left()) % gridSize);
@@ -145,16 +155,28 @@ void ComponentScene::drawGrid(QPainter *painter, const QRectF &rect)
     QVarLengthArray<QLineF, 100> lines;
 
     for (qreal x = left; x < rect.right(); x += gridSize)
+    {
         if (x != 0)
+        {
             lines.append(QLineF(x, rect.top(), x, rect.bottom()));
+        }
+    }
     for (qreal y = top; y < rect.bottom(); y += gridSize)
+    {
         if (y != 0)
+        {
             lines.append(QLineF(rect.left(), y, rect.right(), y));
+        }
+    }
 
     if (_gridFront)
+    {
         painter->setPen(QColor(100, 100, 100, 127));
+    }
     else
+    {
         painter->setPen(Qt::lightGray);
+    }
     painter->drawLines(lines.data(), lines.size());
     painter->setPen(Qt::darkGray);
     painter->drawLine(QLineF(rect.left(), 0, rect.right(), 0));
@@ -164,17 +186,25 @@ void ComponentScene::drawGrid(QPainter *painter, const QRectF &rect)
 void ComponentScene::drawBackground(QPainter *painter, const QRectF &rect)
 {
     if (!_grid)
+    {
         return;
+    }
 
     if (!_gridFront)
+    {
         drawGrid(painter, rect);
+    }
 }
 
 void ComponentScene::drawForeground(QPainter *painter, const QRectF &rect)
 {
     if (!_grid)
+    {
         return;
+    }
 
     if (_gridFront)
+    {
         drawGrid(painter, rect);
+    }
 }

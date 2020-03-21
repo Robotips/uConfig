@@ -21,12 +21,12 @@
 
 #include "kicad_global.h"
 
-#include <QTableView>
 #include <QAction>
+#include <QTableView>
 
-#include "componentpinssortfilterproxymodel.h"
-#include "componentpinsitemmodel.h"
 #include "componentpindelegate.h"
+#include "componentpinsitemmodel.h"
+#include "componentpinssortfilterproxymodel.h"
 
 class KICAD_EXPORT ComponentPinsTableView : public QTableView
 {
@@ -56,7 +56,7 @@ protected slots:
 
     // QWidget interface
 protected:
-    virtual void contextMenuEvent(QContextMenuEvent *event);
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 protected:
     ComponentPinsItemModel *_model;

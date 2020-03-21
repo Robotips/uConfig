@@ -30,11 +30,17 @@ class KICAD_EXPORT DrawCircleItem : public DrawItem
 public:
     DrawCircleItem(DrawCircle *draw);
 
-    enum { Type = UserType + 6 };
-    int type() const {return Type;}
+    enum
+    {
+        Type = UserType + 6
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
 
     void setDraw(DrawCircle *draw);
 

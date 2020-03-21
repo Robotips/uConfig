@@ -27,9 +27,9 @@ class KICAD_EXPORT DrawCircle : public Draw
 {
 public:
     DrawCircle();
-    Draw *clone() const;
+    Draw *clone() const override;
 
-    TypeDraw type() const;
+    TypeDraw type() const override;
 
     uint radius() const;
     void setRadius(const uint &radius);

@@ -19,17 +19,21 @@
 #include "componentlibtreeview.h"
 
 #include <QDebug>
-#include <QMouseEvent>
 #include <QMenu>
 #include <QMessageBox>
+#include <QMouseEvent>
 
-ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent) :
-    QTreeView(parent)
+ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent)
+    : QTreeView(parent)
 {
     if (lib)
+    {
         _model = new ComponentLibItemModel(lib);
+    }
     else
+    {
         _model = new ComponentLibItemModel(new Lib());
+    }
 
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     _editMode = false;
@@ -53,7 +57,9 @@ void ComponentLibTreeView::setLib(Lib *lib)
 {
     _model->setLib(lib);
     if (lib == _model->lib())
+    {
         return;
+    }
     resizeColumnToContents(0);
     resizeColumnToContents(1);
 }
@@ -103,23 +109,31 @@ void ComponentLibTreeView::updateComponent(Component *component)
 void ComponentLibTreeView::remove()
 {
     if (!_editMode)
+    {
         return;
+    }
 
     QModelIndexList selection = selectionModel()->selectedIndexes();
     if (selection.isEmpty())
+    {
         return;
+    }
 
     if (selection.size() > 0)
     {
-        if (QMessageBox::question(this, tr("Remove components?"), tr("Do you realy want to remove theses %1 components?")
-                                 .arg(selection.size() / ComponentLibItemModel::ColumnCount)) != QMessageBox::Yes)
+        if (QMessageBox::question(this, tr("Remove components?"), tr("Do you realy want to remove theses %1 components?").arg(selection.size() / ComponentLibItemModel::ColumnCount)) !=
+            QMessageBox::Yes)
+        {
             return;
+        }
         QList<QPersistentModelIndex> pindex;
         foreach (QModelIndex selected, selection)
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid() || indexComponent.column() != 0)
+            {
                 continue;
+            }
 
             pindex.append(indexComponent);
         }
@@ -135,29 +149,41 @@ void ComponentLibTreeView::mouseDoubleClickEvent(QMouseEvent *event)
     QTreeView::mouseDoubleClickEvent(event);
 
     if (!event->buttons().testFlag(Qt::LeftButton))
+    {
         return;
+    }
 
     const QPersistentModelIndex index = indexAt(event->pos());
     if (!index.isValid())
+    {
         return;
+    }
 
     const QModelIndex &indexComponent = _sortProxy->mapToSource(index);
     if (indexComponent.isValid())
+    {
         emit openedComponent(_model->component(indexComponent));
+    }
 }
 
 void ComponentLibTreeView::contextMenuEvent(QContextMenuEvent *event)
 {
     if (!_editMode)
+    {
         return;
+    }
 
     const QModelIndex &index = indexAt(event->pos());
     if (!index.isValid())
+    {
         return;
+    }
 
     const QModelIndex &indexFile = _sortProxy->mapToSource(index);
     if (!indexFile.isValid())
+    {
         return;
+    }
 
     QMenu menu;
     menu.addAction(_removeAction);

@@ -39,7 +39,9 @@ bool NumericalSortFilterProxyModel::lessThan(const QModelIndex &source_left, con
 {
     int compare = compareColumn(source_left, source_right, source_left.column());
     if (compare != 0)
+    {
         return (compare < 0);
+    }
 
     /*for (int column = 0; column < columnCount(); column++)
     {
@@ -70,7 +72,9 @@ QString NumericalSortFilterProxyModel::toNumeric(const QString &str) const
 
     QRegularExpressionMatchIterator numMatchIt = _numPattern.globalMatch(str);
     if (numMatchIt.hasNext())
+    {
         sortPatern.clear();
+    }
     while (numMatchIt.hasNext())
     {
         QRegularExpressionMatch numMatch = numMatchIt.next();

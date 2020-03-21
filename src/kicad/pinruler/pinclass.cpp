@@ -37,9 +37,13 @@ QString PinClass::className() const
 void PinClass::applyRule(ClassRule *rule)
 {
     if (!_positionSet && rule->hasPositionSet())
+    {
         setPosition(rule->positionValue());
+    }
     if (!_sortSet && rule->hasSortSet())
+    {
         setSort(rule->sortValue());
+    }
     if (!_sortPatternSet && rule->hasSortPatternSet())
     {
         QString newSortPatern = rule->sortPattern();
@@ -48,11 +52,17 @@ void PinClass::applyRule(ClassRule *rule)
         {
             const QStringList &captures = (match.capturedTexts());
             if (captures.count() > 1)
+            {
                 newSortPatern.replace("\\1", captures[1]);
+            }
             if (captures.count() > 2)
+            {
                 newSortPatern.replace("\\2", captures[2]);
+            }
             if (captures.count() > 3)
+            {
                 newSortPatern.replace("\\3", captures[3]);
+            }
         }
         setSortPattern(newSortPatern);
     }
@@ -64,22 +74,36 @@ void PinClass::applyRule(ClassRule *rule)
         {
             const QStringList &captures = (match.capturedTexts());
             if (captures.count() > 1)
+            {
                 newLabel.replace("\\1", captures[1]);
+            }
             if (captures.count() > 2)
+            {
                 newLabel.replace("\\2", captures[2]);
+            }
             if (captures.count() > 3)
+            {
                 newLabel.replace("\\3", captures[3]);
+            }
         }
         setLabel(newLabel);
     }
     if (!_lengthSet && rule->hasLengthSet())
+    {
         setLength(rule->length());
+    }
     if (!_prioritySet && rule->hasPrioritySet())
+    {
         setPriority(rule->priority());
+    }
     if (!_visibilitySet && rule->hasVisibilitySet())
+    {
         setVisibility(rule->visibilityValue());
+    }
     if (!_rectSet && rule->hasRectSet())
+    {
         setRect(rule->rect());
+    }
 }
 
 void PinClass::applyRules(QList<ClassRule *> rules)
@@ -91,7 +115,9 @@ void PinClass::applyRules(QList<ClassRule *> rules)
 void PinClass::sortPins()
 {
     if (_sort == ClassRule::SortNone)
+    {
         return;
+    }
 
     QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
     QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
@@ -108,9 +134,13 @@ void PinClass::sortPins()
             if (match.hasMatch())
             {
                 if (match.lastCapturedIndex() > 0)
+                {
                     sortPatern = match.captured(1);
+                }
                 else
+                {
                     sortPatern = match.captured(0);
+                }
             }
             else
             {
@@ -118,32 +148,39 @@ void PinClass::sortPins()
             }
         }
         else
+        {
             sortPatern = pinName;
-        //sortPatern = sortPatern.leftJustified(n, ' ');
+        }
+        // sortPatern = sortPatern.leftJustified(n, ' ');
 
         QRegularExpressionMatchIterator numMatchIt = numPattern.globalMatch(sortPatern);
         if (numMatchIt.hasNext())
+        {
             sortPatern.clear();
+        }
         while (numMatchIt.hasNext())
         {
             QRegularExpressionMatch numMatch = numMatchIt.next();
-            sortPatern.append(numMatch.captured(1) + QString('0').repeated(5-numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
+            sortPatern.append(numMatch.captured(1) + QString('0').repeated(5 - numMatch.captured(2).size()) + numMatch.captured(2) + numMatch.captured(3));
         }
         QRegularExpressionMatchIterator padMatchIt = numPattern.globalMatch(pinItem->pin()->padName());
         while (padMatchIt.hasNext())
         {
             QRegularExpressionMatch padMatch = padMatchIt.next();
-            sortPatern.append(padMatch.captured(1) + QString('0').repeated(5-padMatch.captured(2).size()) + padMatch.captured(2) + padMatch.captured(3));
+            sortPatern.append(padMatch.captured(1) + QString('0').repeated(5 - padMatch.captured(2).size()) + padMatch.captured(2) + padMatch.captured(3));
         }
 
         pinItem->setSortLabel(sortPatern);
     }
 
     if (_sort == ClassRule::SortAsc)
+    {
         qSort(_pins.begin(), _pins.end(), PinClassItem::pinLessThan);
+    }
     if (_sort == ClassRule::SortDesc)
+    {
         qSort(_pins.begin(), _pins.end(), PinClassItem::pinGreaterThan);
-
+    }
 }
 
 void PinClass::setPos(const QPoint &basePos)
@@ -186,7 +223,9 @@ void PinClass::setPos(const QPoint &basePos)
         pinItem->pin()->setPos(pinPos + translate);
         pinItem->pin()->setLength(_length);
         if (visibilityValue() != VisibilityVisible)
+        {
             pinItem->pin()->setPinType(Pin::NotVisible);
+        }
         pinPos += offset;
     }
 }
@@ -199,7 +238,9 @@ QPoint PinClass::pos() const
 const QRect &PinClass::boundingRect() const
 {
     if (!_brect)
+    {
         computeBoundingRect();
+    }
     return _boundingRect;
 }
 
@@ -212,7 +253,9 @@ void PinClass::computeBoundingRect() const
     {
         int width = kicadFont.textWidth(pinItem->pin()->name());
         if (width > maxLength)
+        {
             maxLength = width;
+        }
     }
 
     switch (_position)
@@ -221,14 +264,18 @@ void PinClass::computeBoundingRect() const
     case ClassRule::PositionBottom:
         rect = QRect(0, 0, _pins.size() * 100, qCeil((maxLength + 30) / 100.0) * 100);
         if (hasLabelSet() && !_label.isEmpty())
+        {
             rect.adjust(0, 0, 0, 100);
+        }
         break;
     case ClassRule::PositionLeft:
     case ClassRule::PositionRight:
     case ClassRule::PositionASide:
         rect = QRect(0, 0, qCeil((maxLength + 30) / 100.0) * 100, _pins.size() * 100);
         if (hasLabelSet() && !_label.isEmpty())
+        {
             rect.adjust(0, 0, 100, 0);
+        }
         break;
     }
     _boundingRect = rect;
@@ -249,7 +296,9 @@ const QList<PinClassItem *> &PinClass::pins() const
 DrawText *PinClass::getDrawText() const
 {
     if (!hasLabelSet() || _position == ClassRule::PositionASide)
+    {
         return Q_NULLPTR;
+    }
 
     DrawText *drawClassLabel = new DrawText(label());
 
@@ -289,7 +338,9 @@ DrawText *PinClass::getDrawText() const
 DrawRect *PinClass::getDrawRect() const
 {
     if (!hasRectSet() || _rect <= 0)
+    {
         return Q_NULLPTR;
+    }
 
     DrawRect *drawRect = new DrawRect();
 
@@ -303,28 +354,36 @@ DrawRect *PinClass::getDrawRect() const
         drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
         height = qCeil(boundingRect().height() / 100.0) * 100;
         if (hasLabelSet() && !_label.isEmpty())
+        {
             height -= 100;
+        }
         drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + height));
         break;
     case ClassRule::PositionBottom:
         drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
         height = qCeil(boundingRect().height() / 100.0) * 100;
         if (hasLabelSet() && !_label.isEmpty())
+        {
             height -= 100;
+        }
         drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - height));
         break;
     case ClassRule::PositionLeft:
         drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
         width = qCeil(boundingRect().width() / 100.0) * 100;
         if (hasLabelSet() && !_label.isEmpty())
+        {
             width -= 100;
+        }
         drawRect->setEndPos(QPoint(_pos.x() + width, _pos.y() + boundingRect().height()));
         break;
     case ClassRule::PositionRight:
         drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
         width = qCeil(boundingRect().width() / 100.0) * 100;
         if (hasLabelSet() && !_label.isEmpty())
+        {
             width -= 100;
+        }
         drawRect->setEndPos(QPoint(_pos.x() - width, _pos.y() + boundingRect().height()));
         break;
     case ClassRule::PositionASide:

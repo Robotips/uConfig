@@ -21,14 +21,14 @@
 
 #include "../kicad_global.h"
 
+#include "component.h"
 #include <QList>
 #include <QString>
-#include "component.h"
 
 class KICAD_EXPORT Lib
 {
 public:
-    Lib(const QString &name=QString());
+    Lib(const QString &name = QString());
     Lib(const Lib &other);
     ~Lib();
 
@@ -52,4 +52,4 @@ private:
     QString _name;
 };
 
-#endif  // LIB_H
+#endif // LIB_H

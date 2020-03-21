@@ -19,8 +19,8 @@
 #include "kicadlibparser.h"
 
 #include <QDateTime>
-#include <QFileInfo>
 #include <QDebug>
+#include <QFileInfo>
 
 #include "model/drawarc.h"
 #include "model/drawcircle.h"
@@ -46,7 +46,9 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
     if (!input.open(QIODevice::ReadOnly | QIODevice::Text))
     {
         if (mylib)
+        {
             delete lib;
+        }
         return Q_NULLPTR;
     }
     _stream.setDevice(&input);
@@ -59,9 +61,13 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
     {
         component = readComponent();
         if (component)
+        {
             lib->addComponent(component);
+        }
         else
+        {
             _stream.readLine();
+        }
     } while (!_stream.atEnd());
     lib->setName(info.baseName());
 
@@ -74,7 +80,9 @@ bool KicadLibParser::saveLib(const QString &fileName, Lib *lib)
     QFile output(fileName);
     QFileInfo info(output);
     if (!output.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
         return false;
+    }
 
     _stream.setDevice(&output);
     writeLib(lib);
@@ -102,7 +110,9 @@ QString KicadLibParser::readText()
         return text;
     }
     else
+    {
         return word;
+    }
 }
 
 /**
@@ -111,9 +121,7 @@ QString KicadLibParser::readText()
  */
 void KicadLibParser::writeLib(Lib *lib)
 {
-    _stream << "EESchema-LIBRARY Version 2.3  Date: "
-            << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss")
-            << '\n';
+    _stream << "EESchema-LIBRARY Version 2.3  Date: " << QDateTime::currentDateTime().toString("dd/MM/yyyy hh:mm:ss") << '\n';
     _stream << "#encoding utf-8" << '\n';
     //_stream << "#created with uConfig by Sebastien CAUX (sebcaux)" << '\n';
     //_stream << "#https://github.com/Robotips/uConfig" << '\n';
@@ -176,7 +184,9 @@ void KicadLibParser::writeComponent(Component *component)
 
     // alias
     if (!component->aliases().isEmpty())
+    {
         _stream << "ALIAS " << component->aliases().join(" ") << '\n';
+    }
 
     _stream << "DRAW" << '\n';
     // draw
@@ -205,21 +215,28 @@ void KicadLibParser::writePin(Pin *pin)
     // LABEL_TEXT_SIZE LAYER ?1? ELECTRICAL_TYPE
     _stream << "X ";
     if (pin->name().isEmpty())
+    {
         _stream << "~";
+    }
     else
+    {
         _stream << pin->name();
-    _stream << " "
-           << pin->padName() << " "                            // pad name
-           << pin->pos().x() << " " << -pin->pos().y() << " "  // x y position
-           << pin->length() << " "                             // lenght
-           << pin->directionString() << " "                    // pin direction (up/down/left/right)
-           << "50" << " "                                      // name text size
-           << "50" << " "                                      // pad name text size
-           << pin->layer() << " "
-           << "1" << " "
-           << pin->electricalTypeString();
+    }
+    _stream << " " << pin->padName() << " " // pad name
+            << pin->pos().x() << " " << -pin->pos().y() << " " // x y position
+            << pin->length() << " " // lenght
+            << pin->directionString() << " " // pin direction (up/down/left/right)
+            << "50"
+            << " " // name text size
+            << "50"
+            << " " // pad name text size
+            << pin->layer() << " "
+            << "1"
+            << " " << pin->electricalTypeString();
     if (pin->pinType() != Pin::Normal)
+    {
         _stream << " " << pin->pinTypeString();
+    }
 }
 
 void KicadLibParser::writeDraw(Draw *draw)
@@ -237,15 +254,9 @@ void KicadLibParser::writeDraw(Draw *draw)
         break;
     case Draw::TypeDrawRect:
         // S startx starty endx endy unit convert thickness fill
-        drawRect = static_cast<DrawRect*>(draw);
-        _stream << "S "
-                << drawRect->pos().x() << " "
-                << -drawRect->pos().y() << " "
-                << drawRect->endPos().x() << " "
-                << -drawRect->endPos().y() << " "
-                << drawRect->unit() << " "
-                << drawRect->convert() << " "
-                << drawRect->thickness() << " ";
+        drawRect = dynamic_cast<DrawRect *>(draw);
+        _stream << "S " << drawRect->pos().x() << " " << -drawRect->pos().y() << " " << drawRect->endPos().x() << " " << -drawRect->endPos().y() << " " << drawRect->unit() << " "
+                << drawRect->convert() << " " << drawRect->thickness() << " ";
         switch (drawRect->filled())
         {
         case Draw::DrawNotFilled:
@@ -262,30 +273,39 @@ void KicadLibParser::writeDraw(Draw *draw)
 
     case Draw::TypeDrawText:
         // T direction posx posy text_size text_type unit convert text text_italic text_bold text_hjustify text_vjustify
-        drawText = static_cast<DrawText*>(draw);
+        drawText = dynamic_cast<DrawText *>(draw);
         _stream << "T ";
         if (drawText->direction() == DrawText::DirectionHorizontal)
+        {
             _stream << "0 ";
+        }
         else
+        {
             _stream << "900 ";
+        }
 
-        _stream << drawText->pos().x() << " "
-                << -drawText->pos().y() << " "
-                << drawText->textSize() << " "
-                << "0 "
-                << drawText->unit() << " "
-                << drawText->convert() << " "
-                << "\"" << drawText->text()<< "\"" << " ";
+        _stream << drawText->pos().x() << " " << -drawText->pos().y() << " " << drawText->textSize() << " "
+                << "0 " << drawText->unit() << " " << drawText->convert() << " "
+                << "\"" << drawText->text() << "\""
+                << " ";
 
         if (drawText->textStyle().testFlag(DrawText::TextItalic))
+        {
             _stream << "Italic ";
+        }
         else
+        {
             _stream << "Normal ";
+        }
 
         if (drawText->textStyle().testFlag(DrawText::TextBold))
+        {
             _stream << "1 ";
+        }
         else
+        {
             _stream << "0 ";
+        }
 
         switch (drawText->textHJustify())
         {
@@ -323,19 +343,25 @@ void KicadLibParser::writeLabel(DrawText *draw)
 {
     _stream << " \"" << draw->text() << "\" ";
 
-    _stream << draw->pos().x() << " "
-            << -draw->pos().y() << " "
-            << draw->textSize() << " ";
+    _stream << draw->pos().x() << " " << -draw->pos().y() << " " << draw->textSize() << " ";
 
     if (draw->direction() == DrawText::DirectionHorizontal)
+    {
         _stream << "H ";
+    }
     else
+    {
         _stream << "V ";
+    }
 
     if (draw->isVisible())
+    {
         _stream << "V ";
+    }
     else
+    {
         _stream << "I ";
+    }
 
     switch (draw->textHJustify())
     {
@@ -364,14 +390,22 @@ void KicadLibParser::writeLabel(DrawText *draw)
     }
 
     if (draw->textStyle().testFlag(DrawText::TextItalic))
+    {
         _stream << "I";
+    }
     else
+    {
         _stream << "N";
+    }
 
     if (draw->textStyle().testFlag(DrawText::TextBold))
+    {
         _stream << "B";
+    }
     else
+    {
         _stream << "N";
+    }
 }
 
 Component *KicadLibParser::readComponent()
@@ -419,45 +453,65 @@ Component *KicadLibParser::readComponent()
             {
                 DrawText *refText = readLabel();
                 if (refText)
+                {
                     component->setRefText(refText);
+                }
                 else
+                {
                     _stream.readLine();
+                }
             }
             else if (start.startsWith("F1"))
             {
                 DrawText *nameText = readLabel();
                 if (nameText)
+                {
                     component->setNameText(nameText);
+                }
                 else
+                {
                     _stream.readLine();
+                }
             }
             else if (start.startsWith("F2"))
             {
                 DrawText *packageText = readLabel();
                 if (packageText)
+                {
                     component->setPackageText(packageText);
+                }
                 else
+                {
                     _stream.readLine();
+                }
             }
             else if (start.startsWith("F3"))
             {
                 DrawText *docText = readLabel();
                 if (docText)
+                {
                     component->setDocText(docText);
+                }
                 else
+                {
                     _stream.readLine();
+                }
             }
             else
+            {
                 _stream.readLine();
+            }
         }
-        else if (start =="$FPLIST")
+        else if (start == "$FPLIST")
         {
             QString footprint;
             while (!_stream.atEnd())
             {
                 _stream >> footprint;
                 if (footprint == "$ENDFPLIST")
+                {
                     break;
+                }
                 component->addFootPrint(footprint);
             }
         }
@@ -488,17 +542,25 @@ Component *KicadLibParser::readComponent()
             {
                 Pin *pin = readPin();
                 if (pin)
+                {
                     component->addPin(pin);
+                }
                 else
+                {
                     _stream.readLine();
+                }
             }
             else
             {
                 Draw *draw = readDraw(start.data()[0].toLatin1());
                 if (draw)
+                {
                     component->addDraw(draw);
+                }
                 else
+                {
                     _stream.readLine();
+                }
             }
         }
     } while (!_stream.atEnd());
@@ -515,7 +577,9 @@ Pin *KicadLibParser::readPin()
     QString name;
     _stream >> name;
     if (name == "~")
+    {
         name = "";
+    }
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
@@ -603,182 +667,190 @@ Draw *KicadLibParser::readDraw(char c)
     switch (c)
     {
     case 'S': // rect
-        {
-            DrawRect *draw = new DrawRect();
-            _stream >> n;
-            draw->pos().setX(n);
-            _stream >> n;
-            draw->pos().setY(-n);
-            _stream >> n;
-            draw->endPos().setX(n);
-            _stream >> n;
-            draw->endPos().setY(-n);
-            _stream >> n;
-            draw->setUnit(n);
-            _stream >> n;
-            draw->setConvert(n);
-            _stream >> n;
-            draw->setThickness(n);
+    {
+        DrawRect *draw = new DrawRect();
+        _stream >> n;
+        draw->pos().setX(n);
+        _stream >> n;
+        draw->pos().setY(-n);
+        _stream >> n;
+        draw->endPos().setX(n);
+        _stream >> n;
+        draw->endPos().setY(-n);
+        _stream >> n;
+        draw->setUnit(n);
+        _stream >> n;
+        draw->setConvert(n);
+        _stream >> n;
+        draw->setThickness(n);
 
-            _stream.skipWhiteSpace();
-            _stream >> nc;
-            switch (nc)
-            {
-            case 'F':
-                draw->setFilled(DrawText::DrawFilledForeGround);
-                break;
-            case 'f':
-                draw->setFilled(DrawText::DrawFilledBackGround);
-                break;
-            default:
-                draw->setFilled(DrawText::DrawNotFilled);
-                break;
-            }
-            _stream.readLine();
-            return draw;
+        _stream.skipWhiteSpace();
+        _stream >> nc;
+        switch (nc)
+        {
+        case 'F':
+            draw->setFilled(DrawText::DrawFilledForeGround);
+            break;
+        case 'f':
+            draw->setFilled(DrawText::DrawFilledBackGround);
+            break;
+        default:
+            draw->setFilled(DrawText::DrawNotFilled);
+            break;
         }
+        _stream.readLine();
+        return draw;
+    }
     case 'T': // text
+    {
+        DrawText *draw = new DrawText();
+        _stream >> n;
+        if (n == 0)
         {
-            DrawText *draw = new DrawText();
-            _stream >> n;
-            if (n == 0)
-                draw->setDirection(DrawText::DirectionHorizontal);
-            else
-                draw->setDirection(DrawText::DirectionVertital);
-
-            _stream >> n;
-            draw->pos().setX(n);
-
-            _stream >> n;
-            draw->pos().setY(-n);
-
-            _stream >> n;
-            draw->setTextSize(n);
-
-            _stream >> n;
-            _stream >> n;
-            draw->setUnit(n);
-
-            _stream >> n;
-            draw->setConvert(n);
-
-            text = readText();
-            draw->setText(text);
-
-            DrawText::TextStyles style = DrawText::TextNormal;
-            _stream >> text;
-            if (text != "Normal" && text != "0")
-                style |= DrawText::TextItalic;
-
-            _stream >> n;
-            if (n != 0)
-                style |= DrawText::TextBold;
-            draw->setTextStyle(style);
-
-            _stream.skipWhiteSpace();
-            _stream >> nc;
-            switch (nc)
-            {
-            case 'C':
-                draw->setTextHJustify(DrawText::TextHCenter);
-                break;
-            case 'R':
-                draw->setTextHJustify(DrawText::TextHRight);
-                break;
-            default:
-                draw->setTextHJustify(DrawText::TextHLeft);
-                break;
-            }
-
-            _stream.skipWhiteSpace();
-            _stream >> nc;
-            switch (nc)
-            {
-            case 'B':
-                draw->setTextVJustify(DrawText::TextVBottom);
-                break;
-            case 'T':
-                draw->setTextVJustify(DrawText::TextVTop);
-                break;
-            default:
-                draw->setTextVJustify(DrawText::TextVCenter);
-                break;
-            }
-            _stream.readLine();
-            return draw;
+            draw->setDirection(DrawText::DirectionHorizontal);
         }
+        else
+        {
+            draw->setDirection(DrawText::DirectionVertital);
+        }
+
+        _stream >> n;
+        draw->pos().setX(n);
+
+        _stream >> n;
+        draw->pos().setY(-n);
+
+        _stream >> n;
+        draw->setTextSize(n);
+
+        _stream >> n;
+        _stream >> n;
+        draw->setUnit(n);
+
+        _stream >> n;
+        draw->setConvert(n);
+
+        text = readText();
+        draw->setText(text);
+
+        DrawText::TextStyles style = DrawText::TextNormal;
+        _stream >> text;
+        if (text != "Normal" && text != "0")
+        {
+            style |= DrawText::TextItalic;
+        }
+
+        _stream >> n;
+        if (n != 0)
+        {
+            style |= DrawText::TextBold;
+        }
+        draw->setTextStyle(style);
+
+        _stream.skipWhiteSpace();
+        _stream >> nc;
+        switch (nc)
+        {
+        case 'C':
+            draw->setTextHJustify(DrawText::TextHCenter);
+            break;
+        case 'R':
+            draw->setTextHJustify(DrawText::TextHRight);
+            break;
+        default:
+            draw->setTextHJustify(DrawText::TextHLeft);
+            break;
+        }
+
+        _stream.skipWhiteSpace();
+        _stream >> nc;
+        switch (nc)
+        {
+        case 'B':
+            draw->setTextVJustify(DrawText::TextVBottom);
+            break;
+        case 'T':
+            draw->setTextVJustify(DrawText::TextVTop);
+            break;
+        default:
+            draw->setTextVJustify(DrawText::TextVCenter);
+            break;
+        }
+        _stream.readLine();
+        return draw;
+    }
     case 'P': // Poly
+    {
+        DrawPoly *draw = new DrawPoly();
+        int ptCount = 0;
+        _stream >> ptCount;
+        _stream >> n;
+        draw->setUnit(n);
+        _stream >> n;
+        draw->setConvert(n);
+        _stream >> n;
+        draw->setThickness(n);
+
+        for (int i = 0; i < ptCount; i++)
         {
-            DrawPoly *draw = new DrawPoly();
-            int ptCount = 0;
-            _stream >> ptCount;
+            QPoint pt;
             _stream >> n;
-            draw->setUnit(n);
+            pt.setX(n);
             _stream >> n;
-            draw->setConvert(n);
-            _stream >> n;
-            draw->setThickness(n);
-
-            for (int i=0; i<ptCount; i++)
-            {
-                QPoint pt;
-                _stream >> n;
-                pt.setX(n);
-                _stream >> n;
-                pt.setY(-n);
-                draw->points().append(pt);
-            }
-
-            _stream.skipWhiteSpace();
-            _stream >> nc;
-            switch (nc)
-            {
-            case 'F':
-                draw->setFilled(DrawText::DrawFilledForeGround);
-                break;
-            case 'f':
-                draw->setFilled(DrawText::DrawFilledBackGround);
-                break;
-            default:
-                draw->setFilled(DrawText::DrawNotFilled);
-                break;
-            }
-            _stream.readLine();
-            return draw;
+            pt.setY(-n);
+            draw->points().append(pt);
         }
+
+        _stream.skipWhiteSpace();
+        _stream >> nc;
+        switch (nc)
+        {
+        case 'F':
+            draw->setFilled(DrawText::DrawFilledForeGround);
+            break;
+        case 'f':
+            draw->setFilled(DrawText::DrawFilledBackGround);
+            break;
+        default:
+            draw->setFilled(DrawText::DrawNotFilled);
+            break;
+        }
+        _stream.readLine();
+        return draw;
+    }
     case 'C': // circle
-        {
-            DrawCircle *draw = new DrawCircle();
-            _stream >> n;
-            draw->pos().setX(n);
-            _stream >> n;
-            draw->pos().setY(-n);
-            _stream >> n;
-            draw->setRadius(n);
-            _stream >> n;
-            draw->setUnit(n);
-            _stream >> n;
-            draw->setConvert(n);
-            _stream >> n;
-            draw->setThickness(n);
+    {
+        DrawCircle *draw = new DrawCircle();
+        _stream >> n;
+        draw->pos().setX(n);
+        _stream >> n;
+        draw->pos().setY(-n);
+        _stream >> n;
+        draw->setRadius(n);
+        _stream >> n;
+        draw->setUnit(n);
+        _stream >> n;
+        draw->setConvert(n);
+        _stream >> n;
+        draw->setThickness(n);
 
-            _stream.skipWhiteSpace();
-            _stream >> nc;
-            switch (nc)
-            {
-            case 'F':
-                draw->setFilled(Draw::DrawFilledForeGround);
-                break;
-            case 'f':
-                draw->setFilled(Draw::DrawFilledBackGround);
-                break;
-            default:
-                draw->setFilled(Draw::DrawNotFilled);
-                break;
-            }
-            _stream.readLine();
-            return draw;
+        _stream.skipWhiteSpace();
+        _stream >> nc;
+        switch (nc)
+        {
+        case 'F':
+            draw->setFilled(Draw::DrawFilledForeGround);
+            break;
+        case 'f':
+            draw->setFilled(Draw::DrawFilledBackGround);
+            break;
+        default:
+            draw->setFilled(Draw::DrawNotFilled);
+            break;
         }
+        _stream.readLine();
+        return draw;
+    }
     default:
         return Q_NULLPTR;
     }
@@ -805,9 +877,13 @@ DrawText *KicadLibParser::readLabel()
     _stream.skipWhiteSpace();
     _stream >> nc;
     if (nc == 'H')
+    {
         draw->setDirection(DrawText::DirectionHorizontal);
+    }
     else
+    {
         draw->setDirection(DrawText::DirectionVertital);
+    }
 
     _stream.skipWhiteSpace();
     _stream >> nc;
@@ -846,10 +922,14 @@ DrawText *KicadLibParser::readLabel()
     _stream >> nc;
     DrawText::TextStyles style = DrawText::TextNormal;
     if (nc == 'I')
+    {
         style |= DrawText::TextItalic;
+    }
     _stream >> nc;
     if (nc == 'B')
+    {
         style |= DrawText::TextBold;
+    }
     draw->setTextStyle(style);
 
     _stream.readLine();

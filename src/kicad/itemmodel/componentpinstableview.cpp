@@ -67,10 +67,14 @@ void ComponentPinsTableView::selectPin(Pin *pin)
     }
     const QPersistentModelIndex index = _model->index(pin);
     if (!index.isValid())
+    {
         return;
+    }
     const QModelIndex &indexPin = _sortProxy->mapFromSource(index);
     if (!indexPin.isValid())
+    {
         return;
+    }
     selectionModel()->select(indexPin, QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Rows);
     scrollTo(indexPin);
 }
@@ -91,10 +95,14 @@ void ComponentPinsTableView::selectPins(QList<Pin *> pins)
     {
         const QPersistentModelIndex index = _model->index(pin);
         if (!index.isValid())
+        {
             return;
+        }
         const QModelIndex &indexPin = _sortProxy->mapFromSource(index);
         if (!indexPin.isValid())
+        {
             return;
+        }
         selectionModel()->select(indexPin, QItemSelectionModel::Select | QItemSelectionModel::Rows);
     }
 }
@@ -111,7 +119,9 @@ void ComponentPinsTableView::remove()
 {
     QModelIndexList selection = selectionModel()->selectedIndexes();
     if (selection.isEmpty())
+    {
         return;
+    }
 
     if (selection.size() > 0)
     {
@@ -120,13 +130,16 @@ void ComponentPinsTableView::remove()
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid())
+            {
                 continue;
+            }
 
             pindex.append(indexComponent);
         }
-        if (QMessageBox::question(this, tr("Remove pins?"), tr("Do you realy want to remove theses %1 pins?")
-                                 .arg(pindex.count() / ComponentPinsItemModel::ColumnCount)) != QMessageBox::Yes)
+        if (QMessageBox::question(this, tr("Remove pins?"), tr("Do you realy want to remove theses %1 pins?").arg(pindex.count() / ComponentPinsItemModel::ColumnCount)) != QMessageBox::Yes)
+        {
             return;
+        }
         selectionModel()->clearSelection();
         foreach (QPersistentModelIndex index, pindex)
             _model->remove(index);
@@ -141,7 +154,9 @@ void ComponentPinsTableView::copy()
     {
         QStringList rowContents;
         for (int j = range.left(); j <= range.right(); ++j)
-        rowContents << model()->index(i,j).data().toString();
+        {
+            rowContents << model()->index(i, j).data().toString();
+        }
         text += rowContents.join("\t");
         text += "\n";
     }
@@ -153,14 +168,18 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
     Q_UNUSED(selected)
     Q_UNUSED(deselected)
 
-    QSet<Pin*> selectedPins;
+    QSet<Pin *> selectedPins;
     foreach (const QModelIndex &index, selectionModel()->selectedIndexes())
     {
         if (!index.isValid())
+        {
             continue;
+        }
         const QModelIndex &indexComponent = _sortProxy->mapToSource(index);
         if (!indexComponent.isValid())
+        {
             continue;
+        }
 
         selectedPins.insert(_model->pin(indexComponent));
     }

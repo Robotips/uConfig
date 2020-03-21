@@ -23,13 +23,13 @@
 
 #include <QGraphicsScene>
 
-#include "model/component.h"
 #include "componentitem.h"
+#include "model/component.h"
 
 class KICAD_EXPORT ComponentScene : public QGraphicsScene
 {
 public:
-    ComponentScene(qreal x=-5000, qreal y=-5000, qreal w=10000, qreal h=10000);
+    ComponentScene(qreal x = -5000, qreal y = -5000, qreal w = 10000, qreal h = 10000);
 
     bool grid() const;
     void setGrid(bool grid);
@@ -41,13 +41,13 @@ public:
     void setElecType(bool elecType);
 
     Component *component() const;
-    void setComponent(Component *component, int layer=1);
+    void setComponent(Component *component, int layer = 1);
 
     ComponentItem *componentItem() const;
     void setComponentItem(ComponentItem *componentItem);
 
     void saveAsPdf(const QString &fileName);
-    void saveAsImage(const QString &fileName, const QSize &size=QSize(1000, 1000));
+    void saveAsImage(const QString &fileName, const QSize &size = QSize(1000, 1000));
 
 protected:
     bool _grid;
@@ -60,8 +60,8 @@ protected:
     ComponentItem *_componentItem;
 
     void drawGrid(QPainter *painter, const QRectF &rect);
-    void drawBackground(QPainter *painter, const QRectF &rect);
-    void drawForeground(QPainter *painter, const QRectF &rect);
+    void drawBackground(QPainter *painter, const QRectF &rect) override;
+    void drawForeground(QPainter *painter, const QRectF &rect) override;
 };
 
 #endif // COMPONENTSCENE_H

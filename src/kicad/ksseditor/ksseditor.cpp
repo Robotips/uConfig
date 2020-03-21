@@ -28,7 +28,7 @@ KssEditor::KssEditor(QWidget *parent)
 
     _kssEditorMargin = new KssEditorMargin(this);
     connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect,int)), this, SLOT(updateLineNumberArea(QRect,int)));
+    connect(this, SIGNAL(updateRequest(QRect, int)), this, SLOT(updateLineNumberArea(QRect, int)));
     connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(updateExtraSelection()));
 
     QFont font("Consolas");
@@ -46,8 +46,8 @@ void KssEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
     painter.fillRect(event->rect(), Qt::lightGray);
     QTextBlock block = firstVisibleBlock();
     int blockNumber = block.blockNumber();
-    int top = (int) blockBoundingGeometry(block).translated(contentOffset()).top();
-    int bottom = top + (int) blockBoundingRect(block).height();
+    int top = (int)blockBoundingGeometry(block).translated(contentOffset()).top();
+    int bottom = top + (int)blockBoundingRect(block).height();
     QFont font = painter.font();
 
     while (block.isValid() && top <= event->rect().bottom())
@@ -63,7 +63,7 @@ void KssEditor::lineNumberAreaPaintEvent(QPaintEvent *event)
 
         block = block.next();
         top = bottom;
-        bottom = top + (int) blockBoundingRect(block).height();
+        bottom = top + (int)blockBoundingRect(block).height();
         ++blockNumber;
     }
 }
@@ -102,12 +102,18 @@ void KssEditor::updateLineNumberAreaWidth(int /*newBlockCount*/)
 void KssEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
     if (dy)
+    {
         _kssEditorMargin->scroll(0, dy);
+    }
     else
+    {
         _kssEditorMargin->update(0, rect.y(), _kssEditorMargin->width(), rect.height());
+    }
 
     if (rect.contains(viewport()->rect()))
+    {
         updateLineNumberAreaWidth(0);
+    }
 }
 
 void KssEditor::dragEnterEvent(QDragEnterEvent *event)
@@ -140,7 +146,7 @@ void KssEditor::updateExtraSelection()
     // highligh error line
     if (_lineError > 0)
     {
-        QTextCursor cursorError(document()->findBlockByLineNumber(_lineError-1));
+        QTextCursor cursorError(document()->findBlockByLineNumber(_lineError - 1));
         QColor errorColor = QColor(Qt::red).lighter(180);
         selection.format.setBackground(errorColor);
         selection.format.setProperty(QTextFormat::FullWidthSelection, true);

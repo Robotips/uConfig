@@ -21,15 +21,15 @@
 
 #include "../kicad_global.h"
 
-#include <QList>
-#include <QString>
-#include <QRect>
-#include <QStringList>
 #include <QImage>
+#include <QList>
+#include <QRect>
+#include <QString>
+#include <QStringList>
 
-#include "pin.h"
 #include "draw.h"
 #include "drawtext.h"
+#include "pin.h"
 
 /**
  * @brief The Component class contains all information about one schematic component.
@@ -121,4 +121,4 @@ private:
     DrawText *_docText;
 };
 
-#endif  // COMPONENT_H
+#endif // COMPONENT_H

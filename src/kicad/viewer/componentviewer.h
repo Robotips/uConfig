@@ -24,8 +24,8 @@
 #include <QGraphicsView>
 #include <QList>
 
-#include "model/component.h"
 #include "componentscene.h"
+#include "model/component.h"
 
 class ComponentScene;
 class ComponentItem;
@@ -38,11 +38,11 @@ public:
     explicit ComponentViewer(QWidget *parent = Q_NULLPTR);
 
     Component *component() const;
-    void setComponent(Component *component, int layer=1);
+    void setComponent(Component *component, int layer = 1);
 
 public slots:
     void selectPin(Pin *pin);
-    void selectPins(QList<Pin *>pins);
+    void selectPins(QList<Pin *> pins);
     void updatePin(Pin *pin);
     void removePin(Pin *pin);
 
@@ -51,11 +51,11 @@ public slots:
     void setElecTypeVisible(bool visible);
 
 signals:
-    void pinsSelected(QList<Pin *>pins);
+    void pinsSelected(QList<Pin *> pins);
     void droppedFile(QString fileName);
 
 protected:
-    void wheelEvent(QWheelEvent *event);
+    void wheelEvent(QWheelEvent *event) override;
 
 protected slots:
     void selectedItem();
@@ -66,9 +66,9 @@ protected:
 
     // QWidget interface
 protected:
-    virtual void dragEnterEvent(QDragEnterEvent *event);
-    virtual void dragMoveEvent(QDragMoveEvent *event);
-    virtual void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dragMoveEvent(QDragMoveEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 };
 
 #endif // MODULEVIEWER_H

@@ -21,7 +21,9 @@
 #include <QDebug>
 
 Pin::Pin()
-    : _direction(Pin::Right), _pinType(Pin::Normal), _electricalType(Pin::Input)
+    : _direction(Pin::Right)
+    , _pinType(Pin::Normal)
+    , _electricalType(Pin::Input)
 {
     _layer = 1;
     _length = 300;
@@ -31,8 +33,11 @@ Pin::Pin()
 }
 
 Pin::Pin(const QString &name, const QString &padName)
-    : _name(name), _padName(padName), _direction(Pin::Right),
-      _pinType(Pin::Normal), _electricalType(Pin::Input)
+    : _name(name)
+    , _padName(padName)
+    , _direction(Pin::Right)
+    , _pinType(Pin::Normal)
+    , _electricalType(Pin::Input)
 {
     _layer = 1;
     _length = 300;
@@ -210,25 +215,45 @@ void Pin::setPinType(const Pin::PinType &pinType)
 void Pin::setPinType(const QString &pinType)
 {
     if (pinType == "N")
+    {
         _pinType = Pin::NotVisible;
+    }
     else if (pinType == "I")
+    {
         _pinType = Pin::Invert;
+    }
     else if (pinType == "C")
+    {
         _pinType = Pin::Clock;
+    }
     else if (pinType == "IC")
+    {
         _pinType = Pin::InvertedClock;
+    }
     else if (pinType == "L")
+    {
         _pinType = Pin::LowIn;
+    }
     else if (pinType == "CL")
+    {
         _pinType = Pin::ClockLow;
+    }
     else if (pinType == "V")
+    {
         _pinType = Pin::LowOut;
+    }
     else if (pinType == "F")
+    {
         _pinType = Pin::FallingEdge;
+    }
     else if (pinType == "NX")
+    {
         _pinType = Pin::NonLogic;
+    }
     else
+    {
         _pinType = Pin::Normal;
+    }
 }
 
 Pin::ElectricalType Pin::electricalType() const
@@ -349,7 +374,9 @@ int Pin::textNameSize() const
 void Pin::setTextNameSize(int textNameSize)
 {
     if (textNameSize > 0)
+    {
         _textNameSize = textNameSize;
+    }
 }
 
 int Pin::textPadSize() const
@@ -360,7 +387,9 @@ int Pin::textPadSize() const
 void Pin::setTextPadSize(int textPadSize)
 {
     if (textPadSize > 0)
+    {
         _textPadSize = textPadSize;
+    }
 }
 
 int Pin::layer() const
@@ -371,7 +400,9 @@ int Pin::layer() const
 void Pin::setLayer(int layer)
 {
     if (layer > 0)
+    {
         _layer = layer;
+    }
 }
 
 int Pin::length() const
@@ -382,7 +413,9 @@ int Pin::length() const
 void Pin::setLength(int length)
 {
     if (length > 0)
+    {
         _length = length;
+    }
 }
 
 QString Pin::className() const
@@ -407,8 +440,7 @@ void Pin::setComponent(Component *component)
 
 bool operator<(const Pin &pin1, const Pin &pin2)
 {
-    return (pin1._padName.rightJustified(4, '0') <
-            pin2._padName.rightJustified(4, '0'));
+    return (pin1._padName.rightJustified(4, '0') < pin2._padName.rightJustified(4, '0'));
 }
 
 bool operator==(const Pin &pin1, const Pin &pin2)

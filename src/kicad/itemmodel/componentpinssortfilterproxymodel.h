@@ -29,7 +29,7 @@ public:
     ComponentPinsSortFilterProxyModel();
 
 protected:
-    virtual bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const;
+    bool lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const override;
 };
 
 #endif // COMPONENTPINSSORTFILTERPROXYMODEL_H

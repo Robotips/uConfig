@@ -24,18 +24,18 @@
 #include <QString>
 #include <QStringList>
 
-#include "rule.h"
 #include "model/pin.h"
+#include "rule.h"
 
 class KICAD_EXPORT PinRule : public Rule
 {
 public:
     PinRule(const QString &selector = QString(".*"));
 
-    virtual Type type() const;
+    Type type() const override;
 
-    virtual bool setProperty(const QString &name, const QString &value);
-    virtual bool hasPropertySet(const QString &name) const;
+    bool setProperty(const QString &name, const QString &value) override;
+    bool hasPropertySet(const QString &name) const override;
 
     // class property
     QString className(const QString &pinName = QString()) const;

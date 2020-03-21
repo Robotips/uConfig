@@ -25,8 +25,8 @@
 
 #include <QAction>
 
-#include "numericalsortfilterproxymodel.h"
 #include "componentlibitemmodel.h"
+#include "numericalsortfilterproxymodel.h"
 
 class KICAD_EXPORT ComponentLibTreeView : public QTreeView
 {
@@ -50,17 +50,17 @@ public:
 
 public slots:
     void setLib(Lib *lib);
-    void setActiveComponent(Component * component);
-    void selectAll(bool selected=true);
-    void updateComponent(Component * component);
+    void setActiveComponent(Component *component);
+    void selectAll(bool selected = true);
+    void updateComponent(Component *component);
     void remove();
 
 signals:
-    void openedComponent(Component * component);
+    void openedComponent(Component *component);
 
 protected:
-    virtual void mouseDoubleClickEvent(QMouseEvent *event);
-    virtual void contextMenuEvent(QContextMenuEvent *event);
+    void mouseDoubleClickEvent(QMouseEvent *event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
 protected:
     ComponentLibItemModel *_model;

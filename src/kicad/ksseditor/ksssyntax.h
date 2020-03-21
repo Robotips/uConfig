@@ -27,7 +27,7 @@ class KICAD_EXPORT KSSSyntax : public QSyntaxHighlighter
 {
     Q_OBJECT
 public:
-    KSSSyntax(QTextDocument *parent = 0);
+    KSSSyntax(QTextDocument *parent = nullptr);
 
 protected:
     void highlightBlock(const QString &text) Q_DECL_OVERRIDE;
@@ -62,7 +62,7 @@ protected:
 
 inline bool operator<(const KSSSyntax::PartToHighlight &t1, const KSSSyntax::PartToHighlight &t2)
 {
-    return t1.index<t2.index;
+    return t1.index < t2.index;
 }
 
 #endif // KSSSYNTAX_H

@@ -21,12 +21,12 @@
 #include "componentitem.h"
 
 #include <QDebug>
-#include <QWheelEvent>
+#include <QDragEnterEvent>
+#include <QDropEvent>
 #include <QGraphicsScene>
 #include <QMimeData>
 #include <QUrl>
-#include <QDragEnterEvent>
-#include <QDropEvent>
+#include <QWheelEvent>
 #include <qmath.h>
 
 ComponentViewer::ComponentViewer(QWidget *parent)
@@ -55,8 +55,10 @@ void ComponentViewer::setComponent(Component *component, int layer)
     disconnect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
     _scene->setComponent(component, layer);
     if (component)
+    {
         scene()->setSceneRect(_scene->componentItem()->boundingRect());
-    //fitInView(_scene->componentItem(), Qt::KeepAspectRatio);
+    }
+    // fitInView(_scene->componentItem(), Qt::KeepAspectRatio);
 
     connect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
 }
@@ -66,17 +68,23 @@ void ComponentViewer::selectPin(Pin *pin)
     blockSignals(true);
     scene()->clearSelection();
     if (!pin)
+    {
         return;
+    }
     PinItem *pinItem = _scene->componentItem()->pinItem(pin);
     if (pinItem)
+    {
         pinItem->setSelected(true);
+    }
     blockSignals(false);
 }
 
 void ComponentViewer::selectPins(QList<Pin *> pins)
 {
     if (!_scene->componentItem())
+    {
         return;
+    }
 
     blockSignals(true);
     scene()->clearSelection();
@@ -85,27 +93,37 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
     {
         pinItem = _scene->componentItem()->pinItem(pin);
         if (pinItem)
+        {
             pinItem->setSelected(true);
+        }
     }
     if (pinItem)
+    {
         ensureVisible(pinItem, 5, 5);
+    }
     blockSignals(false);
 }
 
 void ComponentViewer::updatePin(Pin *pin)
 {
     if (!_scene->componentItem())
+    {
         return;
+    }
 
     PinItem *pinItem = _scene->componentItem()->pinItem(pin);
     if (pinItem)
+    {
         pinItem->updateData();
+    }
 }
 
 void ComponentViewer::removePin(Pin *pin)
 {
     if (!_scene->componentItem())
+    {
         return;
+    }
     _scene->componentItem()->removePin(pin);
 }
 
@@ -132,16 +150,20 @@ void ComponentViewer::wheelEvent(QWheelEvent *event)
     double mscale = qPow(1.25, numSteps);
 
     if (transform().m11() < 0.1 && mscale < 1)
+    {
         return;
+    }
     if (transform().m11() > 20 && mscale > 1)
+    {
         return;
+    }
 
     scale(mscale, mscale);
 }
 
 void ComponentViewer::selectedItem()
 {
-    QList<Pin*> selectedPins;
+    QList<Pin *> selectedPins;
 
     foreach (QGraphicsItem *item, scene()->selectedItems())
     {
@@ -155,11 +177,15 @@ void ComponentViewer::selectedItem()
 void ComponentViewer::dragEnterEvent(QDragEnterEvent *event)
 {
     if (!event->mimeData()->hasUrls())
+    {
         return;
+    }
 
     QString fileName = event->mimeData()->urls().first().toLocalFile();
     if (fileName.endsWith(".pdf", Qt::CaseInsensitive) || fileName.endsWith(".lib", Qt::CaseInsensitive))
+    {
         event->accept();
+    }
 }
 
 void ComponentViewer::dragMoveEvent(QDragMoveEvent *event)

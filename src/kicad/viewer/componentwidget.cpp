@@ -43,8 +43,10 @@ void ComponentWidget::setComponent(Component *component)
     if (_component)
     {
         char c = 'A';
-        for (int i=0; i<_component->unitCount(); i++,c++)
+        for (int i = 0; i < _component->unitCount(); i++, c++)
+        {
             _comboUnit->addItem(QString("Unit ") + c);
+        }
         _comboUnit->setEnabled(_component->unitCount() != 1);
     }
 

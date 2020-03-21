@@ -25,7 +25,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
 {
     HighlightingRule rule;
 
-    classFormat.setForeground(QColor(64,0,255));
+    classFormat.setForeground(QColor(64, 0, 255));
     rule.pattern.setPattern("(^\\..*)\\{");
     rule.format = classFormat;
     highlightingRules.append(rule);
@@ -33,10 +33,20 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     keywordFormat.setForeground(Qt::darkBlue);
     keywordFormat.setFontWeight(QFont::Bold);
     QStringList keywordPatterns;
-    keywordPatterns << "name" << "position" << "sort" << "sortpattern" << "class" << "length" << "elecType" << "visibility" << "label" << "rect" << "priority";
+    keywordPatterns << "name"
+                    << "position"
+                    << "sort"
+                    << "sortpattern"
+                    << "class"
+                    << "length"
+                    << "elecType"
+                    << "visibility"
+                    << "label"
+                    << "rect"
+                    << "priority";
     foreach (const QString &pattern, keywordPatterns)
     {
-        rule.pattern.setPattern("\\b("+pattern+")\\b");
+        rule.pattern.setPattern("\\b(" + pattern + ")\\b");
         rule.format = keywordFormat;
         highlightingRules.append(rule);
     }
@@ -44,28 +54,57 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     enumvaluesFormat.setForeground(Qt::blue);
     enumvaluesFormat.setFontWeight(QFont::Bold);
     QStringList enumvaluesPatterns;
-    enumvaluesPatterns << "top" << "bottom" << "left" << "right" << "aside" << "none" << "asc" << "desc" << "visible" << "hidden" << "removed"
-                       << "in" << "out" << "bidir" << "tri" << "passive" << "unspecified" << "pin" << "pout" << "opcol" << "opem" << "nc"
-                       << "norm" << "novisible" << "inverted" << "clock" << "iclock" << "lowin" << "clocklow" << "lowout" << "faledge" << "nologic";
+    enumvaluesPatterns << "top"
+                       << "bottom"
+                       << "left"
+                       << "right"
+                       << "aside"
+                       << "none"
+                       << "asc"
+                       << "desc"
+                       << "visible"
+                       << "hidden"
+                       << "removed"
+                       << "in"
+                       << "out"
+                       << "bidir"
+                       << "tri"
+                       << "passive"
+                       << "unspecified"
+                       << "pin"
+                       << "pout"
+                       << "opcol"
+                       << "opem"
+                       << "nc"
+                       << "norm"
+                       << "novisible"
+                       << "inverted"
+                       << "clock"
+                       << "iclock"
+                       << "lowin"
+                       << "clocklow"
+                       << "lowout"
+                       << "faledge"
+                       << "nologic";
 
     foreach (const QString &pattern, enumvaluesPatterns)
     {
-        rule.pattern.setPattern("\\b("+pattern+")\\b");
+        rule.pattern.setPattern("\\b(" + pattern + ")\\b");
         rule.format = enumvaluesFormat;
         highlightingRules.append(rule);
     }
 
-    quotationFormat.setForeground(QColor(128,0,128));
+    quotationFormat.setForeground(QColor(128, 0, 128));
     rule.pattern.setPattern("(\"[^\"]*\")");
     rule.format = quotationFormat;
     highlightingRules.append(rule);
 
-    numberFormat.setForeground(QColor(255,69,0));
+    numberFormat.setForeground(QColor(255, 69, 0));
     rule.pattern.setPattern("\\b([0-9]+)\\b");
     rule.format = numberFormat;
     highlightingRules.append(rule);
 
-    multiLineCommentFormat.setForeground(QColor(0,128,0));
+    multiLineCommentFormat.setForeground(QColor(0, 128, 0));
     commentStartExpression = QRegExp("/\\*");
     commentEndExpression = QRegExp("\\*/");
 }
@@ -89,7 +128,7 @@ void KSSSyntax::highlightBlock(const QString &text)
         }
     }
 
-    int index=0;
+    int index = 0;
     qSort(partsToHighlight);
     while (!partsToHighlight.isEmpty())
     {
@@ -120,7 +159,9 @@ void KSSSyntax::highlightBlock(const QString &text)
     {
         int startIndex = 0;
         if (previousBlockState() != 1)
+        {
             startIndex = commentStartExpression.indexIn(text);
+        }
 
         while (startIndex >= 0)
         {
@@ -132,7 +173,9 @@ void KSSSyntax::highlightBlock(const QString &text)
                 commentLength = text.length() - startIndex;
             }
             else
+            {
                 commentLength = endIndex - startIndex + commentEndExpression.matchedLength();
+            }
             setFormat(startIndex, commentLength, multiLineCommentFormat);
             startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
         }

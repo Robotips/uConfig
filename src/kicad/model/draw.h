@@ -30,22 +30,24 @@ class KICAD_EXPORT Draw
 public:
     Draw();
     virtual ~Draw();
-    virtual Draw *clone() const =0;
+    virtual Draw *clone() const = 0;
 
-    enum TypeDraw {
+    enum TypeDraw
+    {
         TypeDrawArc,
         TypeDrawCircle,
         TypeDrawPoly,
         TypeDrawRect,
         TypeDrawText
     };
-    virtual TypeDraw type() const =0;
+    virtual TypeDraw type() const = 0;
 
     QPoint &pos();
     const QPoint &pos() const;
     void setPos(const QPoint &pos);
 
-    enum DrawFill {
+    enum DrawFill
+    {
         DrawNotFilled,
         DrawFilledForeGround,
         DrawFilledBackGround

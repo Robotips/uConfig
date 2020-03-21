@@ -21,8 +21,8 @@
 
 #include "kicad_global.h"
 
-#include <QGraphicsItem>
 #include "model/draw.h"
+#include <QGraphicsItem>
 
 class KICAD_EXPORT DrawItem : public QGraphicsItem
 {

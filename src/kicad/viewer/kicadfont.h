@@ -21,9 +21,9 @@
 
 #include "kicad_global.h"
 
-#include <QString>
 #include <QFont>
 #include <QPainter>
+#include <QString>
 
 class KICAD_EXPORT KicadFont
 {

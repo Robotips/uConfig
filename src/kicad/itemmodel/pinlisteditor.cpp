@@ -18,8 +18,8 @@
 
 #include "pinlisteditor.h"
 
-#include <QVBoxLayout>
 #include <QLabel>
+#include <QVBoxLayout>
 
 PinListEditor::PinListEditor(QWidget *parent)
     : QWidget(parent)

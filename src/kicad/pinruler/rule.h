@@ -21,8 +21,8 @@
 
 #include "kicad_global.h"
 
-#include <QString>
 #include <QRegularExpression>
+#include <QString>
 
 class KICAD_EXPORT Rule
 {
@@ -35,7 +35,7 @@ public:
         PinRuleType,
         ClassRuleType
     };
-    virtual Type type() const =0;
+    virtual Type type() const = 0;
 
     QRegularExpression selector() const;
     void setSelector(const QRegularExpression &selector);
@@ -45,8 +45,8 @@ public:
     bool isEnabled() const;
     void setEnabled(bool enabled);
 
-    virtual bool setProperty(const QString &name, const QString &value) =0;
-    virtual bool hasPropertySet(const QString &name) const =0;
+    virtual bool setProperty(const QString &name, const QString &value) = 0;
+    virtual bool hasPropertySet(const QString &name) const = 0;
 
     // debug
     QString file() const;
@@ -64,4 +64,4 @@ protected:
     int _line;
 };
 
-#endif  // RULE_H
+#endif // RULE_H

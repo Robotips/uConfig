@@ -28,15 +28,16 @@
 class KICAD_EXPORT DrawText : public Draw
 {
 public:
-    DrawText(const QString &text=QString(), const QPoint &pos=QPoint());
-    Draw *clone() const;
+    DrawText(const QString &text = QString(), const QPoint &pos = QPoint());
+    Draw *clone() const override;
 
-    TypeDraw type() const;
+    TypeDraw type() const override;
 
     QString text() const;
     void setText(const QString &text);
 
-    enum Direction {
+    enum Direction
+    {
         DirectionHorizontal,
         DirectionVertital
     };
@@ -46,9 +47,10 @@ public:
     uint textSize() const;
     void setTextSize(const uint &textSize);
 
-    enum TextStyle {
+    enum TextStyle
+    {
         TextNormal,
-        TextBold   = 0x01,
+        TextBold = 0x01,
         TextItalic = 0x02
     };
     Q_DECLARE_FLAGS(TextStyles, TextStyle)
@@ -58,7 +60,8 @@ public:
     bool isVisible() const;
     void setVisible(bool visible);
 
-    enum TextHJustify {
+    enum TextHJustify
+    {
         TextHCenter,
         TextHLeft,
         TextHRight
@@ -66,7 +69,8 @@ public:
     TextHJustify textHJustify() const;
     void setTextHJustify(const TextHJustify &textHJustify);
 
-    enum TextVJustify {
+    enum TextVJustify
+    {
         TextVCenter,
         TextVBottom,
         TextVTop

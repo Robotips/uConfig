@@ -31,14 +31,15 @@ class KICAD_EXPORT ClassRule : public Rule
 public:
     ClassRule(const QString &selector = QString(".*"));
 
-    virtual Type type() const;
+    Type type() const override;
 
     static QStringList propsName;
-    virtual bool setProperty(const QString &name, const QString &value);
-    virtual bool hasPropertySet(const QString &name) const;
+    bool setProperty(const QString &name, const QString &value) override;
+    bool hasPropertySet(const QString &name) const override;
 
     // position property [top, bottom, left, right, aside] left default
-    enum Position {
+    enum Position
+    {
         PositionTop,
         PositionBottom,
         PositionLeft,
@@ -53,7 +54,8 @@ public:
     void setPosition(const QString &position);
 
     // position property [none, asc, desc] none default
-    enum Sort {
+    enum Sort
+    {
         SortNone,
         SortAsc,
         SortDesc
@@ -81,7 +83,8 @@ public:
     void setPriority(int priority);
 
     // class visibility [visible, hidden, removed] visible default
-    enum Visibility {
+    enum Visibility
+    {
         VisibilityVisible,
         VisibilityHidden,
         VisibilityRemoved

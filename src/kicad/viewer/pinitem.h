@@ -31,14 +31,20 @@ class KICAD_EXPORT PinItem : public QGraphicsItem
 {
 public:
     PinItem(Pin *pin);
-    ~PinItem();
+    ~PinItem() override;
 
-    enum { Type = UserType + 1 };
-    int type() const {return Type;}
+    enum
+    {
+        Type = UserType + 1
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QRectF boundingRect() const;
-    QPainterPath shape() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
+    QPainterPath shape() const override;
 
     QPointF base();
 

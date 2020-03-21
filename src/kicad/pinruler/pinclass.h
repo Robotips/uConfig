@@ -21,15 +21,15 @@
 
 #include "kicad_global.h"
 
-#include <QString>
 #include <QList>
 #include <QRect>
+#include <QString>
 
 #include "classrule.h"
 #include "pinclassitem.h"
 
-#include "model/drawtext.h"
 #include "model/drawrect.h"
+#include "model/drawtext.h"
 
 class KICAD_EXPORT PinClass : public ClassRule
 {

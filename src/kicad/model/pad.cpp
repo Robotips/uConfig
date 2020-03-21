@@ -147,38 +147,26 @@ void Pad::setAngle(double angle)
     _angle = angle;
 }
 
-QTextStream& operator<<(QTextStream &stream, const Pad &pad)
+QTextStream &operator<<(QTextStream &stream, const Pad &pad)
 {
     // def
     stream << "$PAD" << '\n';
 
     // pad
-    stream << "Sh \"" << pad._name << "\" "
-           << pad.shapeString() << " "
-           << pad._size.width() << " "
-           << pad._size.height() << " "
-           << pad._sizeIncrease.width() << " "
-           << pad._sizeIncrease.height() << " "
-           << pad._angle << '\n';
+    stream << "Sh \"" << pad._name << "\" " << pad.shapeString() << " " << pad._size.width() << " " << pad._size.height() << " " << pad._sizeIncrease.width() << " " << pad._sizeIncrease.height()
+           << " " << pad._angle << '\n';
 
     // drill
-    stream << "Dr "
-           << pad._drillDiameter << " "
-           << pad._drillOffset.x() << " "
-           << pad._drillOffset.y() << '\n';
+    stream << "Dr " << pad._drillDiameter << " " << pad._drillOffset.x() << " " << pad._drillOffset.y() << '\n';
 
     // attribute
-    stream << "At "
-           << pad.typeString() << " N "
-           << pad._layers << '\n';
+    stream << "At " << pad.typeString() << " N " << pad._layers << '\n';
 
     // attribute
     stream << "Ne 0 \"\"" << '\n';
 
     // pos
-    stream << "Po "
-           << pad._pos.x() << " "
-           << pad._pos.y() << '\n';
+    stream << "Po " << pad._pos.x() << " " << pad._pos.y() << '\n';
 
     // end
     stream << "$EndPAD";

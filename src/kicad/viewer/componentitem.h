@@ -32,16 +32,22 @@ class PinItem;
 class KICAD_EXPORT ComponentItem : public QGraphicsItem
 {
 public:
-    ComponentItem(Component *component = Q_NULLPTR, int layer=1);
+    ComponentItem(Component *component = Q_NULLPTR, int layer = 1);
 
-    enum { Type = UserType + 2 };
-    int type() const {return Type;}
+    enum
+    {
+        Type = UserType + 2
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
 
     Component *component() const;
-    void setComponent(Component *component, int layer=1);
+    void setComponent(Component *component, int layer = 1);
 
     PinItem *pinItem(Pin *pin);
     void removePin(Pin *pin);
@@ -57,7 +63,7 @@ private:
     bool _showElectricalType;
 
     QRectF _numRect;
-    QMap<Pin*, PinItem* > _pinItemMap;
+    QMap<Pin *, PinItem *> _pinItemMap;
 };
 
 #endif // COMPONENTITEM_H

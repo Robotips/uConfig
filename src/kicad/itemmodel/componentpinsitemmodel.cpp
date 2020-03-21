@@ -23,8 +23,8 @@
 #include <QBrush>
 #include <QDebug>
 
-ComponentPinsItemModel::ComponentPinsItemModel(Component *component, QObject *parent) :
-    QAbstractItemModel(parent)
+ComponentPinsItemModel::ComponentPinsItemModel(Component *component, QObject *parent)
+    : QAbstractItemModel(parent)
 {
     setComponent(component);
     _isExpendable = true;
@@ -49,15 +49,19 @@ void ComponentPinsItemModel::setComponent(Component *component)
 Pin *ComponentPinsItemModel::pin(const QModelIndex &index) const
 {
     if (!index.isValid())
+    {
         return Q_NULLPTR;
-    return static_cast<Pin*>(index.internalPointer());
+    }
+    return static_cast<Pin *>(index.internalPointer());
 }
 
 QModelIndex ComponentPinsItemModel::index(Pin *pin) const
 {
     QModelIndexList list = match(this->index(0, 0), ComponentPinsItemModel::PinNumber, pin->padName(), -1, Qt::MatchRecursive);
     if (list.isEmpty())
+    {
         return QModelIndex();
+    }
     return list.first();
 }
 
@@ -69,8 +73,10 @@ int ComponentPinsItemModel::columnCount(const QModelIndex &parent) const
 
 QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (orientation==Qt::Vertical)
+    if (orientation == Qt::Vertical)
+    {
         return QVariant();
+    }
     switch (role)
     {
     case Qt::DisplayRole:
@@ -95,18 +101,26 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
 QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 {
     if (!_component)
+    {
         return QVariant();
+    }
 
     Pin *pin = Q_NULLPTR;
     if (index.row() < _component->pins().count())
+    {
         pin = _component->pins().at(index.row());
+    }
 
     if (pin == Q_NULLPTR)
     {
         if ((role == Qt::DisplayRole || role == Qt::EditRole) && index.column() == PinNumber)
+        {
             return QVariant(_higherPin);
+        }
         if (role == Qt::ForegroundRole)
+        {
             return QVariant(QBrush(Qt::gray));
+        }
         return QVariant();
     }
 
@@ -150,12 +164,18 @@ QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex
 {
     Q_UNUSED(parent)
     if (!_component)
+    {
         return QModelIndex();
+    }
 
     if (row >= _component->pins().count())
+    {
         return createIndex(row, column, nullptr);
+    }
     else
+    {
         return createIndex(row, column, _component->pins()[row]);
+    }
 }
 
 QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const
@@ -167,43 +187,58 @@ QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const
 int ComponentPinsItemModel::rowCount(const QModelIndex &parent) const
 {
     if (!_component)
+    {
         return 0;
+    }
 
     if (!parent.isValid())
     {
         if (_isExpendable)
+        {
             return _component->pins().count() + 1;
+        }
         else
+        {
             return _component->pins().count();
+        }
     }
     return 0;
 }
 
-
 bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!_component)
+    {
         return false;
+    }
 
     Pin *pin;
     if (index.row() >= _component->pins().count())
     {
         if (index.column() != PinNumber && index.column() != PinName)
+        {
             return false;
+        }
         if (value.isNull() || !value.isValid() || value.toString() == QString())
+        {
             return false;
+        }
 
         // new pin
         pin = new Pin();
         if (index.column() == PinNumber)
+        {
             pin->setPadName(value.toString());
+        }
         else if (index.column() == PinName)
         {
             pin->setPadName(_higherPin);
             pin->setName(value.toString());
         }
         else
+        {
             return false;
+        }
         beginInsertRows(QModelIndex(), _component->pins().count(), _component->pins().count());
         _component->addPin(pin);
         endInsertRows();
@@ -244,9 +279,10 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
 Qt::ItemFlags ComponentPinsItemModel::flags(const QModelIndex &index) const
 {
     Qt::ItemFlags baseFlags = Qt::ItemIsSelectable | Qt::ItemIsEnabled;
-    if (index.column() == PinNumber || index.column() == PinName
-     || index.column() == PinElecType || index.column() == PinStyle)
+    if (index.column() == PinNumber || index.column() == PinName || index.column() == PinElecType || index.column() == PinStyle)
+    {
         return baseFlags | Qt::ItemIsEditable;
+    }
     return baseFlags;
 }
 
@@ -254,7 +290,9 @@ void ComponentPinsItemModel::remove(const QModelIndex &index)
 {
     Pin *mpin = pin(index);
     if (!mpin)
+    {
         return;
+    }
 
     emit layoutAboutToBeChanged();
     emit pinRemoved(mpin);
@@ -271,7 +309,9 @@ QString ComponentPinsItemModel::toNumeric(const QString &str)
 
     QRegularExpressionMatchIterator numMatchIt = numPattern.globalMatch(str);
     if (numMatchIt.hasNext())
+    {
         sortPatern.clear();
+    }
     while (numMatchIt.hasNext())
     {
         QRegularExpressionMatch numMatch = numMatchIt.next();

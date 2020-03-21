@@ -20,12 +20,12 @@
 #include "drawitem.h"
 #include "drawtextitem.h"
 
-#include <QPainter>
 #include <QDebug>
-#include <QGraphicsScene>
 #include <QFontDatabase>
+#include <QGraphicsScene>
+#include <QPainter>
 
-const int ComponentItem::ratio=5;
+const int ComponentItem::ratio = 5;
 
 ComponentItem::ComponentItem(Component *component, int layer)
 {
@@ -33,9 +33,7 @@ ComponentItem::ComponentItem(Component *component, int layer)
     _showElectricalType = true;
 }
 
-void ComponentItem::paint(QPainter *painter,
-                          const QStyleOptionGraphicsItem * option,
-                          QWidget * widget)
+void ComponentItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(painter)
     Q_UNUSED(option)
@@ -74,24 +72,27 @@ void ComponentItem::setComponent(Component *component, int layer)
         {
             DrawItem *drawItem = DrawItem::fromDraw(draw);
             if (drawItem)
+            {
                 drawItem->setParentItem(this);
+            }
         }
     }
     DrawItem *drawItem = new DrawTextItem(component->refText(), true);
     drawItem->setParentItem(this);
     drawItem = new DrawTextItem(component->nameText(), true);
     drawItem->setParentItem(this);
-    _numRect = QRect(_component->boundingRect().topLeft() / ComponentItem::ratio,
-                     _component->boundingRect().size() / ComponentItem::ratio).normalized();
+    _numRect = QRect(_component->boundingRect().topLeft() / ComponentItem::ratio, _component->boundingRect().size() / ComponentItem::ratio).normalized();
 
     update();
 }
 
 PinItem *ComponentItem::pinItem(Pin *pin)
 {
-    QMap<Pin*, PinItem* >::const_iterator pinIt = _pinItemMap.constFind(pin);
+    QMap<Pin *, PinItem *>::const_iterator pinIt = _pinItemMap.constFind(pin);
     if (pinIt != _pinItemMap.cend())
+    {
         return *pinIt;
+    }
     return Q_NULLPTR;
 }
 

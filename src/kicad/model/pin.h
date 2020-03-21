@@ -21,8 +21,8 @@
 
 #include "../kicad_global.h"
 
-#include <QString>
 #include <QPoint>
+#include <QString>
 #include <QTextStream>
 
 class Component;
@@ -139,4 +139,4 @@ private:
     Component *_component;
 };
 
-#endif  // PIN_H
+#endif // PIN_H

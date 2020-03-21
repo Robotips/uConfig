@@ -18,9 +18,9 @@
 
 #include "rulesparser.h"
 
+#include <QDebug>
 #include <QFile>
 #include <QTextStream>
-#include <QDebug>
 
 #include <QRegularExpression>
 
@@ -65,12 +65,16 @@ bool RulesParser::parse(RulesSet *ruleSet)
         }
 
         if (selector.startsWith('.') && !selector.startsWith(".*"))
+        {
             rule = new ClassRule(selector.mid(1));
+        }
         else
+        {
             rule = new PinRule(selector);
+        }
         rule->setFile(_fileName);
         rule->setLine(lineSelector);
-        _id ++;
+        _id++;
         skipSpaceAndComments();
 
         QString propertyName = getPropertyName();
@@ -85,7 +89,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             propertyValue = getPropertyValue();
             rule->setProperty(propertyName, propertyValue);
-            //qDebug()<<propertyName<<"="<<propertyValue;
+            // qDebug()<<propertyName<<"="<<propertyValue;
             skipSpaceAndComments();
 
             propertyName = getPropertyName();
@@ -115,7 +119,9 @@ void RulesParser::skipSpace()
     while ((*pt == '\n' || *pt == '\r' || *pt == '\t' || *pt == ' ') && !pt->isNull())
     {
         if (*pt == '\n')
+        {
             _line++;
+        }
         _id++;
         pt++;
     }
@@ -125,24 +131,30 @@ bool RulesParser::skipComments()
 {
     const QChar *pt = _data.constData() + _id;
     if (*pt != '/')
+    {
         return false;
-    if (*(pt+1) != '*')
+    }
+    if (*(pt + 1) != '*')
+    {
         return false;
-    pt+=2;
-    _id+=2;
+    }
+    pt += 2;
+    _id += 2;
     while (!pt->isNull())
     {
         if (*pt == '*')
         {
-            if (*(pt+1) == '/')
+            if (*(pt + 1) == '/')
             {
-                pt+=2;
-                _id+=2;
+                pt += 2;
+                _id += 2;
                 return true;
             }
         }
         if (*pt == '\n')
+        {
             _line++;
+        }
         _id++;
         pt++;
     }
@@ -152,8 +164,10 @@ bool RulesParser::skipComments()
 void RulesParser::skipSpaceAndComments()
 {
     skipSpace();
-    while(skipComments())
+    while (skipComments())
+    {
         skipSpace();
+    }
 }
 
 QString RulesParser::getSelector()
@@ -161,7 +175,9 @@ QString RulesParser::getSelector()
     QRegularExpression rule("(\\.?[a-zA-Z\\(\\[\\.][/a-zA-Z0-9\\+\\-\\[\\]\\(\\)\\_\\|\\\\\\*\\.\\^$\\?:]*)");
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
+    {
         return QString();
+    }
     _id += ruleMath.capturedEnd();
     return ruleMath.captured(1);
 }
@@ -189,25 +205,27 @@ QString RulesParser::getSelector()
 
 QString RulesParser::getPropertyName()
 {
-    QRegularExpression rule("([a-zA-Z][a-zA-Z0-9\\_\\-]*)[\t ]*:[\t ]*", QRegularExpression::MultilineOption
-                                    | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpression rule("([a-zA-Z][a-zA-Z0-9\\_\\-]*)[\t ]*:[\t ]*", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
+    {
         return QString();
+    }
     _id += ruleMath.capturedEnd();
-    return  ruleMath.captured(1);
+    return ruleMath.captured(1);
 }
 
 QString RulesParser::getPropertyValue()
 {
-    QRegularExpression rule("\"?([a-zA-Z0-9/^\\?\\$\\|:\\_\\-\\+\\\\\\[\\]\\(\\)\\.\\* ]*)\"?;?", QRegularExpression::MultilineOption
-                                    | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpression rule("\"?([a-zA-Z0-9/^\\?\\$\\|:\\_\\-\\+\\\\\\[\\]\\(\\)\\.\\* ]*)\"?;?", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
+    {
         return QString();
+    }
     _id += ruleMath.capturedEnd();
 
-    return  ruleMath.captured(1);
+    return ruleMath.captured(1);
 }
 
 int RulesParser::errorLine() const

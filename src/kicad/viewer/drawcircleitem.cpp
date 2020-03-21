@@ -20,8 +20,8 @@
 
 #include "componentitem.h"
 
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
 DrawCircleItem::DrawCircleItem(DrawCircle *draw)
     : DrawItem(draw)
@@ -37,11 +37,15 @@ void DrawCircleItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *op
 
     double thickness = draw()->thickness();
     if (thickness == 0)
+    {
         thickness = 1 / 0.254;
+    }
     painter->setPen(QPen(QColor(132, 0, 0), 0.254 * thickness));
 
     if (_drawCircle->filled() != Draw::DrawNotFilled)
+    {
         painter->setBrush(QColor(255, 255, 194));
+    }
 
     painter->drawArc(_rect, 0, 5760);
 }

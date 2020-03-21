@@ -27,9 +27,9 @@ class KICAD_EXPORT DrawArc : public Draw
 {
 public:
     DrawArc();
-    Draw *clone() const;
+    Draw *clone() const override;
 
-    TypeDraw type() const;
+    TypeDraw type() const override;
 
     uint radius() const;
     void setRadius(const uint &radius);

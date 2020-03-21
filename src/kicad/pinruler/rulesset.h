@@ -21,11 +21,11 @@
 
 #include "kicad_global.h"
 
-#include <QString>
 #include <QList>
+#include <QString>
 
-#include "pinrule.h"
 #include "classrule.h"
+#include "pinrule.h"
 
 class KICAD_EXPORT RulesSet
 {
@@ -36,8 +36,8 @@ public:
 
     void addRule(Rule *rule);
 
-    QList<ClassRule*> rulesForClass(const QString &className);
-    QList<PinRule*> rulesForPin(const QString &pinName);
+    QList<ClassRule *> rulesForClass(const QString &className);
+    QList<PinRule *> rulesForPin(const QString &pinName);
 
 protected:
     QList<ClassRule *> _classRules;

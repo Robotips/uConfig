@@ -21,10 +21,10 @@
 
 #include "kicad_global.h"
 
-#include <QWidget>
-#include <QToolButton>
-#include <QComboBox>
 #include <QActionGroup>
+#include <QComboBox>
+#include <QToolButton>
+#include <QWidget>
 
 #include "componentviewer.h"
 

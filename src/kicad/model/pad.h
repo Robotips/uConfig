@@ -21,9 +21,9 @@
 
 #include "../kicad_global.h"
 
-#include <QString>
 #include <QPointF>
 #include <QSizeF>
+#include <QString>
 #include <QTextStream>
 
 class KICAD_EXPORT Pad
@@ -133,4 +133,4 @@ private:
     int _layers;
 };
 
-#endif  // PAD_H
+#endif // PAD_H

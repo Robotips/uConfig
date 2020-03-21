@@ -30,11 +30,17 @@ class KICAD_EXPORT DrawRectItem : public DrawItem
 public:
     DrawRectItem(DrawRect *draw);
 
-    enum { Type = UserType + 4 };
-    int type() const {return Type;}
+    enum
+    {
+        Type = UserType + 4
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
 
     void setDraw(DrawRect *draw);
 

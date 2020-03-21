@@ -20,13 +20,13 @@
 
 #include "componentitem.h"
 
-#include <QPainter>
 #include <QDebug>
+#include <QPainter>
 
+#include "drawcircleitem.h"
+#include "drawpolyitem.h"
 #include "drawrectitem.h"
 #include "drawtextitem.h"
-#include "drawpolyitem.h"
-#include "drawcircleitem.h"
 
 DrawItem::DrawItem(Draw *draw)
 {
@@ -52,16 +52,16 @@ DrawItem *DrawItem::fromDraw(Draw *draw)
     case Draw::TypeDrawArc:
         break;
     case Draw::TypeDrawCircle:
-        item = new DrawCircleItem(static_cast<DrawCircle*>(draw));
+        item = new DrawCircleItem(dynamic_cast<DrawCircle *>(draw));
         break;
     case Draw::TypeDrawPoly:
-        item = new DrawPolyItem(static_cast<DrawPoly*>(draw));
+        item = new DrawPolyItem(dynamic_cast<DrawPoly *>(draw));
         break;
     case Draw::TypeDrawRect:
-        item = new DrawRectItem(static_cast<DrawRect*>(draw));
+        item = new DrawRectItem(dynamic_cast<DrawRect *>(draw));
         break;
     case Draw::TypeDrawText:
-        item = new DrawTextItem(static_cast<DrawText*>(draw));
+        item = new DrawTextItem(dynamic_cast<DrawText *>(draw));
         break;
     }
     return item;

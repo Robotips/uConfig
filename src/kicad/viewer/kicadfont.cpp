@@ -24,10 +24,9 @@
 #include <QFontMetricsF>
 #include <qmath.h>
 
-const int KicadFont::charWidthTable[] = {
-    35, 20, 28, 38, 35, 42, 45, 20, 26, 26, 29, 45, 20, 44, 20, 39, 35, 36, 35, 36, 35, 36, 35, 35, 36, 36, 19, 20, 45, 45, 45, 32, 46, 32, 38, 36, 38, 34, 32, 37, 39, 19, 29, 38, 30, 42, 39,
-    39, 36, 39, 37, 36, 29, 39, 32, 42, 35, 33, 35, 26, 26, 26, 23, 29, 16, 34, 34, 33, 34, 32, 22, 34, 34, 20, 20, 30, 22, 48, 34, 34, 34, 33, 25, 30, 23, 34, 29, 39, 31, 29, 31, 26, 35, 26
-};
+const int KicadFont::charWidthTable[] = {35, 20, 28, 38, 35, 42, 45, 20, 26, 26, 29, 45, 20, 44, 20, 39, 35, 36, 35, 36, 35, 36, 35, 35, 36, 36, 19, 20, 45, 45, 45, 32,
+                                         46, 32, 38, 36, 38, 34, 32, 37, 39, 19, 29, 38, 30, 42, 39, 39, 36, 39, 37, 36, 29, 39, 32, 42, 35, 33, 35, 26, 26, 26, 23, 29,
+                                         16, 34, 34, 33, 34, 32, 22, 34, 34, 20, 20, 30, 22, 48, 34, 34, 34, 33, 25, 30, 23, 34, 29, 39, 31, 29, 31, 26, 35, 26};
 
 KicadFont::KicadFont(double size)
 {
@@ -37,7 +36,9 @@ KicadFont::KicadFont(double size)
 double KicadFont::charWidth(QChar c) const
 {
     if (c < ' ' || c > '}')
+    {
         return 0;
+    }
     return (double)charWidthTable[(int)c.cell() - 32] / ComponentItem::ratio * 1.27 * _size / 9.4;
 }
 
@@ -80,19 +81,19 @@ void KicadFont::drawText(QPainter *painter, const QRectF &rect, int flags, const
     else if (flags & Qt::AlignCenter)
     {
         double offset = qMax(rect.width() - mtextWidth, 0.0);
-        textRect.adjust(offset/2, 0, -offset/2, 0);
+        textRect.adjust(offset / 2, 0, -offset / 2, 0);
     }
     flags = (flags & 0xFFFFFF00) | Qt::AlignCenter;
 
-    //painter->drawRect(textRect);
+    // painter->drawRect(textRect);
 
     QRectF charRect = textRect;
     double x = textRect.x();
-    for (int i=0; i<text.size(); i++)
+    for (int i = 0; i < text.size(); i++)
     {
         QChar c = text[i];
         double mcharWidth = charWidth(c);
-        charRect.setX(x - mcharWidth/2);
+        charRect.setX(x - mcharWidth / 2);
         charRect.setWidth(mcharWidth * 2);
         painter->drawText(charRect, flags, c);
         x += mcharWidth;

@@ -21,13 +21,17 @@
 #include <QDebug>
 #include <QFont>
 
-ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent) :
-    QAbstractItemModel(parent)
+ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent)
+    : QAbstractItemModel(parent)
 {
     if (lib)
+    {
         _lib = lib;
+    }
     else
+    {
         _lib = new Lib();
+    }
     _selectedMode = false;
     _activeComponent = Q_NULLPTR;
 }
@@ -43,7 +47,7 @@ void ComponentLibItemModel::setLib(Lib *lib)
     _activeComponent = Q_NULLPTR;
     beginResetModel();
     resetInternalData();
-    //delete _lib;
+    // delete _lib;
     _lib = lib;
     endResetModel();
     emit layoutChanged();
@@ -62,19 +66,25 @@ void ComponentLibItemModel::addComponent(Component *component)
 QList<Component *> ComponentLibItemModel::components() const
 {
     if (!_lib)
+    {
         return QList<Component *>();
+    }
     return _lib->components();
 }
 
 QModelIndex ComponentLibItemModel::index(Component *component, int coulumn)
 {
     if (!component)
+    {
         return QModelIndex();
+    }
 
-    for (int i=0; i<_lib->componentsCount(); i++)
+    for (int i = 0; i < _lib->componentsCount(); i++)
     {
         if (_lib->component(i) == component)
+        {
             return index(i, coulumn, QModelIndex());
+        }
     }
     return QModelIndex();
 }
@@ -82,17 +92,23 @@ QModelIndex ComponentLibItemModel::index(Component *component, int coulumn)
 Component *ComponentLibItemModel::component(const QModelIndex &index) const
 {
     if (!_lib)
+    {
         return Q_NULLPTR;
+    }
     if (!index.isValid())
+    {
         return Q_NULLPTR;
-    return static_cast<Component*>(index.internalPointer());
+    }
+    return static_cast<Component *>(index.internalPointer());
 }
 
 void ComponentLibItemModel::remove(const QModelIndex &index)
 {
     Component *mcomponent = component(index);
     if (!mcomponent)
+    {
         return;
+    }
 
     emit layoutAboutToBeChanged();
     _lib->removeComponent(mcomponent);
@@ -107,8 +123,10 @@ int ComponentLibItemModel::columnCount(const QModelIndex &parent) const
 
 QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientation, int role) const
 {
-    if (orientation==Qt::Vertical)
+    if (orientation == Qt::Vertical)
+    {
         return QVariant();
+    }
     switch (role)
     {
     case Qt::DisplayRole:
@@ -131,9 +149,13 @@ QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientat
 QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
 {
     if (!_lib)
+    {
         return QVariant();
+    }
     if (!index.isValid())
+    {
         return QVariant();
+    }
 
     Component *component = _lib->components().at(index.row());
 
@@ -157,9 +179,13 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
         if (index.column() == Name && _selectedMode)
         {
             if (_selectedComponents.contains(component))
+            {
                 return Qt::Checked;
+            }
             else
+            {
                 return Qt::Unchecked;
+            }
         }
         break;
     case Qt::FontRole:
@@ -177,9 +203,13 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
 bool ComponentLibItemModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
     if (!_lib)
+    {
         return false;
+    }
     if (!index.isValid())
+    {
         return false;
+    }
 
     Component *component = _lib->components().at(index.row());
     if (role == Qt::CheckStateRole)
@@ -187,10 +217,14 @@ bool ComponentLibItemModel::setData(const QModelIndex &index, const QVariant &va
         if (value == Qt::Checked)
         {
             if (!_selectedComponents.contains(component))
+            {
                 _selectedComponents.append(component);
+            }
         }
         else
+        {
             _selectedComponents.removeOne(component);
+        }
         return true;
     }
     return QAbstractItemModel::setData(index, value, role);
@@ -200,9 +234,13 @@ QModelIndex ComponentLibItemModel::index(int row, int column, const QModelIndex 
 {
     Q_UNUSED(parent)
     if (!_lib)
+    {
         return QModelIndex();
+    }
     if (row >= _lib->components().count())
+    {
         return QModelIndex();
+    }
     return createIndex(row, column, _lib->components()[row]);
 }
 
@@ -215,18 +253,26 @@ QModelIndex ComponentLibItemModel::parent(const QModelIndex &child) const
 int ComponentLibItemModel::rowCount(const QModelIndex &parent) const
 {
     if (!_lib)
+    {
         return 0;
+    }
     if (!parent.isValid())
+    {
         return _lib->components().count();
+    }
     return 0;
 }
 
 Qt::ItemFlags ComponentLibItemModel::flags(const QModelIndex &index) const
 {
     if (index.column() == 0 && _selectedMode)
+    {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
+    }
     else
+    {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
+    }
 }
 
 Component *ComponentLibItemModel::activeComponent() const
@@ -239,25 +285,35 @@ void ComponentLibItemModel::setActiveComponent(Component *activeComponent)
     QModelIndex oldIndex = index(_activeComponent);
     QModelIndex oldIndex2 = index(_activeComponent, 2);
     if (oldIndex.isValid())
+    {
         emit dataChanged(oldIndex, oldIndex2);
+    }
 
     _activeComponent = activeComponent;
 
     QModelIndex newIndex = index(_activeComponent);
     QModelIndex newIndex2 = index(_activeComponent, 2);
     if (newIndex.isValid())
+    {
         emit dataChanged(newIndex, newIndex2);
+    }
 }
 
 void ComponentLibItemModel::selectAll(bool selected)
 {
     emit layoutAboutToBeChanged();
     if (!_lib)
+    {
         return;
+    }
     if (selected)
+    {
         _selectedComponents = _lib->components();
+    }
     else
+    {
         _selectedComponents.clear();
+    }
     emit layoutChanged();
 }
 
@@ -279,5 +335,7 @@ const QList<Component *> &ComponentLibItemModel::selectedComponents() const
 void ComponentLibItemModel::updateComponent(Component *component)
 {
     if (component)
+    {
         emit dataChanged(index(component, 0), index(component, ColumnCount - 1));
+    }
 }

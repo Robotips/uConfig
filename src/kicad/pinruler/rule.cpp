@@ -49,9 +49,13 @@ void Rule::setSelector(const QString &selector)
 bool Rule::matchWithName(const QString &name) const
 {
     if (!_enabled)
+    {
         return false;
+    }
     if (!_selector.isValid())
+    {
         return false;
+    }
 
     QRegularExpressionMatch match = _selector.match(name, 0, QRegularExpression::NormalMatch);
     return (match.hasMatch() /*&& match.capturedEnd() == name.size()*/);

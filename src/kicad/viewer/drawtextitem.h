@@ -29,14 +29,20 @@
 class KICAD_EXPORT DrawTextItem : public DrawItem
 {
 public:
-    DrawTextItem(DrawText *draw, bool internal=false);
-    ~DrawTextItem();
+    DrawTextItem(DrawText *draw, bool internal = false);
+    ~DrawTextItem() override;
 
-    enum { Type = UserType + 3 };
-    int type() const {return Type;}
+    enum
+    {
+        Type = UserType + 3
+    };
+    int type() const override
+    {
+        return Type;
+    }
 
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget);
-    QRectF boundingRect() const;
+    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
+    QRectF boundingRect() const override;
 
     void setDraw(DrawText *draw);
 

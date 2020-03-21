@@ -29,10 +29,10 @@ class KICAD_EXPORT DrawRect : public Draw
 {
 public:
     DrawRect(const QPoint &pos, const QPoint &endPos);
-    DrawRect(const QRect &rect=QRect());
-    Draw *clone() const;
+    DrawRect(const QRect &rect = QRect());
+    Draw *clone() const override;
 
-    TypeDraw type() const;
+    TypeDraw type() const override;
 
     QPoint &endPos();
     const QPoint &endPos() const;

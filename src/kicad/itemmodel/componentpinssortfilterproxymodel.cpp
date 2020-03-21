@@ -27,12 +27,18 @@ ComponentPinsSortFilterProxyModel::ComponentPinsSortFilterProxyModel()
 bool ComponentPinsSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
     if (source_left.internalPointer() == Q_NULLPTR)
+    {
         return (sortOrder() == Qt::DescendingOrder);
+    }
     if (source_right.internalPointer() == Q_NULLPTR)
+    {
         return (sortOrder() == Qt::AscendingOrder);
+    }
 
     if (source_left.column() != ComponentPinsItemModel::PinNumber)
+    {
         return QSortFilterProxyModel::lessThan(source_left, source_right);
+    }
 
     return NumericalSortFilterProxyModel::lessThan(source_left, source_right);
 }

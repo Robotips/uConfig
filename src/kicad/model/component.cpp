@@ -57,10 +57,14 @@ Component::Component(const Component &other)
     _showPadName = other._showPadName;
     _unitCount = other._unitCount;
 
-    for (int i=0; i<other._pins.size(); i++)
+    for (int i = 0; i < other._pins.size(); i++)
+    {
         addPin(new Pin(*other._pins[i]));
-    for (int i=0; i<other._draws.size(); i++)
+    }
+    for (int i = 0; i < other._draws.size(); i++)
+    {
         addDraw(other._draws[i]->clone());
+    }
 
     _refText = new DrawText(*other._refText);
     _nameText = new DrawText(*other._nameText);
@@ -73,10 +77,14 @@ Component::Component(const Component &other)
  */
 Component::~Component()
 {
-    for (int i=0; i<_pins.size(); i++)
+    for (int i = 0; i < _pins.size(); i++)
+    {
         delete _pins[i];
-    for (int i=0; i<_draws.size(); i++)
+    }
+    for (int i = 0; i < _draws.size(); i++)
+    {
         delete _draws[i];
+    }
     delete _refText;
     delete _nameText;
     delete _packageText;
@@ -100,7 +108,7 @@ const QString &Component::name() const
 void Component::setName(const QString &name)
 {
     _name = name;
-    _name.replace(" ","_");
+    _name.replace(" ", "_");
     _nameText->setText(name);
 }
 
@@ -139,7 +147,9 @@ void Component::addPin(Pin *pin)
 void Component::removePin(Pin *pin)
 {
     if (_pins.removeOne(pin))
+    {
         delete pin;
+    }
 }
 
 /**
@@ -147,8 +157,10 @@ void Component::removePin(Pin *pin)
  */
 void Component::clearPins()
 {
-    for (int i=0; i<_pins.size(); i++)
+    for (int i = 0; i < _pins.size(); i++)
+    {
         delete _pins[i];
+    }
     _pins.clear();
 }
 
@@ -197,7 +209,9 @@ void Component::addDraw(Draw *draw)
 void Component::removeDraw(Draw *draw)
 {
     if (_draws.removeOne(draw))
+    {
         delete draw;
+    }
 }
 
 /**
@@ -205,8 +219,10 @@ void Component::removeDraw(Draw *draw)
  */
 void Component::clearDraws()
 {
-    for (int i=0; i<_draws.size(); i++)
+    for (int i = 0; i < _draws.size(); i++)
+    {
         delete _draws[i];
+    }
     _draws.clear();
 }
 
@@ -307,8 +323,10 @@ void Component::addFootPrint(const QStringList &footprints)
 QRect Component::boundingRect() const
 {
     QRect mrect(0, 0, 1, 1);
-    for (int i=0; i<_pins.size(); i++)
+    for (int i = 0; i < _pins.size(); i++)
+    {
         mrect = mrect.united(QRect(_pins[i]->pos(), QSize(1, 1)));
+    }
     return mrect;
 }
 
@@ -332,8 +350,7 @@ void Component::setRect(const QRect &rect)
 
 bool pinPadLessThan(const Pin *pin1, const Pin *pin2)
 {
-    return (pin1->padName().rightJustified(4, '0') <
-            pin2->padName().rightJustified(4, '0'));
+    return (pin1->padName().rightJustified(4, '0') < pin2->padName().rightJustified(4, '0'));
 }
 
 /**
@@ -505,8 +522,10 @@ void Component::reorganizeToPackageStyle()
 
     int leftOffset = (static_cast<int>(ceil(leftCount / 2.0)) - 1) * 100;
     int rightOffset = (static_cast<int>(ceil(rightCount / 2.0)) - 1) * 100;
-    if (leftCount%2 == 0)
+    if (leftCount % 2 == 0)
+    {
         leftOffset += 100;
+    }
 
     int margin = 0;
     int leftMargin = 0, rightMargin = 0;
@@ -519,7 +538,9 @@ void Component::reorganizeToPackageStyle()
         pin->setLength(200);
         int width = pin->name().count() * 50 + 250;
         if (width > leftMargin)
+        {
             leftMargin = width;
+        }
     }
     for (; i < leftCount + rightCount; i++)
     {
@@ -528,7 +549,9 @@ void Component::reorganizeToPackageStyle()
         pin->setLength(200);
         int width = pin->name().count() * 50 + 250;
         if (width > rightMargin)
+        {
             rightMargin = width;
+        }
     }
     margin = (leftMargin + rightMargin) / 2;
     margin = (qCeil(margin / 100.0)) * 100; // grid align
@@ -555,8 +578,7 @@ void Component::reorganizeToPackageStyle()
 
     clearDraws();
     // added draw outside rect
-    QRect rect = QRect(QPoint(-margin + 200, -qMax(leftOffset, rightOffset) - 100),
-                       QPoint(margin - 200, qMax(leftOffset, rightOffset) + 100));
+    QRect rect = QRect(QPoint(-margin + 200, -qMax(leftOffset, rightOffset) - 100), QPoint(margin - 200, qMax(leftOffset, rightOffset) + 100));
     addDraw(new DrawRect(rect));
 
     // set position of ref and name text

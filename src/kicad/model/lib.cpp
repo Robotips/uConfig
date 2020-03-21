@@ -19,8 +19,8 @@
 #include "lib.h"
 
 #include <QDateTime>
-#include <QFile>
 #include <QDebug>
+#include <QFile>
 #include <QFileInfo>
 
 #include "../parser/libparser.h"
@@ -42,8 +42,10 @@ Lib::Lib(const Lib &other)
 {
     _name = other._name;
 
-    for (int i=0; i<other._components.size(); i++)
+    for (int i = 0; i < other._components.size(); i++)
+    {
         addComponent(new Component(*other._components[i]));
+    }
 }
 
 /**
@@ -119,7 +121,9 @@ void Lib::addComponent(Component *component)
 void Lib::removeComponent(Component *component)
 {
     if (_components.removeOne(component))
+    {
         delete component;
+    }
 }
 
 /**
@@ -145,8 +149,10 @@ void Lib::releaseComponents()
  */
 void Lib::clear()
 {
-    for (int i=0; i<_components.size(); i++)
+    for (int i = 0; i < _components.size(); i++)
+    {
         delete _components[i];
+    }
     _components.clear();
 }
 

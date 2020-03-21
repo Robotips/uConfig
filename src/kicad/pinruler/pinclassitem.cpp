@@ -57,13 +57,17 @@ void PinClassItem::setSortLabel(const QString &sortLabel)
 bool PinClassItem::pinLessThan(PinClassItem *pin1, PinClassItem *pin2)
 {
     if (pin1->priority() == pin2->priority())
+    {
         return pin1->_sortLabel.toLower() < pin2->_sortLabel.toLower();
+    }
     return pin1->priority() > pin2->priority();
 }
 
 bool PinClassItem::pinGreaterThan(PinClassItem *pin1, PinClassItem *pin2)
 {
     if (pin1->priority() == pin2->priority())
+    {
         return pin1->_sortLabel.toLower() > pin2->_sortLabel.toLower();
+    }
     return pin1->priority() < pin2->priority();
 }

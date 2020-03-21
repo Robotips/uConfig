@@ -23,14 +23,14 @@
 
 #include <QString>
 
-#include "rulesset.h"
-#include "pinclass.h"
 #include "model/component.h"
+#include "pinclass.h"
+#include "rulesset.h"
 
 class KICAD_EXPORT PinRuler
 {
 public:
-    PinRuler(RulesSet *ruleSet=Q_NULLPTR);
+    PinRuler(RulesSet *ruleSet = Q_NULLPTR);
 
     void organize(Component *component);
 

@@ -29,9 +29,9 @@ class KICAD_EXPORT DrawPoly : public Draw
 {
 public:
     DrawPoly();
-    Draw *clone() const;
+    Draw *clone() const override;
 
-    TypeDraw type() const;
+    TypeDraw type() const override;
 
     QList<QPoint> &points();
     const QList<QPoint> &points() const;

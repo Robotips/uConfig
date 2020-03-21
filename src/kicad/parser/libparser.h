@@ -26,7 +26,8 @@
 class KICAD_EXPORT LibParser
 {
 public:
-    enum Format {
+    enum Format
+    {
         Kicad
     };
 

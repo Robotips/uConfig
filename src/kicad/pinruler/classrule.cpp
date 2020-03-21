@@ -18,36 +18,31 @@
 
 #include "classrule.h"
 
-QStringList ClassRule::propsName = QStringList()
-        <<"position"
-        <<"sort"
-        <<"sortpattern"
-        <<"length"
-        <<"priority"
-        <<"visibility"
-        <<"label"
-        <<"rect";
+QStringList ClassRule::propsName = QStringList() << "position"
+                                                 << "sort"
+                                                 << "sortpattern"
+                                                 << "length"
+                                                 << "priority"
+                                                 << "visibility"
+                                                 << "label"
+                                                 << "rect";
 
-QStringList ClassRule::positionEnumStr = QStringList()
-        <<"top"
-        <<"bottom"
-        <<"left"
-        <<"right"
-        <<"aside";
+QStringList ClassRule::positionEnumStr = QStringList() << "top"
+                                                       << "bottom"
+                                                       << "left"
+                                                       << "right"
+                                                       << "aside";
 
-QStringList ClassRule::sortEnumStr = QStringList()
-        <<"none"
-        <<"asc"
-        <<"desc";
+QStringList ClassRule::sortEnumStr = QStringList() << "none"
+                                                   << "asc"
+                                                   << "desc";
 
-QStringList ClassRule::visibilityEnumStr = QStringList()
-        <<"visible"
-        <<"hidden"
-        <<"removed";
+QStringList ClassRule::visibilityEnumStr = QStringList() << "visible"
+                                                         << "hidden"
+                                                         << "removed";
 
-QStringList ClassRule::boolEnumStr = QStringList()
-        <<"false"
-        <<"true";
+QStringList ClassRule::boolEnumStr = QStringList() << "false"
+                                                   << "true";
 
 ClassRule::ClassRule(const QString &selector)
     : Rule(selector)
@@ -87,7 +82,9 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
     int id = ClassRule::propsName.indexOf(name);
 
     if (id == -1)
+    {
         return false;
+    }
 
     switch (id)
     {
@@ -170,7 +167,9 @@ void ClassRule::setPosition(const QString &position)
 {
     int id = ClassRule::positionEnumStr.indexOf(position);
     if (id != -1)
+    {
         setPosition((ClassRule::Position)(id));
+    }
 }
 
 ClassRule::Sort ClassRule::sortValue() const
@@ -198,7 +197,9 @@ void ClassRule::setSort(const QString &sort)
 {
     int id = ClassRule::sortEnumStr.indexOf(sort);
     if (id != -1)
+    {
         setSort((ClassRule::Sort)(id));
+    }
 }
 
 QString ClassRule::sortPattern() const
@@ -230,7 +231,9 @@ bool ClassRule::hasLengthSet() const
 void ClassRule::setLength(int length)
 {
     if (length < 0)
+    {
         length = 0;
+    }
     _length = length;
     _lengthSet = true;
 }
@@ -276,7 +279,9 @@ void ClassRule::setVisibility(const QString &visibility)
 {
     int id = ClassRule::visibilityEnumStr.indexOf(visibility);
     if (id != -1)
+    {
         setVisibility((ClassRule::Visibility)(id));
+    }
 }
 
 QString ClassRule::label() const
@@ -310,7 +315,9 @@ void ClassRule::setRect(const QString &rect)
 {
     int id = ClassRule::boolEnumStr.indexOf(rect);
     if (id != -1)
+    {
         setRect(id == 1);
+    }
 }
 
 bool ClassRule::hasRectSet() const

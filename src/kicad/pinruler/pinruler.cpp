@@ -36,14 +36,18 @@ bool nameGreaterThan(PinClass *c1, PinClass *c2)
 bool heightGreaterThan(PinClass *c1, PinClass *c2)
 {
     if (c1->boundingRect().height() == c2->boundingRect().height())
+    {
         return nameGreaterThan(c1, c2);
+    }
     return c1->boundingRect().height() > c2->boundingRect().height();
 }
 
 bool prioGreaterThan(PinClass *c1, PinClass *c2)
 {
     if (c1->priority() == c2->priority())
+    {
         return nameGreaterThan(c1, c2);
+    }
     return c1->priority() > c2->priority();
 }
 
@@ -57,7 +61,7 @@ void PinRuler::organize(Component *component)
     foreach (Pin *pin, component->pins())
     {
         PinClassItem *pinClassItem = new PinClassItem(pin);
-        const QList<PinRule*> &rules = _ruleSet->rulesForPin(pin->name());
+        const QList<PinRule *> &rules = _ruleSet->rulesForPin(pin->name());
         if (rules.isEmpty())
         {
             pin->setPinType(Pin::NotVisible);
@@ -66,7 +70,7 @@ void PinRuler::organize(Component *component)
         else
         {
             pin->setLayer(1);
-            QString className;// = rules.first()->className(pin->name());
+            QString className; // = rules.first()->className(pin->name());
             foreach (PinRule *rule, rules)
             {
                 if (rule->hasClassSet())
@@ -102,9 +106,13 @@ void PinRuler::organize(Component *component)
                 }
             }
             if (mpinClass->label().isEmpty())
+            {
                 pin->setClassName(mpinClass->className());
+            }
             else
+            {
                 pin->setClassName(mpinClass->label());
+            }
 
             mpinClass->addPinItem(pinClassItem);
         }
@@ -121,7 +129,9 @@ void PinRuler::organize(Component *component)
     foreach (PinClass *mpinClass, _pinClasses)
     {
         if (mpinClass->pins().count() == 0)
+        {
             continue;
+        }
 
         QRect rect = mpinClass->boundingRect();
         if (mpinClass->visibilityValue() == ClassRule::VisibilityRemoved)
@@ -130,7 +140,9 @@ void PinRuler::organize(Component *component)
             removedPins.append(mpinClass);
             removedSize.rwidth() += rect.width();
             if (rect.height() > removedSize.height())
+            {
                 removedSize.setHeight(rect.height());
+            }
             continue;
         }
 
@@ -140,25 +152,33 @@ void PinRuler::organize(Component *component)
             topSide.append(mpinClass);
             topSize.rwidth() += rect.width();
             if (rect.height() > topSize.height())
+            {
                 topSize.setHeight(rect.height());
+            }
             break;
         case ClassRule::PositionBottom:
             bottomSide.append(mpinClass);
             bottomSize.rwidth() += rect.width();
             if (rect.height() > bottomSize.height())
+            {
                 bottomSize.setHeight(rect.height());
+            }
             break;
         case ClassRule::PositionLeft:
             leftSide.append(mpinClass);
             leftSize.rheight() += rect.height();
             if (rect.width() > leftSize.width())
+            {
                 leftSize.setWidth(rect.width());
+            }
             break;
         case ClassRule::PositionRight:
             rightSide.append(mpinClass);
             rightSize.rheight() += rect.height();
             if (rect.width() > rightSize.width())
+            {
                 rightSize.setWidth(rect.width());
+            }
             break;
         case ClassRule::PositionASide:
             aSide.append(mpinClass);
@@ -177,7 +197,9 @@ void PinRuler::organize(Component *component)
             leftSide.append(mpinClass);
             leftSize.rheight() += rect.height();
             if (rect.width() > leftSize.width())
+            {
                 leftSize.setWidth(rect.width());
+            }
         }
         else
         {
@@ -185,7 +207,9 @@ void PinRuler::organize(Component *component)
             rightSide.append(mpinClass);
             rightSize.rheight() += rect.height();
             if (rect.width() > rightSize.width())
+            {
                 rightSize.setWidth(rect.width());
+            }
         }
     }
 
@@ -207,14 +231,20 @@ void PinRuler::organize(Component *component)
     x = -sideX;
     y = -sideY + qCeil(topSize.height() / 100.0) * 100 + 100;
     if (leftSize.height() + 50 < rightSize.height())
+    {
         y += qCeil((rightSize.height() - leftSize.height()) / 200.0) * 100; // grid align KLC4.1
+    }
     foreach (PinClass *mpinClass, leftSide)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
+        {
             component->addDraw(mpinClass->getDrawText());
+        }
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        {
             component->addDraw(mpinClass->getDrawRect());
+        }
 
         y += mpinClass->boundingRect().height() + 100;
     }
@@ -222,14 +252,20 @@ void PinRuler::organize(Component *component)
     x = sideX;
     y = -sideY + qCeil(topSize.height() / 100.0) * 100 + 100;
     if (rightSize.height() + 50 < leftSize.height())
+    {
         y += qCeil((leftSize.height() - rightSize.height()) / 200.0) * 100; // grid align KLC4.1
+    }
     foreach (PinClass *mpinClass, rightSide)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
+        {
             component->addDraw(mpinClass->getDrawText());
+        }
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        {
             component->addDraw(mpinClass->getDrawRect());
+        }
 
         y += mpinClass->boundingRect().height() + 100;
     }
@@ -241,9 +277,13 @@ void PinRuler::organize(Component *component)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
+        {
             component->addDraw(mpinClass->getDrawText());
+        }
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        {
             component->addDraw(mpinClass->getDrawRect());
+        }
 
         x += mpinClass->boundingRect().width() + 100;
     }
@@ -255,9 +295,13 @@ void PinRuler::organize(Component *component)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
+        {
             component->addDraw(mpinClass->getDrawText());
+        }
         if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        {
             component->addDraw(mpinClass->getDrawRect());
+        }
 
         x += mpinClass->boundingRect().width() + 100;
     }
@@ -308,7 +352,7 @@ PinClass *PinRuler::addClass(const QString &className)
 {
     PinClass *pinClass = new PinClass(className);
 
-    const QList<ClassRule*> &rules = _ruleSet->rulesForClass(className);
+    const QList<ClassRule *> &rules = _ruleSet->rulesForClass(className);
     pinClass->applyRules(rules);
 
     _pinClasses.insert(className, pinClass);
@@ -319,7 +363,11 @@ PinClass *PinRuler::pinClass(const QString &className)
 {
     QMap<QString, PinClass *>::const_iterator classFind = _pinClasses.constFind(className);
     if (classFind == _pinClasses.cend())
+    {
         return addClass(className);
+    }
     else
+    {
         return *classFind;
+    }
 }

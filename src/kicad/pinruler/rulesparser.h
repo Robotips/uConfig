@@ -29,7 +29,7 @@
 class KICAD_EXPORT RulesParser
 {
 public:
-    RulesParser(const QString &fileName=QString());
+    RulesParser(const QString &fileName = QString());
 
     void setData(const QString &data);
     bool parse(RulesSet *ruleSet);
@@ -41,7 +41,7 @@ protected:
     bool skipComments();
     void skipSpaceAndComments();
     QString getSelector();
-    //QStringList getSelectors();
+    // QStringList getSelectors();
     QString getPropertyName();
     QString getPropertyValue();
 
