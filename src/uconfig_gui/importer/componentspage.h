@@ -1,9 +1,9 @@
 #ifndef COMPONENTSPAGE_H
 #define COMPONENTSPAGE_H
 
-#include <QWizardPage>
-#include <QLabel>
 #include <QCheckBox>
+#include <QLabel>
+#include <QWizardPage>
 
 #include "../kicad/itemmodel/componentlibtreeview.h"
 
@@ -13,15 +13,15 @@ class ComponentsPage : public QWizardPage
 public:
     explicit ComponentsPage();
 
-    bool isComplete() const;
-    int nextId() const;
-    void initializePage();
+    bool isComplete() const override;
+    int nextId() const override;
+    void initializePage() override;
 
 protected:
     void finish();
     void changePage(int page);
     void addLog(QString str);
-    bool validatePage();
+    bool validatePage() override;
 
 private:
     QCheckBox *_checkAllBox;

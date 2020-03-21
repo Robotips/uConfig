@@ -1,8 +1,8 @@
 #ifndef RESULTSPAGE_H
 #define RESULTSPAGE_H
 
-#include <QWizardPage>
 #include <QLabel>
+#include <QWizardPage>
 
 #include "datasheetthread.h"
 
@@ -12,9 +12,9 @@ class ResultsPage : public QWizardPage
 public:
     explicit ResultsPage();
 
-    bool isComplete() const;
-    int nextId() const;
-    void initializePage();
+    bool isComplete() const override;
+    int nextId() const override;
+    void initializePage() override;
 
 private:
     QLabel *_resultLabel;

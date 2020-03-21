@@ -1,11 +1,11 @@
 #ifndef FILEPAGE_H
 #define FILEPAGE_H
 
-#include <QWizardPage>
-#include <QLineEdit>
 #include <QLabel>
+#include <QLineEdit>
 #include <QMap>
 #include <QSettings>
+#include <QWizardPage>
 
 #include "pinlistimporter.h"
 
@@ -15,16 +15,16 @@ class FilePage : public QWizardPage
 public:
     explicit FilePage();
 
-    bool isComplete() const;
-    int nextId() const;
-    void initializePage();
+    bool isComplete() const override;
+    int nextId() const override;
+    void initializePage() override;
 
     Q_PROPERTY(QString file READ file)
     QString file() const;
 
 protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
 private slots:
     void fileExplore();

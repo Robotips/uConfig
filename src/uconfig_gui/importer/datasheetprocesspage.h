@@ -1,10 +1,10 @@
 #ifndef DATASHEETPROCESSPAGE_H
 #define DATASHEETPROCESSPAGE_H
 
-#include <QWizardPage>
 #include <QLabel>
-#include <QProgressBar>
 #include <QPlainTextEdit>
+#include <QProgressBar>
+#include <QWizardPage>
 
 #include "datasheetthread.h"
 
@@ -14,9 +14,9 @@ class DatasheetProcessPage : public QWizardPage
 public:
     explicit DatasheetProcessPage();
 
-    bool isComplete() const;
-    int nextId() const;
-    void initializePage();
+    bool isComplete() const override;
+    int nextId() const override;
+    void initializePage() override;
 
     DataSheetThread *datasheetThread();
 

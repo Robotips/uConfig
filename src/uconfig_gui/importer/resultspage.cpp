@@ -1,16 +1,16 @@
 #include "resultspage.h"
 
-#include <QLabel>
-#include <QHBoxLayout>
 #include <QDebug>
 #include <QFileInfo>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 #include <QScrollArea>
 
 #include "pinlistimporter.h"
 
 ResultsPage::ResultsPage()
-    : QWizardPage(0)
+    : QWizardPage(nullptr)
 {
     QVBoxLayout *layout = new QVBoxLayout;
     _resultLabel = new QLabel();
@@ -23,9 +23,7 @@ ResultsPage::ResultsPage()
     scrollArea->setWidgetResizable(true);
     scrollArea->setWidget(_resultLabel);
     layout->addWidget(scrollArea);
-    layout->addSpacerItem(new QSpacerItem(10, 30,
-                                          QSizePolicy::Expanding,
-                                          QSizePolicy::Expanding));
+    layout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
     setLayout(layout);
 }
 
@@ -42,12 +40,10 @@ void ResultsPage::initializePage()
     setTitle(QString("Extracted packages in %1").arg(fileName.right(30)));
 
     QString resText = QString("Packages found:");
-    QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
+    QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
     foreach (Component *component, components)
     {
-        resText.append(QString("\n - %1 with %2 pins")
-                           .arg(component->name())
-                           .arg(component->pins().count()));
+        resText.append(QString("\n - %1 with %2 pins").arg(component->name()).arg(component->pins().count()));
     }
     _resultLabel->setText(resText);
 }

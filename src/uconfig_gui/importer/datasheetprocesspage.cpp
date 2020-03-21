@@ -1,14 +1,14 @@
 #include "datasheetprocesspage.h"
 
-#include <QLabel>
-#include <QHBoxLayout>
 #include <QDebug>
 #include <QFileInfo>
+#include <QHBoxLayout>
+#include <QLabel>
 
 #include "pinlistimporter.h"
 
 DatasheetProcessPage::DatasheetProcessPage()
-    : QWizardPage(0)
+    : QWizardPage(nullptr)
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
@@ -42,13 +42,12 @@ int DatasheetProcessPage::nextId() const
 void DatasheetProcessPage::initializePage()
 {
     QString filepdf = field("file").toString();
-    static_cast<PinListImporter*>(wizard())->setFilePath(filepdf);
+    dynamic_cast<PinListImporter *>(wizard())->setFilePath(filepdf);
     QFileInfo info(filepdf);
     QString fileName = info.fileName();
 
     _datasheet->setDebugEnabled(true);
     setTitle(tr("Extracting packages in %1...").arg(fileName.right(30)));
-
 
     int _pageStart;
     int _pageCount;
@@ -88,7 +87,7 @@ void DatasheetProcessPage::finish()
     changePage(_progressBar->maximum());
     emit completeChanged();
 
-    QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
+    QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
 
     qDeleteAll(components);
     components.clear();

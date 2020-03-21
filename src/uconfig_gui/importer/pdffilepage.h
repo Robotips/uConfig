@@ -1,11 +1,11 @@
 #ifndef PDFFILEPAGE_H
 #define PDFFILEPAGE_H
 
-#include <QWizardPage>
-#include <QLineEdit>
-#include <QLabel>
-#include <QRadioButton>
 #include <QCheckBox>
+#include <QLabel>
+#include <QLineEdit>
+#include <QRadioButton>
+#include <QWizardPage>
 
 #include "datasheetthread.h"
 
@@ -17,9 +17,9 @@ class PDFFilePage : public QWizardPage
 public:
     explicit PDFFilePage(DataSheetThread *datasheetThread);
 
-    bool isComplete() const;
-    int nextId() const;
-    void initializePage();
+    bool isComplete() const override;
+    int nextId() const override;
+    void initializePage() override;
 
 private slots:
     void check();

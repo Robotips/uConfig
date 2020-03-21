@@ -1,16 +1,16 @@
 #include "pinlistimporter.h"
 
-#include "startwizardpage.h"
+#include "componentspage.h"
+#include "datasheetprocesspage.h"
 #include "filepage.h"
 #include "pdffilepage.h"
 #include "resultspage.h"
-#include "datasheetprocesspage.h"
-#include "componentspage.h"
+#include "startwizardpage.h"
 
 #include <QAbstractButton>
 
-PinListImporter::PinListImporter(const QString &fileName, QWidget *parent) :
-    QWizard(parent)
+PinListImporter::PinListImporter(const QString &fileName, QWidget *parent)
+    : QWizard(parent)
 {
     setPage(PageStart, new StartWizardPage());
     setPage(PageFile, new FilePage());
@@ -52,7 +52,8 @@ PinListImporter::~PinListImporter()
         _datasheetProcess->datasheetThread()->terminate();
         _datasheetProcess->datasheetThread()->wait();
     }
-    catch (...) {
+    catch (...)
+    {
     }
     _datasheetProcess->datasheetThread()->deleteLater();
 }

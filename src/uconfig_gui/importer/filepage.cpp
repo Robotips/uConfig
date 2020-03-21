@@ -1,21 +1,21 @@
 #include "filepage.h"
 
-#include <QLabel>
 #include <QDir>
-#include <QToolButton>
-#include <QHBoxLayout>
-#include <QVariant>
-#include <QFileDialog>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QUrl>
-#include <QMimeData>
+#include <QFileDialog>
 #include <QFileInfo>
+#include <QHBoxLayout>
+#include <QLabel>
+#include <QMimeData>
+#include <QToolButton>
+#include <QUrl>
+#include <QVariant>
 
 #include "pinlistimporter.h"
 
-FilePage::FilePage() :
-    QWizardPage(0)
+FilePage::FilePage()
+    : QWizardPage(nullptr)
 {
     _complete = false;
 
@@ -46,7 +46,7 @@ FilePage::FilePage() :
 
 int FilePage::nextId() const
 {
-    switch (static_cast<PinListImporter*>(wizard())->type())
+    switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
     case PinListImporter::Kicad:
         return PinListImporter::PageComponents;
@@ -62,7 +62,7 @@ int FilePage::nextId() const
 
 void FilePage::initializePage()
 {
-    switch (static_cast<PinListImporter*>(wizard())->type())
+    switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
     case PinListImporter::Kicad:
         _fileTitle = "Kicad lib";
@@ -78,20 +78,25 @@ void FilePage::initializePage()
         break;
     case PinListImporter::Table:
         _fileTitle = "excel sheet";
-        _suffixes << "xls" << "xlsx";
+        _suffixes << "xls"
+                  << "xlsx";
         break;
     }
 
     setTitle(QString("Choose a %1 file").arg(_fileTitle));
 
     if (!_fileEdit->text().isEmpty())
+    {
         checkEntry(_fileEdit->text());
+    }
 }
 
 void FilePage::dragEnterEvent(QDragEnterEvent *event)
 {
     if (event->mimeData()->hasUrls())
+    {
         event->accept();
+    }
 }
 
 void FilePage::dropEvent(QDropEvent *event)
@@ -109,18 +114,16 @@ QMap<PinListImporter::ImportType, QString> FilePage::_importTypeSettingsKeymap =
 void FilePage::fileExplore()
 {
     QString lastPath;
-    if (_importTypeSettingsKeymap.contains(static_cast<PinListImporter*>(wizard())->type())) {
+    if (_importTypeSettingsKeymap.contains(dynamic_cast<PinListImporter *>(wizard())->type()))
+    {
         _settings.beginGroup("FilePage");
-        _settings.beginGroup(_importTypeSettingsKeymap.value(static_cast<PinListImporter*>(wizard())->type()));
+        _settings.beginGroup(_importTypeSettingsKeymap.value(dynamic_cast<PinListImporter *>(wizard())->type()));
         lastPath = _settings.value("lastPath", QDir::homePath()).toString();
         _settings.endGroup();
         _settings.endGroup();
     }
 
-    QString fileName = QFileDialog::getOpenFileName(this,
-                                                    QString("Choose a %1 file").arg(_fileTitle),
-                                                    lastPath,
-                                                    QString("%1 (%2)").arg(_fileTitle).arg("*."+_suffixes.join(" *.")));
+    QString fileName = QFileDialog::getOpenFileName(this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle).arg("*." + _suffixes.join(" *.")));
     if (!fileName.isEmpty())
     {
         setFile(fileName);
@@ -149,9 +152,10 @@ void FilePage::checkEntry(const QString &text)
 void FilePage::setFile(const QString &file)
 {
     _fileEdit->setText(file);
-    if (_importTypeSettingsKeymap.contains(static_cast<PinListImporter*>(wizard())->type())) {
+    if (_importTypeSettingsKeymap.contains(dynamic_cast<PinListImporter *>(wizard())->type()))
+    {
         _settings.beginGroup("FilePage");
-        _settings.beginGroup(_importTypeSettingsKeymap.value(static_cast<PinListImporter*>(wizard())->type()));
+        _settings.beginGroup(_importTypeSettingsKeymap.value(dynamic_cast<PinListImporter *>(wizard())->type()));
         _settings.setValue("lastPath", file);
         _settings.endGroup();
         _settings.endGroup();

@@ -1,16 +1,16 @@
 #include "componentspage.h"
 
-#include <QLabel>
-#include <QHBoxLayout>
 #include <QDebug>
 #include <QFileInfo>
+#include <QHBoxLayout>
+#include <QLabel>
 
 #include "pinlistimporter.h"
 
 #include "../kicad/model/lib.h"
 
 ComponentsPage::ComponentsPage()
-    : QWizardPage(0)
+    : QWizardPage(nullptr)
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
@@ -36,16 +36,18 @@ int ComponentsPage::nextId() const
 
 void ComponentsPage::initializePage()
 {
-    QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
-    PinListImporter::ImportType type = static_cast<PinListImporter*>(wizard())->type();
+    QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
+    PinListImporter::ImportType type = dynamic_cast<PinListImporter *>(wizard())->type();
     _lib = new Lib();
     if (type == PinListImporter::Kicad)
     {
         QString file = field("file").toString();
-        static_cast<PinListImporter*>(wizard())->setFilePath(file);
+        dynamic_cast<PinListImporter *>(wizard())->setFilePath(file);
         components.clear();
         if (!_lib->readFrom(file))
+        {
             _statusLabel->setText(tr("Cannot parse library file"));
+        }
     }
     else
     {
@@ -67,7 +69,7 @@ bool ComponentsPage::isComplete() const
 
 bool ComponentsPage::validatePage()
 {
-    QList<Component *> &components = static_cast<PinListImporter*>(wizard())->components();
+    QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
     components.clear();
     foreach (Component *component, _componentTreeView->selectedComponents())
     {

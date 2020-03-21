@@ -11,9 +11,8 @@ class PinListImporter : public QWizard
 {
     Q_OBJECT
 public:
-
-    PinListImporter(const QString &fileName, QWidget *parent = 0);
-    ~PinListImporter();
+    PinListImporter(const QString &fileName, QWidget *parent = nullptr);
+    ~PinListImporter() override;
 
     /**
      * When extending this enum make sure to extend
@@ -36,7 +35,8 @@ public:
     {
         PageStart,
         PageFile,
-        PagePDFFile, PagePDFProcess,
+        PagePDFFile,
+        PagePDFProcess,
         PageCSVFile,
         PageKicadFile,
         PageComponents,

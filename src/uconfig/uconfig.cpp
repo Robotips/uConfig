@@ -1,15 +1,15 @@
-#include <QDebug>
 #include <QApplication>
-#include <QDateTime>
-#include <QScreen>
 #include <QCommandLineParser>
-#include <QTextStream>
+#include <QDateTime>
+#include <QDebug>
 #include <QFileInfo>
+#include <QScreen>
+#include <QTextStream>
 
 #include "../pdf_extract/datasheet.h"
 
-#include "../kicad/viewer/componentviewer.h"
 #include "../kicad/model/lib.h"
+#include "../kicad/viewer/componentviewer.h"
 
 #include "../kicad/pinruler/pinruler.h"
 #include "../kicad/pinruler/rulesparser.h"
@@ -27,7 +27,7 @@ void processFilePdf(QString file, Lib *lib, bool debug)
         exit(2);
     }
     datasheet.analyse();
-    foreach(DatasheetPackage *package, datasheet.packages())
+    foreach (DatasheetPackage *package, datasheet.packages())
     {
         Component *component = package->toComponent();
         lib->addComponent(component);
@@ -43,7 +43,8 @@ void processFileLib(QString file, Lib *lib)
     }
 }
 
-enum UConfigSource {
+enum UConfigSource
+{
     FromPdf,
     FromLib
 } source;
@@ -55,22 +56,24 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.") +
-                                                                 QString("\nuconfig datasheet.pdf -o lib1.lib [-r rule.kss] [-d]"));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.") + QString("\nuconfig datasheet.pdf -o lib1.lib [-r rule.kss] [-d]"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("file", QCoreApplication::translate("main", "Source file to extract pins (pdf)."), "file");
 
-    QCommandLineOption outOption(QStringList() << "o" << "out",
+    QCommandLineOption outOption(QStringList() << "o"
+                                               << "out",
                                  QCoreApplication::translate("main", "Output file with pin list."),
                                  "out");
     parser.addOption(outOption);
 
-    QCommandLineOption debugOption(QStringList() << "d" << "debug",
+    QCommandLineOption debugOption(QStringList() << "d"
+                                                 << "debug",
                                    QCoreApplication::translate("main", "Debug option to view intermediate steps."));
     parser.addOption(debugOption);
 
-    QCommandLineOption kssOption(QStringList() << "r" << "rule",
+    QCommandLineOption kssOption(QStringList() << "r"
+                                               << "rule",
                                  QCoreApplication::translate("main", "KSS rule file to organize component."),
                                  "rule");
     parser.addOption(kssOption);
@@ -91,13 +94,15 @@ int main(int argc, char *argv[])
     if (!ruleFile.isEmpty())
     {
         if (!ruleFile.endsWith(".kss", Qt::CaseInsensitive))
+        {
             ruleFile.append(".kss");
+        }
         if (!QFileInfo(ruleFile).exists())
         {
             QString binPath = QFileInfo(QApplication::arguments()[0]).path() + "/";
-            if (QFileInfo(binPath + "../rules/"+ruleFile).exists())
+            if (QFileInfo(binPath + "../rules/" + ruleFile).exists())
             {
-                ruleFile = binPath + "../rules/"+ruleFile;
+                ruleFile = binPath + "../rules/" + ruleFile;
             }
             else
             {
@@ -126,7 +131,9 @@ int main(int argc, char *argv[])
     // output file
     QString outFile = parser.value("out");
     if (outFile.isEmpty())
+    {
         outFile = QFileInfo(file).baseName() + ".lib";
+    }
 
     // creates lib model and fill it
     qint64 d = QDateTime::currentMSecsSinceEpoch();
@@ -150,12 +157,14 @@ int main(int argc, char *argv[])
     out << lib.componentsCount() << " packages extracted, saved in " << outFile << endl;
 
     // apply pinruler if needed
-    foreach(Component *component, lib.components())
+    foreach (Component *component, lib.components())
     {
         if (ruleFile.isEmpty())
         {
             if (source == FromPdf)
+            {
                 component->reorganizeToPackageStyle();
+            }
         }
         else
         {

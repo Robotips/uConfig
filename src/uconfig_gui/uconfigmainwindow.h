@@ -3,27 +3,27 @@
 
 #include <QMainWindow>
 
-#include <QTreeView>
-#include <QTableView>
-#include <QSplitter>
-#include <QDockWidget>
 #include <QComboBox>
+#include <QDockWidget>
 #include <QLabel>
+#include <QSplitter>
+#include <QTableView>
+#include <QTreeView>
 
 #include "project/uconfigproject.h"
 
-#include "viewer/componentwidget.h"
+#include "componentinfoseditor.h"
 #include "itemmodel/componentlibtreeview.h"
 #include "itemmodel/pinlisteditor.h"
 #include "ksseditor/ksseditor.h"
-#include "componentinfoseditor.h"
+#include "viewer/componentwidget.h"
 
 class UConfigMainWindow : public QMainWindow
 {
     Q_OBJECT
 public:
     UConfigMainWindow(UConfigProject *project);
-    ~UConfigMainWindow();
+    ~UConfigMainWindow() override;
 
 protected slots:
     void setTitle();
@@ -56,7 +56,7 @@ protected:
 
     void writeSettings();
     void readSettings();
-    QList<QAction*> _oldProjectsActions;
+    QList<QAction *> _oldProjectsActions;
 
     void createToolbarsMenus();
 
@@ -65,12 +65,12 @@ protected slots:
     void updateOldProjects();
 
 protected:
-    void dragEnterEvent(QDragEnterEvent *event);
-    void dropEvent(QDropEvent *event);
+    void dragEnterEvent(QDragEnterEvent *event) override;
+    void dropEvent(QDropEvent *event) override;
 
     // QObject interface
 public:
-    virtual bool event(QEvent *event);
+    bool event(QEvent *event) override;
 };
 
 #endif // UCONFIGMAINWINDOW_H

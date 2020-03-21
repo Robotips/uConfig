@@ -1,23 +1,23 @@
 #include "uconfigmainwindow.h"
 
 #include <QApplication>
-#include <QScreen>
-#include <QMenuBar>
-#include <QToolBar>
-#include <QWidgetAction>
-#include <QVBoxLayout>
-#include <QMessageBox>
-#include <QFileDialog>
-#include <QStatusBar>
 #include <QDir>
-#include <QMimeData>
-#include <QUrl>
 #include <QDragEnterEvent>
 #include <QDropEvent>
-#include <QTabWidget>
+#include <QFileDialog>
+#include <QMenuBar>
+#include <QMessageBox>
+#include <QMimeData>
 #include <QPixmap>
+#include <QScreen>
 #include <QScrollArea>
 #include <QSettings>
+#include <QStatusBar>
+#include <QTabWidget>
+#include <QToolBar>
+#include <QUrl>
+#include <QVBoxLayout>
+#include <QWidgetAction>
 
 #include <QDebug>
 
@@ -46,7 +46,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     connect(_project, &UConfigProject::activeComponentChange, _componentWidget, &ComponentWidget::setComponent);
     connect(_project, &UConfigProject::componentChange, _componentsTreeView, &ComponentLibTreeView::updateComponent);
 
-    resize(QApplication::primaryScreen()->size()*.7);
+    resize(QApplication::primaryScreen()->size() * .7);
     setTitle();
 
     readSettings();
@@ -64,11 +64,15 @@ void UConfigMainWindow::setTitle()
 void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
 {
     if (!event->mimeData()->hasUrls())
+    {
         return;
+    }
 
     QString fileName = event->mimeData()->urls().first().toLocalFile();
     if (fileName.endsWith(".pdf", Qt::CaseInsensitive) || fileName.endsWith(".lib", Qt::CaseInsensitive))
+    {
         event->accept();
+    }
 }
 
 void UConfigMainWindow::dropEvent(QDropEvent *event)
@@ -88,7 +92,9 @@ void UConfigMainWindow::organize(QString ruleSetName)
     if (ruleSetName == "package")
     {
         if (!_componentWidget->component())
+        {
             return;
+        }
         Component *component = _componentWidget->component();
         _componentWidget->setComponent(Q_NULLPTR);
         component->reorganizeToPackageStyle();
@@ -156,7 +162,7 @@ void UConfigMainWindow::reloadRuleSetList()
     _ruleComboBox->clear();
     _ruleComboBox->addItem("package");
     QDir dir(qApp->applicationDirPath() + "/../rules/");
-    foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList()<<"*.kss", QDir::NoDotAndDotDot | QDir::Files))
+    foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList() << "*.kss", QDir::NoDotAndDotDot | QDir::Files))
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
     }
@@ -165,9 +171,13 @@ void UConfigMainWindow::reloadRuleSetList()
 void UConfigMainWindow::setActiveComponent(Component *component)
 {
     if (component)
+    {
         _pdfDebug->setPixmap(QPixmap::fromImage(component->debugInfo()));
+    }
     else
+    {
         _pdfDebug->setText("No pdf informations");
+    }
 }
 
 void UConfigMainWindow::createWidgets()
@@ -177,7 +187,7 @@ void UConfigMainWindow::createWidgets()
     _kssEditor = new KssEditor();
     _splitterEditor->addWidget(_pinListEditor);
     _splitterEditor->addWidget(_kssEditor);
-    _splitterEditor->setSizes(QList<int>()<<200<<200);
+    _splitterEditor->setSizes(QList<int>() << 200 << 200);
 
     QTabWidget *tabWidget = new QTabWidget();
     _componentWidget = new ComponentWidget(this);
@@ -193,22 +203,17 @@ void UConfigMainWindow::createWidgets()
     _splitter = new QSplitter();
     _splitter->addWidget(_splitterEditor);
     _splitter->addWidget(tabWidget);
-    _splitter->setSizes(QList<int>()<<200<<200);
+    _splitter->setSizes(QList<int>() << 200 << 200);
 
     setCentralWidget(_splitter);
     setStatusBar(new QStatusBar());
 
-    connect(_componentWidget->viewer(), &ComponentViewer::droppedFile,
-            _project, &UConfigProject::importComponents);
+    connect(_componentWidget->viewer(), &ComponentViewer::droppedFile, _project, &UConfigProject::importComponents);
 
-    connect(_componentWidget->viewer(), &ComponentViewer::pinsSelected,
-            _pinListEditor->tableView(), &ComponentPinsTableView::selectPins);
-    connect(_pinListEditor->tableView(), &ComponentPinsTableView::pinSelected,
-            _componentWidget->viewer(), &ComponentViewer::selectPins);
-    connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinModified,
-            _componentWidget->viewer(), &ComponentViewer::updatePin);
-    connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinRemoved,
-            _componentWidget->viewer(), &ComponentViewer::removePin);
+    connect(_componentWidget->viewer(), &ComponentViewer::pinsSelected, _pinListEditor->tableView(), &ComponentPinsTableView::selectPins);
+    connect(_pinListEditor->tableView(), &ComponentPinsTableView::pinSelected, _componentWidget->viewer(), &ComponentViewer::selectPins);
+    connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinModified, _componentWidget->viewer(), &ComponentViewer::updatePin);
+    connect(_pinListEditor->tableView()->model(), &ComponentPinsItemModel::pinRemoved, _componentWidget->viewer(), &ComponentViewer::removePin);
 }
 
 void UConfigMainWindow::createDocks()
@@ -264,13 +269,13 @@ void UConfigMainWindow::readSettings()
 
 void UConfigMainWindow::updateOldProjects()
 {
-    for (int i=0; i<_project->oldProjects().size(); i++)
+    for (int i = 0; i < _project->oldProjects().size(); i++)
     {
         QString path = _project->oldProjects()[i];
         _oldProjectsActions[i]->setVisible(true);
         _oldProjectsActions[i]->setData(path);
-        _oldProjectsActions[i]->setText(QString("&%1. %2").arg(i+1).arg(path));
-        _oldProjectsActions[i]->setStatusTip(tr("Open recent project '")+path+"'");
+        _oldProjectsActions[i]->setText(QString("&%1. %2").arg(i + 1).arg(path));
+        _oldProjectsActions[i]->setStatusTip(tr("Open recent project '") + path + "'");
     }
 }
 
@@ -325,7 +330,7 @@ void UConfigMainWindow::createToolbarsMenus()
     connect(saveFileAsAction, SIGNAL(triggered()), _project, SLOT(saveLibAs()));
 
     fileMenu->addSeparator();
-    for (int i=0; i< UConfigProject::MaxOldProject; i++)
+    for (int i = 0; i < UConfigProject::MaxOldProject; i++)
     {
         QAction *recentAction = new QAction(this);
         fileMenu->addAction(recentAction);
@@ -384,12 +389,16 @@ void UConfigMainWindow::openRecentFile()
 {
     QAction *action = qobject_cast<QAction *>(sender());
     if (action)
+    {
         _project->openLib(action->data().toString());
+    }
 }
 
 void UConfigMainWindow::about()
 {
-    QMessageBox::about(this, "uConfig v0", QString("Copyright (C) 2017-2020 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
+    QMessageBox::about(this,
+                       "uConfig v0",
+                       QString("Copyright (C) 2017-2020 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
 <br>\
 This sofware is part of uConfig distribution. To check for new version, please visit <a href=\"https://github.com/Robotips/uConfig\">github.com/Robotips/uConfig</a><br>\
 <br>\
@@ -408,7 +417,8 @@ GNU General Public License for more details.<br>\
 You should have received a copy of the GNU General Public License \
 along with this program. If not, see <a href=\"http://www.gnu.org/licenses/\">www.gnu.org/licenses</a><br>\
 <br>\
-Build date: ") + __DATE__ + QString(" time: ") + __TIME__);
+Build date: ") + __DATE__ + QString(" time: ") +
+                           __TIME__);
 }
 
 bool UConfigMainWindow::event(QEvent *event)

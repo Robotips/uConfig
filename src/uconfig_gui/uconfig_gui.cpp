@@ -1,8 +1,8 @@
-#include <QDebug>
 #include <QApplication>
+#include <QDebug>
 
-#include "uconfigmainwindow.h"
 #include "project/uconfigproject.h"
+#include "uconfigmainwindow.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,12 +19,18 @@ int main(int argc, char *argv[])
     {
         QString fileArg = app.arguments()[1];
         if (fileArg.endsWith(".lib", Qt::CaseInsensitive))
+        {
             project.openLib(fileArg);
+        }
         else
+        {
             project.importComponents(fileArg);
+        }
     }
     else
+    {
         project.newLib();
+    }
 
     return app.exec();
 }

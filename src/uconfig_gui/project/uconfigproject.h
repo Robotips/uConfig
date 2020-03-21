@@ -9,8 +9,8 @@ class UConfigProject : public QObject
 {
     Q_OBJECT
 public:
-    explicit UConfigProject(QWidget *window=Q_NULLPTR);
-    ~UConfigProject();
+    explicit UConfigProject(QWidget *window = Q_NULLPTR);
+    ~UConfigProject() override;
 
     Lib *lib() const;
     const QString &libFileName() const;
@@ -19,7 +19,8 @@ public:
     QWidget *window() const;
     void setWindow(QWidget *window);
 
-    enum ComponentInfoType {
+    enum ComponentInfoType
+    {
         ComponentNameInfo,
         ComponentPackagesInfo,
         ComponentReferenceInfo,
@@ -33,10 +34,10 @@ public:
 
 public slots:
     void newLib();
-    void openLib(const QString &libFileName=QString());
+    void openLib(const QString &libFileName = QString());
     void saveLib();
-    void saveLibAs(const QString &fileName=QString());
-    void importComponents(const QString &fileName=QString());
+    void saveLibAs(const QString &fileName = QString());
+    void importComponents(const QString &fileName = QString());
     bool closeLib();
 
     void selectComponent(Component *component);

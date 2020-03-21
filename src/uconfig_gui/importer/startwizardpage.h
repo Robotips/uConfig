@@ -7,11 +7,11 @@ class StartWizardPage : public QWizardPage
 {
     Q_OBJECT
 public:
-    explicit StartWizardPage(QWidget *parent = 0);
+    explicit StartWizardPage(QWidget *parent = nullptr);
 
-    bool isComplete() const;
+    bool isComplete() const override;
 
-    int nextId() const;
+    int nextId() const override;
 
 private slots:
     void buttonClic(int type);

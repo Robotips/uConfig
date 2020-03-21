@@ -10,12 +10,12 @@ class DataSheetThread : public QThread
     Q_OBJECT
 public:
     explicit DataSheetThread(Datasheet *datasheet);
-    ~DataSheetThread();
+    ~DataSheetThread() override;
 
     bool open(QString fileName);
     void close();
 
-    void setRange(int pageBegin=-1, int pageEnd=-1);
+    void setRange(int pageBegin = -1, int pageEnd = -1);
     int pageBegin() const;
     int pageEnd() const;
     void setForceEnabled(bool force);
@@ -28,7 +28,7 @@ protected:
     Datasheet *_datasheet;
     int _pageBegin;
     int _pageEnd;
-    virtual void run();
+    void run() override;
 };
 
 #endif // DATASHEETTHREAD_H

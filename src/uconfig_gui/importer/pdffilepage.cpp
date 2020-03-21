@@ -1,16 +1,17 @@
 #include "pdffilepage.h"
 
-#include <QLabel>
-#include <QGroupBox>
 #include <QDebug>
-#include <QHBoxLayout>
 #include <QFileInfo>
+#include <QGroupBox>
+#include <QHBoxLayout>
+#include <QLabel>
 #include <QRegularExpressionValidator>
 
 #include "pinlistimporter.h"
 
-PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread) :
-    QWizardPage(0), _datasheetThread(datasheetThread)
+PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
+    : QWizardPage(nullptr)
+    , _datasheetThread(datasheetThread)
 {
     _complete = false;
 
@@ -86,7 +87,9 @@ void PDFFilePage::check()
     {
         _datasheetThread->setForceEnabled(_forceCheckBox->isChecked() && !_allRadio->isChecked());
         if (_allRadio->isChecked())
+        {
             _datasheetThread->setRange();
+        }
         else
         {
             int start = -1, stop = -1;
@@ -94,14 +97,20 @@ void PDFFilePage::check()
             QRegularExpressionMatch match = reg.match(_rangeEdit->text());
             start = match.captured(1).toInt() - 1;
             if (start >= _datasheetThread->datasheet()->pageCount() || start < 0)
+            {
                 _complete = false;
+            }
             if (match.capturedTexts().count() > 2)
             {
                 stop = -match.captured(2).toInt() - 1;
                 if (stop >= _datasheetThread->datasheet()->pageCount() || stop < 0)
+                {
                     _complete = false;
+                }
                 if (start > stop)
+                {
                     _complete = false;
+                }
             }
             _datasheetThread->setRange(start, stop);
         }

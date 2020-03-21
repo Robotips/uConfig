@@ -62,11 +62,17 @@ void UConfigProject::openLib(const QString &libFileName)
         urls << QUrl::fromLocalFile("/usr/share/kicad");
         fileDialog.setSidebarUrls(urls);
         if (!_libFileName.isEmpty())
+        {
             fileDialog.setDirectory(QFileInfo(_libFileName).dir());
+        }
         if (fileDialog.exec())
+        {
             mlibFileName = fileDialog.selectedFiles().first();
+        }
         if (mlibFileName.isEmpty())
+        {
             return;
+        }
     }
 
     _importedPathLib = mlibFileName;
@@ -76,14 +82,20 @@ void UConfigProject::openLib(const QString &libFileName)
     _libName = _lib->name();
     emit libChanged(_lib);
     if (!_lib->components().empty())
+    {
         selectComponent(_lib->components()[0]);
+    }
     else
+    {
         selectComponent(Q_NULLPTR);
+    }
 
     _oldProjects.removeOne(mlibFileName);
     _oldProjects.prepend(mlibFileName);
     if (_oldProjects.size() > MaxOldProject)
+    {
         _oldProjects.removeLast();
+    }
     emit oldProjectChanged();
 }
 
@@ -110,15 +122,23 @@ void UConfigProject::saveLibAs(const QString &fileName)
             fileDialog.selectFile(libFileName);
         }
         if (fileDialog.exec())
+        {
             libFileName = fileDialog.selectedFiles().first();
+        }
         if (libFileName.isEmpty())
+        {
             return;
+        }
     }
     else
+    {
         libFileName = fileName;
+    }
 
     if (!libFileName.endsWith(".lib", Qt::CaseInsensitive))
+    {
         libFileName.append(".lib");
+    }
     _libFileName = libFileName;
 
     _libName = _lib->name();
@@ -127,7 +147,9 @@ void UConfigProject::saveLibAs(const QString &fileName)
     _oldProjects.removeOne(_libFileName);
     _oldProjects.prepend(_libFileName);
     if (_oldProjects.size() > MaxOldProject)
+    {
         _oldProjects.removeLast();
+    }
     emit oldProjectChanged();
     _lib->saveTo(libFileName);
 }
@@ -135,11 +157,15 @@ void UConfigProject::saveLibAs(const QString &fileName)
 void UConfigProject::importComponents(const QString &fileName)
 {
     if (!_lib)
+    {
         _lib = new Lib();
+    }
 
     PinListImporter importer(fileName, _window);
     if (importer.exec() != QDialog::Accepted)
+    {
         return;
+    }
 
     foreach (Component *component, importer.components())
         _lib->addComponent(component);
@@ -148,21 +174,35 @@ void UConfigProject::importComponents(const QString &fileName)
     emit libChanged(_lib);
 
     if (!_lib->components().empty())
+    {
         selectComponent(_lib->components()[0]);
+    }
 }
 
 bool UConfigProject::closeLib()
 {
     if (!_lib)
+    {
         return true;
+    }
     if (_libName == tr("newlib") && _lib->componentsCount() == 0)
+    {
         return true;
-    int ret = QMessageBox::question(_window, tr("Saves lib?"), tr("Do you want to save '%1' library? Modifications will be losted.").arg(_lib->name()),
-                                    QMessageBox::Yes | QMessageBox::Default, QMessageBox::No, QMessageBox::Cancel);
+    }
+    int ret = QMessageBox::question(_window,
+                                    tr("Saves lib?"),
+                                    tr("Do you want to save '%1' library? Modifications will be losted.").arg(_lib->name()),
+                                    QMessageBox::Yes | QMessageBox::Default,
+                                    QMessageBox::No,
+                                    QMessageBox::Cancel);
     if (ret == QMessageBox::Yes)
+    {
         saveLib();
+    }
     if (ret == QMessageBox::Cancel)
+    {
         return false;
+    }
     return true;
 }
 
@@ -178,7 +218,9 @@ void UConfigProject::selectComponent(Component *component)
 void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType, const QVariant &value)
 {
     if (!_activeComponent)
+    {
         return;
+    }
 
     switch (infoType)
     {
@@ -225,7 +267,9 @@ void UConfigProject::readSettings()
         settings.setArrayIndex(i);
         QString path = settings.value("path", "").toString();
         if (!_oldProjects.contains(path) && !path.isEmpty())
+        {
             _oldProjects.append(path);
+        }
     }
     settings.endArray();
 }

@@ -1,16 +1,16 @@
 #include "startwizardpage.h"
 
+#include <QButtonGroup>
+#include <QFormLayout>
 #include <QLabel>
 #include <QToolButton>
-#include <QButtonGroup>
 #include <QVBoxLayout>
-#include <QFormLayout>
 #include <QVariant>
 
 #include "pinlistimporter.h"
 
 StartWizardPage::StartWizardPage(QWidget *parent)
-    : QWizardPage (parent)
+    : QWizardPage(parent)
 {
     _complete = false;
     setAcceptDrops(true);
@@ -58,7 +58,7 @@ StartWizardPage::StartWizardPage(QWidget *parent)
     QFormLayout *formLayout = new QFormLayout;
     formLayout->addRow(buttonKicad, new QLabel("Kicad library\nImports components from existing kicad library"));
     formLayout->addRow(buttonPdf, new QLabel("PDF datasheet\nExtracts components from PDF datasheet"));
-    //formLayout->addRow(buttonTable, new QLabel("Table excel"));
+    // formLayout->addRow(buttonTable, new QLabel("Table excel"));
     formLayout->addRow(buttonCsv, new QLabel("CSV coma separator (soon)"));
 
     QVBoxLayout *layout = new QVBoxLayout;
@@ -79,7 +79,7 @@ bool StartWizardPage::isComplete() const
 
 void StartWizardPage::buttonClic(int type)
 {
-    static_cast<PinListImporter*>(wizard())->setType((PinListImporter::ImportType)type);
+    dynamic_cast<PinListImporter *>(wizard())->setType((PinListImporter::ImportType)type);
     _complete = true;
     emit completeChanged();
     wizard()->next();
