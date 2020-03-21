@@ -43,7 +43,7 @@ const QString &PDFDatasheet::title() const
 
 bool PDFDatasheet::loadPage(int numPage)
 {
-    if (numPage >= _pageCount | numPage < 0)
+    if (numPage >= _pageCount || numPage < 0)
         return false;
     if (page(numPage))
         return true;

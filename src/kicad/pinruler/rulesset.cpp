@@ -22,6 +22,18 @@
 
 RulesSet::RulesSet()
 {
+    ClassRule *top = new ClassRule("top");
+    top->setPosition(ClassRule::PositionTop);
+    addRule(top);
+    ClassRule *bottom = new ClassRule("bottom");
+    bottom->setPosition(ClassRule::PositionBottom);
+    addRule(bottom);
+    ClassRule *left = new ClassRule("left");
+    left->setPosition(ClassRule::PositionLeft);
+    addRule(left);
+    ClassRule *right = new ClassRule("right");
+    right->setPosition(ClassRule::PositionRight);
+    addRule(right);
 }
 
 RulesSet::RulesSet(const RulesSet &other)

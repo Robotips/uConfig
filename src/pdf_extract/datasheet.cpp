@@ -139,25 +139,61 @@ void Datasheet::pinSearch(int numPage)
             }
         }
 
-        for (int p = 0; p < packages.count(); p++)
+        if (pinNumberPackage.count() > packages.count())
         {
-            qreal nearDist = 99999999999999;
-            DatasheetPin *nearPin = NULL;
-            for (int pn = 0; pn < pinNumberPackage.count(); pn++)
+            for (int pack = 0; pack < packages.count(); pack++)
             {
-                if (p < pinNumberPackage.at(pn).second.count())
+                qreal nearDist = 99999999999999;
+                DatasheetPin *nearPin = NULL;
+                for (int pn = 0; pn < pinNumberPackage.count(); pn++)
                 {
-                    qreal dist = pinNumberPackage.at(pn).second.at(p).second;
-                    if (dist < nearDist)
+                    if (pinNumberPackage.at(pn).first->pin == 14)
                     {
-                        nearPin = pinNumberPackage.at(pn).first;
-                        nearDist = dist;
+                        qDebug()<<pinNumberPackage.at(pn).first->name;
+                    }
+                    if (pack < pinNumberPackage.at(pn).second.count())
+                    {
+                        qreal dist = pinNumberPackage.at(pn).second.at(pack).second;
+                        if (dist < nearDist)
+                        {
+                            nearPin = pinNumberPackage.at(pn).first;
+                            nearDist = dist;
+                        }
                     }
                 }
+                if (nearPin != NULL)
+                {
+                    packages.at(pack)->pins.push_back(nearPin);
+                }
             }
-            if (nearPin != NULL)
+        }
+        else
+        {
+            for (int pn = 0; pn < pinNumberPackage.count(); pn++)
             {
-                packages.at(p)->pins.push_back(nearPin);
+                /*if (pinNumberPackage.at(pn).first->pin == 14)
+                {
+                    qDebug()<<pinNumberPackage.at(pn).first->name;
+                }*/
+
+                DatasheetPackage *nearPack = NULL;
+                qreal nearDist = 99999999999999;
+                for (int pack = 0; pack < packages.count(); pack++)
+                {
+                    if (pack < pinNumberPackage.at(pn).second.count())
+                    {
+                        qreal dist = pinNumberPackage.at(pn).second.at(pack).second;
+                        if (dist < nearDist)
+                        {
+                            nearPack = packages.at(pn);
+                            nearDist = dist;
+                        }
+                    }
+                }
+                if (nearPack != NULL)
+                {
+                    nearPack->pins.push_back(pinNumberPackage.at(pn).first);
+                }
             }
         }
     }

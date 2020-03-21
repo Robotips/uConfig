@@ -151,7 +151,10 @@ void ComponentScene::drawGrid(QPainter *painter, const QRectF &rect)
         if (y != 0)
             lines.append(QLineF(rect.left(), y, rect.right(), y));
 
-    painter->setPen(Qt::lightGray);
+    if (_gridFront)
+        painter->setPen(QColor(100, 100, 100, 127));
+    else
+        painter->setPen(Qt::lightGray);
     painter->drawLines(lines.data(), lines.size());
     painter->setPen(Qt::darkGray);
     painter->drawLine(QLineF(rect.left(), 0, rect.right(), 0));

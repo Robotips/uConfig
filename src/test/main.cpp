@@ -11,6 +11,11 @@
 #include "../kicad/pinruler/pinruler.h"
 #include "../kicad/pinruler/rulesparser.h"
 
+#include "../pdf_extract/model/pdfdatasheet.h"
+#include "../pdf_extract/pdfdebugwidget/pdfdebugwidget.h"
+
+void widthCompute();
+
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
@@ -38,26 +43,61 @@ int main(int argc, char *argv[])
     else
         return 0;*/
 
-    Datasheet datasheet;
-    datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
-    datasheet.analyse(3);
+/*    Datasheet datasheet;
+    datasheet.setDebugEnabled();
+    datasheet.open("../src/autotest/ATmega328P_pins.pdf");
+    datasheet.analyse();
     if (datasheet.packages().empty())
         return 0;
 
     Component *component = datasheet.packages()[0]->toComponent();
-    //component->reorganizeToPackageStyle();
+    component->reorganizeToPackageStyle();
 
-    RulesSet ruleSet;
-    RulesParser parser("../rules/tst.rule");
+    ComponentViewer cviewer;
+        cviewer.setComponent(component);
+        cviewer.show();
+        cviewer.resize(QApplication::primaryScreen()->size()*.7);
+
+    return a.exec();*/
+
+
+    /*RulesSet ruleSet;
+    RulesParser parser("../rules/atmel.kss");
     parser.parse(&ruleSet);
 
     PinRuler ruler(&ruleSet);
-    ruler.organize(component);
 
-    ComponentViewer viewer;
+    Lib lib;
+    //lib.readFrom("/home/seb/Seafile/my_lib_rt/kicad/kicad-symbols/MCU_Microchip_PIC16.lib");
+    lib.readFrom("C:/Program Files/KiCad/share/kicad/library/MCU_ST_STM32.lib");
+    //lib.readFrom("/home/seb/Seafile/UniSwarm/pcb/motors4/PIC32MK_revD.lib");
+
+    Component *component = lib.components()[0];
+    for (int i=0; i<lib.componentsCount(); i++)
+        if (lib.component(i)->name() == "STM32F413ZHTx")
+            component = lib.components()[i];
+    ruler.organize(component);*/
+
+    //lib.saveTo("/home/seb/Seafile/UniSwarm/pcb/PIC32MK_revD.lib");
+
+    /*ComponentScene scene(0,0,0,0);
+    scene.setComponent(component);
+    scene.saveAsPdf("test.pdf");
+    scene.saveAsImage("test.png");
+    lib.saveTo("C:/Users/sebas/Desktop/stm8b.lib");*/
+
+    /*ComponentViewer viewer;
     viewer.setComponent(component);
     viewer.show();
-    viewer.resize(QApplication::primaryScreen()->size()*.7);
+    viewer.resize(QApplication::primaryScreen()->size()*.7);*/
+
+    PDFDatasheet pdf("../src/autotest/ATmega328P_pins.pdf");
+//    PDFDatasheet pdf("../src/autotest/ATmega328P_pins.pdf");
+    //PDFDatasheet pdf("C:/Users/seb/Seafile/UniSwarm/DataSheets/Microchip/PIC16b/dsPIC33EP/PIC24-dsPIC33-EPxxxGP-MC-20x-50x_revH.pdf");
+
+    PdfDebugWidget viewer(&pdf);
+    viewer.showPage(0);
+    viewer.show();
 
     return a.exec();
 }

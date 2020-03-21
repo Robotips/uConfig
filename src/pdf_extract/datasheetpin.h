@@ -39,6 +39,7 @@ public:
     QRectF pos;
     int page;
     QRectF numPos;
+    bool associated;
 
     DatasheetBox *numberBox;
     DatasheetBox *nameBox;

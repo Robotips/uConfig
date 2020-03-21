@@ -57,6 +57,10 @@ void UConfigProject::openLib(const QString &libFileName)
         fileDialog.setDefaultSuffix(".lib");
         fileDialog.setNameFilter(tr("Kicad component library (*.lib)"));
         fileDialog.setWindowTitle(tr("Open Kicad library"));
+        fileDialog.setOption(QFileDialog::DontUseNativeDialog);
+        QList<QUrl> urls;
+        urls << QUrl::fromLocalFile("/usr/share/kicad");
+        fileDialog.setSidebarUrls(urls);
         if (!_libFileName.isEmpty())
             fileDialog.setDirectory(QFileInfo(_libFileName).dir());
         if (fileDialog.exec())
@@ -78,6 +82,8 @@ void UConfigProject::openLib(const QString &libFileName)
 
     _oldProjects.removeOne(mlibFileName);
     _oldProjects.prepend(mlibFileName);
+    if (_oldProjects.size() > MaxOldProject)
+        _oldProjects.removeLast();
     emit oldProjectChanged();
 }
 
@@ -120,6 +126,8 @@ void UConfigProject::saveLibAs(const QString &fileName)
 
     _oldProjects.removeOne(_libFileName);
     _oldProjects.prepend(_libFileName);
+    if (_oldProjects.size() > MaxOldProject)
+        _oldProjects.removeLast();
     emit oldProjectChanged();
     _lib->saveTo(libFileName);
 }

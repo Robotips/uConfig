@@ -20,20 +20,6 @@
 
 #include "kicadlibparser.h"
 
-Lib *LibParser::loadLib(const QString &fileName, LibParser::Format format)
-{
-    switch (format)
-    {
-    case LibParser::Kicad:
-        {
-            KicadLibParser parser;
-            return parser.loadLib(fileName);
-        }
-    default:
-        return Q_NULLPTR;
-    }
-}
-
 Lib *LibParser::loadLib(Lib *lib, const QString &fileName, LibParser::Format format)
 {
     switch (format)

@@ -26,7 +26,8 @@ SOURCES += \
     $$PWD/model/pdftextbox.cpp \
     $$PWD/model/pdfpin.cpp \
     $$PWD/model/pdfcomponent.cpp \
-    $$PWD/controller/pdfloader.cpp
+    $$PWD/controller/pdfloader.cpp \
+    $$PWD/controller/pdfpackagesearcher.cpp
 
 HEADERS += \
     $$PWD/pdf_extract_common.h \
@@ -45,7 +46,8 @@ HEADERS += \
     $$PWD/model/pdftextbox.h \
     $$PWD/model/pdfpin.h \
     $$PWD/model/pdfcomponent.h \
-    $$PWD/controller/pdfloader.h
+    $$PWD/controller/pdfloader.h \
+    $$PWD/controller/pdfpackagesearcher.h
 
 LIBS += -L"$$PWD/../../bin"
 LIBS += -lpoppler-qt5

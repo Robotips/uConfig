@@ -20,5 +20,5 @@ HEADERS  +=
 
 LIBS += -L"$$PWD/../../bin"
 LIBS += -lkicad -lpdf_extract
-INCLUDEPATH += $$PWD/../kicad
-DEPENDPATH += $$PWD/../kicad
+INCLUDEPATH += $$PWD/../kicad $$PWD/../pdf_extract
+DEPENDPATH += $$PWD/../kicad $$PWD/../pdf_extract

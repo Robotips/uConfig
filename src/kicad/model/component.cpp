@@ -341,7 +341,7 @@ bool pinPadLessThan(const Pin *pin1, const Pin *pin2)
  */
 void Component::sort()
 {
-    qSort(_pins.begin(), _pins.end(), pinPadLessThan);
+    std::sort(_pins.begin(), _pins.end(), pinPadLessThan);
 }
 
 /**
@@ -503,8 +503,8 @@ void Component::reorganizeToPackageStyle()
     int rightCount = _pins.count() / 2;
     int leftCount = _pins.count() - rightCount;
 
-    int leftOffset = (ceil(leftCount / 2.0)-1) * 100;
-    int rightOffset = (ceil(rightCount / 2.0)-1) * 100;
+    int leftOffset = (static_cast<int>(ceil(leftCount / 2.0)) - 1) * 100;
+    int rightOffset = (static_cast<int>(ceil(rightCount / 2.0)) - 1) * 100;
     if (leftCount%2 == 0)
         leftOffset += 100;
 

@@ -16,22 +16,15 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef LIBPARSER_H
-#define LIBPARSER_H
+#ifndef PDFPACKAGESEARCHER_H
+#define PDFPACKAGESEARCHER_H
 
-#include "kicad_global.h"
+#include "../pdf_extract_common.h"
 
-#include "../model/lib.h"
-
-class KICAD_EXPORT LibParser
+class DATASHEET_EXTRACTOR_EXPORT PDFPackageSearcher
 {
 public:
-    enum Format {
-        Kicad
-    };
-
-    static Lib *loadLib(Lib *lib, const QString &fileName, Format format);
-    static bool saveLib(Lib *lib, const QString &fileName, Format format);
+    PDFPackageSearcher();
 };
 
-#endif // LIBPARSER_H
+#endif // PDFPACKAGESEARCHER_H

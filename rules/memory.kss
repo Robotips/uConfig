@@ -1,10 +1,10 @@
 /* pins */
-(A?)(VCC|VDD) {
-    class: "\1power+";
-    length: 200;
-}
 (A?)(VSS|GND) {
     class: "\1power-";
+    length: 200;
+}
+(A?)(VCC|VDD|VS([A-Z]*)) {
+    class: "\1\2power+";
     length: 200;
 }
 
@@ -16,6 +16,9 @@ I[/]*O[0-9]+ {
 }
 (CE|LB|OE|UB|WE) {
     class: "control";
+}
+OUT {
+    class: "out"
 }
 
 /* classes */
@@ -35,4 +38,7 @@ I[/]*O[0-9]+ {
 }
 .control {
     position: left;
+}
+.out {
+    position: right;
 }
