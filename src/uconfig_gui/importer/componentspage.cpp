@@ -69,7 +69,7 @@ void ComponentsPage::initializePage()
     }
     else
     {
-        foreach (Component *component, components)
+        for (Component *component : components)
         {
             _lib->addComponent(component);
         }
@@ -89,7 +89,7 @@ bool ComponentsPage::validatePage()
 {
     QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
     components.clear();
-    foreach (Component *component, _componentTreeView->selectedComponents())
+    for (Component *component : _componentTreeView->selectedComponents())
     {
         components.append(component);
         _lib->takeComponent(component);

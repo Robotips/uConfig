@@ -127,7 +127,7 @@ void KicadLibParser::writeLib(Lib *lib)
     //_stream << "#https://github.com/Robotips/uConfig" << '\n';
 
     // components
-    foreach (Component *component, lib->components())
+    for (Component *component : lib->components())
     {
         writeComponent(component);
         _stream << '\n';
@@ -175,7 +175,7 @@ void KicadLibParser::writeComponent(Component *component)
     if (!component->footPrints().isEmpty())
     {
         _stream << "$FPLIST" << '\n';
-        foreach (const QString &footPrint, component->footPrints())
+        for (const QString &footPrint : component->footPrints())
         {
             _stream << " " << footPrint << '\n';
         }
@@ -190,13 +190,13 @@ void KicadLibParser::writeComponent(Component *component)
 
     _stream << "DRAW" << '\n';
     // draw
-    foreach (Draw *draw, component->draws())
+    for (Draw *draw : component->draws())
     {
         writeDraw(draw);
         _stream << '\n';
     }
     // pins
-    foreach (Pin *pin, component->pins())
+    for (Pin *pin : component->pins())
     {
         writePin(pin);
         _stream << '\n';

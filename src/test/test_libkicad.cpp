@@ -39,7 +39,7 @@ void test_libkicad()
         QStringList items = line.split(";");
 
         int  i=0;
-        foreach(QString item, items)
+        for (QString item : items)
         {
             if (i>0 && !item.isEmpty())
             {

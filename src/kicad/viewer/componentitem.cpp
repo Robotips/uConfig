@@ -57,7 +57,7 @@ void ComponentItem::setComponent(Component *component, int layer)
     _pinItemMap.clear();
     _layer = layer;
 
-    foreach (Pin *pin, component->pins())
+    for (Pin *pin : component->pins())
     {
         if (pin->layer() == _layer || pin->layer() == 0)
         {
@@ -66,7 +66,7 @@ void ComponentItem::setComponent(Component *component, int layer)
             _pinItemMap.insert(pin, pinItem);
         }
     }
-    foreach (Draw *draw, component->draws())
+    for (Draw *draw : component->draws())
     {
         if (draw->unit() == _layer || draw->unit() == 0)
         {
@@ -115,8 +115,9 @@ void ComponentItem::setShowElectricalType(bool showElectricalType)
 {
     if (showElectricalType != _showElectricalType)
     {
-        foreach (PinItem *pinItem, _pinItemMap)
+        for (PinItem *pinItem : _pinItemMap) {
             pinItem->setShowElectricalType(showElectricalType);
+}
     }
     _showElectricalType = showElectricalType;
 }

@@ -85,19 +85,19 @@ void Datasheet::pinSearch(int numPage)
 
     emit log("==============================");
 
-    /*foreach (DatasheetBox *box, _labels)
+    /*for (DatasheetBox *box : _labels)
         if (!box->associated)
             delete box;*/
     _labels.clear();
-    /*foreach (DatasheetBox *box, _numbers)
+    /*for (DatasheetBox *box : _numbers)
         if (!box->associated)
             delete box;*/
     _numbers.clear();
-    /*foreach (DatasheetBox *box, _proc_labels)
+    /*for (DatasheetBox *box : _proc_labels)
         if (!box->associated)
             delete box;*/
     _proc_labels.clear();
-    /*foreach (DatasheetBox *box, _pack_labels)
+    /*for (DatasheetBox *box : _pack_labels)
         if (!box->associated)
             delete box;*/
     _pack_labels.clear();
@@ -107,7 +107,7 @@ void Datasheet::pinSearch(int numPage)
     QCoreApplication::processEvents();
 
     // painring pin to find package
-    foreach (DatasheetPin *pin, pins)
+    for (DatasheetPin *pin : pins)
     {
         if (pin->pin == 1 && pin->page == numPage)
         {
@@ -126,7 +126,7 @@ void Datasheet::pinSearch(int numPage)
             if (pin->pin == pinNumber)
             {
                 pinNumberPackage.append(qMakePair(pin, QList<QPair<DatasheetPackage *, qreal>>()));
-                foreach (DatasheetPackage *package, packages)
+                for (DatasheetPackage *package : packages)
                 {
                     DatasheetPin *lastpin = package->pins.last();
                     if (lastpin->pin == pin->pin || lastpin->pin + 4 < pin->pin)
@@ -202,7 +202,7 @@ void Datasheet::pinSearch(int numPage)
     QCoreApplication::processEvents();
 
     // unasociated label
-    foreach (DatasheetBox *label, _labels)
+    for (DatasheetBox *label : _labels)
     {
         if (label->associated == true)
         {
@@ -240,11 +240,11 @@ void Datasheet::pinSearch(int numPage)
     }
 
     // ajust size of package
-    foreach (DatasheetPackage *package, packages)
+    for (DatasheetPackage *package : packages)
     {
         QRectF rect;
         QRectF rectNum;
-        foreach (DatasheetPin *pin, package->pins)
+        for (DatasheetPin *pin : package->pins)
         {
             rect = rect.united(pin->pos);
             rectNum = rectNum.united(pin->numPos);
@@ -259,7 +259,7 @@ void Datasheet::pinSearch(int numPage)
     int count = 0;
     int badcount = 0;
     //_package.clear();
-    foreach (DatasheetPackage *package, packages)
+    for (DatasheetPackage *package : packages)
     {
         // package with less than 5 pin are deleted
         if (package->pins.count() < 5)
@@ -295,11 +295,11 @@ void Datasheet::pinSearch(int numPage)
         dir.mkdir(_name);
 
         painter.setPen(QPen(Qt::yellow, 2, Qt::DotLine));
-        foreach (DatasheetBox *number, _numbers)
+        for (DatasheetBox *number : _numbers)
         {
             painter.drawRect(QRect((number->pos.topLeft() - rect.topLeft()).toPoint() * res, number->pos.size().toSize() * res));
         }
-        foreach (DatasheetBox *label, _labels)
+        for (DatasheetBox *label : _labels)
         {
             if (label->associated == false)
             {
@@ -312,7 +312,7 @@ void Datasheet::pinSearch(int numPage)
             painter.drawRect(QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res, label->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
         }
         /*painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
-        foreach (DatasheetPin *pin, package->pins)
+        for (DatasheetPin *pin : package->pins)
         {
             painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
             painter.drawRect(QRect((pin->pos.topLeft() - rect.topLeft()).toPoint() * res,
@@ -367,7 +367,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
     bool prev = false;
     DatasheetBox *box = new DatasheetBox();
     box->page = numPage;
-    foreach (TextBox *textBox, page->textList())
+    for (TextBox *textBox : page->textList())
     {
         bool okNumber;
 
@@ -488,7 +488,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
     }
 
     // pairing label and number to pin
-    foreach (DatasheetBox *number, _numbers)
+    for (DatasheetBox *number : _numbers)
     {
         DatasheetPin *pin = new DatasheetPin();
         qreal dist = 999999999999;
@@ -590,23 +590,23 @@ QImage Datasheet::pageThumbnail(int numPage) const
 
 void Datasheet::clean()
 {
-    /*foreach (DatasheetBox *box, _labels)
+    /*for (DatasheetBox *box : _labels)
         if (!box->associated)
             delete box;*/
     _labels.clear();
-    /*foreach (DatasheetBox *box, _numbers)
+    /*for (DatasheetBox *box : _numbers)
         if (!box->associated)
             delete box;*/
     _numbers.clear();
-    /*foreach (DatasheetBox *box, _proc_labels)
+    /*for (DatasheetBox *box : _proc_labels)
         if (!box->associated)
             delete box;*/
     _proc_labels.clear();
-    /*foreach (DatasheetBox *box, _pack_labels)
+    /*for (DatasheetBox *box : _pack_labels)
         if (!box->associated)
             delete box;*/
     _pack_labels.clear();
-    foreach (DatasheetPackage *box, _packages)
+    for (DatasheetPackage *box : _packages)
         delete box;
     _packages.clear();
 }
@@ -662,7 +662,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
         bool vssOk = false;
         bool vddOk = false;
         bool labelOk = false;
-        foreach (TextBox *textBox, page->textList())
+        for (TextBox *textBox : page->textList())
         {
             QString text = textBox->text();
             if (textBox->nextWord())
@@ -686,7 +686,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
              *bgaStyle=true;*/
             *bgaStyle = false;
 
-            foreach (QString keyWord, keyWords)
+            for (QString keyWord : keyWords)
             {
                 if (text.contains(keyWord, Qt::CaseInsensitive))
                 {
@@ -769,7 +769,7 @@ const QList<DatasheetPackage *> &Datasheet::packages() const
 QList<Component *> Datasheet::components()
 {
     QList<Component *> components;
-    foreach (DatasheetPackage *package, _packages)
+    for (DatasheetPackage *package : _packages)
     {
         Component *component = package->toComponent();
         component->reorganizeToPackageStyle();

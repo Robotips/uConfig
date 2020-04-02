@@ -327,7 +327,7 @@ void ComponentPinsItemModel::updateHigherPin()
     QString higherNumPin = QString();
     if (_component)
     {
-        foreach (Pin *pin, _component->pins())
+        for (Pin *pin : _component->pins())
         {
             QString numPin = toNumeric(pin->padName());
             if (numPin > higherNumPin)

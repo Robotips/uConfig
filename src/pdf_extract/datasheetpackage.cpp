@@ -45,7 +45,7 @@ Component *DatasheetPackage::toComponent() const
         comp->addAlias(icname.at(i));
     }
 
-    foreach (DatasheetPin *dpin, pins)
+    for (DatasheetPin *dpin : pins)
     {
         Pin *pin = new Pin();
         pin->setName(dpin->name);

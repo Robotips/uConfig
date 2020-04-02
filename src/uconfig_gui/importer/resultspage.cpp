@@ -59,7 +59,7 @@ void ResultsPage::initializePage()
 
     QString resText = QString("Packages found:");
     QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
-    foreach (Component *component, components)
+    for (Component *component : components)
     {
         resText.append(QString("\n - %1 with %2 pins").arg(component->name()).arg(component->pins().count()));
     }

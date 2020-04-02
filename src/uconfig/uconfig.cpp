@@ -45,7 +45,7 @@ void processFilePdf(QString file, Lib *lib, bool debug)
         exit(2);
     }
     datasheet.analyse();
-    foreach (DatasheetPackage *package, datasheet.packages())
+    for (DatasheetPackage *package : datasheet.packages())
     {
         Component *component = package->toComponent();
         lib->addComponent(component);
@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
     out << lib.componentsCount() << " packages extracted, saved in " << outFile << endl;
 
     // apply pinruler if needed
-    foreach (Component *component, lib.components())
+    for (Component *component : lib.components())
     {
         if (ruleFile.isEmpty())
         {

@@ -96,9 +96,9 @@ const QList<Component *> &ComponentLibTreeView::selectedComponents() const
     return _model->selectedComponents();
 }
 
-void ComponentLibTreeView::selectAll(bool selected)
+void ComponentLibTreeView::selectAll()
 {
-    _model->selectAll(selected);
+    _model->selectAll(true);
 }
 
 void ComponentLibTreeView::updateComponent(Component *component)
@@ -127,7 +127,7 @@ void ComponentLibTreeView::remove()
             return;
         }
         QList<QPersistentModelIndex> pindex;
-        foreach (QModelIndex selected, selection)
+        for (QModelIndex selected : selection)
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid() || indexComponent.column() != 0)
@@ -139,8 +139,10 @@ void ComponentLibTreeView::remove()
         }
         selectionModel()->clearSelection();
         emit openedComponent(Q_NULLPTR);
-        foreach (QPersistentModelIndex index, pindex)
+        for (QPersistentModelIndex index : pindex)
+        {
             _model->remove(index);
+        }
     }
 }
 

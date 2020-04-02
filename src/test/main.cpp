@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
     /*qDebug()<<datasheet.open("../../../projects/DataSheets/ST/STM32M7.pdf");
     qint64 d = QDateTime::currentMSecsSinceEpoch();
     datasheet.analyse(48);
-    foreach(DatasheetPackage *package, datasheet.packages())
+    for (DatasheetPackage *package : datasheet.packages())
         qDebug()<<package->name;
     qDebug()<<QDateTime::currentMSecsSinceEpoch() - d;
 

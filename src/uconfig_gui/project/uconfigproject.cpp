@@ -185,7 +185,7 @@ void UConfigProject::importComponents(const QString &fileName)
         return;
     }
 
-    foreach (Component *component, importer.components())
+    for (Component *component : importer.components())
         _lib->addComponent(component);
 
     _importedPathLib = importer.filePath();

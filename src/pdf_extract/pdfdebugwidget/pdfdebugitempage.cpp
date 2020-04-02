@@ -31,7 +31,7 @@ PdfDebugItemPage::PdfDebugItemPage(PDFPage *page)
 {
     _page = page;
 
-    foreach (PDFTextBox *textBox, _page->textBoxes())
+    for (PDFTextBox *textBox : _page->textBoxes())
         new PdfDebugItemTextBox(textBox, this);
 }
 

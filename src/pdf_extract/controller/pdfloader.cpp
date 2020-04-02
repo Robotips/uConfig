@@ -61,7 +61,7 @@ bool PDFLoader::loadPage(PDFPage *pdfPage)
 void PDFLoader::loadBoxes(PDFPage *pdfPage)
 {
     PDFTextBox *parentTextBox = Q_NULLPTR;
-    foreach (Poppler::TextBox *ptextBox, pdfPage->page()->textList())
+    for (Poppler::TextBox *ptextBox : pdfPage->page()->textList())
     {
         PDFTextBox *textBox = new PDFTextBox(ptextBox->text(), ptextBox->boundingBox());
         textBox->_page = pdfPage;
@@ -106,7 +106,7 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
             {
                 QRectF boundingRect;
                 QString text;
-                foreach (PDFTextBox *subBox, parentTextBox->subBoxes())
+                for (PDFTextBox *subBox : parentTextBox->subBoxes())
                 {
                     text.append(subBox->text());
                     boundingRect = boundingRect.united(subBox->boundingRect());

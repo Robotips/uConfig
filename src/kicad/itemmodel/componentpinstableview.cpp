@@ -91,7 +91,7 @@ void ComponentPinsTableView::selectPins(QList<Pin *> pins)
         selectPin(pins.first());
         return;
     }
-    foreach (Pin *pin, pins)
+    for (Pin *pin : pins)
     {
         const QPersistentModelIndex index = _model->index(pin);
         if (!index.isValid())
@@ -126,7 +126,7 @@ void ComponentPinsTableView::remove()
     if (selection.size() > 0)
     {
         QList<QPersistentModelIndex> pindex;
-        foreach (QModelIndex selected, selection)
+        for (QModelIndex selected : selection)
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid())
@@ -141,8 +141,9 @@ void ComponentPinsTableView::remove()
             return;
         }
         selectionModel()->clearSelection();
-        foreach (QPersistentModelIndex index, pindex)
+        for (QPersistentModelIndex index : pindex) {
             _model->remove(index);
+}
     }
 }
 
@@ -169,7 +170,7 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
     Q_UNUSED(deselected)
 
     QSet<Pin *> selectedPins;
-    foreach (const QModelIndex &index, selectionModel()->selectedIndexes())
+    for (const QModelIndex &index : selectionModel()->selectedIndexes())
     {
         if (!index.isValid())
         {

@@ -6,7 +6,7 @@ PdfDebugItemTextBox::PdfDebugItemTextBox(PDFTextBox *textBox, QGraphicsItem *par
     : QGraphicsItem(parent)
     , _textBox(textBox)
 {
-    foreach (PDFTextBox *textBox, _textBox->subBoxes())
+    for (PDFTextBox *textBox : _textBox->subBoxes())
         new PdfDebugItemTextBox(textBox, this);
 }
 

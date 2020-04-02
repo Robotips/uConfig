@@ -97,7 +97,7 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
 {
     event->accept();
 
-    foreach (const QUrl &url, event->mimeData()->urls())
+    for (const QUrl &url : event->mimeData()->urls())
     {
         QString fileName = url.toLocalFile();
         _project->importComponents(fileName);
@@ -180,7 +180,7 @@ void UConfigMainWindow::reloadRuleSetList()
     _ruleComboBox->clear();
     _ruleComboBox->addItem("package");
     QDir dir(qApp->applicationDirPath() + "/../rules/");
-    foreach (const QFileInfo &ruleInfo, dir.entryInfoList(QStringList() << "*.kss", QDir::NoDotAndDotDot | QDir::Files))
+    for (const QFileInfo &ruleInfo : dir.entryInfoList(QStringList() << "*.kss",  QDir::NoDotAndDotDot | QDir::Files))
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
     }

@@ -45,8 +45,9 @@ double KicadFont::charWidth(QChar c) const
 double KicadFont::textWidth(const QString &text) const
 {
     double width = 0;
-    foreach (QChar c, text)
+    for (QChar c : text) {
         width += charWidth(c);
+}
     return width;
 }
 

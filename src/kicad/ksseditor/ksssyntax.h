@@ -46,7 +46,7 @@ protected:
         int index;
         int length;
     };
-    friend bool operator<(const PartToHighlight &t1, const PartToHighlight &t2);
+    friend bool lessThan(const PartToHighlight &t1, const PartToHighlight &t2);
 
     QTextCharFormat classFormat;
     QTextCharFormat keywordFormat;
@@ -60,7 +60,7 @@ protected:
     QRegExp commentEndExpression;
 };
 
-inline bool operator<(const KSSSyntax::PartToHighlight &t1, const KSSSyntax::PartToHighlight &t2)
+inline bool lessThan(const KSSSyntax::PartToHighlight &t1, const KSSSyntax::PartToHighlight &t2)
 {
     return t1.index < t2.index;
 }

@@ -58,7 +58,7 @@ void PinRuler::organize(Component *component)
     component->clearDraws();
 
     PinClass *defaultClass = pinClass("default");
-    foreach (Pin *pin, component->pins())
+    for (Pin *pin : component->pins())
     {
         PinClassItem *pinClassItem = new PinClassItem(pin);
         const QList<PinRule *> &rules = _ruleSet->rulesForPin(pin->name());
@@ -71,7 +71,7 @@ void PinRuler::organize(Component *component)
         {
             pin->setLayer(1);
             QString className; // = rules.first()->className(pin->name());
-            foreach (PinRule *rule, rules)
+            for (PinRule *rule : rules)
             {
                 if (rule->hasClassSet())
                 {
@@ -80,7 +80,7 @@ void PinRuler::organize(Component *component)
                 }
             }
             PinClass *mpinClass = pinClass(className);
-            foreach (PinRule *rule, rules)
+            for (PinRule *rule : rules)
             {
                 if (rule->hasElecTypeSet())
                 {
@@ -89,7 +89,7 @@ void PinRuler::organize(Component *component)
                 }
             }
             pin->setPinType(Pin::Normal);
-            foreach (PinRule *rule, rules)
+            for (PinRule *rule : rules)
             {
                 if (rule->hasPinTypeSet())
                 {
@@ -97,7 +97,7 @@ void PinRuler::organize(Component *component)
                     break;
                 }
             }
-            foreach (PinRule *rule, rules)
+            for (PinRule *rule : rules)
             {
                 if (rule->hasPrioritySet())
                 {
@@ -126,7 +126,7 @@ void PinRuler::organize(Component *component)
     QSize topSize = QSize(0, 0), bottomSize = QSize(0, 0);
     QSize leftSize = QSize(0, 0), rightSize = QSize(0, 0);
     QSize removedSize = QSize(0, 0);
-    foreach (PinClass *mpinClass, _pinClasses)
+    for (PinClass *mpinClass : _pinClasses)
     {
         if (mpinClass->pins().count() == 0)
         {
@@ -187,8 +187,8 @@ void PinRuler::organize(Component *component)
     }
 
     // aside list assignment and right and left sides updates
-    qSort(aSide.begin(), aSide.end(), heightGreaterThan);
-    foreach (PinClass *mpinClass, aSide)
+    std::sort(aSide.begin(), aSide.end(), heightGreaterThan);
+    for (PinClass *mpinClass : aSide)
     {
         QRect rect = mpinClass->boundingRect();
         if (leftSize.height() < rightSize.height())
@@ -213,10 +213,10 @@ void PinRuler::organize(Component *component)
         }
     }
 
-    qSort(leftSide.begin(), leftSide.end(), prioGreaterThan);
-    qSort(rightSide.begin(), rightSide.end(), prioGreaterThan);
-    qSort(topSide.begin(), topSide.end(), prioGreaterThan);
-    qSort(bottomSide.begin(), bottomSide.end(), prioGreaterThan);
+    std::sort(leftSide.begin(), leftSide.end(), prioGreaterThan);
+    std::sort(rightSide.begin(), rightSide.end(), prioGreaterThan);
+    std::sort(topSide.begin(), topSide.end(), prioGreaterThan);
+    std::sort(bottomSide.begin(), bottomSide.end(), prioGreaterThan);
 
     // margins
     leftSize.rheight() += (leftSide.size() - 1) * 100;
@@ -234,7 +234,7 @@ void PinRuler::organize(Component *component)
     {
         y += qCeil((rightSize.height() - leftSize.height()) / 200.0) * 100; // grid align KLC4.1
     }
-    foreach (PinClass *mpinClass, leftSide)
+    for (PinClass *mpinClass : leftSide)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
@@ -255,7 +255,7 @@ void PinRuler::organize(Component *component)
     {
         y += qCeil((leftSize.height() - rightSize.height()) / 200.0) * 100; // grid align KLC4.1
     }
-    foreach (PinClass *mpinClass, rightSide)
+    for (PinClass *mpinClass : rightSide)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
@@ -273,7 +273,7 @@ void PinRuler::organize(Component *component)
     x = -topSize.width() / 2;
     x = qCeil(x / 100.0) * 100; // grid align KLC4.1
     y = -sideY;
-    foreach (PinClass *mpinClass, topSide)
+    for (PinClass *mpinClass : topSide)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
@@ -291,7 +291,7 @@ void PinRuler::organize(Component *component)
     x = -bottomSize.width() / 2;
     x = qCeil(x / 100.0) * 100; // grid align KLC4.1
     y = sideY;
-    foreach (PinClass *mpinClass, bottomSide)
+    for (PinClass *mpinClass : bottomSide)
     {
         mpinClass->setPos(QPoint(x, y));
         if (mpinClass->hasLabelSet())
@@ -310,7 +310,7 @@ void PinRuler::organize(Component *component)
     // this pseudo class goes outside of the component
     x = -qCeil(removedSize.width() / 200.0) * 100;
     y = -qCeil(removedSize.height() / 200.0) * 100;
-    foreach (PinClass *mpinClass, removedPins)
+    for (PinClass *mpinClass : removedPins)
     {
         mpinClass->setPos(QPoint(x, y));
         y += mpinClass->boundingRect().height() + 100;
@@ -332,8 +332,9 @@ void PinRuler::organize(Component *component)
     component->refText()->setTextHJustify(DrawText::TextHLeft);
     component->refText()->setDirection(DrawText::DirectionHorizontal);
 
-    foreach (PinClass *mpinClass, _pinClasses)
+    for (PinClass *mpinClass : _pinClasses) {
         delete mpinClass;
+}
     _pinClasses.clear();
 }
 

@@ -89,7 +89,7 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
     blockSignals(true);
     scene()->clearSelection();
     PinItem *pinItem = Q_NULLPTR;
-    foreach (Pin *pin, pins)
+    for (Pin *pin : pins)
     {
         pinItem = _scene->componentItem()->pinItem(pin);
         if (pinItem)
@@ -165,7 +165,7 @@ void ComponentViewer::selectedItem()
 {
     QList<Pin *> selectedPins;
 
-    foreach (QGraphicsItem *item, scene()->selectedItems())
+    for (QGraphicsItem *item : scene()->selectedItems())
     {
         PinItem *pinItem = qgraphicsitem_cast<PinItem *>(item);
         selectedPins.append(pinItem->pin());

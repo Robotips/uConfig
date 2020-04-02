@@ -20,6 +20,8 @@
 
 #include <QDebug>
 
+#include <algorithm>
+
 KSSSyntax::KSSSyntax(QTextDocument *parent)
     : QSyntaxHighlighter(parent)
 {
@@ -44,7 +46,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
                     << "label"
                     << "rect"
                     << "priority";
-    foreach (const QString &pattern, keywordPatterns)
+    for (const QString &pattern : keywordPatterns)
     {
         rule.pattern.setPattern("\\b(" + pattern + ")\\b");
         rule.format = keywordFormat;
@@ -87,7 +89,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
                        << "faledge"
                        << "nologic";
 
-    foreach (const QString &pattern, enumvaluesPatterns)
+    for (const QString &pattern : enumvaluesPatterns)
     {
         rule.pattern.setPattern("\\b(" + pattern + ")\\b");
         rule.format = enumvaluesFormat;
@@ -115,7 +117,7 @@ void KSSSyntax::highlightBlock(const QString &text)
     PartToHighlight highlight;
 
     partsToHighlight.clear();
-    foreach (const HighlightingRule &rule, highlightingRules)
+    for (const HighlightingRule &rule : highlightingRules)
     {
         QRegExp expression(rule.pattern);
         int index = expression.indexIn(text);
@@ -129,7 +131,7 @@ void KSSSyntax::highlightBlock(const QString &text)
     }
 
     int index = 0;
-    qSort(partsToHighlight);
+    std::sort(partsToHighlight.begin(), partsToHighlight.end(), lessThan);
     while (!partsToHighlight.isEmpty())
     {
         PartToHighlight partToHighlight = partsToHighlight.takeFirst();
@@ -150,7 +152,7 @@ void KSSSyntax::highlightBlock(const QString &text)
             highlight.length = expression.cap(1).length();
             highlight.rule = partToHighlight.rule;
             partsToHighlight.append(highlight);
-            qSort(partsToHighlight);
+            std::sort(partsToHighlight.begin(), partsToHighlight.end(), lessThan);
         }
     }
     setCurrentBlockState(0);

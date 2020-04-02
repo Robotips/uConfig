@@ -108,8 +108,9 @@ void PinClass::applyRule(ClassRule *rule)
 
 void PinClass::applyRules(QList<ClassRule *> rules)
 {
-    foreach (ClassRule *rule, rules)
+    for (ClassRule *rule : rules) {
         applyRule(rule);
+}
 }
 
 void PinClass::sortPins()
@@ -122,7 +123,7 @@ void PinClass::sortPins()
     QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
     QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
 
-    foreach (PinClassItem *pinItem, _pins)
+    for (PinClassItem *pinItem : _pins)
     {
         QString sortPatern;
         QString pinName = pinItem->pin()->name();
@@ -175,11 +176,11 @@ void PinClass::sortPins()
 
     if (_sort == ClassRule::SortAsc)
     {
-        qSort(_pins.begin(), _pins.end(), PinClassItem::pinLessThan);
+        std::sort(_pins.begin(), _pins.end(), PinClassItem::pinLessThan);
     }
     if (_sort == ClassRule::SortDesc)
     {
-        qSort(_pins.begin(), _pins.end(), PinClassItem::pinGreaterThan);
+        std::sort(_pins.begin(), _pins.end(), PinClassItem::pinGreaterThan);
     }
 }
 
@@ -217,7 +218,7 @@ void PinClass::setPos(const QPoint &basePos)
         break;
     }
     sortPins();
-    foreach (PinClassItem *pinItem, _pins)
+    for (PinClassItem *pinItem : _pins)
     {
         pinItem->pin()->setDirection(direction);
         pinItem->pin()->setPos(pinPos + translate);
@@ -249,7 +250,7 @@ void PinClass::computeBoundingRect() const
     QRect rect;
     KicadFont kicadFont;
     int maxLength = 0;
-    foreach (PinClassItem *pinItem, _pins)
+    for (PinClassItem *pinItem : _pins)
     {
         int width = kicadFont.textWidth(pinItem->pin()->name());
         if (width > maxLength)

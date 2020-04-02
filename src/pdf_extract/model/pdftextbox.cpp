@@ -29,7 +29,7 @@ PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
 
 PDFTextBox::~PDFTextBox()
 {
-    foreach (PDFTextBox *textBox, _subBoxes)
+    for (PDFTextBox *textBox : _subBoxes)
         delete textBox;
 }
 
