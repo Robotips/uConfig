@@ -32,7 +32,7 @@ using namespace Poppler;
 
 Datasheet::Datasheet()
 {
-    _doc = Q_NULLPTR;
+    _doc = nullptr;
     _debug = false;
     _force = false;
 }
@@ -63,7 +63,6 @@ bool Datasheet::open(QString fileName)
                 qDebug()<<"\t\t"<<subChild.nodeName()<<subChild.attribute("DestinationName");
                 subChild = subChild.nextSibling().toElement();
             }
-
             grandChild = grandChild.nextSibling().toElement();
         }
         child = child.nextSibling().toElement();
@@ -75,7 +74,7 @@ bool Datasheet::open(QString fileName)
 void Datasheet::close()
 {
     delete _doc;
-    _doc = Q_NULLPTR;
+    _doc = nullptr;
 }
 
 void Datasheet::pinSearch(int numPage)
@@ -119,13 +118,14 @@ void Datasheet::pinSearch(int numPage)
     }
     for (int pinNumber = 2; pinNumber < 200; pinNumber++)
     {
-        QList<QPair<DatasheetPin *, QList<QPair<DatasheetPackage *, qreal>>>> pinNumberPackage;
         for (int i = 0; i < pins.count(); i++)
         {
             DatasheetPin *pin = pins.at(i);
             if (pin->pin == pinNumber)
             {
-                pinNumberPackage.append(qMakePair(pin, QList<QPair<DatasheetPackage *, qreal>>()));
+                DatasheetPackage *nearPackage = nullptr;
+                qreal dist = 99999999999999;
+                QPointF center = pin->numPos.center();
                 for (DatasheetPackage *package : packages)
                 {
                     DatasheetPin *lastpin = package->pins.last();
@@ -134,67 +134,16 @@ void Datasheet::pinSearch(int numPage)
                         continue;
                     }
 
-                    QPointF centerPin = pin->numPos.center();
-                    qreal dist = lastpin->distanceToPoint(centerPin);
-                    pinNumberPackage.last().second.append(qMakePair(package, dist));
-                }
-            }
-        }
-
-        if (pinNumberPackage.count() > packages.count())
-        {
-            for (int pack = 0; pack < packages.count(); pack++)
-            {
-                qreal nearDist = 99999999999999;
-                DatasheetPin *nearPin = nullptr;
-                for (int pn = 0; pn < pinNumberPackage.count(); pn++)
-                {
-                    if (pinNumberPackage.at(pn).first->pin == 14)
+                    qreal newdist = lastpin->distanceToPoint(center);
+                    if (newdist < dist)
                     {
-                        qDebug() << pinNumberPackage.at(pn).first->name;
-                    }
-                    if (pack < pinNumberPackage.at(pn).second.count())
-                    {
-                        qreal dist = pinNumberPackage.at(pn).second.at(pack).second;
-                        if (dist < nearDist)
-                        {
-                            nearPin = pinNumberPackage.at(pn).first;
-                            nearDist = dist;
-                        }
+                        dist = newdist;
+                        nearPackage = package;
                     }
                 }
-                if (nearPin != nullptr)
+                if (nearPackage != nullptr)
                 {
-                    packages.at(pack)->pins.push_back(nearPin);
-                }
-            }
-        }
-        else
-        {
-            for (int pn = 0; pn < pinNumberPackage.count(); pn++)
-            {
-                /*if (pinNumberPackage.at(pn).first->pin == 14)
-                {
-                    qDebug()<<pinNumberPackage.at(pn).first->name;
-                }*/
-
-                DatasheetPackage *nearPack = nullptr;
-                qreal nearDist = 99999999999999;
-                for (int pack = 0; pack < packages.count(); pack++)
-                {
-                    if (pack < pinNumberPackage.at(pn).second.count())
-                    {
-                        qreal dist = pinNumberPackage.at(pn).second.at(pack).second;
-                        if (dist < nearDist)
-                        {
-                            nearPack = packages.at(pn);
-                            nearDist = dist;
-                        }
-                    }
-                }
-                if (nearPack != nullptr)
-                {
-                    nearPack->pins.push_back(pinNumberPackage.at(pn).first);
+                    nearPackage->pins.push_back(pin);
                 }
             }
         }
@@ -312,20 +261,18 @@ void Datasheet::pinSearch(int numPage)
             painter.drawRect(QRect((label->pos.topLeft() - rect.topLeft()).toPoint() * res, label->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
         }
         /*painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
-        for (DatasheetPin *pin : package->pins)
-        {
-            painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
-            painter.drawRect(QRect((pin->pos.topLeft() - rect.topLeft()).toPoint() * res,
-                      pin->pos.size().toSize() * res));
-
-            painter.setPen(QPen(Qt::yellow, 2, Qt::DotLine));
-            painter.drawRect(QRect((pin->numPos.topLeft() - rect.topLeft()).toPoint() * res,
-                                    pin->numPos.size().toSize() * res));
-
-            painter.setPen(QPen(Qt::blue, 2, Qt::DotLine));
-            painter.drawRect(QRect((pin->nameBox->pos.topLeft() - rect.topLeft()).toPoint() * res,
-                                    pin->nameBox->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
-        }*/
+            for (DatasheetPin *pin : package->pins)
+            {
+                painter.setPen(QPen(Qt::red, 2, Qt::DotLine));
+                painter.drawRect(QRect((pin->pos.topLeft() - rect.topLeft()).toPoint() * res,
+                          pin->pos.size().toSize() * res));
+                painter.setPen(QPen(Qt::yellow, 2, Qt::DotLine));
+                painter.drawRect(QRect((pin->numPos.topLeft() - rect.topLeft()).toPoint() * res,
+                                        pin->numPos.size().toSize() * res));
+                painter.setPen(QPen(Qt::blue, 2, Qt::DotLine));
+                painter.drawRect(QRect((pin->nameBox->pos.topLeft() - rect.topLeft()).toPoint() * res,
+                                        pin->nameBox->pos.size().toSize() * res).adjusted(-2, -2, 2, 2));
+            }*/
         package->image.save(_name + QString("/p%1_pack%2.png").arg(numPage + 1).arg(pac));
         QCoreApplication::processEvents();
     }
@@ -358,7 +305,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
     }
 
     Poppler::Page *page = _doc->page(numPage);
-    if (page == Q_NULLPTR)
+    if (page == nullptr)
     {
         return pins;
     }
@@ -426,13 +373,9 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                         DatasheetBox *nbox = new DatasheetBox();
                         nbox->page = numPage;
                         if (textBox->text().startsWith("•"))
-                        {
                             nbox->text = textBox->text().mid(1);
-                        }
                         else
-                        {
                             nbox->text = textBox->text();
-                        }
                         nbox->pos = textBox->boundingBox();
                         _numbers.push_back(nbox);
                         okNumber = false;
@@ -452,14 +395,14 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                     // none
                 }
                 /*else if (box->text.startsWith("PIC", Qt::CaseInsensitive) ||
-                         box->text.startsWith("DSPIC", Qt::CaseInsensitive) ||
-                         box->text.startsWith("IS", Qt::CaseInsensitive) ||
-                         box->text.startsWith("RX", Qt::CaseInsensitive))
-                {
-                    _proc_labels.push_back(box);
-                    box = new DatasheetBox();
-                    box->page = numPage;
-                }*/
+                                 box->text.startsWith("DSPIC", Qt::CaseInsensitive) ||
+                                 box->text.startsWith("IS", Qt::CaseInsensitive) ||
+                                 box->text.startsWith("RX", Qt::CaseInsensitive))
+                        {
+                            _proc_labels.push_back(box);
+                            box = new DatasheetBox();
+                            box->page = numPage;
+                        }*/
                 else if (box->text.contains("DIP", Qt::CaseInsensitive) || box->text.contains("SOIC", Qt::CaseInsensitive) || box->text.contains("BGA", Qt::CaseInsensitive) ||
                          box->text.contains("TQFP", Qt::CaseInsensitive) || box->text.contains("LQP", Qt::CaseInsensitive) || box->text.contains("LQFP", Qt::CaseInsensitive) ||
                          box->text.contains("LGA", Qt::CaseInsensitive) || box->text.contains("QFN", Qt::CaseInsensitive))
@@ -607,7 +550,9 @@ void Datasheet::clean()
             delete box;*/
     _pack_labels.clear();
     for (DatasheetPackage *box : _packages)
+    {
         delete box;
+    }
     _packages.clear();
 }
 
