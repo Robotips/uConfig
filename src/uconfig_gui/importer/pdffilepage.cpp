@@ -60,10 +60,23 @@ PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
     registerField("pdfpagerange", _rangeEdit);
     rangeGroupLayout->addWidget(_rangeEdit);
 
-    _forceCheckBox = new QCheckBox(tr("Force détection\n(try to build component in each page,\nvery expensive)"));
+    _forceCheckBox = new QCheckBox(tr("Force detection\n(try to build component in each page,\nvery expensive)"));
     _allRadio->setChecked(true);
     connect(_forceCheckBox, SIGNAL(toggled(bool)), this, SLOT(check()));
     rangeGroupLayout->addWidget(_forceCheckBox);
+    rangeGroupLayout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
+
+    rangeGroupLayout->addWidget(new QLabel (tr("Remove this text from pin names:")));
+    _deleteString = new QLineEdit();
+    _deleteString->setValidator(new QRegularExpressionValidator(QRegularExpression(".{0,15}")));
+    connect(_deleteString, SIGNAL(textChanged(QString)), this, SLOT(check()));
+    rangeGroupLayout->addWidget(_deleteString);
+
+    rangeGroupLayout->addWidget(new QLabel (tr("Maximum length for a pin name:")));
+    _maxPinNameLength = new QSpinBox();
+    //registerField("pdfmaxpinnamelength", _maxPinNameLength);
+    connect(_maxPinNameLength, SIGNAL(valueChanged(int)), this, SLOT(check()));
+    rangeGroupLayout->addWidget(_maxPinNameLength);
     rangeGroupLayout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
 
     _pageCountLabel = new QLabel();
@@ -93,10 +106,18 @@ void PDFFilePage::initializePage()
     _pagePreviewLabel->setPixmap(QPixmap::fromImage(_datasheetThread->datasheet()->pageThumbnail(0)));
     _rangeEdit->setText(QString("1-%1").arg(_datasheetThread->datasheet()->pageCount()));
     _pageCountLabel->setText(QString("%1 pages").arg(_datasheetThread->datasheet()->pageCount()));
+    _deleteString->setText("");
+    _maxPinNameLength->setRange(3,30);
+    _maxPinNameLength->setValue(15);
+    _s++;
 }
 
 void PDFFilePage::check()
 {
+    //for some reason, check() is called before initializePage() !!! ???
+    if (!_s)
+        return; // not initialized
+
     _forceCheckBox->setEnabled(!_allRadio->isChecked());
     _rangeEdit->setEnabled(!_allRadio->isChecked());
     _complete = _rangeEdit->hasAcceptableInput() || _allRadio->isChecked();
@@ -132,6 +153,11 @@ void PDFFilePage::check()
             }
             _datasheetThread->setRange(start, stop);
         }
+        _datasheetThread->setMaxPinNameLength(_maxPinNameLength->value());
+
+        //QByteArray x = _deleteString->text().toLatin1();
+        //_datasheetThread->setDeleteString(x.data());
+        _datasheetThread->setDeleteString(  qPrintable(_deleteString->text())  );
     }
     emit completeChanged();
 }

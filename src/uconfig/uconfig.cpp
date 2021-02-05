@@ -34,7 +34,7 @@
 
 QTextStream out(stdout);
 
-void processFilePdf(QString file, Lib *lib, bool debug)
+void processFilePdf(QString file, Lib *lib, bool debug, int pageBegin, int pageEnd, char *deleteString, int pinNameLength)
 {
     Datasheet datasheet;
     datasheet.setDebugEnabled(debug);
@@ -44,7 +44,7 @@ void processFilePdf(QString file, Lib *lib, bool debug)
         out << "error (2): input file cannot be opened" << endl;
         exit(2);
     }
-    datasheet.analyse();
+    datasheet.analyse(pageBegin, pageEnd, deleteString, pinNameLength);
     for (DatasheetPackage *package : datasheet.packages())
     {
         Component *component = package->toComponent();
@@ -71,10 +71,10 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     QApplication::setApplicationName("uConfig");
-    QApplication::setApplicationVersion("1.0");
+    QApplication::setApplicationVersion("1.1");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.") + QString("\nuconfig datasheet.pdf -o lib1.lib [-r rule.kss] [-d]"));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.") + QString("\nuconfig datasheet.pdf [-o output.lib] [-r rule.kss] [-d] [-B pageBegin [-E pageEnd]] [-S deleteString]"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("file", QCoreApplication::translate("main", "Source file to extract pins (pdf)."), "file");
@@ -96,12 +96,29 @@ int main(int argc, char *argv[])
                                  "rule");
     parser.addOption(kssOption);
 
-    /* TODO implement range page option
-    QCommandLineOption rangeOption(QStringList() << "p" << "page",
-                                  "Range of page to search into, defaut is the full document",
-                                  "range");
-    parser.addOption(rangeOption);
-    */
+    QCommandLineOption pageOption(QStringList() << "B"
+                                                << "pageBegin",
+                                  QCoreApplication::translate("main", "Work on pdf pageBegin."),
+                                  "N");
+    parser.addOption(pageOption);
+
+    QCommandLineOption pageEnd(QStringList() << "E"
+                                             << "pageEnd",
+                               QCoreApplication::translate("main", "Work on pageBegin to pageEnd."),
+                               "N");
+    parser.addOption(pageEnd);
+
+    QCommandLineOption dsOption(QStringList() << "S"
+                                              << "deleteString",
+                                QCoreApplication::translate("main", "Delete string from pin names."),
+                                "string");
+    parser.addOption(dsOption);
+
+    QCommandLineOption pnlOption(QStringList() << "l"
+                                               << "pinNameLength",
+                                 QCoreApplication::translate("main", "Max pin name length (default=10)."),
+                                 "length");
+    parser.addOption(pnlOption);
 
     parser.process(app);
 
@@ -159,7 +176,16 @@ int main(int argc, char *argv[])
     out << "> " << file << endl;
     if (file.endsWith(".pdf", Qt::CaseInsensitive))
     {
-        processFilePdf(file, &lib, parser.isSet(debugOption));
+        QString deleteStringOpt = parser.value("deleteString");
+        QByteArray x = deleteStringOpt.toLatin1();
+        char deleteString[16];
+        strncpy(deleteString, x.data(), 15);
+
+        int pageBegin = parser.isSet("pageBegin") ? parser.value(QStringLiteral("pageBegin")).toInt() : -1;
+        int pageEnd = parser.isSet("pageEnd") ? parser.value(QStringLiteral("pageEnd")).toInt() : -1;
+        int pinNameLength = parser.isSet("pinNameLength") ? parser.value(QStringLiteral("pinNameLength")).toInt() : 10;
+out<<pinNameLength<<endl;
+        processFilePdf(file, &lib, parser.isSet(debugOption), pageBegin, pageEnd, deleteString, pinNameLength);
         source = FromPdf;
     }
     else if (file.endsWith(".lib", Qt::CaseInsensitive))
