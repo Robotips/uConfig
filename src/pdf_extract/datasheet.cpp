@@ -77,7 +77,7 @@ void Datasheet::close()
     _doc = nullptr;
 }
 
-void Datasheet::pinSearch(int numPage)
+void Datasheet::pinSearch(int numPage, char *deleteString, int  maxPinNameLength)
 {
     QList<DatasheetPin *> pins;
     QList<DatasheetPackage *> packages;
@@ -101,7 +101,7 @@ void Datasheet::pinSearch(int numPage)
             delete box;*/
     _pack_labels.clear();
 
-    pins = extractPins(numPage);
+    pins = extractPins(numPage, deleteString, maxPinNameLength);
     // pins.append(extractPins(numPage + 1));
     QCoreApplication::processEvents();
 
@@ -288,7 +288,7 @@ QRectF Datasheet::toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageN
     return rect;
 }
 
-QList<DatasheetPin *> Datasheet::extractPins(int numPage)
+QList<DatasheetPin *> Datasheet::extractPins(int numPage, char *deleteString, int maxPinNameLength)
 {
     QList<DatasheetPin *> pins;
 
@@ -387,6 +387,9 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             // remove notes
             box->text.replace(QRegExp("\\([0-9]+\\)"), "");
 
+            // remove specified text
+            box->text.replace(deleteString, "");
+
             // classify boxes
             if (!okNumber || prev)
             {
@@ -411,7 +414,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                     box = new DatasheetBox();
                     box->page = numPage;
                 }
-                else if (box->text.size() > 10 && (!box->text.contains("/") && !box->text.contains("_") && !box->text.contains(",")))
+                else if (box->text.size() > maxPinNameLength && (!box->text.contains("/") && !box->text.contains("_") && !box->text.contains(",")))
                 {
                     // qDebug()<<"filter long label"<<box->text;
                     delete box;
@@ -662,7 +665,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
  * @param pageBegin
  * @param pageEnd
  */
-void Datasheet::analyse(int pageBegin, int pageEnd)
+void Datasheet::analyse(int pageBegin, int pageEnd, char *deleteString, int maxPinNameLength)
 {
     int page = pageBegin;
     bool bgaStyle;
@@ -671,7 +674,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
     // only one page
     if (pageBegin != -1 && pageEnd == -1) // search in one page
     {
-        pinSearch(pageBegin);
+        pinSearch(pageBegin, deleteString, maxPinNameLength);
     }
     else if (!_force)
     {
@@ -689,7 +692,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
             {
                 return;
             }
-            pinSearch(page);
+            pinSearch(page, deleteString, maxPinNameLength);
             page++;
         }
     }
@@ -701,7 +704,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
         }
         for (; page <= mpageEnd; page++)
         {
-            pinSearch(page);
+            pinSearch(page, deleteString, maxPinNameLength );
         }
     }
 }
