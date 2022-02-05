@@ -54,4 +54,4 @@ protected:
     bool _internal;
 };
 
-#endif // DRAWTEXTITEM_H
+#endif  // DRAWTEXTITEM_H

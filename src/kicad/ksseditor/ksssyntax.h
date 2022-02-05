@@ -65,4 +65,4 @@ inline bool lessThan(const KSSSyntax::PartToHighlight &t1, const KSSSyntax::Part
     return t1.index < t2.index;
 }
 
-#endif // KSSSYNTAX_H
+#endif  // KSSSYNTAX_H

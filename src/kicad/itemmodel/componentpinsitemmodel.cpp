@@ -79,21 +79,21 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
     }
     switch (role)
     {
-    case Qt::DisplayRole:
-        switch (section)
-        {
-        case PinNumber:
-            return QVariant("#");
-        case PinName:
-            return QVariant("Name");
-        case PinElecType:
-            return QVariant("Elec type");
-        case PinStyle:
-            return QVariant("Style");
-        case PinClass:
-            return QVariant("Class");
-        }
-        break;
+        case Qt::DisplayRole:
+            switch (section)
+            {
+                case PinNumber:
+                    return QVariant("#");
+                case PinName:
+                    return QVariant("Name");
+                case PinElecType:
+                    return QVariant("Elec type");
+                case PinStyle:
+                    return QVariant("Style");
+                case PinClass:
+                    return QVariant("Class");
+            }
+            break;
     }
     return QVariant();
 }
@@ -126,36 +126,36 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 
     switch (role)
     {
-    case Qt::DisplayRole:
-        switch (index.column())
-        {
-        case PinNumber:
-            return QVariant(pin->padName());
-        case PinName:
-            return QVariant(pin->name());
-        case PinElecType:
-            return QVariant(Pin::electricalTypeDesc(pin->electricalType()));
-        case PinStyle:
-            return QVariant(Pin::pinTypeDesc(pin->pinType()));
-        case PinClass:
-            return QVariant(pin->className());
-        }
-        break;
-    case Qt::EditRole:
-        switch (index.column())
-        {
-        case PinNumber:
-            return QVariant(pin->padName());
-        case PinName:
-            return QVariant(pin->name());
-        case PinElecType:
-            return QVariant(pin->electricalType());
-        case PinStyle:
-            return QVariant(pin->pinType());
-        case PinClass:
-            return QVariant();
-        }
-        break;
+        case Qt::DisplayRole:
+            switch (index.column())
+            {
+                case PinNumber:
+                    return QVariant(pin->padName());
+                case PinName:
+                    return QVariant(pin->name());
+                case PinElecType:
+                    return QVariant(Pin::electricalTypeDesc(pin->electricalType()));
+                case PinStyle:
+                    return QVariant(Pin::pinTypeDesc(pin->pinType()));
+                case PinClass:
+                    return QVariant(pin->className());
+            }
+            break;
+        case Qt::EditRole:
+            switch (index.column())
+            {
+                case PinNumber:
+                    return QVariant(pin->padName());
+                case PinName:
+                    return QVariant(pin->name());
+                case PinElecType:
+                    return QVariant(pin->electricalType());
+                case PinStyle:
+                    return QVariant(pin->pinType());
+                case PinClass:
+                    return QVariant();
+            }
+            break;
     }
     return QVariant();
 }
@@ -250,28 +250,28 @@ bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &v
 
     switch (role)
     {
-    case Qt::DisplayRole:
-    case Qt::EditRole:
-        switch (index.column())
-        {
-        case PinNumber:
-            pin->setPadName(value.toString());
-            updateHigherPin();
-            break;
-        case PinName:
-            pin->setName(value.toString());
-            break;
-        case PinElecType:
-            pin->setElectricalType(static_cast<Pin::ElectricalType>(value.toInt()));
-            break;
-        case PinStyle:
-            pin->setPinType(static_cast<Pin::PinType>(value.toInt()));
-            break;
-        case PinClass:
-            return false;
-        }
-        emit pinModified(pin);
-        return true;
+        case Qt::DisplayRole:
+        case Qt::EditRole:
+            switch (index.column())
+            {
+                case PinNumber:
+                    pin->setPadName(value.toString());
+                    updateHigherPin();
+                    break;
+                case PinName:
+                    pin->setName(value.toString());
+                    break;
+                case PinElecType:
+                    pin->setElectricalType(static_cast<Pin::ElectricalType>(value.toInt()));
+                    break;
+                case PinStyle:
+                    pin->setPinType(static_cast<Pin::PinType>(value.toInt()));
+                    break;
+                case PinClass:
+                    return false;
+            }
+            emit pinModified(pin);
+            return true;
     }
     return false;
 }

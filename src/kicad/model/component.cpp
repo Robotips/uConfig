@@ -554,7 +554,7 @@ void Component::reorganizeToPackageStyle()
         }
     }
     margin = (leftMargin + rightMargin) / 2;
-    margin = (qCeil(margin / 100.0)) * 100; // grid align
+    margin = (qCeil(margin / 100.0)) * 100;  // grid align
 
     // place pins
     pos = QPoint(-margin, -leftOffset);

@@ -39,4 +39,4 @@ protected:
     QRectF _rect;
 };
 
-#endif // DRAWITEM_H
+#endif  // DRAWITEM_H

@@ -42,4 +42,4 @@ protected:
     QRegularExpression _numPattern;
 };
 
-#endif // NUMERICALSORTFILTERPROXYMODEL_H
+#endif  // NUMERICALSORTFILTERPROXYMODEL_H

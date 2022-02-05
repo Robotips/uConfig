@@ -79,18 +79,18 @@ bool PinRule::setProperty(const QString &name, const QString &value)
 
     switch (id)
     {
-    case 0: // class
-        setClassName(value);
-        break;
-    case 1: // elecType
-        setElecType(value);
-        break;
-    case 2: // pinType
-        setPinType(value);
-        break;
-    case 3: // priority
-        setPriority(value.toInt());
-        break;
+        case 0:  // class
+            setClassName(value);
+            break;
+        case 1:  // elecType
+            setElecType(value);
+            break;
+        case 2:  // pinType
+            setPinType(value);
+            break;
+        case 3:  // priority
+            setPriority(value.toInt());
+            break;
     }
 
     return true;
@@ -101,14 +101,14 @@ bool PinRule::hasPropertySet(const QString &name) const
     int id = PinRule::propsName.indexOf(name);
     switch (id)
     {
-    case 0: // class
-        return hasClassSet();
-    case 1: // elec_type
-        return hasElecTypeSet();
-    case 2: // pinType
-        return hasPinTypeSet();
-    case 3: // priority
-        return hasPrioritySet();
+        case 0:  // class
+            return hasClassSet();
+        case 1:  // elec_type
+            return hasElecTypeSet();
+        case 2:  // pinType
+            return hasPinTypeSet();
+        case 3:  // priority
+            return hasPrioritySet();
     }
     return false;
 }

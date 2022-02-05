@@ -43,26 +43,26 @@ QWidget *ComponentPinDelegate::createEditor(QWidget *parent, const QStyleOptionV
 {
     switch (index.column())
     {
-    case ComponentPinsItemModel::PinElecType:
-    {
-        QComboBox *combobox = new QComboBox(parent);
-        for (int i = 0; i <= Pin::NotConnected; i++)
+        case ComponentPinsItemModel::PinElecType:
         {
-            combobox->addItem(Pin::electricalTypeDesc(static_cast<Pin::ElectricalType>(i)), i);
+            QComboBox *combobox = new QComboBox(parent);
+            for (int i = 0; i <= Pin::NotConnected; i++)
+            {
+                combobox->addItem(Pin::electricalTypeDesc(static_cast<Pin::ElectricalType>(i)), i);
+            }
+            return combobox;
         }
-        return combobox;
-    }
-    case ComponentPinsItemModel::PinStyle:
-    {
-        QComboBox *combobox = new QComboBox(parent);
-        for (int i = 0; i <= Pin::NonLogic; i++)
+        case ComponentPinsItemModel::PinStyle:
         {
-            combobox->addItem(Pin::pinTypeDesc(static_cast<Pin::PinType>(i)), i);
+            QComboBox *combobox = new QComboBox(parent);
+            for (int i = 0; i <= Pin::NonLogic; i++)
+            {
+                combobox->addItem(Pin::pinTypeDesc(static_cast<Pin::PinType>(i)), i);
+            }
+            return combobox;
         }
-        return combobox;
-    }
-    default:
-        return QItemDelegate::createEditor(parent, option, index);
+        default:
+            return QItemDelegate::createEditor(parent, option, index);
     }
 }
 
@@ -70,18 +70,18 @@ void ComponentPinDelegate::setEditorData(QWidget *editor, const QModelIndex &ind
 {
     switch (index.column())
     {
-    case ComponentPinsItemModel::PinElecType:
-    case ComponentPinsItemModel::PinStyle:
-    {
-        int value = index.model()->data(index, Qt::EditRole).toInt();
-        QComboBox *combobox = dynamic_cast<QComboBox *>(editor);
-        int id = combobox->findData(value, Qt::UserRole);
-        combobox->setCurrentIndex(id);
-        combobox->showPopup();
-        break;
-    }
-    default:
-        QItemDelegate::setEditorData(editor, index);
+        case ComponentPinsItemModel::PinElecType:
+        case ComponentPinsItemModel::PinStyle:
+        {
+            int value = index.model()->data(index, Qt::EditRole).toInt();
+            QComboBox *combobox = dynamic_cast<QComboBox *>(editor);
+            int id = combobox->findData(value, Qt::UserRole);
+            combobox->setCurrentIndex(id);
+            combobox->showPopup();
+            break;
+        }
+        default:
+            QItemDelegate::setEditorData(editor, index);
     }
 }
 
@@ -89,16 +89,16 @@ void ComponentPinDelegate::setModelData(QWidget *editor, QAbstractItemModel *mod
 {
     switch (index.column())
     {
-    case ComponentPinsItemModel::PinElecType:
-    case ComponentPinsItemModel::PinStyle:
-    {
-        QComboBox *combobox = dynamic_cast<QComboBox *>(editor);
-        int value = combobox->currentData(Qt::UserRole).toInt();
-        model->setData(index, value, Qt::EditRole);
-        break;
-    }
-    default:
-        QItemDelegate::setModelData(editor, model, index);
+        case ComponentPinsItemModel::PinElecType:
+        case ComponentPinsItemModel::PinStyle:
+        {
+            QComboBox *combobox = dynamic_cast<QComboBox *>(editor);
+            int value = combobox->currentData(Qt::UserRole).toInt();
+            model->setData(index, value, Qt::EditRole);
+            break;
+        }
+        default:
+            QItemDelegate::setModelData(editor, model, index);
     }
 }
 
@@ -106,19 +106,19 @@ void ComponentPinDelegate::updateEditorGeometry(QWidget *editor, const QStyleOpt
 {
     switch (index.column())
     {
-    case ComponentPinsItemModel::PinElecType:
-    case ComponentPinsItemModel::PinStyle:
-    {
-        QRect rect = option.rect;
-        if (rect.width() < 150)
+        case ComponentPinsItemModel::PinElecType:
+        case ComponentPinsItemModel::PinStyle:
         {
-            rect.setWidth(150);
+            QRect rect = option.rect;
+            if (rect.width() < 150)
+            {
+                rect.setWidth(150);
+            }
+            editor->setGeometry(rect);
+            break;
         }
-        editor->setGeometry(rect);
-        break;
-    }
-    default:
-        QItemDelegate::updateEditorGeometry(editor, option, index);
+        default:
+            QItemDelegate::updateEditorGeometry(editor, option, index);
     }
 }
 

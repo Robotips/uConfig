@@ -45,4 +45,4 @@ protected:
     QMap<QString, PinClass *> _pinClasses;
 };
 
-#endif // PINRULER_H
+#endif  // PINRULER_H

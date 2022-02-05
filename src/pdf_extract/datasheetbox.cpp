@@ -86,7 +86,7 @@ qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number)
 {
     qreal marge;
-    if (label.text.count() <= 2) // small label test align
+    if (label.text.count() <= 2)  // small label test align
     {
         marge = label.pos.height() / 2.0;
         if (label.pos.top() - marge < number.pos.top() && label.pos.bottom() + marge > number.pos.bottom())
@@ -100,7 +100,7 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
         }
         return false;
     }
-    if (label.pos.width() > label.pos.height()) // Horizontal
+    if (label.pos.width() > label.pos.height())  // Horizontal
     {
         if (label.pos.height() > number.pos.height() * 2 || number.pos.height() > label.pos.height() * 2)
         {
@@ -116,7 +116,7 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
             return false;
         }
     }
-    else // Vertical
+    else  // Vertical
     {
         marge = label.pos.width();
         if (label.pos.left() - marge < number.pos.left() && label.pos.right() + marge > number.pos.right())

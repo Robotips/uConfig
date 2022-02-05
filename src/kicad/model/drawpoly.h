@@ -40,4 +40,4 @@ protected:
     QList<QPoint> _points;
 };
 
-#endif // DRAWPOLY_H
+#endif  // DRAWPOLY_H

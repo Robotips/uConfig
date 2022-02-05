@@ -58,10 +58,10 @@ bool RulesParser::parse(RulesSet *ruleSet)
     {
         lineSelector = _line;
         skipSpaceAndComments();
-        if (_data[_id] != '{') // start of rule
+        if (_data[_id] != '{')  // start of rule
         {
             _errorLine = _line;
-            return false; // error
+            return false;  // error
         }
 
         if (selector.startsWith('.') && !selector.startsWith(".*"))
@@ -82,7 +82,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             _errorLine = _line;
             delete rule;
-            return false; // error
+            return false;  // error
         }
         QString propertyValue;
         while (!propertyName.isEmpty())
@@ -95,7 +95,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
             propertyName = getPropertyName();
         }
         skipSpaceAndComments();
-        if (_data[_id] == '}') // end of rule
+        if (_data[_id] == '}')  // end of rule
         {
             ruleSet->addRule(rule);
             _id++;
@@ -105,7 +105,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             _errorLine = _line;
             delete rule;
-            return false; // error
+            return false;  // error
         }
 
         selector = getSelector();
@@ -217,7 +217,8 @@ QString RulesParser::getPropertyName()
 
 QString RulesParser::getPropertyValue()
 {
-    QRegularExpression rule("\"?([a-zA-Z0-9/^\\?\\$\\|:\\_\\-\\+\\\\\\[\\]\\(\\)\\.\\* ]*)\"?;?", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    QRegularExpression rule("\"?([a-zA-Z0-9/^\\?\\$\\|:\\_\\-\\+\\\\\\[\\]\\(\\)\\.\\* ]*)\"?;?",
+                            QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
     {

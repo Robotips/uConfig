@@ -65,4 +65,4 @@ protected:
     QList<PinClassItem *> _pins;
 };
 
-#endif // PINCLASS_H
+#endif  // PINCLASS_H

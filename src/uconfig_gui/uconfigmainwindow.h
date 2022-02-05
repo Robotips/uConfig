@@ -91,4 +91,4 @@ public:
     bool event(QEvent *event) override;
 };
 
-#endif // UCONFIGMAINWINDOW_H
+#endif  // UCONFIGMAINWINDOW_H

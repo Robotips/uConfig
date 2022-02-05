@@ -49,4 +49,4 @@ protected:
     DrawText *readLabel();
 };
 
-#endif // KICADLIBPARSER_H
+#endif  // KICADLIBPARSER_H

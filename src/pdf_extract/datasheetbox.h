@@ -49,4 +49,4 @@ public:
     static int deleted;
 };
 
-#endif // DATASHEETBOX_H
+#endif  // DATASHEETBOX_H

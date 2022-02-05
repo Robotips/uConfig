@@ -55,4 +55,4 @@ protected:
     PDFLoader *_pdfLoader;
 };
 
-#endif // PDFDATASHEET_H
+#endif  // PDFDATASHEET_H

@@ -403,9 +403,9 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                             box = new DatasheetBox();
                             box->page = numPage;
                         }*/
-                else if (box->text.contains("DIP", Qt::CaseInsensitive) || box->text.contains("SOIC", Qt::CaseInsensitive) || box->text.contains("BGA", Qt::CaseInsensitive) ||
-                         box->text.contains("TQFP", Qt::CaseInsensitive) || box->text.contains("LQP", Qt::CaseInsensitive) || box->text.contains("LQFP", Qt::CaseInsensitive) ||
-                         box->text.contains("LGA", Qt::CaseInsensitive) || box->text.contains("QFN", Qt::CaseInsensitive))
+                else if (box->text.contains("DIP", Qt::CaseInsensitive) || box->text.contains("SOIC", Qt::CaseInsensitive) || box->text.contains("BGA", Qt::CaseInsensitive)
+                         || box->text.contains("TQFP", Qt::CaseInsensitive) || box->text.contains("LQP", Qt::CaseInsensitive) || box->text.contains("LQFP", Qt::CaseInsensitive)
+                         || box->text.contains("LGA", Qt::CaseInsensitive) || box->text.contains("QFN", Qt::CaseInsensitive))
                 {
                     _pack_labels.push_back(box);
                     box = new DatasheetBox();
@@ -669,7 +669,7 @@ void Datasheet::analyse(int pageBegin, int pageEnd)
     int mpageEnd = pageEnd;
 
     // only one page
-    if (pageBegin != -1 && pageEnd == -1) // search in one page
+    if (pageBegin != -1 && pageEnd == -1)  // search in one page
     {
         pinSearch(pageBegin);
     }

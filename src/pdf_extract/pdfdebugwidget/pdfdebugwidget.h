@@ -64,4 +64,4 @@ protected:
     QLabel *_pageLabel;
 };
 
-#endif // PDFDEBUGWIDGET_H
+#endif  // PDFDEBUGWIDGET_H

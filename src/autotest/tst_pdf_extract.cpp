@@ -1,5 +1,5 @@
-#include <QtTest>
 #include <QCoreApplication>
+#include <QtTest>
 
 #include "datasheet.h"
 
@@ -28,7 +28,7 @@ protected:
 
 void PdfExtract::comparePdfTolib(const QString &fileName)
 {
-    //dt.setDebugEnabled(true);
+    // dt.setDebugEnabled(true);
     QVERIFY(dt.open(QString("../src/autotest/%1.pdf").arg(fileName)));
     dt.analyse();
 
@@ -36,7 +36,7 @@ void PdfExtract::comparePdfTolib(const QString &fileName)
     QVERIFY(lib.readFrom(QString("../src/autotest/%1.lib").arg(fileName)));
 
     QCOMPARE(dt.components().count(), lib.componentsCount());
-    for (int i=0; i<dt.components().count(); i++)
+    for (int i = 0; i < dt.components().count(); i++)
     {
         Component *comp1 = dt.components()[i];
         Component *comp2 = lib.components()[i];
@@ -45,7 +45,7 @@ void PdfExtract::comparePdfTolib(const QString &fileName)
         // check all pins name and pad
         comp1->sort();
         comp2->sort();
-        for (int p=0; p<comp1->pins().count(); p++)
+        for (int p = 0; p < comp1->pins().count(); p++)
         {
             Pin *pin1 = comp1->pins()[p];
             Pin *pin2 = comp2->pins()[p];

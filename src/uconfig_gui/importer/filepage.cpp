@@ -66,14 +66,14 @@ int FilePage::nextId() const
 {
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
-    case PinListImporter::Kicad:
-        return PinListImporter::PageComponents;
-    case PinListImporter::CSV:
-        return PinListImporter::PagePDFProcess;
-    case PinListImporter::PDF:
-        return PinListImporter::PagePDFFile;
-    case PinListImporter::Table:
-        return PinListImporter::PagePDFProcess;
+        case PinListImporter::Kicad:
+            return PinListImporter::PageComponents;
+        case PinListImporter::CSV:
+            return PinListImporter::PagePDFProcess;
+        case PinListImporter::PDF:
+            return PinListImporter::PagePDFFile;
+        case PinListImporter::Table:
+            return PinListImporter::PagePDFProcess;
     }
     return 0;
 }
@@ -82,23 +82,23 @@ void FilePage::initializePage()
 {
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
-    case PinListImporter::Kicad:
-        _fileTitle = "Kicad lib";
-        _suffixes << "lib";
-        break;
-    case PinListImporter::CSV:
-        _fileTitle = "coma separator";
-        _suffixes << "csv";
-        break;
-    case PinListImporter::PDF:
-        _fileTitle = "pdf datasheet";
-        _suffixes << "pdf";
-        break;
-    case PinListImporter::Table:
-        _fileTitle = "excel sheet";
-        _suffixes << "xls"
-                  << "xlsx";
-        break;
+        case PinListImporter::Kicad:
+            _fileTitle = "Kicad lib";
+            _suffixes << "lib";
+            break;
+        case PinListImporter::CSV:
+            _fileTitle = "coma separator";
+            _suffixes << "csv";
+            break;
+        case PinListImporter::PDF:
+            _fileTitle = "pdf datasheet";
+            _suffixes << "pdf";
+            break;
+        case PinListImporter::Table:
+            _fileTitle = "excel sheet";
+            _suffixes << "xls"
+                      << "xlsx";
+            break;
     }
 
     setTitle(QString("Choose a %1 file").arg(_fileTitle));
@@ -141,7 +141,8 @@ void FilePage::fileExplore()
         _settings.endGroup();
     }
 
-    QString fileName = QFileDialog::getOpenFileName(this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle).arg("*." + _suffixes.join(" *.")));
+    QString fileName =
+        QFileDialog::getOpenFileName(this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle).arg("*." + _suffixes.join(" *.")));
     if (!fileName.isEmpty())
     {
         setFile(fileName);

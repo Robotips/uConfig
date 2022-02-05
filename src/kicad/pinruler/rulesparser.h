@@ -53,4 +53,4 @@ private:
     int _errorLine;
 };
 
-#endif // RULESPARSER_H
+#endif  // RULESPARSER_H

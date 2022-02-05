@@ -69,7 +69,7 @@ void DatasheetProcessPage::initializePage()
 
     int _pageStart;
     int _pageCount;
-    if (_thread->pageBegin() == -1 && _thread->pageEnd() == -1) // whole document
+    if (_thread->pageBegin() == -1 && _thread->pageEnd() == -1)  // whole document
     {
         _pageStart = 0;
         _pageCount = _datasheet->pageCount();

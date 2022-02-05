@@ -52,4 +52,4 @@ private:
     QString _name;
 };
 
-#endif // LIB_H
+#endif  // LIB_H

@@ -49,4 +49,4 @@ protected:
     void run() override;
 };
 
-#endif // DATASHEETTHREAD_H
+#endif  // DATASHEETTHREAD_H

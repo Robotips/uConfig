@@ -54,4 +54,4 @@ protected:
     QPoint _endPos;
 };
 
-#endif // DRAWARC_H
+#endif  // DRAWARC_H

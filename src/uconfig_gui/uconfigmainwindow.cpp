@@ -180,7 +180,7 @@ void UConfigMainWindow::reloadRuleSetList()
     _ruleComboBox->clear();
     _ruleComboBox->addItem("package");
     QDir dir(qApp->applicationDirPath() + "/../rules/");
-    for (const QFileInfo &ruleInfo : dir.entryInfoList(QStringList() << "*.kss",  QDir::NoDotAndDotDot | QDir::Files))
+    for (const QFileInfo &ruleInfo : dir.entryInfoList(QStringList() << "*.kss", QDir::NoDotAndDotDot | QDir::Files))
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
     }
@@ -414,9 +414,7 @@ void UConfigMainWindow::openRecentFile()
 
 void UConfigMainWindow::about()
 {
-    QMessageBox::about(this,
-                       "uConfig v0",
-                       QString("Copyright (C) 2017-2020 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
+    QMessageBox::about(this, "uConfig v0", QString("Copyright (C) 2017-2020 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
 <br>\
 This sofware is part of uConfig distribution. To check for new version, please visit <a href=\"https://github.com/Robotips/uConfig\">github.com/Robotips/uConfig</a><br>\
 <br>\
@@ -435,8 +433,7 @@ GNU General Public License for more details.<br>\
 You should have received a copy of the GNU General Public License \
 along with this program. If not, see <a href=\"http://www.gnu.org/licenses/\">www.gnu.org/licenses</a><br>\
 <br>\
-Build date: ") + __DATE__ + QString(" time: ") +
-                           __TIME__);
+Build date: ") + __DATE__ + QString(" time: ") + __TIME__);
 }
 
 bool UConfigMainWindow::event(QEvent *event)

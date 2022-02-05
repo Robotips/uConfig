@@ -41,4 +41,4 @@ protected:
     PDFPage *_page;
 };
 
-#endif // PDFDEBUGITEMPAGE_H
+#endif  // PDFDEBUGITEMPAGE_H

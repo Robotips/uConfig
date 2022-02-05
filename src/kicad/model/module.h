@@ -27,4 +27,4 @@ public:
     Module();
 };
 
-#endif // MODULE_H
+#endif  // MODULE_H

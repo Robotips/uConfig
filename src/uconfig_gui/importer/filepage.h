@@ -59,4 +59,4 @@ private:
     static QMap<PinListImporter::ImportType, QString> _importTypeSettingsKeymap;
 };
 
-#endif // FILEPAGE_H
+#endif  // FILEPAGE_H

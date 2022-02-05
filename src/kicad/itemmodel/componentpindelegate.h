@@ -44,4 +44,4 @@ protected:
     QRegularExpression _searchPattern;
 };
 
-#endif // COMPONENTPINDELEGATE_H
+#endif  // COMPONENTPINDELEGATE_H

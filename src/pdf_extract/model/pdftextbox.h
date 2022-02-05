@@ -60,4 +60,4 @@ protected:
     friend class PDFLoader;
 };
 
-#endif // PDFTEXTBOX_H
+#endif  // PDFTEXTBOX_H

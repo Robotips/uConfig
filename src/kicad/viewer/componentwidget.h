@@ -63,4 +63,4 @@ protected:
     QComboBox *_comboUnit;
 };
 
-#endif // COMPONENTWIDGET_H
+#endif  // COMPONENTWIDGET_H

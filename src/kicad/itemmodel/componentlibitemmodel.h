@@ -79,4 +79,4 @@ private:
     bool _selectedMode;
 };
 
-#endif // COMPONENTLIBITEMMODEL_H
+#endif  // COMPONENTLIBITEMMODEL_H

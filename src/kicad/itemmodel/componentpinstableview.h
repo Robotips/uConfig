@@ -68,4 +68,4 @@ protected:
     QAction *_copyAction;
 };
 
-#endif // COMPONENTPINSTABLEVIEW_H
+#endif  // COMPONENTPINSTABLEVIEW_H

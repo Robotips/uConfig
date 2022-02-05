@@ -48,9 +48,10 @@ void DrawPolyItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     }
 
     QPolygon poly;
-    for (QPoint pt : _drawPoly->points()) {
+    for (QPoint pt : _drawPoly->points())
+    {
         poly.append(pt / ComponentItem::ratio);
-}
+    }
 
     painter->drawPolygon(poly);
 }
@@ -65,9 +66,10 @@ void DrawPolyItem::setDraw(DrawPoly *draw)
     _drawPoly = draw;
     QRect mrect(0, 0, 1, 1);
 
-    for (QPoint pt : _drawPoly->points()) {
+    for (QPoint pt : _drawPoly->points())
+    {
         mrect = mrect.united(QRect(pt / ComponentItem::ratio, QSize(1, 1)));
-}
+    }
     _rect = mrect.normalized();
 
     setPos(draw->pos() / ComponentItem::ratio);

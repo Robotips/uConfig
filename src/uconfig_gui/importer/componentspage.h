@@ -48,4 +48,4 @@ private:
     Lib *_lib;
 };
 
-#endif // COMPONENTSPAGE_H
+#endif  // COMPONENTSPAGE_H

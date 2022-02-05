@@ -70,4 +70,4 @@ private:
     DatasheetProcessPage *_datasheetProcess;
 };
 
-#endif // PINLISTIMPORTER_H
+#endif  // PINLISTIMPORTER_H

@@ -76,4 +76,4 @@ protected:
     Component *_component;
 };
 
-#endif // DRAW_H
+#endif  // DRAW_H

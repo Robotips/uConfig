@@ -44,4 +44,4 @@ protected:
     QList<PinRule *> _pinRules;
 };
 
-#endif // RULESSET_H
+#endif  // RULESSET_H

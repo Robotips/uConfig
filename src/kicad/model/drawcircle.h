@@ -38,4 +38,4 @@ protected:
     uint _radius;
 };
 
-#endif // DRAWCIRCLE_H
+#endif  // DRAWCIRCLE_H

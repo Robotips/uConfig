@@ -38,4 +38,4 @@ private:
     bool _complete;
 };
 
-#endif // STARTWIZARDPAGE_H
+#endif  // STARTWIZARDPAGE_H

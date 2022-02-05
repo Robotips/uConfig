@@ -64,4 +64,4 @@ protected:
     void drawForeground(QPainter *painter, const QRectF &rect) override;
 };
 
-#endif // COMPONENTSCENE_H
+#endif  // COMPONENTSCENE_H

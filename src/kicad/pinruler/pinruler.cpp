@@ -70,7 +70,7 @@ void PinRuler::organize(Component *component)
         else
         {
             pin->setLayer(1);
-            QString className; // = rules.first()->className(pin->name());
+            QString className;  // = rules.first()->className(pin->name());
             for (PinRule *rule : rules)
             {
                 if (rule->hasClassSet())
@@ -121,8 +121,8 @@ void PinRuler::organize(Component *component)
     // sideSize computation and side class list assignment
     QList<PinClass *> topSide, bottomSide;
     QList<PinClass *> leftSide, rightSide;
-    QList<PinClass *> aSide; // last assign
-    QList<PinClass *> removedPins; // last assign
+    QList<PinClass *> aSide;        // last assign
+    QList<PinClass *> removedPins;  // last assign
     QSize topSize = QSize(0, 0), bottomSize = QSize(0, 0);
     QSize leftSize = QSize(0, 0), rightSize = QSize(0, 0);
     QSize removedSize = QSize(0, 0);
@@ -148,41 +148,41 @@ void PinRuler::organize(Component *component)
 
         switch (mpinClass->positionValue())
         {
-        case ClassRule::PositionTop:
-            topSide.append(mpinClass);
-            topSize.rwidth() += rect.width();
-            if (rect.height() > topSize.height())
-            {
-                topSize.setHeight(rect.height());
-            }
-            break;
-        case ClassRule::PositionBottom:
-            bottomSide.append(mpinClass);
-            bottomSize.rwidth() += rect.width();
-            if (rect.height() > bottomSize.height())
-            {
-                bottomSize.setHeight(rect.height());
-            }
-            break;
-        case ClassRule::PositionLeft:
-            leftSide.append(mpinClass);
-            leftSize.rheight() += rect.height();
-            if (rect.width() > leftSize.width())
-            {
-                leftSize.setWidth(rect.width());
-            }
-            break;
-        case ClassRule::PositionRight:
-            rightSide.append(mpinClass);
-            rightSize.rheight() += rect.height();
-            if (rect.width() > rightSize.width())
-            {
-                rightSize.setWidth(rect.width());
-            }
-            break;
-        case ClassRule::PositionASide:
-            aSide.append(mpinClass);
-            break;
+            case ClassRule::PositionTop:
+                topSide.append(mpinClass);
+                topSize.rwidth() += rect.width();
+                if (rect.height() > topSize.height())
+                {
+                    topSize.setHeight(rect.height());
+                }
+                break;
+            case ClassRule::PositionBottom:
+                bottomSide.append(mpinClass);
+                bottomSize.rwidth() += rect.width();
+                if (rect.height() > bottomSize.height())
+                {
+                    bottomSize.setHeight(rect.height());
+                }
+                break;
+            case ClassRule::PositionLeft:
+                leftSide.append(mpinClass);
+                leftSize.rheight() += rect.height();
+                if (rect.width() > leftSize.width())
+                {
+                    leftSize.setWidth(rect.width());
+                }
+                break;
+            case ClassRule::PositionRight:
+                rightSide.append(mpinClass);
+                rightSize.rheight() += rect.height();
+                if (rect.width() > rightSize.width())
+                {
+                    rightSize.setWidth(rect.width());
+                }
+                break;
+            case ClassRule::PositionASide:
+                aSide.append(mpinClass);
+                break;
         }
     }
 
@@ -224,15 +224,15 @@ void PinRuler::organize(Component *component)
 
     // placement
     int sideX = qMax((leftSize.width() + rightSize.width()) / 2, qMax(topSize.width(), bottomSize.width()) / 2);
-    sideX = qCeil(sideX / 100.0) * 100; // grid align KLC4.1
+    sideX = qCeil(sideX / 100.0) * 100;  // grid align KLC4.1
     int sideY = (qMax(leftSize.height(), rightSize.height()) + (topSize.height() + bottomSize.height() + 50)) / 2;
-    sideY = qCeil(sideY / 100.0) * 100; // grid align KLC4.1
+    sideY = qCeil(sideY / 100.0) * 100;  // grid align KLC4.1
 
     x = -sideX;
     y = -sideY + qCeil(topSize.height() / 100.0) * 100 + 100;
     if (leftSize.height() + 50 < rightSize.height())
     {
-        y += qCeil((rightSize.height() - leftSize.height()) / 200.0) * 100; // grid align KLC4.1
+        y += qCeil((rightSize.height() - leftSize.height()) / 200.0) * 100;  // grid align KLC4.1
     }
     for (PinClass *mpinClass : leftSide)
     {
@@ -253,7 +253,7 @@ void PinRuler::organize(Component *component)
     y = -sideY + qCeil(topSize.height() / 100.0) * 100 + 100;
     if (rightSize.height() + 50 < leftSize.height())
     {
-        y += qCeil((leftSize.height() - rightSize.height()) / 200.0) * 100; // grid align KLC4.1
+        y += qCeil((leftSize.height() - rightSize.height()) / 200.0) * 100;  // grid align KLC4.1
     }
     for (PinClass *mpinClass : rightSide)
     {
@@ -271,7 +271,7 @@ void PinRuler::organize(Component *component)
     }
 
     x = -topSize.width() / 2;
-    x = qCeil(x / 100.0) * 100; // grid align KLC4.1
+    x = qCeil(x / 100.0) * 100;  // grid align KLC4.1
     y = -sideY;
     for (PinClass *mpinClass : topSide)
     {
@@ -289,7 +289,7 @@ void PinRuler::organize(Component *component)
     }
 
     x = -bottomSize.width() / 2;
-    x = qCeil(x / 100.0) * 100; // grid align KLC4.1
+    x = qCeil(x / 100.0) * 100;  // grid align KLC4.1
     y = sideY;
     for (PinClass *mpinClass : bottomSide)
     {
@@ -332,9 +332,10 @@ void PinRuler::organize(Component *component)
     component->refText()->setTextHJustify(DrawText::TextHLeft);
     component->refText()->setDirection(DrawText::DirectionHorizontal);
 
-    for (PinClass *mpinClass : _pinClasses) {
+    for (PinClass *mpinClass : _pinClasses)
+    {
         delete mpinClass;
-}
+    }
     _pinClasses.clear();
 }
 

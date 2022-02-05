@@ -38,4 +38,4 @@ private:
     QLabel *_resultLabel;
 };
 
-#endif // RESULTSPAGE_H
+#endif  // RESULTSPAGE_H

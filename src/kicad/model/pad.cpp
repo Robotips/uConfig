@@ -64,14 +64,14 @@ QString Pad::shapeString() const
 {
     switch (_shape)
     {
-    case Pad::Rect:
-        return "R";
-    case Pad::Circle:
-        return "C";
-    case Pad::Ovate:
-        return "O";
-    case Pad::Trapezoidal:
-        return "T";
+        case Pad::Rect:
+            return "R";
+        case Pad::Circle:
+            return "C";
+        case Pad::Ovate:
+            return "O";
+        case Pad::Trapezoidal:
+            return "T";
     }
     return "R";
 }
@@ -120,14 +120,14 @@ QString Pad::typeString() const
 {
     switch (_shape)
     {
-    case Pad::Std:
-        return "STD";
-    case Pad::Smd:
-        return "SMD";
-    case Pad::Conn:
-        return "CONN";
-    case Pad::Hole:
-        return "HOLE";
+        case Pad::Std:
+            return "STD";
+        case Pad::Smd:
+            return "SMD";
+        case Pad::Conn:
+            return "CONN";
+        case Pad::Hole:
+            return "HOLE";
     }
     return "STD";
 }
@@ -153,8 +153,8 @@ QTextStream &operator<<(QTextStream &stream, const Pad &pad)
     stream << "$PAD" << '\n';
 
     // pad
-    stream << "Sh \"" << pad._name << "\" " << pad.shapeString() << " " << pad._size.width() << " " << pad._size.height() << " " << pad._sizeIncrease.width() << " " << pad._sizeIncrease.height()
-           << " " << pad._angle << '\n';
+    stream << "Sh \"" << pad._name << "\" " << pad.shapeString() << " " << pad._size.width() << " " << pad._size.height() << " " << pad._sizeIncrease.width() << " "
+           << pad._sizeIncrease.height() << " " << pad._angle << '\n';
 
     // drill
     stream << "Dr " << pad._drillDiameter << " " << pad._drillOffset.x() << " " << pad._drillOffset.y() << '\n';

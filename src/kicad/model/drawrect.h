@@ -45,4 +45,4 @@ protected:
     QPoint _endPos;
 };
 
-#endif // DRAWRECT_H
+#endif  // DRAWRECT_H

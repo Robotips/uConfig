@@ -42,4 +42,4 @@ protected:
     PDFDatasheet *_pdfDatasheet;
 };
 
-#endif // PAGELOADER_H
+#endif  // PAGELOADER_H

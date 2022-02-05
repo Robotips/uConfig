@@ -38,4 +38,4 @@ protected:
     KssEditor *_editor;
 };
 
-#endif // KSSEDITORMARGIN_H
+#endif  // KSSEDITORMARGIN_H

@@ -242,18 +242,18 @@ void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType
 
     switch (infoType)
     {
-    case UConfigProject::ComponentNameInfo:
-        _activeComponent->setName(value.toString());
-        break;
-    case UConfigProject::ComponentPackagesInfo:
-        _activeComponent->footPrints() = value.toStringList();
-        break;
-    case UConfigProject::ComponentReferenceInfo:
-        _activeComponent->setPrefix(value.toString());
-        break;
-    case UConfigProject::ComponentAliasesInfo:
-        _activeComponent->aliases() = value.toStringList();
-        break;
+        case UConfigProject::ComponentNameInfo:
+            _activeComponent->setName(value.toString());
+            break;
+        case UConfigProject::ComponentPackagesInfo:
+            _activeComponent->footPrints() = value.toStringList();
+            break;
+        case UConfigProject::ComponentReferenceInfo:
+            _activeComponent->setPrefix(value.toString());
+            break;
+        case UConfigProject::ComponentAliasesInfo:
+            _activeComponent->aliases() = value.toStringList();
+            break;
     }
 
     emit componentChange(_activeComponent);

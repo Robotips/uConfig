@@ -35,4 +35,4 @@ public:
     static bool saveLib(Lib *lib, const QString &fileName, Format format);
 };
 
-#endif // LIBPARSER_H
+#endif  // LIBPARSER_H

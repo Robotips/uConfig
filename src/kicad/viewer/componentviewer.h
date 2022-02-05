@@ -71,4 +71,4 @@ protected:
     void dropEvent(QDropEvent *event) override;
 };
 
-#endif // MODULEVIEWER_H
+#endif  // MODULEVIEWER_H

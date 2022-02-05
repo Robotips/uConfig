@@ -55,4 +55,4 @@ private:
     bool _complete;
 };
 
-#endif // DATASHEETPROCESSPAGE_H
+#endif  // DATASHEETPROCESSPAGE_H

@@ -27,15 +27,15 @@ void PdfDebugItemTextBox::paint(QPainter *painter, const QStyleOptionGraphicsIte
 
     switch (_textBox->type())
     {
-    case PDFTextBox::Text:
-        painter->setPen(QPen(QColor(255, 255, 0, 128), 1));
-        break;
-    case PDFTextBox::SubText:
-        painter->setPen(QPen(QColor(0, 255, 0, 128), 0.5));
-        break;
-    case PDFTextBox::Pad:
-        painter->setPen(QPen(QColor(255, 0, 0, 128), 1));
-        break;
+        case PDFTextBox::Text:
+            painter->setPen(QPen(QColor(255, 255, 0, 128), 1));
+            break;
+        case PDFTextBox::SubText:
+            painter->setPen(QPen(QColor(0, 255, 0, 128), 0.5));
+            break;
+        case PDFTextBox::Pad:
+            painter->setPen(QPen(QColor(255, 0, 0, 128), 1));
+            break;
     }
     painter->drawRect(textBox()->boundingRect());
 }

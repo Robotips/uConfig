@@ -49,4 +49,4 @@ protected:
     QRectF _rect;
 };
 
-#endif // DRAWRECTITEM_H
+#endif  // DRAWRECTITEM_H

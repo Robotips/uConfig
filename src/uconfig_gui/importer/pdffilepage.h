@@ -55,4 +55,4 @@ private:
     QStringList _suffixes;
 };
 
-#endif // PDFFILEPAGE_H
+#endif  // PDFFILEPAGE_H

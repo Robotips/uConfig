@@ -77,4 +77,4 @@ protected:
     bool _prioritySet;
 };
 
-#endif // PINRULE_H
+#endif  // PINRULE_H

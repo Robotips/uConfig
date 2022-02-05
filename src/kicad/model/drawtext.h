@@ -90,4 +90,4 @@ protected:
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(DrawText::TextStyles)
 
-#endif // DRAWTEXT_H
+#endif  // DRAWTEXT_H

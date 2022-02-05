@@ -65,4 +65,4 @@ protected:
     Poppler::Page *_page;
 };
 
-#endif // PDFPAGE_H
+#endif  // PDFPAGE_H

@@ -47,4 +47,4 @@ protected:
     QLineEdit *_nameFilterEdit;
 };
 
-#endif // PINLISTEDITOR_H
+#endif  // PINLISTEDITOR_H

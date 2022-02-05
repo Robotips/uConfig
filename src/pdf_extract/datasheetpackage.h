@@ -48,4 +48,4 @@ public:
     QImage image;
 };
 
-#endif // DATASHEETPACKAGE_H
+#endif  // DATASHEETPACKAGE_H

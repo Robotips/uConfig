@@ -121,4 +121,4 @@ private:
     DrawText *_docText;
 };
 
-#endif // COMPONENT_H
+#endif  // COMPONENT_H

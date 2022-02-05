@@ -74,4 +74,4 @@ private:
     bool _showElectricalType;
 };
 
-#endif // PINITEM_H
+#endif  // PINITEM_H

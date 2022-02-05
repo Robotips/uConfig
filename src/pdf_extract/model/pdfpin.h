@@ -27,4 +27,4 @@ public:
     PDFPin();
 };
 
-#endif // PDFPIN_H
+#endif  // PDFPIN_H

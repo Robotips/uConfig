@@ -75,4 +75,4 @@ private:
     void updateHigherPin();
 };
 
-#endif // COMPONENTPINSITEMMODEL_H
+#endif  // COMPONENTPINSITEMMODEL_H

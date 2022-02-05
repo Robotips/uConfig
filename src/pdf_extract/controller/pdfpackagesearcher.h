@@ -27,4 +27,4 @@ public:
     PDFPackageSearcher();
 };
 
-#endif // PDFPACKAGESEARCHER_H
+#endif  // PDFPACKAGESEARCHER_H

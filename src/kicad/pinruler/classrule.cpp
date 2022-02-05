@@ -88,30 +88,30 @@ bool ClassRule::setProperty(const QString &name, const QString &value)
 
     switch (id)
     {
-    case 0: // position
-        setPosition(value);
-        break;
-    case 1: // sort
-        setSort(value);
-        break;
-    case 2: // sortpattern
-        setSortPattern(value);
-        break;
-    case 3: // length
-        setLength(value.toInt());
-        break;
-    case 4: // priority
-        setPriority(value.toInt());
-        break;
-    case 5: // visibility
-        setVisibility(value);
-        break;
-    case 6: // label
-        setLabel(value);
-        break;
-    case 7: // rect
-        setRect(value.toInt());
-        break;
+        case 0:  // position
+            setPosition(value);
+            break;
+        case 1:  // sort
+            setSort(value);
+            break;
+        case 2:  // sortpattern
+            setSortPattern(value);
+            break;
+        case 3:  // length
+            setLength(value.toInt());
+            break;
+        case 4:  // priority
+            setPriority(value.toInt());
+            break;
+        case 5:  // visibility
+            setVisibility(value);
+            break;
+        case 6:  // label
+            setLabel(value);
+            break;
+        case 7:  // rect
+            setRect(value.toInt());
+            break;
     }
 
     return true;
@@ -122,22 +122,22 @@ bool ClassRule::hasPropertySet(const QString &name) const
     int id = ClassRule::propsName.indexOf(name);
     switch (id)
     {
-    case 0: // position
-        return hasPositionSet();
-    case 1: // sort
-        return hasSortSet();
-    case 2: // sortpattern
-        return hasSortPatternSet();
-    case 3: // length
-        return hasLengthSet();
-    case 4: // priority
-        return hasPrioritySet();
-    case 5: // visibility
-        return hasVisibilitySet();
-    case 6: // label
-        return hasLabelSet();
-    case 7: // rect
-        return hasRectSet();
+        case 0:  // position
+            return hasPositionSet();
+        case 1:  // sort
+            return hasSortSet();
+        case 2:  // sortpattern
+            return hasSortPatternSet();
+        case 3:  // length
+            return hasLengthSet();
+        case 4:  // priority
+            return hasPrioritySet();
+        case 5:  // visibility
+            return hasVisibilitySet();
+        case 6:  // label
+            return hasLabelSet();
+        case 7:  // rect
+            return hasRectSet();
     }
     return false;
 }

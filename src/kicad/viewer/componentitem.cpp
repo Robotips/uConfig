@@ -115,9 +115,10 @@ void ComponentItem::setShowElectricalType(bool showElectricalType)
 {
     if (showElectricalType != _showElectricalType)
     {
-        for (PinItem *pinItem : _pinItemMap) {
+        for (PinItem *pinItem : _pinItemMap)
+        {
             pinItem->setShowElectricalType(showElectricalType);
-}
+        }
     }
     _showElectricalType = showElectricalType;
 }

@@ -49,20 +49,20 @@ DrawItem *DrawItem::fromDraw(Draw *draw)
     DrawItem *item = Q_NULLPTR;
     switch (draw->type())
     {
-    case Draw::TypeDrawArc:
-        break;
-    case Draw::TypeDrawCircle:
-        item = new DrawCircleItem(dynamic_cast<DrawCircle *>(draw));
-        break;
-    case Draw::TypeDrawPoly:
-        item = new DrawPolyItem(dynamic_cast<DrawPoly *>(draw));
-        break;
-    case Draw::TypeDrawRect:
-        item = new DrawRectItem(dynamic_cast<DrawRect *>(draw));
-        break;
-    case Draw::TypeDrawText:
-        item = new DrawTextItem(dynamic_cast<DrawText *>(draw));
-        break;
+        case Draw::TypeDrawArc:
+            break;
+        case Draw::TypeDrawCircle:
+            item = new DrawCircleItem(dynamic_cast<DrawCircle *>(draw));
+            break;
+        case Draw::TypeDrawPoly:
+            item = new DrawPolyItem(dynamic_cast<DrawPoly *>(draw));
+            break;
+        case Draw::TypeDrawRect:
+            item = new DrawRectItem(dynamic_cast<DrawRect *>(draw));
+            break;
+        case Draw::TypeDrawText:
+            item = new DrawTextItem(dynamic_cast<DrawText *>(draw));
+            break;
     }
     return item;
 }

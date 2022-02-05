@@ -47,4 +47,4 @@ protected:
     QString _sortLabel;
 };
 
-#endif // PINCLASSITEM_H
+#endif  // PINCLASSITEM_H

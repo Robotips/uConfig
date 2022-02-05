@@ -101,28 +101,28 @@ void DrawTextItem::setDraw(DrawText *draw)
 
     switch (_drawText->textVJustify())
     {
-    case DrawText::TextVTop:
-        _rect.translate(0, -_rect.height() / 4);
-        break;
-    case DrawText::TextVCenter:
-        _rect.translate(0, -_rect.height() / 2);
-        break;
-    case DrawText::TextVBottom:
-        _rect.translate(0, -_rect.height() / 4 * 3);
-        break;
+        case DrawText::TextVTop:
+            _rect.translate(0, -_rect.height() / 4);
+            break;
+        case DrawText::TextVCenter:
+            _rect.translate(0, -_rect.height() / 2);
+            break;
+        case DrawText::TextVBottom:
+            _rect.translate(0, -_rect.height() / 4 * 3);
+            break;
     }
 
     switch (_drawText->textHJustify())
     {
-    case DrawText::TextHLeft:
-        _rect.translate(0, 0);
-        break;
-    case DrawText::TextHCenter:
-        _rect.translate(-_rect.width() / 2, 0);
-        break;
-    case DrawText::TextHRight:
-        _rect.translate(-_rect.width(), 0);
-        break;
+        case DrawText::TextHLeft:
+            _rect.translate(0, 0);
+            break;
+        case DrawText::TextHCenter:
+            _rect.translate(-_rect.width() / 2, 0);
+            break;
+        case DrawText::TextHRight:
+            _rect.translate(-_rect.width(), 0);
+            break;
     }
 
     _textRect = _rect;

@@ -45,4 +45,4 @@ public:
     DatasheetBox *nameBox;
 };
 
-#endif // DATASHEETPIN_H
+#endif  // DATASHEETPIN_H

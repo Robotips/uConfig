@@ -129,19 +129,19 @@ QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientat
     }
     switch (role)
     {
-    case Qt::DisplayRole:
-        switch (section)
-        {
-        case Name:
-            return QVariant("Name");
-        case PinCount:
-            return QVariant("Pins");
-        case UnitCount:
-            return QVariant("Units");
-        case Package:
-            return QVariant("Package(s)");
-        }
-        break;
+        case Qt::DisplayRole:
+            switch (section)
+            {
+                case Name:
+                    return QVariant("Name");
+                case PinCount:
+                    return QVariant("Pins");
+                case UnitCount:
+                    return QVariant("Units");
+                case Package:
+                    return QVariant("Package(s)");
+            }
+            break;
     }
     return QVariant();
 }
@@ -161,41 +161,41 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
 
     switch (role)
     {
-    case Qt::DisplayRole:
-        switch (index.column())
-        {
-        case Name:
-            return QVariant(component->name());
-        case PinCount:
-            return QVariant(component->pins().count());
-        case UnitCount:
-            return QVariant(component->unitCount());
-        case Package:
-            return QVariant(component->footPrints().join(';'));
-        default:
-            return QVariant();
-        }
-    case Qt::CheckStateRole:
-        if (index.column() == Name && _selectedMode)
-        {
-            if (_selectedComponents.contains(component))
+        case Qt::DisplayRole:
+            switch (index.column())
             {
-                return Qt::Checked;
+                case Name:
+                    return QVariant(component->name());
+                case PinCount:
+                    return QVariant(component->pins().count());
+                case UnitCount:
+                    return QVariant(component->unitCount());
+                case Package:
+                    return QVariant(component->footPrints().join(';'));
+                default:
+                    return QVariant();
             }
-            else
+        case Qt::CheckStateRole:
+            if (index.column() == Name && _selectedMode)
             {
-                return Qt::Unchecked;
+                if (_selectedComponents.contains(component))
+                {
+                    return Qt::Checked;
+                }
+                else
+                {
+                    return Qt::Unchecked;
+                }
             }
-        }
-        break;
-    case Qt::FontRole:
-        if (component == _activeComponent)
-        {
-            QFont font;
-            font.setBold(true);
-            return font;
-        }
-        break;
+            break;
+        case Qt::FontRole:
+            if (component == _activeComponent)
+            {
+                QFont font;
+                font.setBold(true);
+                return font;
+            }
+            break;
     }
     return QVariant();
 }

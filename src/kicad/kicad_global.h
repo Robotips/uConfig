@@ -22,9 +22,9 @@
 #include <QtCore/qglobal.h>
 
 #if defined(KICAD_EXPORT_LIB)
- #define KICAD_EXPORT Q_DECL_EXPORT
+#    define KICAD_EXPORT Q_DECL_EXPORT
 #else
- #define KICAD_EXPORT Q_DECL_IMPORT
+#    define KICAD_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // KICAD_GLOBAL_H
+#endif  // KICAD_GLOBAL_H

@@ -110,14 +110,14 @@ QString Pin::directionString() const
 {
     switch (_direction)
     {
-    case Pin::Down:
-        return "D";
-    case Pin::Left:
-        return "L";
-    case Pin::Up:
-        return "U";
-    case Pin::Right:
-        return "R";
+        case Pin::Down:
+            return "D";
+        case Pin::Left:
+            return "L";
+        case Pin::Up:
+            return "U";
+        case Pin::Right:
+            return "R";
     }
     return "R";
 }
@@ -131,18 +131,18 @@ void Pin::setDirection(char c)
 {
     switch (c)
     {
-    case 'D':
-        _direction = Pin::Down;
-        break;
-    case 'L':
-        _direction = Pin::Left;
-        break;
-    case 'U':
-        _direction = Pin::Up;
-        break;
-    case 'R':
-        _direction = Pin::Right;
-        break;
+        case 'D':
+            _direction = Pin::Down;
+            break;
+        case 'L':
+            _direction = Pin::Left;
+            break;
+        case 'U':
+            _direction = Pin::Up;
+            break;
+        case 'R':
+            _direction = Pin::Right;
+            break;
     }
 }
 
@@ -155,26 +155,26 @@ QString Pin::pinTypeString() const
 {
     switch (_pinType)
     {
-    case Pin::Normal:
-        return "";
-    case Pin::NotVisible:
-        return "N";
-    case Pin::Invert:
-        return "I";
-    case Pin::Clock:
-        return "C";
-    case Pin::InvertedClock:
-        return "IC";
-    case Pin::LowIn:
-        return "L";
-    case Pin::ClockLow:
-        return "CL";
-    case Pin::LowOut:
-        return "V";
-    case Pin::FallingEdge:
-        return "F";
-    case Pin::NonLogic:
-        return "NX";
+        case Pin::Normal:
+            return "";
+        case Pin::NotVisible:
+            return "N";
+        case Pin::Invert:
+            return "I";
+        case Pin::Clock:
+            return "C";
+        case Pin::InvertedClock:
+            return "IC";
+        case Pin::LowIn:
+            return "L";
+        case Pin::ClockLow:
+            return "CL";
+        case Pin::LowOut:
+            return "V";
+        case Pin::FallingEdge:
+            return "F";
+        case Pin::NonLogic:
+            return "NX";
     }
     return "";
 }
@@ -183,26 +183,26 @@ QString Pin::pinTypeDesc(const Pin::PinType &pinType)
 {
     switch (pinType)
     {
-    case Pin::Normal:
-        return QStringLiteral("normal");
-    case Pin::NotVisible:
-        return QStringLiteral("not visible");
-    case Pin::Invert:
-        return QStringLiteral("inverted");
-    case Pin::Clock:
-        return QStringLiteral("clock");
-    case Pin::InvertedClock:
-        return QStringLiteral("inverted clock");
-    case Pin::LowIn:
-        return QStringLiteral("low in");
-    case Pin::ClockLow:
-        return QStringLiteral("clock low");
-    case Pin::LowOut:
-        return QStringLiteral("low out");
-    case Pin::FallingEdge:
-        return QStringLiteral("falling edge");
-    case Pin::NonLogic:
-        return QStringLiteral("non logic");
+        case Pin::Normal:
+            return QStringLiteral("normal");
+        case Pin::NotVisible:
+            return QStringLiteral("not visible");
+        case Pin::Invert:
+            return QStringLiteral("inverted");
+        case Pin::Clock:
+            return QStringLiteral("clock");
+        case Pin::InvertedClock:
+            return QStringLiteral("inverted clock");
+        case Pin::LowIn:
+            return QStringLiteral("low in");
+        case Pin::ClockLow:
+            return QStringLiteral("clock low");
+        case Pin::LowOut:
+            return QStringLiteral("low out");
+        case Pin::FallingEdge:
+            return QStringLiteral("falling edge");
+        case Pin::NonLogic:
+            return QStringLiteral("non logic");
     }
     return QStringLiteral("");
 }
@@ -265,28 +265,28 @@ QString Pin::electricalTypeString() const
 {
     switch (_electricalType)
     {
-    case Pin::Input:
-        return "I";
-    case Pin::Output:
-        return "O";
-    case Pin::Bidir:
-        return "B";
-    case Pin::Tristate:
-        return "T";
-    case Pin::Passive:
-        return "P";
-    case Pin::Unspecified:
-        return "U";
-    case Pin::PowerIn:
-        return "W";
-    case Pin::PowerOut:
-        return "w";
-    case Pin::OpenCollector:
-        return "C";
-    case Pin::OpenEmitter:
-        return "E";
-    case Pin::NotConnected:
-        return "N";
+        case Pin::Input:
+            return "I";
+        case Pin::Output:
+            return "O";
+        case Pin::Bidir:
+            return "B";
+        case Pin::Tristate:
+            return "T";
+        case Pin::Passive:
+            return "P";
+        case Pin::Unspecified:
+            return "U";
+        case Pin::PowerIn:
+            return "W";
+        case Pin::PowerOut:
+            return "w";
+        case Pin::OpenCollector:
+            return "C";
+        case Pin::OpenEmitter:
+            return "E";
+        case Pin::NotConnected:
+            return "N";
     }
     return "I";
 }
@@ -295,28 +295,28 @@ QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
 {
     switch (electricalType)
     {
-    case Pin::Input:
-        return QStringLiteral("input");
-    case Pin::Output:
-        return QStringLiteral("output");
-    case Pin::Bidir:
-        return QStringLiteral("bidirectional");
-    case Pin::Tristate:
-        return QStringLiteral("tri-state");
-    case Pin::Passive:
-        return QStringLiteral("passive");
-    case Pin::Unspecified:
-        return QStringLiteral("unspecified");
-    case Pin::PowerIn:
-        return QStringLiteral("power input");
-    case Pin::PowerOut:
-        return QStringLiteral("power output");
-    case Pin::OpenCollector:
-        return QStringLiteral("open collector");
-    case Pin::OpenEmitter:
-        return QStringLiteral("open emitter");
-    case Pin::NotConnected:
-        return QStringLiteral("not connected");
+        case Pin::Input:
+            return QStringLiteral("input");
+        case Pin::Output:
+            return QStringLiteral("output");
+        case Pin::Bidir:
+            return QStringLiteral("bidirectional");
+        case Pin::Tristate:
+            return QStringLiteral("tri-state");
+        case Pin::Passive:
+            return QStringLiteral("passive");
+        case Pin::Unspecified:
+            return QStringLiteral("unspecified");
+        case Pin::PowerIn:
+            return QStringLiteral("power input");
+        case Pin::PowerOut:
+            return QStringLiteral("power output");
+        case Pin::OpenCollector:
+            return QStringLiteral("open collector");
+        case Pin::OpenEmitter:
+            return QStringLiteral("open emitter");
+        case Pin::NotConnected:
+            return QStringLiteral("not connected");
     }
     return QStringLiteral("input");
 }
@@ -330,39 +330,39 @@ void Pin::setElectricalType(char c)
 {
     switch (c)
     {
-    case 'I':
-        _electricalType = Pin::Input;
-        break;
-    case 'O':
-        _electricalType = Pin::Output;
-        break;
-    case 'B':
-        _electricalType = Pin::Bidir;
-        break;
-    case 'T':
-        _electricalType = Pin::Tristate;
-        break;
-    case 'P':
-        _electricalType = Pin::Passive;
-        break;
-    case 'U':
-        _electricalType = Pin::Unspecified;
-        break;
-    case 'W':
-        _electricalType = Pin::PowerIn;
-        break;
-    case 'w':
-        _electricalType = Pin::PowerOut;
-        break;
-    case 'C':
-        _electricalType = Pin::OpenCollector;
-        break;
-    case 'E':
-        _electricalType = Pin::OpenEmitter;
-        break;
-    case 'N':
-        _electricalType = Pin::NotConnected;
-        break;
+        case 'I':
+            _electricalType = Pin::Input;
+            break;
+        case 'O':
+            _electricalType = Pin::Output;
+            break;
+        case 'B':
+            _electricalType = Pin::Bidir;
+            break;
+        case 'T':
+            _electricalType = Pin::Tristate;
+            break;
+        case 'P':
+            _electricalType = Pin::Passive;
+            break;
+        case 'U':
+            _electricalType = Pin::Unspecified;
+            break;
+        case 'W':
+            _electricalType = Pin::PowerIn;
+            break;
+        case 'w':
+            _electricalType = Pin::PowerOut;
+            break;
+        case 'C':
+            _electricalType = Pin::OpenCollector;
+            break;
+        case 'E':
+            _electricalType = Pin::OpenEmitter;
+            break;
+        case 'N':
+            _electricalType = Pin::NotConnected;
+            break;
     }
 }
 

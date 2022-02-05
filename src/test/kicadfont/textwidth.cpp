@@ -3,8 +3,8 @@
 #include <QDebug>
 
 #include <QImage>
-#include <QPixmap>
 #include <QPainter>
+#include <QPixmap>
 #include <QStringList>
 
 void widthCompute()
@@ -34,25 +34,25 @@ void widthCompute()
     QStringList widths;
     int oldX = 0;
     char c = 32;
-    for (int x=0; x<imgText.width()-imgOne.width(); x++)
+    for (int x = 0; x < imgText.width() - imgOne.width(); x++)
     {
         int conv = 0;
-        for (int x0=0; x0<imgOne.width(); x0++)
+        for (int x0 = 0; x0 < imgOne.width(); x0++)
         {
-            for (int y0=0; y0<imgOne.height(); y0++)
+            for (int y0 = 0; y0 < imgOne.height(); y0++)
             {
-                conv += qAbs(qGray(imgText.pixel(x0+x, y0+y)) - qGray(imgOne.pixel(x0, y0)));
+                conv += qAbs(qGray(imgText.pixel(x0 + x, y0 + y)) - qGray(imgOne.pixel(x0, y0)));
             }
         }
-        if (conv < 5000 && x-oldX-imgOne.width()>5)
+        if (conv < 5000 && x - oldX - imgOne.width() > 5)
         {
-            widths.append(QString::number(x-oldX-imgOne.width()));
-            qDebug() << c++ << x << conv << x-oldX-imgOne.width();
-            painter.drawRect(x, 0, imgOne.width()-1, imgOne.height()-1);
+            widths.append(QString::number(x - oldX - imgOne.width()));
+            qDebug() << c++ << x << conv << x - oldX - imgOne.width();
+            painter.drawRect(x, 0, imgOne.width() - 1, imgOne.height() - 1);
             oldX = x;
         }
     }
     pix.save("test.png");
 
-    qDebug()<<widths.join(", ");
+    qDebug() << widths.join(", ");
 }

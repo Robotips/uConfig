@@ -18,38 +18,39 @@
 
 #include "model/lib.h"
 
-#include <QFile>
 #include <QDebug>
+#include <QFile>
 
 void test_libkicad()
 {
     QFile file("C:/Users/seb/Seafile/projects/SwarmTips/elec/4-top/b-fpga-vision/doc/max10/pinout.csv");
-    file.open(QIODevice::ReadOnly|QIODevice::Text);
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream stream(&file);
 
     Lib lib;
-    //lib.readFrom("E:/doc/Seb/Mes document/Dropbox/Robot2015perso/KicadCreator/src/Ti.lib");
+    // lib.readFrom("E:/doc/Seb/Mes document/Dropbox/Robot2015perso/KicadCreator/src/Ti.lib");
     Component *component = new Component();
     component->setName("Max10_ETQFP144");
 
-    while(!stream.atEnd())
+    while (!stream.atEnd())
     {
         QString line = stream.readLine();
         QString name;
         QStringList items = line.split(";");
 
-        int  i=0;
+        int i = 0;
         for (QString item : items)
         {
-            if (i>0 && !item.isEmpty())
+            if (i > 0 && !item.isEmpty())
             {
-                if (!name.isEmpty()) name.append("/");
+                if (!name.isEmpty())
+                    name.append("/");
                 name.append(item);
             }
             i++;
         }
 
-        if (items.count()>1)
+        if (items.count() > 1)
         {
             component->addPin(new Pin(name, items.at(0)));
         }
@@ -60,32 +61,32 @@ void test_libkicad()
     QPoint vccpos(500, 0);
     QList<QPoint> points;
 
-    for (int i=0;i<9;i++)
-        points.append(QPoint(1000+300*i, 0));
+    for (int i = 0; i < 9; i++)
+        points.append(QPoint(1000 + 300 * i, 0));
 
-    for (int i=0;i<component->pins().size();i++)
+    for (int i = 0; i < component->pins().size(); i++)
     {
         Pin *pin = component->pins()[i];
-        if (pin->name()=="GND")
+        if (pin->name() == "GND")
         {
             pin->setPos(gndpos);
             pin->setDirection(Pin::Left);
-            gndpos+=QPoint(0, 100);
+            gndpos += QPoint(0, 100);
         }
         else if (pin->name().startsWith("VCC"))
         {
             pin->setPos(vccpos);
             pin->setDirection(Pin::Left);
-            vccpos+=QPoint(0, 100);
+            vccpos += QPoint(0, 100);
         }
         else
         {
-            int bank = pin->name().at(0).toLatin1()-'0'-1;
-            if (bank>=0 && bank<8)
+            int bank = pin->name().at(0).toLatin1() - '0' - 1;
+            if (bank >= 0 && bank < 8)
             {
                 pin->setPos(points[bank]);
                 pin->setDirection(Pin::Left);
-                points[bank]+=QPoint(0, 100);
+                points[bank] += QPoint(0, 100);
             }
         }
     }

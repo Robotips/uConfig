@@ -55,4 +55,4 @@ protected:
     int _lineError;
 };
 
-#endif // KSSEDITOR_H
+#endif  // KSSEDITOR_H

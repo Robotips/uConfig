@@ -46,4 +46,4 @@ protected:
     QFont _font;
 };
 
-#endif // KICADFONT_H
+#endif  // KICADFONT_H

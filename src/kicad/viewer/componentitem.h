@@ -66,4 +66,4 @@ private:
     QMap<Pin *, PinItem *> _pinItemMap;
 };
 
-#endif // COMPONENTITEM_H
+#endif  // COMPONENTITEM_H

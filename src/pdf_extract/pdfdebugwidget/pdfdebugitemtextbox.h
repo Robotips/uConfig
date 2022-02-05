@@ -41,4 +41,4 @@ protected:
     PDFTextBox *_textBox;
 };
 
-#endif // PDFDEBUGITEMTEXTBOX_H
+#endif  // PDFDEBUGITEMTEXTBOX_H

@@ -77,7 +77,7 @@ int KssEditor::lineNumberAreaWidth()
         max /= 10;
         ++digits;
     }
-#if QT_VERSION > QT_VERSION_CHECK(5,10,0)
+#if QT_VERSION > QT_VERSION_CHECK(5, 10, 0)
     int space = 10 + fontMetrics().horizontalAdvance(QLatin1Char('9')) * digits;
 #else
     int space = 10 + fontMetrics().width(QLatin1Char('9')) * digits;

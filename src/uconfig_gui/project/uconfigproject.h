@@ -84,4 +84,4 @@ protected:
     QList<QString> _oldProjects;
 };
 
-#endif // UCONFIGPROJECT_H
+#endif  // UCONFIGPROJECT_H

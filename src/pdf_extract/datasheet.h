@@ -32,7 +32,7 @@ namespace Poppler
 {
 class Document;
 class Page;
-} // namespace Poppler
+}  // namespace Poppler
 
 class DATASHEET_EXTRACTOR_EXPORT Datasheet : public QObject
 {
@@ -86,4 +86,4 @@ private:
     bool _force;
 };
 
-#endif // DATASHEET_H
+#endif  // DATASHEET_H

@@ -134,4 +134,4 @@ protected:
     bool _rectSet;
 };
 
-#endif // CLASSRULE_H
+#endif  // CLASSRULE_H

@@ -29,4 +29,4 @@ public:
     PdfDebugScene(QObject *parent = Q_NULLPTR);
 };
 
-#endif // PDFDEBUGSCENE_H
+#endif  // PDFDEBUGSCENE_H

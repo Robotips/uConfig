@@ -9,4 +9,4 @@ public:
     LibModule();
 };
 
-#endif // LIBMODULE_H
+#endif  // LIBMODULE_H

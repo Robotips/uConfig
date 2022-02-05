@@ -27,4 +27,4 @@ public:
     PDFComponent();
 };
 
-#endif // PDFCOMPONENT_H
+#endif  // PDFCOMPONENT_H

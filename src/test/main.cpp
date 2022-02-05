@@ -16,15 +16,15 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#include <QDebug>
 #include <QApplication>
 #include <QDateTime>
+#include <QDebug>
 #include <QScreen>
 
 #include "../pdf_extract/datasheet.h"
 
-#include "../kicad/viewer/componentviewer.h"
 #include "../kicad/model/lib.h"
+#include "../kicad/viewer/componentviewer.h"
 
 #include "../kicad/pinruler/pinruler.h"
 #include "../kicad/pinruler/rulesparser.h"
@@ -38,10 +38,10 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
-    //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPL_revB.pdf");
-    //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MZ EF.pdf");
-    //qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MX1xx-2xx-5xx-64-100pins_revD.pdf");
+    // qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPM_revC.pdf");
+    // qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MM_GPL_revB.pdf");
+    // qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MZ EF.pdf");
+    // qDebug()<<datasheet.open("../../../projects/DataSheets/Microchip/PIC32/PIC32MX1xx-2xx-5xx-64-100pins_revD.pdf");
     /*qDebug()<<datasheet.open("../../../projects/DataSheets/ST/STM32M7.pdf");
     qint64 d = QDateTime::currentMSecsSinceEpoch();
     datasheet.analyse(48);
@@ -61,23 +61,22 @@ int main(int argc, char *argv[])
     else
         return 0;*/
 
-/*    Datasheet datasheet;
-    datasheet.setDebugEnabled();
-    datasheet.open("../src/autotest/ATmega328P_pins.pdf");
-    datasheet.analyse();
-    if (datasheet.packages().empty())
-        return 0;
+    /*    Datasheet datasheet;
+        datasheet.setDebugEnabled();
+        datasheet.open("../src/autotest/ATmega328P_pins.pdf");
+        datasheet.analyse();
+        if (datasheet.packages().empty())
+            return 0;
 
-    Component *component = datasheet.packages()[0]->toComponent();
-    component->reorganizeToPackageStyle();
+        Component *component = datasheet.packages()[0]->toComponent();
+        component->reorganizeToPackageStyle();
 
-    ComponentViewer cviewer;
-        cviewer.setComponent(component);
-        cviewer.show();
-        cviewer.resize(QApplication::primaryScreen()->size()*.7);
+        ComponentViewer cviewer;
+            cviewer.setComponent(component);
+            cviewer.show();
+            cviewer.resize(QApplication::primaryScreen()->size()*.7);
 
-    return a.exec();*/
-
+        return a.exec();*/
 
     /*RulesSet ruleSet;
     RulesParser parser("../rules/atmel.kss");
@@ -96,7 +95,7 @@ int main(int argc, char *argv[])
             component = lib.components()[i];
     ruler.organize(component);*/
 
-    //lib.saveTo("/home/seb/Seafile/UniSwarm/pcb/PIC32MK_revD.lib");
+    // lib.saveTo("/home/seb/Seafile/UniSwarm/pcb/PIC32MK_revD.lib");
 
     /*ComponentScene scene(0,0,0,0);
     scene.setComponent(component);
@@ -110,8 +109,8 @@ int main(int argc, char *argv[])
     viewer.resize(QApplication::primaryScreen()->size()*.7);*/
 
     PDFDatasheet pdf("../src/autotest/ATmega328P_pins.pdf");
-//    PDFDatasheet pdf("../src/autotest/ATmega328P_pins.pdf");
-    //PDFDatasheet pdf("C:/Users/seb/Seafile/UniSwarm/DataSheets/Microchip/PIC16b/dsPIC33EP/PIC24-dsPIC33-EPxxxGP-MC-20x-50x_revH.pdf");
+    //    PDFDatasheet pdf("../src/autotest/ATmega328P_pins.pdf");
+    // PDFDatasheet pdf("C:/Users/seb/Seafile/UniSwarm/DataSheets/Microchip/PIC16b/dsPIC33EP/PIC24-dsPIC33-EPxxxGP-MC-20x-50x_revH.pdf");
 
     PdfDebugWidget viewer(&pdf);
     viewer.showPage(0);

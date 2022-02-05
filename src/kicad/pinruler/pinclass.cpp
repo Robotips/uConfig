@@ -108,9 +108,10 @@ void PinClass::applyRule(ClassRule *rule)
 
 void PinClass::applyRules(QList<ClassRule *> rules)
 {
-    for (ClassRule *rule : rules) {
+    for (ClassRule *rule : rules)
+    {
         applyRule(rule);
-}
+    }
 }
 
 void PinClass::sortPins()
@@ -195,27 +196,27 @@ void PinClass::setPos(const QPoint &basePos)
 
     switch (_position)
     {
-    case ClassRule::PositionTop:
-        direction = Pin::Down;
-        offset = QPoint(100, 0);
-        translate = QPoint(0, -_length);
-        break;
-    case ClassRule::PositionBottom:
-        direction = Pin::Up;
-        offset = QPoint(100, 0);
-        translate = QPoint(0, _length);
-        break;
-    case ClassRule::PositionLeft:
-        direction = Pin::Right;
-        offset = QPoint(0, 100);
-        translate = QPoint(-_length, 0);
-        break;
-    case ClassRule::PositionRight:
-    case ClassRule::PositionASide:
-        direction = Pin::Left;
-        offset = QPoint(0, 100);
-        translate = QPoint(_length, 0);
-        break;
+        case ClassRule::PositionTop:
+            direction = Pin::Down;
+            offset = QPoint(100, 0);
+            translate = QPoint(0, -_length);
+            break;
+        case ClassRule::PositionBottom:
+            direction = Pin::Up;
+            offset = QPoint(100, 0);
+            translate = QPoint(0, _length);
+            break;
+        case ClassRule::PositionLeft:
+            direction = Pin::Right;
+            offset = QPoint(0, 100);
+            translate = QPoint(-_length, 0);
+            break;
+        case ClassRule::PositionRight:
+        case ClassRule::PositionASide:
+            direction = Pin::Left;
+            offset = QPoint(0, 100);
+            translate = QPoint(_length, 0);
+            break;
     }
     sortPins();
     for (PinClassItem *pinItem : _pins)
@@ -261,23 +262,23 @@ void PinClass::computeBoundingRect() const
 
     switch (_position)
     {
-    case ClassRule::PositionTop:
-    case ClassRule::PositionBottom:
-        rect = QRect(0, 0, _pins.size() * 100, qCeil((maxLength + 30) / 100.0) * 100);
-        if (hasLabelSet() && !_label.isEmpty())
-        {
-            rect.adjust(0, 0, 0, 100);
-        }
-        break;
-    case ClassRule::PositionLeft:
-    case ClassRule::PositionRight:
-    case ClassRule::PositionASide:
-        rect = QRect(0, 0, qCeil((maxLength + 30) / 100.0) * 100, _pins.size() * 100);
-        if (hasLabelSet() && !_label.isEmpty())
-        {
-            rect.adjust(0, 0, 100, 0);
-        }
-        break;
+        case ClassRule::PositionTop:
+        case ClassRule::PositionBottom:
+            rect = QRect(0, 0, _pins.size() * 100, qCeil((maxLength + 30) / 100.0) * 100);
+            if (hasLabelSet() && !_label.isEmpty())
+            {
+                rect.adjust(0, 0, 0, 100);
+            }
+            break;
+        case ClassRule::PositionLeft:
+        case ClassRule::PositionRight:
+        case ClassRule::PositionASide:
+            rect = QRect(0, 0, qCeil((maxLength + 30) / 100.0) * 100, _pins.size() * 100);
+            if (hasLabelSet() && !_label.isEmpty())
+            {
+                rect.adjust(0, 0, 100, 0);
+            }
+            break;
     }
     _boundingRect = rect;
     _brect = true;
@@ -307,28 +308,28 @@ DrawText *PinClass::getDrawText() const
 
     switch (_position)
     {
-    case ClassRule::PositionTop:
-        height = qCeil(boundingRect().height() / 100.0) * 100 - 100;
-        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 50 + height));
-        drawClassLabel->setDirection(DrawText::DirectionHorizontal);
-        break;
-    case ClassRule::PositionBottom:
-        height = qCeil(boundingRect().height() / 100.0) * 100 - 100;
-        drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 50 - height));
-        drawClassLabel->setDirection(DrawText::DirectionHorizontal);
-        break;
-    case ClassRule::PositionLeft:
-        width = qCeil(boundingRect().width() / 100.0) * 100 - 100;
-        drawClassLabel->setPos(QPoint(_pos.x() + width + 50, _pos.y() - 50 + boundingRect().height() / 2));
-        drawClassLabel->setDirection(DrawText::DirectionVertital);
-        break;
-    case ClassRule::PositionRight:
-        width = qCeil(boundingRect().width() / 100.0) * 100 - 100;
-        drawClassLabel->setPos(QPoint(_pos.x() - width - 50, _pos.y() - 50 + boundingRect().height() / 2));
-        drawClassLabel->setDirection(DrawText::DirectionVertital);
-        break;
-    case ClassRule::PositionASide:
-        break;
+        case ClassRule::PositionTop:
+            height = qCeil(boundingRect().height() / 100.0) * 100 - 100;
+            drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 50 + height));
+            drawClassLabel->setDirection(DrawText::DirectionHorizontal);
+            break;
+        case ClassRule::PositionBottom:
+            height = qCeil(boundingRect().height() / 100.0) * 100 - 100;
+            drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 50 - height));
+            drawClassLabel->setDirection(DrawText::DirectionHorizontal);
+            break;
+        case ClassRule::PositionLeft:
+            width = qCeil(boundingRect().width() / 100.0) * 100 - 100;
+            drawClassLabel->setPos(QPoint(_pos.x() + width + 50, _pos.y() - 50 + boundingRect().height() / 2));
+            drawClassLabel->setDirection(DrawText::DirectionVertital);
+            break;
+        case ClassRule::PositionRight:
+            width = qCeil(boundingRect().width() / 100.0) * 100 - 100;
+            drawClassLabel->setPos(QPoint(_pos.x() - width - 50, _pos.y() - 50 + boundingRect().height() / 2));
+            drawClassLabel->setDirection(DrawText::DirectionVertital);
+            break;
+        case ClassRule::PositionASide:
+            break;
     }
     drawClassLabel->setTextStyle(DrawText::TextBold);
     drawClassLabel->setTextHJustify(DrawText::TextHCenter);
@@ -351,44 +352,44 @@ DrawRect *PinClass::getDrawRect() const
 
     switch (_position)
     {
-    case ClassRule::PositionTop:
-        drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
-        height = qCeil(boundingRect().height() / 100.0) * 100;
-        if (hasLabelSet() && !_label.isEmpty())
-        {
-            height -= 100;
-        }
-        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + height));
-        break;
-    case ClassRule::PositionBottom:
-        drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
-        height = qCeil(boundingRect().height() / 100.0) * 100;
-        if (hasLabelSet() && !_label.isEmpty())
-        {
-            height -= 100;
-        }
-        drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - height));
-        break;
-    case ClassRule::PositionLeft:
-        drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
-        width = qCeil(boundingRect().width() / 100.0) * 100;
-        if (hasLabelSet() && !_label.isEmpty())
-        {
-            width -= 100;
-        }
-        drawRect->setEndPos(QPoint(_pos.x() + width, _pos.y() + boundingRect().height()));
-        break;
-    case ClassRule::PositionRight:
-        drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
-        width = qCeil(boundingRect().width() / 100.0) * 100;
-        if (hasLabelSet() && !_label.isEmpty())
-        {
-            width -= 100;
-        }
-        drawRect->setEndPos(QPoint(_pos.x() - width, _pos.y() + boundingRect().height()));
-        break;
-    case ClassRule::PositionASide:
-        break;
+        case ClassRule::PositionTop:
+            drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
+            height = qCeil(boundingRect().height() / 100.0) * 100;
+            if (hasLabelSet() && !_label.isEmpty())
+            {
+                height -= 100;
+            }
+            drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() + height));
+            break;
+        case ClassRule::PositionBottom:
+            drawRect->setPos(QPoint(_pos.x() - 100, _pos.y()));
+            height = qCeil(boundingRect().height() / 100.0) * 100;
+            if (hasLabelSet() && !_label.isEmpty())
+            {
+                height -= 100;
+            }
+            drawRect->setEndPos(QPoint(_pos.x() + boundingRect().width(), _pos.y() - height));
+            break;
+        case ClassRule::PositionLeft:
+            drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
+            width = qCeil(boundingRect().width() / 100.0) * 100;
+            if (hasLabelSet() && !_label.isEmpty())
+            {
+                width -= 100;
+            }
+            drawRect->setEndPos(QPoint(_pos.x() + width, _pos.y() + boundingRect().height()));
+            break;
+        case ClassRule::PositionRight:
+            drawRect->setPos(QPoint(_pos.x(), _pos.y() - 100));
+            width = qCeil(boundingRect().width() / 100.0) * 100;
+            if (hasLabelSet() && !_label.isEmpty())
+            {
+                width -= 100;
+            }
+            drawRect->setEndPos(QPoint(_pos.x() - width, _pos.y() + boundingRect().height()));
+            break;
+        case ClassRule::PositionASide:
+            break;
     }
 
     return drawRect;

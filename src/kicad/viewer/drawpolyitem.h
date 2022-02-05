@@ -49,4 +49,4 @@ protected:
     QRectF _rect;
 };
 
-#endif // DRAWPOLYITEM_H
+#endif  // DRAWPOLYITEM_H

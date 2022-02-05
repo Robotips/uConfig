@@ -71,4 +71,4 @@ protected:
     QAction *_removeAction;
 };
 
-#endif // COMPONENTLIBTREEVIEW_H
+#endif  // COMPONENTLIBTREEVIEW_H

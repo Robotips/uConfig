@@ -56,4 +56,4 @@ protected:
     QPlainTextEdit *_aliasesEdit;
 };
 
-#endif // COMPONENTINFOSEDITOR_H
+#endif  // COMPONENTINFOSEDITOR_H

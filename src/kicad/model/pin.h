@@ -139,4 +139,4 @@ private:
     Component *_component;
 };
 
-#endif // PIN_H
+#endif  // PIN_H

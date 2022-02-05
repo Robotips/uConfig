@@ -133,4 +133,4 @@ private:
     int _layers;
 };
 
-#endif // PAD_H
+#endif  // PAD_H

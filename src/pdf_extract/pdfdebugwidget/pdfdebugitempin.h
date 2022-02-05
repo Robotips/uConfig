@@ -29,4 +29,4 @@ public:
     PdfDebugItemPin();
 };
 
-#endif // PDFDEBUGITEMPIN_H
+#endif  // PDFDEBUGITEMPIN_H
