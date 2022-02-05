@@ -209,6 +209,7 @@ void UConfigMainWindow::createWidgets()
 
     QTabWidget *tabWidget = new QTabWidget();
     _componentWidget = new ComponentWidget(this);
+    _componentWidget->setStyleSheet("QGraphicsView {background: white;}");
     _pdfDebug = new QLabel();
     _pdfDebug->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Fixed);
     _pdfDebug->setScaledContents(true);

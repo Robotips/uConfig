@@ -36,6 +36,8 @@ HEADERS  += \
 RESOURCES += \
         $$PWD/img.qrc
 
+RESOURCES += $$PWD/../../contrib/QDarkStyleSheet/qdarkstyle/style.qrc
+
 unix:{
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"

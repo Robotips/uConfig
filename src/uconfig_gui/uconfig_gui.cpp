@@ -50,5 +50,24 @@ int main(int argc, char *argv[])
         project.newLib();
     }
 
+    QFile f(":qdarkstyle/style.qss");
+    if (f.exists())
+    {
+        f.open(QFile::ReadOnly | QFile::Text);
+        QTextStream ts(&f);
+        app.setStyleSheet(ts.readAll());
+        mainWindow.setStyleSheet("\
+            QScrollArea {border: none;} \
+            QComboBox::item:checked {height: 24px;} \
+            QMenu::icon {margin: 1px;} \
+            QMenu::icon:checked {margin: 0; background: #505F69; border: 1px inset #505F69; position: absolute; top: 1px; right: 1px; bottom: 1px; left: 1px;} \
+            QMenu::item {padding: 4px 24px 4px 8px;} \
+            QToolBar {border-bottom: none; border-radius: 4px;} \
+            QSplitter::handle:horizontal {width: 2px;} \
+            QSplitter::handle:vertical {height: 2px;} \
+            QGroupBox {padding: 4px 0px 0px 0px;} \
+        ");
+    }
+
     return app.exec();
 }
