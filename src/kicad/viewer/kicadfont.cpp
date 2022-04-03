@@ -68,19 +68,19 @@ QFont KicadFont::font(double size)
     return font;
 }
 
-void KicadFont::drawText(QPainter *painter, const QRectF &rect, int flags, const QString &text)
+void KicadFont::drawText(QPainter *painter, const QRectF &rect, int flags, const QString &text) const
 {
     QRectF textRect = rect;
     double mtextWidth = textWidth(text);
-    if (flags & Qt::AlignLeft)
+    if ((flags & Qt::AlignLeft) != 0)
     {
         textRect.setWidth(qMin(mtextWidth, rect.width()));
     }
-    else if (flags & Qt::AlignRight)
+    else if ((flags & Qt::AlignRight) != 0)
     {
         textRect.adjust(rect.width() - qMin(mtextWidth, rect.width()), 0, 0, 0);
     }
-    else if (flags & Qt::AlignCenter)
+    else if ((flags & Qt::AlignCenter) != 0)
     {
         double offset = qMax(rect.width() - mtextWidth, 0.0);
         textRect.adjust(offset / 2, 0, -offset / 2, 0);
@@ -91,9 +91,8 @@ void KicadFont::drawText(QPainter *painter, const QRectF &rect, int flags, const
 
     QRectF charRect = textRect;
     double x = textRect.x();
-    for (int i = 0; i < text.size(); i++)
+    for (auto c : text)
     {
-        QChar c = text[i];
         double mcharWidth = charWidth(c);
         charRect.setX(x - mcharWidth / 2);
         charRect.setWidth(mcharWidth * 2);

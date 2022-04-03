@@ -97,7 +97,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     }
 
     quotationFormat.setForeground(QColor(128, 0, 128));
-    rule.pattern.setPattern("(\"[^\"]*\")");
+    rule.pattern.setPattern(R"(("[^"]*"))");
     rule.format = quotationFormat;
     highlightingRules.append(rule);
 

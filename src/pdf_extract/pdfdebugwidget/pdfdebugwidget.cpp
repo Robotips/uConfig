@@ -47,7 +47,7 @@ void PdfDebugWidget::setDatasheet(PDFDatasheet *datasheet)
 {
     _datasheet = datasheet;
 
-    if (_datasheet)
+    if (_datasheet != nullptr)
     {
         _pageLabel->setText(QString(" / %1").arg(_datasheet->pageCount()));
     }
@@ -55,7 +55,7 @@ void PdfDebugWidget::setDatasheet(PDFDatasheet *datasheet)
 
 void PdfDebugWidget::showPage(int page)
 {
-    if (!_datasheet)
+    if (_datasheet == nullptr)
     {
         return;
     }
@@ -65,7 +65,7 @@ void PdfDebugWidget::showPage(int page)
     }
 
     PDFPage *pdfPage = _datasheet->page(page);
-    if (!pdfPage)
+    if (pdfPage == nullptr)
     {
         return;
     }
@@ -107,7 +107,7 @@ PDFPage *PdfDebugWidget::currentPage() const
 
 int PdfDebugWidget::currentNumPage() const
 {
-    if (!_currentPage)
+    if (_currentPage == nullptr)
     {
         return 0;
     }

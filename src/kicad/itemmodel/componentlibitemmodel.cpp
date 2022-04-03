@@ -24,7 +24,7 @@
 ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent)
     : QAbstractItemModel(parent)
 {
-    if (lib)
+    if (lib != nullptr)
     {
         _lib = lib;
     }
@@ -65,7 +65,7 @@ void ComponentLibItemModel::addComponent(Component *component)
 
 QList<Component *> ComponentLibItemModel::components() const
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return QList<Component *>();
     }
@@ -74,7 +74,7 @@ QList<Component *> ComponentLibItemModel::components() const
 
 QModelIndex ComponentLibItemModel::index(Component *component, int coulumn)
 {
-    if (!component)
+    if (component == nullptr)
     {
         return QModelIndex();
     }
@@ -91,7 +91,7 @@ QModelIndex ComponentLibItemModel::index(Component *component, int coulumn)
 
 Component *ComponentLibItemModel::component(const QModelIndex &index) const
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return Q_NULLPTR;
     }
@@ -105,7 +105,7 @@ Component *ComponentLibItemModel::component(const QModelIndex &index) const
 void ComponentLibItemModel::remove(const QModelIndex &index)
 {
     Component *mcomponent = component(index);
-    if (!mcomponent)
+    if (mcomponent == nullptr)
     {
         return;
     }
@@ -148,7 +148,7 @@ QVariant ComponentLibItemModel::headerData(int section, Qt::Orientation orientat
 
 QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return QVariant();
     }
@@ -182,10 +182,7 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
                 {
                     return Qt::Checked;
                 }
-                else
-                {
-                    return Qt::Unchecked;
-                }
+                return Qt::Unchecked;
             }
             break;
         case Qt::FontRole:
@@ -202,7 +199,7 @@ QVariant ComponentLibItemModel::data(const QModelIndex &index, int role) const
 
 bool ComponentLibItemModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return false;
     }
@@ -233,7 +230,7 @@ bool ComponentLibItemModel::setData(const QModelIndex &index, const QVariant &va
 QModelIndex ComponentLibItemModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return QModelIndex();
     }
@@ -252,7 +249,7 @@ QModelIndex ComponentLibItemModel::parent(const QModelIndex &child) const
 
 int ComponentLibItemModel::rowCount(const QModelIndex &parent) const
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return 0;
     }
@@ -269,10 +266,7 @@ Qt::ItemFlags ComponentLibItemModel::flags(const QModelIndex &index) const
     {
         return Qt::ItemIsEnabled | Qt::ItemIsSelectable | Qt::ItemIsUserCheckable;
     }
-    else
-    {
-        return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
-    }
+    return Qt::ItemIsEnabled | Qt::ItemIsSelectable;
 }
 
 Component *ComponentLibItemModel::activeComponent() const
@@ -302,7 +296,7 @@ void ComponentLibItemModel::setActiveComponent(Component *activeComponent)
 void ComponentLibItemModel::selectAll(bool selected)
 {
     emit layoutAboutToBeChanged();
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return;
     }
@@ -334,7 +328,7 @@ const QList<Component *> &ComponentLibItemModel::selectedComponents() const
 
 void ComponentLibItemModel::updateComponent(Component *component)
 {
-    if (component)
+    if (component != nullptr)
     {
         emit dataChanged(index(component, 0), index(component, ColumnCount - 1));
     }

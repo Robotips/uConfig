@@ -71,7 +71,7 @@ void ComponentItem::setComponent(Component *component, int layer)
         if (draw->unit() == _layer || draw->unit() == 0)
         {
             DrawItem *drawItem = DrawItem::fromDraw(draw);
-            if (drawItem)
+            if (drawItem != nullptr)
             {
                 drawItem->setParentItem(this);
             }
@@ -99,7 +99,7 @@ PinItem *ComponentItem::pinItem(Pin *pin)
 void ComponentItem::removePin(Pin *pin)
 {
     PinItem *mpinItem = pinItem(pin);
-    if (mpinItem)
+    if (mpinItem != nullptr)
     {
         _pinItemMap.remove(pin);
         scene()->removeItem(mpinItem);

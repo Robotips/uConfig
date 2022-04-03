@@ -30,7 +30,7 @@ public:
     explicit DataSheetThread(Datasheet *datasheet);
     ~DataSheetThread() override;
 
-    bool open(QString fileName);
+    bool open(const QString &fileName);
     void close();
 
     void setRange(int pageBegin = -1, int pageEnd = -1);

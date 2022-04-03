@@ -22,6 +22,7 @@
 #include <QDebug>
 #include <QFile>
 #include <QFileInfo>
+#include <utility>
 
 #include "../parser/libparser.h"
 
@@ -29,8 +30,8 @@
  * @brief Lib constructor
  * @param name optional library name
  */
-Lib::Lib(const QString &name)
-    : _name(name)
+Lib::Lib(QString name)
+    : _name(std::move(name))
 {
 }
 
@@ -42,9 +43,9 @@ Lib::Lib(const Lib &other)
 {
     _name = other._name;
 
-    for (int i = 0; i < other._components.size(); i++)
+    for (auto component : other._components)
     {
-        addComponent(new Component(*other._components[i]));
+        addComponent(new Component(*component));
     }
 }
 
@@ -149,9 +150,9 @@ void Lib::releaseComponents()
  */
 void Lib::clear()
 {
-    for (int i = 0; i < _components.size(); i++)
+    for (auto &component : _components)
     {
-        delete _components[i];
+        delete component;
     }
     _components.clear();
 }
@@ -163,8 +164,7 @@ void Lib::clear()
  */
 bool Lib::saveTo(const QString &fileName)
 {
-    LibParser libParser;
-    return libParser.saveLib(this, fileName, LibParser::Kicad);
+    return LibParser::saveLib(this, fileName, LibParser::Kicad);
 }
 
 /**
@@ -174,6 +174,5 @@ bool Lib::saveTo(const QString &fileName)
  */
 bool Lib::readFrom(const QString &fileName)
 {
-    LibParser libParser;
-    return libParser.loadLib(this, fileName, LibParser::Kicad);
+    return LibParser::loadLib(this, fileName, LibParser::Kicad) != nullptr;
 }

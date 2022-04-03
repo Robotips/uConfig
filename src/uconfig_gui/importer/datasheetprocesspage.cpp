@@ -121,7 +121,7 @@ void DatasheetProcessPage::changePage(int page)
     _progressLabel->setText(tr("page %1 / %2").arg(page).arg(_progressBar->maximum()));
 }
 
-void DatasheetProcessPage::addLog(QString str)
+void DatasheetProcessPage::addLog(const QString &str)
 {
     _logger->appendPlainText(str);
 }

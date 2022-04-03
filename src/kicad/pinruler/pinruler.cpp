@@ -53,7 +53,8 @@ bool prioGreaterThan(PinClass *c1, PinClass *c2)
 
 void PinRuler::organize(Component *component)
 {
-    int x, y;
+    int x;
+    int y;
 
     component->clearDraws();
 
@@ -119,12 +120,16 @@ void PinRuler::organize(Component *component)
     }
 
     // sideSize computation and side class list assignment
-    QList<PinClass *> topSide, bottomSide;
-    QList<PinClass *> leftSide, rightSide;
+    QList<PinClass *> topSide;
+    QList<PinClass *> bottomSide;
+    QList<PinClass *> leftSide;
+    QList<PinClass *> rightSide;
     QList<PinClass *> aSide;        // last assign
     QList<PinClass *> removedPins;  // last assign
-    QSize topSize = QSize(0, 0), bottomSize = QSize(0, 0);
-    QSize leftSize = QSize(0, 0), rightSize = QSize(0, 0);
+    QSize topSize = QSize(0, 0);
+    QSize bottomSize = QSize(0, 0);
+    QSize leftSize = QSize(0, 0);
+    QSize rightSize = QSize(0, 0);
     QSize removedSize = QSize(0, 0);
     for (PinClass *mpinClass : _pinClasses)
     {
@@ -241,7 +246,7 @@ void PinRuler::organize(Component *component)
         {
             component->addDraw(mpinClass->getDrawText());
         }
-        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        if (mpinClass->hasRectSet() && static_cast<int>(mpinClass->rect()) > 0)
         {
             component->addDraw(mpinClass->getDrawRect());
         }
@@ -262,7 +267,7 @@ void PinRuler::organize(Component *component)
         {
             component->addDraw(mpinClass->getDrawText());
         }
-        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        if (mpinClass->hasRectSet() && static_cast<int>(mpinClass->rect()) > 0)
         {
             component->addDraw(mpinClass->getDrawRect());
         }
@@ -280,7 +285,7 @@ void PinRuler::organize(Component *component)
         {
             component->addDraw(mpinClass->getDrawText());
         }
-        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        if (mpinClass->hasRectSet() && static_cast<int>(mpinClass->rect()) > 0)
         {
             component->addDraw(mpinClass->getDrawRect());
         }
@@ -298,7 +303,7 @@ void PinRuler::organize(Component *component)
         {
             component->addDraw(mpinClass->getDrawText());
         }
-        if (mpinClass->hasRectSet() && mpinClass->rect() > 0)
+        if (mpinClass->hasRectSet() && static_cast<int>(mpinClass->rect()) > 0)
         {
             component->addDraw(mpinClass->getDrawRect());
         }
@@ -368,8 +373,6 @@ PinClass *PinRuler::pinClass(const QString &className)
     {
         return addClass(className);
     }
-    else
-    {
-        return *classFind;
-    }
+
+    return *classFind;
 }

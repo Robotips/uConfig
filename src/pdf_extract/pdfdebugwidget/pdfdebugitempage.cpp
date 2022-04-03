@@ -32,7 +32,9 @@ PdfDebugItemPage::PdfDebugItemPage(PDFPage *page)
     _page = page;
 
     for (PDFTextBox *textBox : _page->textBoxes())
+    {
         new PdfDebugItemTextBox(textBox, this);
+    }
 }
 
 PDFPage *PdfDebugItemPage::page() const

@@ -110,7 +110,8 @@ void PDFFilePage::check()
         }
         else
         {
-            int start = -1, stop = -1;
+            int start = -1;
+            int stop = -1;
             QRegularExpression reg("^([0-9]+)(\\-[0-9]+)?$");
             QRegularExpressionMatch match = reg.match(_rangeEdit->text());
             start = match.captured(1).toInt() - 1;

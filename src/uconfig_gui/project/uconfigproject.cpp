@@ -83,7 +83,7 @@ void UConfigProject::openLib(const QString &libFileName)
         {
             fileDialog.setDirectory(QFileInfo(_libFileName).dir());
         }
-        if (fileDialog.exec())
+        if (fileDialog.exec() != 0)
         {
             mlibFileName = fileDialog.selectedFiles().first();
         }
@@ -139,7 +139,7 @@ void UConfigProject::saveLibAs(const QString &fileName)
             libFileName.replace(QRegExp("(.*)\\.(pdf|csv)"), "\\1.lib");
             fileDialog.selectFile(libFileName);
         }
-        if (fileDialog.exec())
+        if (fileDialog.exec() != 0)
         {
             libFileName = fileDialog.selectedFiles().first();
         }
@@ -174,7 +174,7 @@ void UConfigProject::saveLibAs(const QString &fileName)
 
 void UConfigProject::importComponents(const QString &fileName)
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         _lib = new Lib();
     }
@@ -186,7 +186,9 @@ void UConfigProject::importComponents(const QString &fileName)
     }
 
     for (Component *component : importer.components())
+    {
         _lib->addComponent(component);
+    }
 
     _importedPathLib = importer.filePath();
     emit libChanged(_lib);
@@ -199,7 +201,7 @@ void UConfigProject::importComponents(const QString &fileName)
 
 bool UConfigProject::closeLib()
 {
-    if (!_lib)
+    if (_lib == nullptr)
     {
         return true;
     }
@@ -217,11 +219,7 @@ bool UConfigProject::closeLib()
     {
         saveLib();
     }
-    if (ret == QMessageBox::Cancel)
-    {
-        return false;
-    }
-    return true;
+    return (ret != QMessageBox::Cancel);
 }
 
 void UConfigProject::selectComponent(Component *component)
@@ -235,7 +233,7 @@ void UConfigProject::selectComponent(Component *component)
 
 void UConfigProject::setComponentInfo(UConfigProject::ComponentInfoType infoType, const QVariant &value)
 {
-    if (!_activeComponent)
+    if (_activeComponent == nullptr)
     {
         return;
     }

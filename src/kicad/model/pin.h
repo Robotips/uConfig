@@ -31,8 +31,8 @@ class KICAD_EXPORT Pin
 {
 public:
     explicit Pin();
-    Pin(const QString &name, const QString &padName = QString());
-    Pin(const QString &name, const int padnumber);
+    Pin(QString name, QString padName = QString());
+    Pin(const QString &name, int padnumber);
     Pin(const Pin &other);
 
     enum Direction

@@ -57,13 +57,13 @@ Component::Component(const Component &other)
     _showPadName = other._showPadName;
     _unitCount = other._unitCount;
 
-    for (int i = 0; i < other._pins.size(); i++)
+    for (auto pin : other._pins)
     {
-        addPin(new Pin(*other._pins[i]));
+        addPin(new Pin(*pin));
     }
-    for (int i = 0; i < other._draws.size(); i++)
+    for (auto draw : other._draws)
     {
-        addDraw(other._draws[i]->clone());
+        addDraw(draw->clone());
     }
 
     _refText = new DrawText(*other._refText);
@@ -77,13 +77,13 @@ Component::Component(const Component &other)
  */
 Component::~Component()
 {
-    for (int i = 0; i < _pins.size(); i++)
+    for (auto &pin : _pins)
     {
-        delete _pins[i];
+        delete pin;
     }
-    for (int i = 0; i < _draws.size(); i++)
+    for (auto &draw : _draws)
     {
-        delete _draws[i];
+        delete draw;
     }
     delete _refText;
     delete _nameText;
@@ -157,9 +157,9 @@ void Component::removePin(Pin *pin)
  */
 void Component::clearPins()
 {
-    for (int i = 0; i < _pins.size(); i++)
+    for (auto &pin : _pins)
     {
-        delete _pins[i];
+        delete pin;
     }
     _pins.clear();
 }
@@ -219,9 +219,9 @@ void Component::removeDraw(Draw *draw)
  */
 void Component::clearDraws()
 {
-    for (int i = 0; i < _draws.size(); i++)
+    for (auto &draw : _draws)
     {
-        delete _draws[i];
+        delete draw;
     }
     _draws.clear();
 }
@@ -323,9 +323,9 @@ void Component::addFootPrint(const QStringList &footprints)
 QRect Component::boundingRect() const
 {
     QRect mrect(0, 0, 1, 1);
-    for (int i = 0; i < _pins.size(); i++)
+    for (auto pin : _pins)
     {
-        mrect = mrect.united(QRect(_pins[i]->pos(), QSize(1, 1)));
+        mrect = mrect.united(QRect(pin->pos(), QSize(1, 1)));
     }
     return mrect;
 }
@@ -528,7 +528,8 @@ void Component::reorganizeToPackageStyle()
     }
 
     int margin = 0;
-    int leftMargin = 0, rightMargin = 0;
+    int leftMargin = 0;
+    int rightMargin = 0;
     sort();
     // compute leftMargin and rightMargin
     for (i = 0; i < leftCount; i++)

@@ -34,12 +34,12 @@
 class KICAD_EXPORT PinClass : public ClassRule
 {
 public:
-    PinClass(const QString &className);
+    PinClass(QString className);
 
     QString className() const;
 
     void applyRule(ClassRule *rule);
-    void applyRules(QList<ClassRule *> rules);
+    void applyRules(const QList<ClassRule *> &rules);
 
     void sortPins();
 

@@ -42,7 +42,7 @@ public:
 
 public slots:
     void selectPin(Pin *pin);
-    void selectPins(QList<Pin *> pins);
+    void selectPins(const QList<Pin *> &pins);
     void updatePin(Pin *pin);
     void removePin(Pin *pin);
 

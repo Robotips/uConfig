@@ -28,7 +28,7 @@
 class KICAD_EXPORT Lib
 {
 public:
-    Lib(const QString &name = QString());
+    Lib(QString name = QString());
     Lib(const Lib &other);
     ~Lib();
 

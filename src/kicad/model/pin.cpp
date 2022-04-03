@@ -19,6 +19,7 @@
 #include "pin.h"
 
 #include <QDebug>
+#include <utility>
 
 Pin::Pin()
     : _direction(Pin::Right)
@@ -32,9 +33,9 @@ Pin::Pin()
     _component = Q_NULLPTR;
 }
 
-Pin::Pin(const QString &name, const QString &padName)
-    : _name(name)
-    , _padName(padName)
+Pin::Pin(QString name, QString padName)
+    : _name(std::move(name))
+    , _padName(std::move(padName))
     , _direction(Pin::Right)
     , _pinType(Pin::Normal)
     , _electricalType(Pin::Input)

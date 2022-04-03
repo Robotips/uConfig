@@ -41,7 +41,7 @@ public:
     Datasheet();
     ~Datasheet() override;
 
-    bool open(QString fileName);
+    bool open(const QString &fileName);
     void close();
 
     void analyse(int pageBegin = -1, int pageEnd = -1);

@@ -54,7 +54,7 @@ void ComponentViewer::setComponent(Component *component, int layer)
 {
     disconnect(scene(), &QGraphicsScene::selectionChanged, this, &ComponentViewer::selectedItem);
     _scene->setComponent(component, layer);
-    if (component)
+    if (component != nullptr)
     {
         scene()->setSceneRect(_scene->componentItem()->boundingRect());
     }
@@ -67,21 +67,21 @@ void ComponentViewer::selectPin(Pin *pin)
 {
     blockSignals(true);
     scene()->clearSelection();
-    if (!pin)
+    if (pin == nullptr)
     {
         return;
     }
     PinItem *pinItem = _scene->componentItem()->pinItem(pin);
-    if (pinItem)
+    if (pinItem != nullptr)
     {
         pinItem->setSelected(true);
     }
     blockSignals(false);
 }
 
-void ComponentViewer::selectPins(QList<Pin *> pins)
+void ComponentViewer::selectPins(const QList<Pin *> &pins)
 {
-    if (!_scene->componentItem())
+    if (_scene->componentItem() == nullptr)
     {
         return;
     }
@@ -92,12 +92,12 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
     for (Pin *pin : pins)
     {
         pinItem = _scene->componentItem()->pinItem(pin);
-        if (pinItem)
+        if (pinItem != nullptr)
         {
             pinItem->setSelected(true);
         }
     }
-    if (pinItem)
+    if (pinItem != nullptr)
     {
         ensureVisible(pinItem, 5, 5);
     }
@@ -106,13 +106,13 @@ void ComponentViewer::selectPins(QList<Pin *> pins)
 
 void ComponentViewer::updatePin(Pin *pin)
 {
-    if (!_scene->componentItem())
+    if (_scene->componentItem() == nullptr)
     {
         return;
     }
 
     PinItem *pinItem = _scene->componentItem()->pinItem(pin);
-    if (pinItem)
+    if (pinItem != nullptr)
     {
         pinItem->updateData();
     }
@@ -120,7 +120,7 @@ void ComponentViewer::updatePin(Pin *pin)
 
 void ComponentViewer::removePin(Pin *pin)
 {
-    if (!_scene->componentItem())
+    if (_scene->componentItem() == nullptr)
     {
         return;
     }

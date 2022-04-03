@@ -302,7 +302,7 @@ void ClassRule::setLabel(const QString &label)
 
 bool ClassRule::rect() const
 {
-    return _rect;
+    return _rect != 0;
 }
 
 void ClassRule::setRect(int rect)
@@ -316,7 +316,7 @@ void ClassRule::setRect(const QString &rect)
     int id = ClassRule::boolEnumStr.indexOf(rect);
     if (id != -1)
     {
-        setRect(id == 1);
+        setRect(static_cast<int>(id == 1));
     }
 }
 

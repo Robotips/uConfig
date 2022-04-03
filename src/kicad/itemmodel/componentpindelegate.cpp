@@ -134,7 +134,7 @@ void ComponentPinDelegate::paint(QPainter *painter, const QStyleOptionViewItem &
     drawFocus(painter, option, option.rect);
 
     // compute colors and margins
-    QPalette::ColorGroup cg = option.state & QStyle::State_Enabled ? QPalette::Normal : QPalette::Disabled;
+    QPalette::ColorGroup cg = ((option.state & QStyle::State_Enabled) != 0u) ? QPalette::Normal : QPalette::Disabled;
     if (cg == QPalette::Normal && !(option.state & QStyle::State_Active))
     {
         cg = QPalette::Inactive;

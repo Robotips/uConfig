@@ -38,7 +38,7 @@ public:
 
     QFont font();
     static QFont font(double size);
-    void drawText(QPainter *painter, const QRectF &rect, int flags, const QString &text);
+    void drawText(QPainter *painter, const QRectF &rect, int flags, const QString &text) const;
 
 protected:
     static const int charWidthTable[];

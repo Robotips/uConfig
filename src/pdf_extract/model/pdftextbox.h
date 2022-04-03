@@ -30,7 +30,7 @@ class PDFPage;
 class DATASHEET_EXTRACTOR_EXPORT PDFTextBox
 {
 public:
-    PDFTextBox(const QString &text, const QRectF &boundingRect);
+    PDFTextBox(QString text, const QRectF &boundingRect);
     ~PDFTextBox();
 
     const QString &text() const;

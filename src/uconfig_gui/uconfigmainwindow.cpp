@@ -50,7 +50,7 @@ UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     createWidgets();
     createDocks();
     createToolbarsMenus();
-    setWindowTitle("uConfig");
+    setWindowTitle(tr("uConfig"));
     reloadRuleSetList();
     setAcceptDrops(true);
 
@@ -76,7 +76,7 @@ UConfigMainWindow::~UConfigMainWindow()
 
 void UConfigMainWindow::setTitle()
 {
-    setWindowTitle(_project->libName() + " | uConfig");
+    setWindowTitle(_project->libName() + tr(" | uConfig"));
 }
 
 void UConfigMainWindow::dragEnterEvent(QDragEnterEvent *event)
@@ -104,12 +104,12 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
     }
 }
 
-void UConfigMainWindow::organize(QString ruleSetName)
+void UConfigMainWindow::organize(const QString &ruleSetName)
 {
     disconnect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     if (ruleSetName == "package")
     {
-        if (!_componentWidget->component())
+        if (_componentWidget->component() == nullptr)
         {
             return;
         }
@@ -130,7 +130,7 @@ void UConfigMainWindow::organize(QString ruleSetName)
     _kssEditor->setLineError(parser.errorLine());
     connect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
 
-    if (_componentWidget->component())
+    if (_componentWidget->component() != nullptr)
     {
         PinRuler ruler(&ruleSet);
         Component *component = _componentWidget->component();
@@ -143,9 +143,9 @@ void UConfigMainWindow::organize(QString ruleSetName)
 
 void UConfigMainWindow::updateRules()
 {
-    if (_ruleComboBox->currentText() == "package")
+    if (_ruleComboBox->currentText() == tr("package"))
     {
-        if (_componentWidget->component())
+        if (_componentWidget->component() != nullptr)
         {
             Component *component = _componentWidget->component();
             _componentWidget->setComponent(Q_NULLPTR);
@@ -166,7 +166,7 @@ void UConfigMainWindow::updateRules()
 
     _kssEditor->setLineError(0);
     PinRuler ruler(&ruleSet);
-    if (_componentWidget->component())
+    if (_componentWidget->component() != nullptr)
     {
         Component *component = _componentWidget->component();
         _componentWidget->setComponent(Q_NULLPTR);
@@ -178,7 +178,7 @@ void UConfigMainWindow::updateRules()
 void UConfigMainWindow::reloadRuleSetList()
 {
     _ruleComboBox->clear();
-    _ruleComboBox->addItem("package");
+    _ruleComboBox->addItem(tr("package"));
     QDir dir(qApp->applicationDirPath() + "/../rules/");
     for (const QFileInfo &ruleInfo : dir.entryInfoList(QStringList() << "*.kss", QDir::NoDotAndDotDot | QDir::Files))
     {
@@ -188,13 +188,13 @@ void UConfigMainWindow::reloadRuleSetList()
 
 void UConfigMainWindow::setActiveComponent(Component *component)
 {
-    if (component)
+    if (component != nullptr)
     {
         _pdfDebug->setPixmap(QPixmap::fromImage(component->debugInfo()));
     }
     else
     {
-        _pdfDebug->setText("No pdf informations");
+        _pdfDebug->setText(tr("No pdf informations"));
     }
 }
 
@@ -216,8 +216,8 @@ void UConfigMainWindow::createWidgets()
     QScrollArea *pdfDebugArea = new QScrollArea();
     pdfDebugArea->setWidget(_pdfDebug);
     pdfDebugArea->setWidgetResizable(true);
-    tabWidget->addTab(_componentWidget, "component");
-    tabWidget->addTab(pdfDebugArea, "pdf debugger");
+    tabWidget->addTab(_componentWidget, tr("component"));
+    tabWidget->addTab(pdfDebugArea, tr("pdf debugger"));
 
     _splitter = new QSplitter();
     _splitter->addWidget(_splitterEditor);
@@ -369,7 +369,9 @@ void UConfigMainWindow::createToolbarsMenus()
     toolBar->addSeparator();
     _ruleComboBox = new QComboBox();
     connect(_ruleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(organize(QString)));
-    toolBar->addWidget(new QLabel(tr(" pin ruler: ")));
+    QLabel *labelFilter = new QLabel(tr(" pin ruler: "));
+    toolBar->addWidget(labelFilter);
+    labelFilter->setStyleSheet("QLabel {background: none}");
     QAction *actionRuleCombox = toolBar->addWidget(_ruleComboBox);
     actionRuleCombox->setStatusTip(tr("Change the rule for pin organisation"));
     QAction *ruleAction = new QAction(tr("Organize"), this);
@@ -407,7 +409,7 @@ void UConfigMainWindow::createToolbarsMenus()
 void UConfigMainWindow::openRecentFile()
 {
     QAction *action = qobject_cast<QAction *>(sender());
-    if (action)
+    if (action != nullptr)
     {
         _project->openLib(action->data().toString());
     }
@@ -415,7 +417,7 @@ void UConfigMainWindow::openRecentFile()
 
 void UConfigMainWindow::about()
 {
-    QMessageBox::about(this, "uConfig v0", QString("Copyright (C) 2017-2020 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
+    QMessageBox::about(this, "uConfig v0", tr("Copyright (C) 2017-2020 Robotips (<a href=\"https://robotips.fr\">robotips.fr</a>)<br>\
 <br>\
 This sofware is part of uConfig distribution. To check for new version, please visit <a href=\"https://github.com/Robotips/uConfig\">github.com/Robotips/uConfig</a><br>\
 <br>\

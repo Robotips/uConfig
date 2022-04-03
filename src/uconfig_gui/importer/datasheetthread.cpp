@@ -38,7 +38,7 @@ DataSheetThread::~DataSheetThread()
     delete _datasheet;
 }
 
-bool DataSheetThread::open(QString fileName)
+bool DataSheetThread::open(const QString &fileName)
 {
     return _datasheet->open(fileName);
 }

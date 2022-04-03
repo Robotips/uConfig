@@ -25,17 +25,17 @@
 int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
-    app.setOrganizationName("Robotips");
-    app.setOrganizationDomain("Robotips");
-    app.setApplicationName("uConfig");
+    QApplication::setOrganizationName("Robotips");
+    QApplication::setOrganizationDomain("Robotips");
+    QApplication::setApplicationName("uConfig");
 
     UConfigProject project;
     UConfigMainWindow mainWindow(&project);
     project.setWindow(&mainWindow);
     mainWindow.show();
-    if (app.arguments().size() > 1)
+    if (QApplication::arguments().size() > 1)
     {
-        QString fileArg = app.arguments()[1];
+        QString fileArg = QApplication::arguments()[1];
         if (fileArg.endsWith(".lib", Qt::CaseInsensitive))
         {
             project.openLib(fileArg);
@@ -69,5 +69,5 @@ int main(int argc, char *argv[])
         ");
     }
 
-    return app.exec();
+    return QApplication::exec();
 }

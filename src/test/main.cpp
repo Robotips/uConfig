@@ -116,5 +116,5 @@ int main(int argc, char *argv[])
     viewer.showPage(0);
     viewer.show();
 
-    return a.exec();
+    return QApplication::exec();
 }

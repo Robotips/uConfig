@@ -18,10 +18,12 @@
 
 #include "pdfdatasheet.h"
 
+#include <utility>
+
 #include "controller/pdfloader.h"
 
-PDFDatasheet::PDFDatasheet(const QString &fileName)
-    : _fileName(fileName)
+PDFDatasheet::PDFDatasheet(QString fileName)
+    : _fileName(std::move(fileName))
 {
     _pdfLoader = new PDFLoader(this);
 }
@@ -47,7 +49,7 @@ bool PDFDatasheet::loadPage(int numPage)
     {
         return false;
     }
-    if (page(numPage))
+    if (page(numPage) != nullptr)
     {
         return true;
     }

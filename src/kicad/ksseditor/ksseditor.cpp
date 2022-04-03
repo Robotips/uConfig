@@ -104,7 +104,7 @@ void KssEditor::updateLineNumberAreaWidth(int /*newBlockCount*/)
 
 void KssEditor::updateLineNumberArea(const QRect &rect, int dy)
 {
-    if (dy)
+    if (dy != 0)
     {
         _kssEditorMargin->scroll(0, dy);
     }

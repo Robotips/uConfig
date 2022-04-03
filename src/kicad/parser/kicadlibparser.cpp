@@ -35,7 +35,7 @@ KicadLibParser::KicadLibParser()
 Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
 {
     bool mylib = false;
-    if (!lib)
+    if (lib == nullptr)
     {
         mylib = true;
         lib = new Lib();
@@ -60,7 +60,7 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
     do
     {
         component = readComponent();
-        if (component)
+        if (component != nullptr)
         {
             lib->addComponent(component);
         }
@@ -94,7 +94,8 @@ bool KicadLibParser::saveLib(const QString &fileName, Lib *lib)
 
 QString KicadLibParser::readText()
 {
-    QString text, word;
+    QString text;
+    QString word;
     _stream >> word;
     if (word.startsWith('"'))
     {
@@ -109,10 +110,8 @@ QString KicadLibParser::readText()
         text.remove('"');
         return text;
     }
-    else
-    {
-        return word;
-    }
+
+    return word;
 }
 
 /**
@@ -452,7 +451,7 @@ Component *KicadLibParser::readComponent()
             if (start.startsWith("F0"))
             {
                 DrawText *refText = readLabel();
-                if (refText)
+                if (refText != nullptr)
                 {
                     component->setRefText(refText);
                 }
@@ -464,7 +463,7 @@ Component *KicadLibParser::readComponent()
             else if (start.startsWith("F1"))
             {
                 DrawText *nameText = readLabel();
-                if (nameText)
+                if (nameText != nullptr)
                 {
                     component->setNameText(nameText);
                 }
@@ -476,7 +475,7 @@ Component *KicadLibParser::readComponent()
             else if (start.startsWith("F2"))
             {
                 DrawText *packageText = readLabel();
-                if (packageText)
+                if (packageText != nullptr)
                 {
                     component->setPackageText(packageText);
                 }
@@ -488,7 +487,7 @@ Component *KicadLibParser::readComponent()
             else if (start.startsWith("F3"))
             {
                 DrawText *docText = readLabel();
-                if (docText)
+                if (docText != nullptr)
                 {
                     component->setDocText(docText);
                 }
@@ -541,7 +540,7 @@ Component *KicadLibParser::readComponent()
             if (start.startsWith('X'))
             {
                 Pin *pin = readPin();
-                if (pin)
+                if (pin != nullptr)
                 {
                     component->addPin(pin);
                 }
@@ -553,7 +552,7 @@ Component *KicadLibParser::readComponent()
             else
             {
                 Draw *draw = readDraw(start.data()[0].toLatin1());
-                if (draw)
+                if (draw != nullptr)
                 {
                     component->addDraw(draw);
                 }
@@ -598,7 +597,8 @@ Pin *KicadLibParser::readPin()
     pin->setPadName(padName);
 
     // position
-    int x, y;
+    int x;
+    int y;
     _stream >> x >> y;
     if (_stream.status() != QTextStream::Ok)
     {
@@ -624,7 +624,8 @@ Pin *KicadLibParser::readPin()
     pin->setDirection(direction);
 
     // text size
-    int textNameSize, textPadSize;
+    int textNameSize;
+    int textPadSize;
     _stream >> textPadSize;
     _stream >> textNameSize;
     pin->setTextNameSize(textNameSize);

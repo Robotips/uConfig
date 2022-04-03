@@ -47,7 +47,8 @@ DatasheetBox::~DatasheetBox()
 
 qreal DatasheetBox::distanceToPoint(const QPointF &center) const
 {
-    qreal dist, newdist;
+    qreal dist;
+    qreal newdist;
 
     dist = (center - pos.center()).manhattanLength();
 
@@ -94,11 +95,7 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
             return true;
         }
         marge = label.pos.width() / 2.0;
-        if (label.pos.left() - marge < number.pos.left() && label.pos.right() + marge > number.pos.right())
-        {
-            return true;
-        }
-        return false;
+        return (((label.pos.left() - marge) < number.pos.left()) && ((label.pos.right() + marge) > number.pos.right()));
     }
     if (label.pos.width() > label.pos.height())  // Horizontal
     {
@@ -107,25 +104,11 @@ bool DatasheetBox::isAlign(const DatasheetBox &label, const DatasheetBox &number
             return false;
         }
         marge = label.pos.height();
-        if (label.pos.top() - marge < number.pos.top() && label.pos.bottom() + marge > number.pos.bottom())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (((label.pos.top() - marge) < number.pos.top()) && ((label.pos.bottom() + marge) > number.pos.bottom()));
     }
     else  // Vertical
     {
         marge = label.pos.width();
-        if (label.pos.left() - marge < number.pos.left() && label.pos.right() + marge > number.pos.right())
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+        return (((label.pos.left() - marge) < number.pos.left()) && ((label.pos.right() + marge) > number.pos.right()));
     }
 }

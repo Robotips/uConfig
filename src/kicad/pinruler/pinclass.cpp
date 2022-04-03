@@ -20,11 +20,12 @@
 
 #include <QDebug>
 #include <qmath.h>
+#include <utility>
 
 #include "viewer/kicadfont.h"
 
-PinClass::PinClass(const QString &className)
-    : _className(className)
+PinClass::PinClass(QString className)
+    : _className(std::move(className))
 {
     _brect = false;
 }
@@ -102,11 +103,11 @@ void PinClass::applyRule(ClassRule *rule)
     }
     if (!_rectSet && rule->hasRectSet())
     {
-        setRect(rule->rect());
+        setRect(static_cast<int>(rule->rect()));
     }
 }
 
-void PinClass::applyRules(QList<ClassRule *> rules)
+void PinClass::applyRules(const QList<ClassRule *> &rules)
 {
     for (ClassRule *rule : rules)
     {
@@ -304,7 +305,8 @@ DrawText *PinClass::getDrawText() const
 
     DrawText *drawClassLabel = new DrawText(label());
 
-    int width, height;
+    int width;
+    int height;
 
     switch (_position)
     {
@@ -348,7 +350,8 @@ DrawRect *PinClass::getDrawRect() const
 
     drawRect->setThickness(_rect / 0.254);
 
-    int width, height;
+    int width;
+    int height;
 
     switch (_position)
     {

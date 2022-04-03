@@ -60,7 +60,7 @@ void ComponentPinsTableView::setComponent(Component *component)
 
 void ComponentPinsTableView::selectPin(Pin *pin)
 {
-    if (!pin)
+    if (pin == nullptr)
     {
         selectionModel()->clearSelection();
         return;
@@ -123,7 +123,7 @@ void ComponentPinsTableView::remove()
         return;
     }
 
-    if (selection.size() > 0)
+    if (!selection.empty())
     {
         QList<QPersistentModelIndex> pindex;
         for (QModelIndex selected : selection)
@@ -142,7 +142,7 @@ void ComponentPinsTableView::remove()
             return;
         }
         selectionModel()->clearSelection();
-        for (QPersistentModelIndex index : pindex)
+        for (const QPersistentModelIndex &index : pindex)
         {
             _model->remove(index);
         }

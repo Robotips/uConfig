@@ -39,12 +39,14 @@ void test_libkicad()
         QStringList items = line.split(";");
 
         int i = 0;
-        for (QString item : items)
+        for (const QString &item : items)
         {
             if (i > 0 && !item.isEmpty())
             {
                 if (!name.isEmpty())
+                {
                     name.append("/");
+                }
                 name.append(item);
             }
             i++;
@@ -62,11 +64,12 @@ void test_libkicad()
     QList<QPoint> points;
 
     for (int i = 0; i < 9; i++)
-        points.append(QPoint(1000 + 300 * i, 0));
-
-    for (int i = 0; i < component->pins().size(); i++)
     {
-        Pin *pin = component->pins()[i];
+        points.append(QPoint(1000 + 300 * i, 0));
+    }
+
+    for (auto pin : component->pins())
+    {
         if (pin->name() == "GND")
         {
             pin->setPos(gndpos);

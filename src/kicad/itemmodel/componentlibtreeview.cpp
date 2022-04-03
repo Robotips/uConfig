@@ -26,7 +26,7 @@
 ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent)
     : QTreeView(parent)
 {
-    if (lib)
+    if (lib != nullptr)
     {
         _model = new ComponentLibItemModel(lib);
     }
@@ -119,7 +119,7 @@ void ComponentLibTreeView::remove()
         return;
     }
 
-    if (selection.size() > 0)
+    if (!selection.empty())
     {
         if (QMessageBox::question(
                 this, tr("Remove components?"), tr("Do you realy want to remove theses %1 components?").arg(selection.size() / ComponentLibItemModel::ColumnCount))
@@ -140,7 +140,7 @@ void ComponentLibTreeView::remove()
         }
         selectionModel()->clearSelection();
         emit openedComponent(Q_NULLPTR);
-        for (QPersistentModelIndex index : pindex)
+        for (const QPersistentModelIndex &index : pindex)
         {
             _model->remove(index);
         }

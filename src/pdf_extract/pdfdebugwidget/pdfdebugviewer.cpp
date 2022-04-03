@@ -41,7 +41,7 @@ void PdfDebugViewer::setPage(PDFPage *page)
     _page = page;
     scene()->clear();
 
-    if (page)
+    if (page != nullptr)
     {
         PdfDebugItemPage *pageItem = new PdfDebugItemPage(_page);
         scene()->addItem(pageItem);

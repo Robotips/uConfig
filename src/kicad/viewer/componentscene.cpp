@@ -61,7 +61,7 @@ bool ComponentScene::elecType() const
 void ComponentScene::setElecType(bool elecType)
 {
     _elecType = elecType;
-    if (_componentItem)
+    if (_componentItem != nullptr)
     {
         _componentItem->setShowElectricalType(elecType);
     }
@@ -77,7 +77,7 @@ void ComponentScene::setComponent(Component *component, int layer)
     clear();
     _component = component;
 
-    if (!component)
+    if (component == nullptr)
     {
         _componentItem = Q_NULLPTR;
         return;

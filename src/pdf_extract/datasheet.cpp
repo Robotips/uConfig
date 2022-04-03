@@ -43,7 +43,7 @@ Datasheet::~Datasheet()
     clean();
 }
 
-bool Datasheet::open(QString fileName)
+bool Datasheet::open(const QString &fileName)
 {
     close();
     _doc = Poppler::Document::load(fileName);
@@ -153,7 +153,7 @@ void Datasheet::pinSearch(int numPage)
     // unasociated label
     for (DatasheetBox *label : _labels)
     {
-        if (label->associated == true)
+        if (label->associated)
         {
             continue;
         }
@@ -250,7 +250,7 @@ void Datasheet::pinSearch(int numPage)
         }
         for (DatasheetBox *label : _labels)
         {
-            if (label->associated == false)
+            if (!label->associated)
             {
                 painter.setPen(QPen(Qt::green, 2, Qt::DotLine));
             }
@@ -327,7 +327,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             textBox->text().toInt(&okNumber);
         }
 
-        if (textBox->nextWord() != nullptr && okNumber == false && DatasheetBox::isAlign(DatasheetBox(*textBox->nextWord()), DatasheetBox(*textBox)))
+        if (textBox->nextWord() != nullptr && !okNumber && DatasheetBox::isAlign(DatasheetBox(*textBox->nextWord()), DatasheetBox(*textBox)))
         {
             box->text.append(textBox->text());
             if (textBox->hasSpaceAfter())
@@ -373,9 +373,13 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                         DatasheetBox *nbox = new DatasheetBox();
                         nbox->page = numPage;
                         if (textBox->text().startsWith("•"))
+                        {
                             nbox->text = textBox->text().mid(1);
+                        }
                         else
+                        {
                             nbox->text = textBox->text();
+                        }
                         nbox->pos = textBox->boundingBox();
                         _numbers.push_back(nbox);
                         okNumber = false;
@@ -465,7 +469,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             }
         }
 
-        if (assocLabel)
+        if (assocLabel != nullptr)
         {
             assocLabel->associated = true;
             number->associated = true;
@@ -610,7 +614,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
         for (TextBox *textBox : page->textList())
         {
             QString text = textBox->text();
-            if (textBox->nextWord())
+            if (textBox->nextWord() != nullptr)
             {
                 if (textBox->hasSpaceAfter())
                 {
@@ -631,7 +635,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
              *bgaStyle=true;*/
             *bgaStyle = false;
 
-            for (QString keyWord : keyWords)
+            for (const QString &keyWord : keyWords)
             {
                 if (text.contains(keyWord, Qt::CaseInsensitive))
                 {

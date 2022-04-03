@@ -41,7 +41,7 @@ public:
 protected:
     void finish();
     void changePage(int page);
-    void addLog(QString str);
+    void addLog(const QString &str);
 
 private:
     Datasheet *_datasheet;

@@ -23,6 +23,7 @@
 #include <QFileInfo>
 #include <QScreen>
 #include <QTextStream>
+#include <utility>
 
 #include "../pdf_extract/datasheet.h"
 
@@ -38,7 +39,7 @@ void processFilePdf(QString file, Lib *lib, bool debug)
 {
     Datasheet datasheet;
     datasheet.setDebugEnabled(debug);
-    bool opened = datasheet.open(file);
+    bool opened = datasheet.open(std::move(file));
     if (!opened)
     {
         out << "error (2): input file cannot be opened" << endl;
@@ -52,7 +53,7 @@ void processFilePdf(QString file, Lib *lib, bool debug)
     }
 }
 
-void processFileLib(QString file, Lib *lib)
+void processFileLib(const QString &file, Lib *lib)
 {
     if (!lib->readFrom(file))
     {

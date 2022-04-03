@@ -45,8 +45,11 @@ PinItem::~PinItem()
     delete _fontType;
 }
 
-void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
+void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
+    Q_UNUSED(option);
+    Q_UNUSED(widget);
+
     // colors
     QColor drawColor = QColor(132, 0, 0);
     QColor textColor = QColor(0, 132, 132);

@@ -40,7 +40,7 @@ void ComponentWidget::setComponent(Component *component)
     _component = component;
     _comboUnit->clear();
 
-    if (_component)
+    if (_component != nullptr)
     {
         char c = 'A';
         for (int i = 0; i < _component->unitCount(); i++, c++)

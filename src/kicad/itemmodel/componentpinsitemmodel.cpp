@@ -100,7 +100,7 @@ QVariant ComponentPinsItemModel::headerData(int section, Qt::Orientation orienta
 
 QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 {
-    if (!_component)
+    if (_component == nullptr)
     {
         return QVariant();
     }
@@ -163,7 +163,7 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
 QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex &parent) const
 {
     Q_UNUSED(parent)
-    if (!_component)
+    if (_component == nullptr)
     {
         return QModelIndex();
     }
@@ -172,10 +172,7 @@ QModelIndex ComponentPinsItemModel::index(int row, int column, const QModelIndex
     {
         return createIndex(row, column, nullptr);
     }
-    else
-    {
-        return createIndex(row, column, _component->pins()[row]);
-    }
+    return createIndex(row, column, _component->pins()[row]);
 }
 
 QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const
@@ -186,7 +183,7 @@ QModelIndex ComponentPinsItemModel::parent(const QModelIndex &child) const
 
 int ComponentPinsItemModel::rowCount(const QModelIndex &parent) const
 {
-    if (!_component)
+    if (_component == nullptr)
     {
         return 0;
     }
@@ -197,17 +194,14 @@ int ComponentPinsItemModel::rowCount(const QModelIndex &parent) const
         {
             return _component->pins().count() + 1;
         }
-        else
-        {
-            return _component->pins().count();
-        }
+        return _component->pins().count();
     }
     return 0;
 }
 
 bool ComponentPinsItemModel::setData(const QModelIndex &index, const QVariant &value, int role)
 {
-    if (!_component)
+    if (_component == nullptr)
     {
         return false;
     }
@@ -289,7 +283,7 @@ Qt::ItemFlags ComponentPinsItemModel::flags(const QModelIndex &index) const
 void ComponentPinsItemModel::remove(const QModelIndex &index)
 {
     Pin *mpin = pin(index);
-    if (!mpin)
+    if (mpin == nullptr)
     {
         return;
     }
@@ -325,7 +319,7 @@ void ComponentPinsItemModel::updateHigherPin()
 {
     _higherPin = QString();
     QString higherNumPin = QString();
-    if (_component)
+    if (_component != nullptr)
     {
         for (Pin *pin : _component->pins())
         {

@@ -38,25 +38,25 @@ RulesSet::RulesSet()
 
 RulesSet::RulesSet(const RulesSet &other)
 {
-    for (int i = 0; i < other._classRules.size(); i++)
+    for (auto classRule : other._classRules)
     {
-        addRule(new ClassRule(*other._classRules[i]));
+        addRule(new ClassRule(*classRule));
     }
-    for (int i = 0; i < other._pinRules.size(); i++)
+    for (auto pinRule : other._pinRules)
     {
-        addRule(new PinRule(*other._pinRules[i]));
+        addRule(new PinRule(*pinRule));
     }
 }
 
 RulesSet::~RulesSet()
 {
-    for (int i = 0; i < _classRules.size(); i++)
+    for (auto &classRule : _classRules)
     {
-        delete _classRules[i];
+        delete classRule;
     }
-    for (int i = 0; i < _pinRules.size(); i++)
+    for (auto &pinRule : _pinRules)
     {
-        delete _pinRules[i];
+        delete pinRule;
     }
 }
 
@@ -75,11 +75,11 @@ void RulesSet::addRule(Rule *rule)
 QList<ClassRule *> RulesSet::rulesForClass(const QString &className)
 {
     QList<ClassRule *> rules;
-    for (int i = 0; i < _classRules.size(); i++)
+    for (auto &classRule : _classRules)
     {
-        if (_classRules[i]->matchWithName(className))
+        if (classRule->matchWithName(className))
         {
-            rules.append(_classRules[i]);
+            rules.append(classRule);
         }
     }
     return rules;
@@ -88,14 +88,14 @@ QList<ClassRule *> RulesSet::rulesForClass(const QString &className)
 QList<PinRule *> RulesSet::rulesForPin(const QString &pinName)
 {
     QList<PinRule *> rules;
-    for (int i = 0; i < _pinRules.size(); i++)
+    for (auto &pinRule : _pinRules)
     {
         // const QStringList &vpins = pinName.split('/');
         // for (const QString &vpin : vpins)
         {
-            if (_pinRules[i]->matchWithName(pinName))
+            if (pinRule->matchWithName(pinName))
             {
-                rules.append(_pinRules[i]);
+                rules.append(pinRule);
             }
         }
     }

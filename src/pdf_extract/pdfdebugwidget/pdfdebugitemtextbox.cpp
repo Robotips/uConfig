@@ -7,7 +7,9 @@ PdfDebugItemTextBox::PdfDebugItemTextBox(PDFTextBox *textBox, QGraphicsItem *par
     , _textBox(textBox)
 {
     for (PDFTextBox *textBox : _textBox->subBoxes())
+    {
         new PdfDebugItemTextBox(textBox, this);
+    }
 }
 
 PDFTextBox *PdfDebugItemTextBox::textBox() const

@@ -18,8 +18,10 @@
 
 #include "pdftextbox.h"
 
-PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
-    : _text(text)
+#include <utility>
+
+PDFTextBox::PDFTextBox(QString text, const QRectF &boundingRect)
+    : _text(std::move(text))
     , _boundingRect(boundingRect)
 {
     _page = Q_NULLPTR;
@@ -30,7 +32,9 @@ PDFTextBox::PDFTextBox(const QString &text, const QRectF &boundingRect)
 PDFTextBox::~PDFTextBox()
 {
     for (PDFTextBox *textBox : _subBoxes)
+    {
         delete textBox;
+    }
 }
 
 const QList<PDFTextBox *> &PDFTextBox::subBoxes() const

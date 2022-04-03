@@ -30,7 +30,8 @@ DatasheetPin::~DatasheetPin()
 
 qreal DatasheetPin::distanceToPoint(const QPointF &center) const
 {
-    qreal dist, newdist;
+    qreal dist;
+    qreal newdist;
 
     dist = (center - pos.center()).manhattanLength();
 
