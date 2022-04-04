@@ -24,7 +24,7 @@ ComponentInfosEditor::ComponentInfosEditor(UConfigProject *project)
 {
     _project = project;
     createWidgets();
-    setComponent(Q_NULLPTR);
+    setComponent(nullptr);
 }
 
 Component *ComponentInfosEditor::component() const
@@ -39,7 +39,7 @@ void ComponentInfosEditor::setComponent(Component *component)
     disconnect(_packageEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
     disconnect(_aliasesEdit, &QPlainTextEdit::textChanged, this, &ComponentInfosEditor::setComponentAliases);
 
-    if (_component == Q_NULLPTR)
+    if (_component == nullptr)
     {
         _nameEdit->setEnabled(false);
         _nameEdit->setText("");

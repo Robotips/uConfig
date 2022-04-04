@@ -30,7 +30,7 @@ class KicadLibParser
 public:
     KicadLibParser();
 
-    virtual Lib *loadLib(const QString &fileName, Lib *lib = Q_NULLPTR);
+    virtual Lib *loadLib(const QString &fileName, Lib *lib = nullptr);
     virtual bool saveLib(const QString &fileName, Lib *lib);
 
 protected:

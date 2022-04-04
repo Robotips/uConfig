@@ -24,7 +24,7 @@ Draw::Draw()
     _unit = 0;
     _convert = 0;
     _thickness = 10;
-    _component = Q_NULLPTR;
+    _component = nullptr;
 }
 
 Draw::~Draw()

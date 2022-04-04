@@ -28,7 +28,7 @@
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemTextBox : public QGraphicsItem
 {
 public:
-    PdfDebugItemTextBox(PDFTextBox *textBox, QGraphicsItem *parent = Q_NULLPTR);
+    PdfDebugItemTextBox(PDFTextBox *textBox, QGraphicsItem *parent = nullptr);
 
     PDFTextBox *textBox() const;
 

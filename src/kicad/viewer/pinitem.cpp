@@ -28,9 +28,9 @@
 
 PinItem::PinItem(Pin *pin)
 {
-    _fontPad = Q_NULLPTR;
-    _fontName = Q_NULLPTR;
-    _fontType = Q_NULLPTR;
+    _fontPad = nullptr;
+    _fontName = nullptr;
+    _fontType = nullptr;
 
     setPin(pin);
     setFlag(QGraphicsItem::ItemIsSelectable);

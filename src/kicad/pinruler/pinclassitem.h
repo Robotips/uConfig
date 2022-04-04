@@ -26,7 +26,7 @@
 class KICAD_EXPORT PinClassItem
 {
 public:
-    PinClassItem(Pin *pin = Q_NULLPTR);
+    PinClassItem(Pin *pin = nullptr);
 
     Pin *pin() const;
     void setPin(Pin *pin);

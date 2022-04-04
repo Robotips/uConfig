@@ -27,7 +27,7 @@
 class KICAD_EXPORT ComponentPinDelegate : public QItemDelegate
 {
 public:
-    ComponentPinDelegate(QObject *parent = Q_NULLPTR);
+    ComponentPinDelegate(QObject *parent = nullptr);
 
     QRegularExpression searchPattern() const;
     void setSearchPattern(const QRegularExpression &searchPattern);

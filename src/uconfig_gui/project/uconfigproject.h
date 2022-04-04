@@ -27,7 +27,7 @@ class UConfigProject : public QObject
 {
     Q_OBJECT
 public:
-    explicit UConfigProject(QWidget *window = Q_NULLPTR);
+    explicit UConfigProject(QWidget *window = nullptr);
     ~UConfigProject() override;
 
     Lib *lib() const;

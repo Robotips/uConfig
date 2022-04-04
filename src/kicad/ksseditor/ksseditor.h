@@ -30,7 +30,7 @@ class KICAD_EXPORT KssEditor : public QPlainTextEdit
 {
     Q_OBJECT
 public:
-    explicit KssEditor(QWidget *parent = Q_NULLPTR);
+    explicit KssEditor(QWidget *parent = nullptr);
 
     void lineNumberAreaPaintEvent(QPaintEvent *event);
     int lineNumberAreaWidth();

@@ -32,7 +32,7 @@ class KICAD_EXPORT ComponentPinsTableView : public QTableView
 {
     Q_OBJECT
 public:
-    ComponentPinsTableView(Component *component = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
+    ComponentPinsTableView(Component *component = nullptr, QWidget *parent = nullptr);
 
     Component *component() const;
     void setComponent(Component *component);

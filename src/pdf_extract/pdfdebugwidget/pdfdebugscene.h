@@ -26,7 +26,7 @@
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugScene : public QGraphicsScene
 {
 public:
-    PdfDebugScene(QObject *parent = Q_NULLPTR);
+    PdfDebugScene(QObject *parent = nullptr);
 };
 
 #endif  // PDFDEBUGSCENE_H

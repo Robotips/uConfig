@@ -29,7 +29,7 @@ class KICAD_EXPORT ComponentLibItemModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ComponentLibItemModel(Lib *lib = Q_NULLPTR, QObject *parent = Q_NULLPTR);
+    ComponentLibItemModel(Lib *lib = nullptr, QObject *parent = nullptr);
 
     Lib *lib() const;
     void setLib(Lib *lib);

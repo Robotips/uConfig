@@ -31,8 +31,8 @@ UConfigProject::UConfigProject(QWidget *window)
 {
     setWindow(window);
     readSettings();
-    _lib = Q_NULLPTR;
-    _activeComponent = Q_NULLPTR;
+    _lib = nullptr;
+    _activeComponent = nullptr;
 }
 
 UConfigProject::~UConfigProject()
@@ -60,7 +60,7 @@ void UConfigProject::newLib()
     _lib = new Lib();
     _libName = tr("newlib");
     _libFileName = QString();
-    selectComponent(Q_NULLPTR);
+    selectComponent(nullptr);
     emit libChanged(_lib);
 }
 
@@ -105,7 +105,7 @@ void UConfigProject::openLib(const QString &libFileName)
     }
     else
     {
-        selectComponent(Q_NULLPTR);
+        selectComponent(nullptr);
     }
 
     _oldProjects.removeOne(mlibFileName);

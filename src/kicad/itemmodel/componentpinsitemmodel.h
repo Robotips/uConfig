@@ -29,7 +29,7 @@ class KICAD_EXPORT ComponentPinsItemModel : public QAbstractItemModel
 {
     Q_OBJECT
 public:
-    ComponentPinsItemModel(Component *component = Q_NULLPTR, QObject *parent = Q_NULLPTR);
+    ComponentPinsItemModel(Component *component = nullptr, QObject *parent = nullptr);
 
     Component *component() const;
     void setComponent(Component *component);

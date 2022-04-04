@@ -32,7 +32,7 @@ class KICAD_EXPORT ComponentLibTreeView : public QTreeView
 {
     Q_OBJECT
 public:
-    ComponentLibTreeView(Lib *lib = Q_NULLPTR, QWidget *parent = Q_NULLPTR);
+    ComponentLibTreeView(Lib *lib = nullptr, QWidget *parent = nullptr);
 
     Lib *lib() const;
 

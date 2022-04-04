@@ -27,7 +27,7 @@ DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
     : DrawItem(draw)
     , _internal(internal)
 {
-    _fontText = Q_NULLPTR;
+    _fontText = nullptr;
     setDraw(draw);
     setZValue(10);
 }

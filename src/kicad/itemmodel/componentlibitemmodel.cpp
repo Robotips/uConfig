@@ -33,7 +33,7 @@ ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent)
         _lib = new Lib();
     }
     _selectedMode = false;
-    _activeComponent = Q_NULLPTR;
+    _activeComponent = nullptr;
 }
 
 Lib *ComponentLibItemModel::lib() const
@@ -44,7 +44,7 @@ Lib *ComponentLibItemModel::lib() const
 void ComponentLibItemModel::setLib(Lib *lib)
 {
     emit layoutAboutToBeChanged();
-    _activeComponent = Q_NULLPTR;
+    _activeComponent = nullptr;
     beginResetModel();
     resetInternalData();
     // delete _lib;
@@ -93,11 +93,11 @@ Component *ComponentLibItemModel::component(const QModelIndex &index) const
 {
     if (_lib == nullptr)
     {
-        return Q_NULLPTR;
+        return nullptr;
     }
     if (!index.isValid())
     {
-        return Q_NULLPTR;
+        return nullptr;
     }
     return static_cast<Component *>(index.internalPointer());
 }

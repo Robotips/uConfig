@@ -32,7 +32,7 @@ class PinItem;
 class KICAD_EXPORT ComponentItem : public QGraphicsItem
 {
 public:
-    ComponentItem(Component *component = Q_NULLPTR, int layer = 1);
+    ComponentItem(Component *component = nullptr, int layer = 1);
 
     enum
     {

@@ -93,7 +93,7 @@ PinItem *ComponentItem::pinItem(Pin *pin)
     {
         return *pinIt;
     }
-    return Q_NULLPTR;
+    return nullptr;
 }
 
 void ComponentItem::removePin(Pin *pin)

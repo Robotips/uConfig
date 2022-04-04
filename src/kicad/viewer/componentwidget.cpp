@@ -26,7 +26,7 @@ ComponentWidget::ComponentWidget(QWidget *parent)
     : QWidget(parent)
 {
     Q_INIT_RESOURCE(imgviewer);
-    _component = Q_NULLPTR;
+    _component = nullptr;
     createWidgets();
 }
 

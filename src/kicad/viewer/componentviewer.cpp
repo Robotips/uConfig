@@ -88,7 +88,7 @@ void ComponentViewer::selectPins(const QList<Pin *> &pins)
 
     blockSignals(true);
     scene()->clearSelection();
-    PinItem *pinItem = Q_NULLPTR;
+    PinItem *pinItem = nullptr;
     for (Pin *pin : pins)
     {
         pinItem = _scene->componentItem()->pinItem(pin);

@@ -35,7 +35,7 @@ class KICAD_EXPORT ComponentViewer : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit ComponentViewer(QWidget *parent = Q_NULLPTR);
+    explicit ComponentViewer(QWidget *parent = nullptr);
 
     Component *component() const;
     void setComponent(Component *component, int layer = 1);

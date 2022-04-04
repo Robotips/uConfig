@@ -94,7 +94,7 @@ bool ComponentsPage::validatePage()
         components.append(component);
         _lib->takeComponent(component);
     }
-    _componentTreeView->setLib(Q_NULLPTR);
+    _componentTreeView->setLib(nullptr);
     delete _lib;
 
     return true;

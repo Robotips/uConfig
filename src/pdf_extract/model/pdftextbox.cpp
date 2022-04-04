@@ -24,8 +24,8 @@ PDFTextBox::PDFTextBox(QString text, const QRectF &boundingRect)
     : _text(std::move(text))
     , _boundingRect(boundingRect)
 {
-    _page = Q_NULLPTR;
-    _parentBox = Q_NULLPTR;
+    _page = nullptr;
+    _parentBox = nullptr;
     _type = Text;
 }
 

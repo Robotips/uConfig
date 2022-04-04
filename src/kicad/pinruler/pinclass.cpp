@@ -300,7 +300,7 @@ DrawText *PinClass::getDrawText() const
 {
     if (!hasLabelSet() || _position == ClassRule::PositionASide)
     {
-        return Q_NULLPTR;
+        return nullptr;
     }
 
     DrawText *drawClassLabel = new DrawText(label());
@@ -343,7 +343,7 @@ DrawRect *PinClass::getDrawRect() const
 {
     if (!hasRectSet() || _rect <= 0)
     {
-        return Q_NULLPTR;
+        return nullptr;
     }
 
     DrawRect *drawRect = new DrawRect();

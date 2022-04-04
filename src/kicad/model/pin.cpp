@@ -30,7 +30,7 @@ Pin::Pin()
     _length = 300;
     _textNameSize = 50;
     _textPadSize = 50;
-    _component = Q_NULLPTR;
+    _component = nullptr;
 }
 
 Pin::Pin(QString name, QString padName)
@@ -44,7 +44,7 @@ Pin::Pin(QString name, QString padName)
     _length = 300;
     _textNameSize = 50;
     _textPadSize = 50;
-    _component = Q_NULLPTR;
+    _component = nullptr;
 }
 
 Pin::Pin(const QString &name, const int padnumber)

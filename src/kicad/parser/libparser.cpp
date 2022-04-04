@@ -30,7 +30,7 @@ Lib *LibParser::loadLib(Lib *lib, const QString &fileName, LibParser::Format for
             return parser.loadLib(fileName, lib);
         }
         default:
-            return Q_NULLPTR;
+            return nullptr;
     }
 }
 

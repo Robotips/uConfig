@@ -26,7 +26,7 @@ PDFPage::PDFPage(PDFDatasheet *datasheet, int numPage)
     : _datasheet(datasheet)
     , _numPage(numPage)
     , _boxesLoaded(false)
-    , _page(Q_NULLPTR)
+    , _page(nullptr)
 {
 }
 

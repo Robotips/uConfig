@@ -50,7 +50,7 @@ Pin *ComponentPinsItemModel::pin(const QModelIndex &index) const
 {
     if (!index.isValid())
     {
-        return Q_NULLPTR;
+        return nullptr;
     }
     return static_cast<Pin *>(index.internalPointer());
 }
@@ -105,13 +105,13 @@ QVariant ComponentPinsItemModel::data(const QModelIndex &index, int role) const
         return QVariant();
     }
 
-    Pin *pin = Q_NULLPTR;
+    Pin *pin = nullptr;
     if (index.row() < _component->pins().count())
     {
         pin = _component->pins().at(index.row());
     }
 
-    if (pin == Q_NULLPTR)
+    if (pin == nullptr)
     {
         if ((role == Qt::DisplayRole || role == Qt::EditRole) && index.column() == PinNumber)
         {

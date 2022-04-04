@@ -74,7 +74,7 @@ PDFPage *PDFDatasheet::page(int numPage)
     QMap<int, PDFPage *>::const_iterator itFind = _pagesLoaded.constFind(numPage);
     if (itFind == _pagesLoaded.cend())
     {
-        return Q_NULLPTR;
+        return nullptr;
     }
     return *itFind;
 }

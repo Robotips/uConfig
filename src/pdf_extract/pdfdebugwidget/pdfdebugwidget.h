@@ -33,8 +33,8 @@ class DATASHEET_EXTRACTOR_EXPORT PdfDebugWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit PdfDebugWidget(QWidget *parent = Q_NULLPTR);
-    PdfDebugWidget(PDFDatasheet *datasheet, QWidget *parent = Q_NULLPTR);
+    explicit PdfDebugWidget(QWidget *parent = nullptr);
+    PdfDebugWidget(PDFDatasheet *datasheet, QWidget *parent = nullptr);
 
     PDFDatasheet *datasheet() const;
     void setDatasheet(PDFDatasheet *datasheet);

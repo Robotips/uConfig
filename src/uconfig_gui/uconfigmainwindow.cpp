@@ -114,7 +114,7 @@ void UConfigMainWindow::organize(const QString &ruleSetName)
             return;
         }
         Component *component = _componentWidget->component();
-        _componentWidget->setComponent(Q_NULLPTR);
+        _componentWidget->setComponent(nullptr);
         component->reorganizeToPackageStyle();
         _componentWidget->setComponent(component);
         _kssEditor->clear();
@@ -134,7 +134,7 @@ void UConfigMainWindow::organize(const QString &ruleSetName)
     {
         PinRuler ruler(&ruleSet);
         Component *component = _componentWidget->component();
-        _componentWidget->setComponent(Q_NULLPTR);
+        _componentWidget->setComponent(nullptr);
         ruler.organize(component);
         _componentWidget->setComponent(component);
         _pinListEditor->setComponent(component);
@@ -148,7 +148,7 @@ void UConfigMainWindow::updateRules()
         if (_componentWidget->component() != nullptr)
         {
             Component *component = _componentWidget->component();
-            _componentWidget->setComponent(Q_NULLPTR);
+            _componentWidget->setComponent(nullptr);
             component->reorganizeToPackageStyle();
             _componentWidget->setComponent(component);
         }
@@ -169,7 +169,7 @@ void UConfigMainWindow::updateRules()
     if (_componentWidget->component() != nullptr)
     {
         Component *component = _componentWidget->component();
-        _componentWidget->setComponent(Q_NULLPTR);
+        _componentWidget->setComponent(nullptr);
         ruler.organize(component);
         _componentWidget->setComponent(component);
     }

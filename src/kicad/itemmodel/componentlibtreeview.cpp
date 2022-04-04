@@ -139,7 +139,7 @@ void ComponentLibTreeView::remove()
             pindex.append(indexComponent);
         }
         selectionModel()->clearSelection();
-        emit openedComponent(Q_NULLPTR);
+        emit openedComponent(nullptr);
         for (const QPersistentModelIndex &index : pindex)
         {
             _model->remove(index);

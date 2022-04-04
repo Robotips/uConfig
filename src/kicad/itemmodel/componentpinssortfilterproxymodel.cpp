@@ -26,11 +26,11 @@ ComponentPinsSortFilterProxyModel::ComponentPinsSortFilterProxyModel()
 
 bool ComponentPinsSortFilterProxyModel::lessThan(const QModelIndex &source_left, const QModelIndex &source_right) const
 {
-    if (source_left.internalPointer() == Q_NULLPTR)
+    if (source_left.internalPointer() == nullptr)
     {
         return (sortOrder() == Qt::DescendingOrder);
     }
-    if (source_right.internalPointer() == Q_NULLPTR)
+    if (source_right.internalPointer() == nullptr)
     {
         return (sortOrder() == Qt::AscendingOrder);
     }

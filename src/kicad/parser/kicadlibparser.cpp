@@ -49,7 +49,7 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
         {
             delete lib;
         }
-        return Q_NULLPTR;
+        return nullptr;
     }
     _stream.setDevice(&input);
 
@@ -71,7 +71,7 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
     } while (!_stream.atEnd());
     lib->setName(info.baseName());
 
-    _stream.setDevice(Q_NULLPTR);
+    _stream.setDevice(nullptr);
     return lib;
 }
 
@@ -88,7 +88,7 @@ bool KicadLibParser::saveLib(const QString &fileName, Lib *lib)
     writeLib(lib);
     lib->setName(info.baseName());
 
-    _stream.setDevice(Q_NULLPTR);
+    _stream.setDevice(nullptr);
     return true;
 }
 
@@ -564,7 +564,7 @@ Component *KicadLibParser::readComponent()
         }
     } while (!_stream.atEnd());
 
-    return Q_NULLPTR;
+    return nullptr;
 }
 
 Pin *KicadLibParser::readPin()
@@ -582,7 +582,7 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
-        return Q_NULLPTR;
+        return nullptr;
     }
     pin->setName(name);
 
@@ -592,7 +592,7 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
-        return Q_NULLPTR;
+        return nullptr;
     }
     pin->setPadName(padName);
 
@@ -603,7 +603,7 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
-        return Q_NULLPTR;
+        return nullptr;
     }
     pin->setPos(x, -y);
 
@@ -613,7 +613,7 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
-        return Q_NULLPTR;
+        return nullptr;
     }
     pin->setLength(lenght);
 
@@ -637,7 +637,7 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
-        return Q_NULLPTR;
+        return nullptr;
     }
     pin->setLayer(layer);
 
@@ -853,7 +853,7 @@ Draw *KicadLibParser::readDraw(char c)
             return draw;
         }
         default:
-            return Q_NULLPTR;
+            return nullptr;
     }
 }
 

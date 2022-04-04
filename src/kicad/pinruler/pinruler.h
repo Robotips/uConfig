@@ -30,7 +30,7 @@
 class KICAD_EXPORT PinRuler
 {
 public:
-    PinRuler(RulesSet *ruleSet = Q_NULLPTR);
+    PinRuler(RulesSet *ruleSet = nullptr);
 
     void organize(Component *component);
 

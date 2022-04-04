@@ -46,7 +46,7 @@ QRectF DrawItem::rect() const
 
 DrawItem *DrawItem::fromDraw(Draw *draw)
 {
-    DrawItem *item = Q_NULLPTR;
+    DrawItem *item = nullptr;
     switch (draw->type())
     {
         case Draw::TypeDrawArc:

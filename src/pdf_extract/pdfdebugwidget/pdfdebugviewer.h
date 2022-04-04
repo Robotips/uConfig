@@ -30,7 +30,7 @@ class DATASHEET_EXTRACTOR_EXPORT PdfDebugViewer : public QGraphicsView
 {
     Q_OBJECT
 public:
-    explicit PdfDebugViewer(QWidget *parent = Q_NULLPTR);
+    explicit PdfDebugViewer(QWidget *parent = nullptr);
 
     PDFPage *page() const;
 

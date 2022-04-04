@@ -28,7 +28,7 @@ ComponentScene::ComponentScene(qreal x, qreal y, qreal w, qreal h)
     _gridFront = false;
     _prevGridSize = 0;
 
-    setComponent(Q_NULLPTR);
+    setComponent(nullptr);
 }
 
 bool ComponentScene::grid() const
@@ -79,7 +79,7 @@ void ComponentScene::setComponent(Component *component, int layer)
 
     if (component == nullptr)
     {
-        _componentItem = Q_NULLPTR;
+        _componentItem = nullptr;
         return;
     }
 

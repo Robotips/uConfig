@@ -48,7 +48,7 @@ bool PDFLoader::loadPage(PDFPage *pdfPage)
     }
 
     Poppler::Page *page = _document->page(pdfPage->numPage());
-    if (page == Q_NULLPTR)
+    if (page == nullptr)
     {
         return false;
     }
@@ -60,7 +60,7 @@ bool PDFLoader::loadPage(PDFPage *pdfPage)
 
 void PDFLoader::loadBoxes(PDFPage *pdfPage)
 {
-    PDFTextBox *parentTextBox = Q_NULLPTR;
+    PDFTextBox *parentTextBox = nullptr;
     for (Poppler::TextBox *ptextBox : pdfPage->page()->textList())
     {
         PDFTextBox *textBox = new PDFTextBox(ptextBox->text(), ptextBox->boundingBox());
@@ -71,9 +71,9 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
         {
             textBox->_type = PDFTextBox::Pad;
         }
-        if (parentTextBox == Q_NULLPTR)
+        if (parentTextBox == nullptr)
         {
-            if (ptextBox->nextWord() == Q_NULLPTR || padName)
+            if (ptextBox->nextWord() == nullptr || padName)
             {
                 pdfPage->_textBoxes.append(textBox);
             }
@@ -102,7 +102,7 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
                 textBox->_type = PDFTextBox::SubText;
                 parentTextBox->_subBoxes.append(textBox);
             }
-            if (ptextBox->nextWord() == Q_NULLPTR || padName)
+            if (ptextBox->nextWord() == nullptr || padName)
             {
                 QRectF boundingRect;
                 QString text;
@@ -115,7 +115,7 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
                 parentTextBox->_boundingRect = boundingRect.adjusted(-1, -1, 1, 1);
 
                 pdfPage->_textBoxes.append(parentTextBox);
-                parentTextBox = Q_NULLPTR;
+                parentTextBox = nullptr;
             }
             else
             {
