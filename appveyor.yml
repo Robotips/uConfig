@@ -16,12 +16,12 @@ install:
   - qmake -v
   - g++ --version
   - cd %APPVEYOR_BUILD_FOLDER%\
-  - curl -fsSL -o include-poppler.tar.gz http://robotips.fr/data/include-poppler.tar.gz
+  - curl -fsSL -o include-poppler.tar.gz http://uniswarm.eu/include-poppler.tar.gz
   - tar -zxvf include-poppler.tar.gz
   - rm include-poppler.tar.gz
   - mkdir bin
   - cd bin
-  - curl -fsSL -o bin-poppler-win32.tar.gz http://robotips.fr/data/bin-poppler-win32.tar.gz
+  - curl -fsSL -o bin-poppler-win32.tar.gz http://uniswarm.eu/bin-poppler-win32.tar.gz
   - tar -zxvf bin-poppler-win32.tar.gz
   - rm bin-poppler-win32.tar.gz
 
