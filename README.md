@@ -87,6 +87,16 @@ For windows, build from sources (very annoying) or find a built version here :
 - includes : [http://robotips.fr/data/bin-poppler-win32.tar.gz](http://robotips.fr/data/bin-poppler-win32.tar.gz) (uncompress to uconfig/bin/)
 - DLLs : [http://robotips.fr/data/include-poppler.tar.gz](http://robotips.fr/data/include-poppler.tar.gz) (uncompress to uconfig/)
 
+### github source checkout
+make sure you checkout as well the submodules, for example like this:
+
+```
+git clone https://github.com/Robotips/uConfig.git
+cd uConfig
+git submodule init
+git submodule update
+```
+
 ### build
 
 ```bash
