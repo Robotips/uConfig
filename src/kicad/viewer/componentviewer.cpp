@@ -144,9 +144,7 @@ void ComponentViewer::setElecTypeVisible(bool visible)
 
 void ComponentViewer::wheelEvent(QWheelEvent *event)
 {
-    int numDegrees = event->delta() / 8;
-    int numSteps = numDegrees / 15;
-
+    double numSteps = event->angleDelta().y() / 8.0 / 15.0;
     double mscale = qPow(1.25, numSteps);
 
     if (transform().m11() < 0.1 && mscale < 1)
