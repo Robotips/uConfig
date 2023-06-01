@@ -44,7 +44,7 @@ public:
     bool open(const QString &fileName);
     void close();
 
-    void analyse(int pageBegin = -1, int pageEnd = -1);
+    void analyse(int pageBegin = -1, int pageEnd = -1, char *deleteString = "", int _maxPinNameLength = 10);
 
     const QList<DatasheetPackage *> &packages() const;
     QList<Component *> components();
@@ -69,10 +69,10 @@ signals:
 private:
     int pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle);
 
-    void pinSearch(int numPage);
+    void pinSearch(int numPage, char *deleteString, int maxPinNameLength);
 
     QRectF toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageNumber);
-    QList<DatasheetPin *> extractPins(int numPage);
+    QList<DatasheetPin *> extractPins(int numPage, char *deleteString, int maxPinNameLength);
     QList<DatasheetBox *> _numbers;
     QList<DatasheetBox *> _labels;
     QList<DatasheetBox *> _proc_labels;

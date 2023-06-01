@@ -24,6 +24,7 @@
 #include <QLineEdit>
 #include <QRadioButton>
 #include <QWizardPage>
+#include <QSpinBox>
 
 #include "datasheetthread.h"
 
@@ -48,11 +49,13 @@ private:
     QLabel *_pagePreviewLabel;
     QRadioButton *_allRadio;
     QRadioButton *_partialRadio;
-    QLineEdit *_rangeEdit;
+    QLineEdit *_rangeEdit, *_deleteString;
+    QSpinBox *_maxPinNameLength;
     QCheckBox *_forceCheckBox;
     QLabel *_pageCountLabel;
 
     QStringList _suffixes;
+    int _s=0;
 };
 
 #endif  // PDFFILEPAGE_H

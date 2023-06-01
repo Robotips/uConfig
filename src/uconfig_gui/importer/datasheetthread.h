@@ -37,6 +37,10 @@ public:
     int pageBegin() const;
     int pageEnd() const;
     void setForceEnabled(bool force);
+    void setDeleteString(const char*);
+    char *deleteString();
+    void setMaxPinNameLength(int);
+    int maxPinNameLength() const;
 
     Datasheet *datasheet() const;
 signals:
@@ -47,6 +51,8 @@ protected:
     int _pageBegin;
     int _pageEnd;
     void run() override;
+    char _deleteString[16];
+    int _maxPinNameLength;
 };
 
 #endif  // DATASHEETTHREAD_H

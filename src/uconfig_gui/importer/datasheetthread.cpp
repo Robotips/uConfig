@@ -59,6 +59,26 @@ void DataSheetThread::setForceEnabled(bool force)
     _datasheet->setForceEnabled(force);
 }
 
+void DataSheetThread::setDeleteString(const char* str)
+{
+    strcpy (_deleteString, str);
+}
+
+char *DataSheetThread::deleteString()
+{
+    return &_deleteString[0];
+}
+
+void DataSheetThread::setMaxPinNameLength(int val)
+{
+     _maxPinNameLength = val;
+}
+
+int DataSheetThread::maxPinNameLength() const
+{
+     return _maxPinNameLength;
+}
+
 Datasheet *DataSheetThread::datasheet() const
 {
     return _datasheet;
@@ -77,5 +97,5 @@ int DataSheetThread::pageEnd() const
 void DataSheetThread::run()
 {
     setTerminationEnabled();
-    _datasheet->analyse(_pageBegin, _pageEnd);
+    _datasheet->analyse(_pageBegin, _pageEnd, _deleteString, _maxPinNameLength);
 }
