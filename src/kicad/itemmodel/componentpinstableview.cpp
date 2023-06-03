@@ -158,7 +158,8 @@ void ComponentPinsTableView::copy()
         QStringList rowContents;
         for (int j = range.left(); j <= range.right(); ++j)
         {
-            rowContents << model()->index(i, j).data().toString();
+            const QModelIndex &indexComponent = _sortProxy->mapToSource(_sortProxy->index(i, j));
+            rowContents << indexComponent.data().toString();
         }
         text += rowContents.join("\t");
         text += "\n";
