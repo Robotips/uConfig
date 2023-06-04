@@ -2,16 +2,16 @@ version: 0.{build}
 
 environment:
   global:
-    QTDIR: C:\Qt\5.15\mingw81_32
+    QTDIR: C:\Qt\5.15.2\mingw81_32
     MINGW: C:\Qt\Tools\mingw810_32
 
 clone_folder: c:\dev\uconfig
 clone_depth: 5
 
-init:
-  - set PATH=%PATH%;%QTDIR%\bin;%MINGW%\bin
-
 install:
+  - set PATH=%PATH%;%QTDIR%\bin;%MINGW%\bin
+  - ls %QTDIR%\bin
+  - ls %MINGW%\bin
   - git submodule update --init --recursive
   - qmake -v
   - g++ --version
