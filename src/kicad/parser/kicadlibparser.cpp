@@ -22,7 +22,6 @@
 #include <QDebug>
 #include <QFileInfo>
 
-#include "model/drawarc.h"
 #include "model/drawcircle.h"
 #include "model/drawpoly.h"
 #include "model/drawrect.h"
@@ -564,6 +563,7 @@ Component *KicadLibParser::readComponent()
         }
     } while (!_stream.atEnd());
 
+    delete component;
     return nullptr;
 }
 
