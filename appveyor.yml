@@ -2,17 +2,17 @@ version: 0.{build}
 
 environment:
   global:
-    QTDIR: C:\Qt\5.15\mingw81_64
+    QTDIR: C:\Qt\5.15\mingw81_32
+    MINGW: C:\Qt\Tools\mingw810_32
 
 clone_folder: c:\dev\uconfig
 clone_depth: 5
 
 init:
-  - set PATH=C:\msys64;%PATH%
+  - set PATH=%PATH%;%QTDIR%\bin;%MINGW%\bin
 
 install:
   - git submodule update --init --recursive
-  - '%QTDIR%\bin\qtenv2.bat'
   - qmake -v
   - g++ --version
   - cd %APPVEYOR_BUILD_FOLDER%\
