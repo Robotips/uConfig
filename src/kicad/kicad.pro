@@ -60,7 +60,9 @@ SOURCES += \
     $$PWD/ksseditor/ksseditormargin.cpp \
     $$PWD/ksseditor/ksssyntax.cpp \
     $$PWD/parser/libparser.cpp \
-    $$PWD/parser/kicadlibparser.cpp
+    $$PWD/parser/kicadlibparser.cpp \
+    $$PWD/schematicsimport/schematicsimporter.cpp \
+    $$PWD/schematicsimport/textimporter.cpp
 
 HEADERS += \
     $$PWD/kicad_global.h \
@@ -108,7 +110,9 @@ HEADERS += \
     $$PWD/ksseditor/ksseditormargin.h \
     $$PWD/ksseditor/ksssyntax.h \
     $$PWD/parser/libparser.h \
-    $$PWD/parser/kicadlibparser.h
+    $$PWD/parser/kicadlibparser.h \
+    $$PWD/schematicsimport/schematicsimporter.h \
+    $$PWD/schematicsimport/textimporter.h
 
 RESOURCES += \
         $$PWD/imgviewer.qrc
