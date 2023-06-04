@@ -55,7 +55,7 @@ PDFPage *PdfDebugViewer::page() const
 
 void PdfDebugViewer::wheelEvent(QWheelEvent *event)
 {
-    int numDegrees = event->delta() / 8;
+    int numDegrees = event->angleDelta().x() / 8;
     int numSteps = numDegrees / 15;
 
     double mscale = qPow(1.25, numSteps);

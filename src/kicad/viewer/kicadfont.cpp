@@ -64,7 +64,7 @@ QFont KicadFont::font(double size)
     font.setStyleHint(QFont::SansSerif);
     font.setPointSizeF(12);
     QFontMetricsF fm(font);
-    double factor = 65.0 / ComponentItem::ratio / fm.width('m') * (size / 12.7);
+    double factor = 65.0 / ComponentItem::ratio / fm.horizontalAdvance('m') * (size / 12.7);
     font.setPointSizeF(font.pointSizeF() * factor);
     return font;
 }

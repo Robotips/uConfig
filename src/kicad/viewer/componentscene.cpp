@@ -101,8 +101,8 @@ void ComponentScene::setComponentItem(ComponentItem *componentItem)
 void ComponentScene::saveAsPdf(const QString &fileName)
 {
     QPrinter printer(QPrinter::HighResolution);
-    printer.setPageSize(QPrinter::A4);
-    printer.setOrientation(QPrinter::Portrait);
+    printer.setPageSize(QPageSize(QPageSize::A4));
+    printer.setPageOrientation(QPageLayout::Portrait);
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(fileName);
 

@@ -109,7 +109,7 @@ void ComponentPinsTableView::selectPins(QList<Pin *> pins)
 
 void ComponentPinsTableView::setPinFilter(const QString &filter)
 {
-    _sortProxy->setFilterRegExp(QRegExp(filter, Qt::CaseInsensitive));
+    _sortProxy->setFilterRegularExpression(QRegularExpression(filter, QRegularExpression::CaseInsensitiveOption));
     _delegate->setSearchPattern(QRegularExpression(filter, QRegularExpression::CaseInsensitiveOption));
 
     viewport()->update();
@@ -191,7 +191,7 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
     _removeAction->setEnabled(!selectedPins.isEmpty());
     _copyAction->setEnabled(!selectedPins.isEmpty());
 
-    emit pinSelected(selectedPins.toList());
+    emit pinSelected(selectedPins.values());
 }
 
 void ComponentPinsTableView::contextMenuEvent(QContextMenuEvent *event)

@@ -119,7 +119,7 @@ void PdfDebugWidget::createWidgets()
     _viewer = new PdfDebugViewer();
 
     QVBoxLayout *layout = new QVBoxLayout();
-    layout->setMargin(0);
+    layout->setContentsMargins(0, 0, 0, 0);
 
     QToolBar *toolBar = new QToolBar("ToolBar", this);
     toolBar->setIconSize(QSize(30, 30));

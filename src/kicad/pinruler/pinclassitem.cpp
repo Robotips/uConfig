@@ -18,6 +18,8 @@
 
 #include "pinclassitem.h"
 
+#include <QCollator>
+
 PinClassItem::PinClassItem(Pin *pin)
     : _pin(pin)
 {
@@ -58,7 +60,8 @@ bool PinClassItem::pinLessThan(PinClassItem *pin1, PinClassItem *pin2)
 {
     if (pin1->priority() == pin2->priority())
     {
-        return pin1->_sortLabel.toLower() < pin2->_sortLabel.toLower();
+        QCollator col;
+        return col.compare(pin1->_sortLabel.toLower(), pin2->_sortLabel.toLower()) < 0;
     }
     return pin1->priority() > pin2->priority();
 }
@@ -67,7 +70,8 @@ bool PinClassItem::pinGreaterThan(PinClassItem *pin1, PinClassItem *pin2)
 {
     if (pin1->priority() == pin2->priority())
     {
-        return pin1->_sortLabel.toLower() > pin2->_sortLabel.toLower();
+        QCollator col;
+        return col.compare(pin1->_sortLabel.toLower(), pin2->_sortLabel.toLower()) > 0;
     }
     return pin1->priority() < pin2->priority();
 }

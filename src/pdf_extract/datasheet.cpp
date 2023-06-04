@@ -24,6 +24,7 @@
 #include <QDomNamedNodeMap>
 #include <QFile>
 #include <QPainter>
+#include <QRegularExpression>
 
 #include <poppler/qt5/poppler-form.h>
 #include <poppler/qt5/poppler-qt5.h>
@@ -389,12 +390,12 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             }
 
             // remove notes
-            box->text.replace(QRegExp("\\([0-9]+\\)"), "");
+            box->text.replace(QRegularExpression("\\([0-9]+\\)"), "");
 
             // classify boxes
             if (!okNumber || prev)
             {
-                if (box->text.isEmpty() || box->text.contains("Note", Qt::CaseInsensitive) || box->text.contains(QRegExp("^\\([0-9]+\\)$")))
+                if (box->text.isEmpty() || box->text.contains("Note", Qt::CaseInsensitive) || box->text.contains(QRegularExpression("^\\([0-9]+\\)$")))
                 {
                     // none
                 }
@@ -480,8 +481,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             pin->numberBox = number;
 
             pin->name = assocLabel->text;
-            pin->name.remove(QRegExp("\\([0-9]+\\)"));
-            pin->name.remove(QRegExp(" +"));
+            pin->name.remove(QRegularExpression("\\([0-9]+\\)"));
+            pin->name.remove(QRegularExpression(" +"));
             pin->nameBox = assocLabel;
 
             pin->page = number->page;

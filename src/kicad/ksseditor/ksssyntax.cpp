@@ -107,8 +107,8 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
     highlightingRules.append(rule);
 
     multiLineCommentFormat.setForeground(QColor(0, 128, 0));
-    commentStartExpression = QRegExp("/\\*");
-    commentEndExpression = QRegExp("\\*/");
+    commentStartExpression = QRegularExpression("/\\*");
+    commentEndExpression = QRegularExpression("\\*/");
 }
 
 void KSSSyntax::highlightBlock(const QString &text)
@@ -119,12 +119,11 @@ void KSSSyntax::highlightBlock(const QString &text)
     partsToHighlight.clear();
     for (const HighlightingRule &rule : highlightingRules)
     {
-        QRegExp expression(rule.pattern);
-        int index = expression.indexIn(text);
-        if (index >= 0)
+        QRegularExpressionMatch match = rule.pattern.match(text);
+        if (match.hasMatch())
         {
-            highlight.index = expression.pos(1);
-            highlight.length = expression.cap(1).length();
+            highlight.index = match.capturedStart(1);
+            highlight.length = match.capturedEnd(1);
             highlight.rule = rule;
             partsToHighlight.append(highlight);
         }
@@ -144,12 +143,11 @@ void KSSSyntax::highlightBlock(const QString &text)
         }
 
         // update part
-        QRegExp expression(partToHighlight.rule.pattern);
-        int find = expression.indexIn(text, index);
-        if (find >= 0)
+        QRegularExpressionMatch match = partToHighlight.rule.pattern.match(text, index);
+        if (match.hasMatch())
         {
-            highlight.index = expression.pos(1);
-            highlight.length = expression.cap(1).length();
+            highlight.index = match.capturedStart(1);
+            highlight.length = match.capturedEnd(1);
             highlight.rule = partToHighlight.rule;
             partsToHighlight.append(highlight);
             std::sort(partsToHighlight.begin(), partsToHighlight.end(), lessThan);
@@ -157,29 +155,30 @@ void KSSSyntax::highlightBlock(const QString &text)
     }
     setCurrentBlockState(0);
 
-    if (!commentStartExpression.isEmpty() && !commentEndExpression.isEmpty())
+    if (commentStartExpression.isValid() && commentEndExpression.isValid())
     {
         int startIndex = 0;
         if (previousBlockState() != 1)
         {
-            startIndex = commentStartExpression.indexIn(text);
+            startIndex = text.indexOf(commentStartExpression);
         }
 
         while (startIndex >= 0)
         {
-            int endIndex = commentEndExpression.indexIn(text, startIndex);
+            QRegularExpressionMatch endMatch = commentEndExpression.match(text, startIndex);
+            int endIndex = text.indexOf(commentEndExpression, startIndex);
             int commentLength;
-            if (endIndex == -1)
+            if (endMatch.hasMatch())
             {
                 setCurrentBlockState(1);
                 commentLength = text.length() - startIndex;
             }
             else
             {
-                commentLength = endIndex - startIndex + commentEndExpression.matchedLength();
+                commentLength = endIndex - startIndex + endMatch.capturedLength();
             }
             setFormat(startIndex, commentLength, multiLineCommentFormat);
-            startIndex = commentStartExpression.indexIn(text, startIndex + commentLength);
+            startIndex = text.indexOf(commentStartExpression, startIndex + commentLength);
         }
     }
 }

@@ -57,8 +57,8 @@ void ComponentWidget::createWidgets()
 {
     _viewer = new ComponentViewer();
 
-    QLayout *_layout = new QVBoxLayout();
-    _layout->setMargin(0);
+    QLayout *layout = new QVBoxLayout();
+    layout->setContentsMargins(0, 0, 0, 0);
     QLayout *_toolsLayout = new QHBoxLayout();
 
     _toolsLayout->addItem(new QSpacerItem(5, 5));
@@ -117,10 +117,10 @@ void ComponentWidget::createWidgets()
 
     _toolsLayout->addItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
 
-    _layout->addItem(_toolsLayout);
-    _layout->addWidget(_viewer);
+    layout->addItem(_toolsLayout);
+    layout->addWidget(_viewer);
 
-    setLayout(_layout);
+    setLayout(layout);
 }
 
 QAction *ComponentWidget::actionElecType() const

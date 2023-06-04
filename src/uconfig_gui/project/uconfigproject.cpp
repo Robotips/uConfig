@@ -21,6 +21,7 @@
 #include <QApplication>
 #include <QFileDialog>
 #include <QMessageBox>
+#include <QRegularExpression>
 #include <QSettings>
 
 #include "importer/pinlistimporter.h"
@@ -136,7 +137,7 @@ void UConfigProject::saveLibAs(const QString &fileName)
         if (!_importedPathLib.isEmpty())
         {
             libFileName = _importedPathLib;
-            libFileName.replace(QRegExp("(.*)\\.(pdf|csv)"), "\\1.lib");
+            libFileName.replace(QRegularExpression("(.*)\\.(pdf|csv)"), "\\1.lib");
             fileDialog.selectFile(libFileName);
         }
         if (fileDialog.exec() != 0)

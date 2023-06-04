@@ -521,7 +521,7 @@ Component *KicadLibParser::readComponent()
         else if (start.startsWith("ALIAS"))
         {
             QString aliases = _stream.readLine();
-            component->addAlias(aliases.split(' ', QString::SkipEmptyParts));
+            component->addAlias(aliases.split(' ', Qt::SkipEmptyParts));
         }
         else if (start.startsWith("ENDDRAW"))
         {

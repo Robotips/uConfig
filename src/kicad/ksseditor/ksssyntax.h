@@ -21,6 +21,7 @@
 
 #include "kicad_global.h"
 
+#include <QRegularExpression>
 #include <QSyntaxHighlighter>
 
 class KICAD_EXPORT KSSSyntax : public QSyntaxHighlighter
@@ -35,7 +36,7 @@ protected:
 protected:
     struct HighlightingRule
     {
-        QRegExp pattern;
+        QRegularExpression pattern;
         QTextCharFormat format;
     };
     QVector<HighlightingRule> highlightingRules;
@@ -56,8 +57,8 @@ protected:
     QTextCharFormat quotationFormat;
     QTextCharFormat numberFormat;
 
-    QRegExp commentStartExpression;
-    QRegExp commentEndExpression;
+    QRegularExpression commentStartExpression;
+    QRegularExpression commentEndExpression;
 };
 
 inline bool lessThan(const KSSSyntax::PartToHighlight &t1, const KSSSyntax::PartToHighlight &t2)
