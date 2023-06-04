@@ -254,8 +254,8 @@ void KicadLibParser::writeDraw(Draw *draw)
         case Draw::TypeDrawRect:
             // S startx starty endx endy unit convert thickness fill
             drawRect = dynamic_cast<DrawRect *>(draw);
-            _stream << "S " << drawRect->pos().x() << " " << -drawRect->pos().y() << " " << drawRect->endPos().x() << " " << -drawRect->endPos().y() << " " << drawRect->unit()
-                    << " " << drawRect->convert() << " " << drawRect->thickness() << " ";
+            _stream << "S " << drawRect->pos().x() << " " << -drawRect->pos().y() << " " << drawRect->endPos().x() << " " << -drawRect->endPos().y() << " "
+                    << drawRect->unit() << " " << drawRect->convert() << " " << drawRect->thickness() << " ";
             switch (drawRect->filled())
             {
                 case Draw::DrawNotFilled:

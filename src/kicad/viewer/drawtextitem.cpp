@@ -24,8 +24,8 @@
 #include <QPainter>
 
 DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
-    : DrawItem(draw)
-    , _internal(internal)
+    : DrawItem(draw),
+      _internal(internal)
 {
     _fontText = nullptr;
     setDraw(draw);

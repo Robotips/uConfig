@@ -23,8 +23,8 @@
 #include <QVBoxLayout>
 
 PdfDebugWidget::PdfDebugWidget(QWidget *parent)
-    : QWidget(parent)
-    , _datasheet(nullptr)
+    : QWidget(parent),
+      _datasheet(nullptr)
 {
     _currentPage = nullptr;
     createWidgets();

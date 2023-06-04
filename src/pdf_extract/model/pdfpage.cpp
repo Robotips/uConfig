@@ -23,10 +23,10 @@
 #include <poppler/qt5/poppler-qt5.h>
 
 PDFPage::PDFPage(PDFDatasheet *datasheet, int numPage)
-    : _datasheet(datasheet)
-    , _numPage(numPage)
-    , _boxesLoaded(false)
-    , _page(nullptr)
+    : _datasheet(datasheet),
+      _numPage(numPage),
+      _boxesLoaded(false),
+      _page(nullptr)
 {
 }
 

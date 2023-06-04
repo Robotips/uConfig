@@ -22,9 +22,9 @@
 #include <utility>
 
 Pin::Pin()
-    : _direction(Pin::Right)
-    , _pinType(Pin::Normal)
-    , _electricalType(Pin::Input)
+    : _direction(Pin::Right),
+      _pinType(Pin::Normal),
+      _electricalType(Pin::Input)
 {
     _layer = 1;
     _length = 300;
@@ -34,11 +34,11 @@ Pin::Pin()
 }
 
 Pin::Pin(QString name, QString padName)
-    : _name(std::move(name))
-    , _padName(std::move(padName))
-    , _direction(Pin::Right)
-    , _pinType(Pin::Normal)
-    , _electricalType(Pin::Input)
+    : _name(std::move(name)),
+      _padName(std::move(padName)),
+      _direction(Pin::Right),
+      _pinType(Pin::Normal),
+      _electricalType(Pin::Input)
 {
     _layer = 1;
     _length = 300;

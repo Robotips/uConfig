@@ -75,7 +75,8 @@ int main(int argc, char *argv[])
     QApplication::setApplicationVersion("1.0");
 
     QCommandLineParser parser;
-    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.") + QString("\nuconfig datasheet.pdf -o lib1.lib [-r rule.kss] [-d]"));
+    parser.setApplicationDescription(QCoreApplication::translate("main", "uConfig command line interface.")
+                                     + QString("\nuconfig datasheet.pdf -o lib1.lib [-r rule.kss] [-d]"));
     parser.addHelpOption();
     parser.addVersionOption();
     parser.addPositionalArgument("file", QCoreApplication::translate("main", "Source file to extract pins (pdf)."), "file");

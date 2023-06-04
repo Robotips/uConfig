@@ -25,17 +25,17 @@
 int DatasheetBox::created = 0;
 
 DatasheetBox::DatasheetBox()
-    : page(0)
-    , associated(false)
+    : page(0),
+      associated(false)
 {
     created++;
 }
 
 DatasheetBox::DatasheetBox(const Poppler::TextBox &textBox)
-    : text(textBox.text())
-    , pos(textBox.boundingBox())
-    , page(0)
-    , associated(false)
+    : text(textBox.text()),
+      pos(textBox.boundingBox()),
+      page(0),
+      associated(false)
 {
     created++;
 }

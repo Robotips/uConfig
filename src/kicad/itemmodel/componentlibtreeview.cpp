@@ -121,8 +121,9 @@ void ComponentLibTreeView::remove()
 
     if (!selection.empty())
     {
-        if (QMessageBox::question(
-                this, tr("Remove components?"), tr("Do you realy want to remove theses %1 components?").arg(selection.size() / ComponentLibItemModel::ColumnCount))
+        if (QMessageBox::question(this,
+                                  tr("Remove components?"),
+                                  tr("Do you realy want to remove theses %1 components?").arg(selection.size() / ComponentLibItemModel::ColumnCount))
             != QMessageBox::Yes)
         {
             return;

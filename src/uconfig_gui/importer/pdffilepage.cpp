@@ -28,8 +28,8 @@
 #include "pinlistimporter.h"
 
 PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
-    : QWizardPage(nullptr)
-    , _datasheetThread(datasheetThread)
+    : QWizardPage(nullptr),
+      _datasheetThread(datasheetThread)
 {
     _complete = false;
 

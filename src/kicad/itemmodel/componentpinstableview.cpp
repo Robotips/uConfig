@@ -136,7 +136,8 @@ void ComponentPinsTableView::remove()
 
             pindex.append(indexComponent);
         }
-        if (QMessageBox::question(this, tr("Remove pins?"), tr("Do you realy want to remove theses %1 pins?").arg(pindex.count() / ComponentPinsItemModel::ColumnCount))
+        if (QMessageBox::question(
+                this, tr("Remove pins?"), tr("Do you realy want to remove theses %1 pins?").arg(pindex.count() / ComponentPinsItemModel::ColumnCount))
             != QMessageBox::Yes)
         {
             return;
