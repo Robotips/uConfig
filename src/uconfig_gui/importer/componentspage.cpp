@@ -42,7 +42,7 @@ ComponentsPage::ComponentsPage()
     _componentTreeView = new ComponentLibTreeView();
     _componentTreeView->setSelectedMode(true);
     layout->addWidget(_componentTreeView);
-    connect(_checkAllBox, SIGNAL(clicked(bool)), _componentTreeView, SLOT(selectAll(bool)));
+    connect(_checkAllBox, SIGNAL(clicked()), _componentTreeView, SLOT(selectAll()));
 
     setLayout(layout);
 }
