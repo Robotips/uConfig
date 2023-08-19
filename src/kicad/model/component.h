@@ -19,8 +19,6 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#include "../kicad_global.h"
-
 #include <QImage>
 #include <QList>
 #include <QRect>

@@ -19,8 +19,6 @@
 #ifndef DRAWPOLY_H
 #define DRAWPOLY_H
 
-#include "../kicad_global.h"
-
 #include "draw.h"
 
 #include <QList>

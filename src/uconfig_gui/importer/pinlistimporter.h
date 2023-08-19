@@ -21,7 +21,7 @@
 
 #include <QWizard>
 
-#include "../kicad/model/component.h"
+#include <kicad/model/component.h>
 
 class DatasheetProcessPage;
 

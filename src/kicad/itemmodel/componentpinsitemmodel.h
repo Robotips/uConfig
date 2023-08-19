@@ -19,8 +19,6 @@
 #ifndef COMPONENTPINSITEMMODEL_H
 #define COMPONENTPINSITEMMODEL_H
 
-#include "kicad_global.h"
-
 #include <QAbstractItemModel>
 
 #include "model/component.h"

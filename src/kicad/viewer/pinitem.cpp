@@ -100,6 +100,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
     {
         case Pin::Up:
             painter->rotate(-90);
+            [[fallthrough]];
         case Pin::Right:
             painter->drawLine(3, 0, _pin->length() / ComponentItem::ratio, 0);
 
@@ -116,6 +117,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
                 case Pin::InvertedClock:
                     painter->drawLine(_pin->length() / ComponentItem::ratio + 8, 0, _pin->length() / ComponentItem::ratio, 5);
                     painter->drawLine(_pin->length() / ComponentItem::ratio + 8, 0, _pin->length() / ComponentItem::ratio, -5);
+                    [[fallthrough]];
                 case Pin::Invert:
                     painter->setBrush(Qt::white);
                     painter->drawEllipse(QPoint(_pin->length() / ComponentItem::ratio - 5, 0), 5, 5);
@@ -123,6 +125,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
                 case Pin::ClockLow:
                     painter->drawLine(_pin->length() / ComponentItem::ratio, 0, _pin->length() / ComponentItem::ratio - 10, -10);
                     painter->drawLine(_pin->length() / ComponentItem::ratio - 10, -10, _pin->length() / ComponentItem::ratio - 10, 0);
+                    [[fallthrough]];
                 case Pin::Clock:
                     painter->drawLine(_pin->length() / ComponentItem::ratio + 8, 0, _pin->length() / ComponentItem::ratio, 5);
                     painter->drawLine(_pin->length() / ComponentItem::ratio + 8, 0, _pin->length() / ComponentItem::ratio, -5);
@@ -171,6 +174,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
 
         case Pin::Down:
             painter->rotate(-90);
+            [[fallthrough]];
         case Pin::Left:
             painter->drawLine(-3, 0, -_pin->length() / ComponentItem::ratio, 0);
 
@@ -187,6 +191,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
                 case Pin::InvertedClock:
                     painter->drawLine(-_pin->length() / ComponentItem::ratio - 8, 0, -_pin->length() / ComponentItem::ratio, 5);
                     painter->drawLine(-_pin->length() / ComponentItem::ratio - 8, 0, -_pin->length() / ComponentItem::ratio, -5);
+                    [[fallthrough]];
                 case Pin::Invert:
                     painter->setBrush(Qt::white);
                     painter->drawEllipse(QPoint(-_pin->length() / ComponentItem::ratio + 5, 0), 5, 5);
@@ -194,6 +199,7 @@ void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, Q
                 case Pin::ClockLow:
                     painter->drawLine(-_pin->length() / ComponentItem::ratio, 0, -_pin->length() / ComponentItem::ratio + 10, -10);
                     painter->drawLine(-_pin->length() / ComponentItem::ratio + 10, -10, -_pin->length() / ComponentItem::ratio + 10, 0);
+                    [[fallthrough]];
                 case Pin::Clock:
                     painter->drawLine(-_pin->length() / ComponentItem::ratio - 8, 0, -_pin->length() / ComponentItem::ratio, 5);
                     painter->drawLine(-_pin->length() / ComponentItem::ratio - 8, 0, -_pin->length() / ComponentItem::ratio, -5);

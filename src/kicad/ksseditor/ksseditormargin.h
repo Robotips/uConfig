@@ -19,8 +19,6 @@
 #ifndef KSSEDITORMARGIN_H
 #define KSSEDITORMARGIN_H
 
-#include "kicad_global.h"
-
 #include <QWidget>
 
 class KssEditor;

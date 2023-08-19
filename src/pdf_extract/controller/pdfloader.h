@@ -19,7 +19,7 @@
 #ifndef PAGELOADER_H
 #define PAGELOADER_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include "model/pdfdatasheet.h"
 

@@ -19,8 +19,6 @@
 #ifndef DRAWRECTITEM_H
 #define DRAWRECTITEM_H
 
-#include "kicad_global.h"
-
 #include "drawitem.h"
 
 #include "model/drawrect.h"

@@ -19,8 +19,6 @@
 #ifndef COMPONENTLIBTREEVIEW_H
 #define COMPONENTLIBTREEVIEW_H
 
-#include "kicad_global.h"
-
 #include <QTreeView>
 
 #include <QAction>

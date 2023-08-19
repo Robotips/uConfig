@@ -19,7 +19,7 @@
 #ifndef PDFPACKAGESEARCHER_H
 #define PDFPACKAGESEARCHER_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 class DATASHEET_EXTRACTOR_EXPORT PDFPackageSearcher
 {

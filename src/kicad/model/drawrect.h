@@ -19,8 +19,6 @@
 #ifndef DRAWRECT_H
 #define DRAWRECT_H
 
-#include "../kicad_global.h"
-
 #include "draw.h"
 
 #include <QRect>

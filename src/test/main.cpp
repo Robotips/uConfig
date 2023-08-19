@@ -21,16 +21,16 @@
 #include <QDebug>
 #include <QScreen>
 
-#include "../pdf_extract/datasheet.h"
+#include <pdf_extract/datasheet.h>
 
-#include "../kicad/model/lib.h"
-#include "../kicad/viewer/componentviewer.h"
+#include <kicad/model/lib.h>
+#include <kicad/viewer/componentviewer.h>
 
-#include "../kicad/pinruler/pinruler.h"
-#include "../kicad/pinruler/rulesparser.h"
+#include <kicad/pinruler/pinruler.h>
+#include <kicad/pinruler/rulesparser.h>
 
-#include "../pdf_extract/model/pdfdatasheet.h"
-#include "../pdf_extract/pdfdebugwidget/pdfdebugwidget.h"
+#include <pdf_extract/model/pdfdatasheet.h>
+#include <pdf_extract/pdfdebugwidget/pdfdebugwidget.h>
 
 void widthCompute();
 

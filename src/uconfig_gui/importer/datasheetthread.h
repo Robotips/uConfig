@@ -21,7 +21,7 @@
 
 #include <QThread>
 
-#include "../pdf_extract/datasheet.h"
+#include <pdf_extract/datasheet.h>
 
 class DataSheetThread : public QThread
 {

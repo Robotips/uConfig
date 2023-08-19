@@ -19,8 +19,6 @@
 #ifndef PINRULER_H
 #define PINRULER_H
 
-#include "kicad_global.h"
-
 #include <QString>
 
 #include "model/component.h"

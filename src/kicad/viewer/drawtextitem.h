@@ -19,8 +19,6 @@
 #ifndef DRAWTEXTITEM_H
 #define DRAWTEXTITEM_H
 
-#include "kicad_global.h"
-
 #include "drawitem.h"
 #include "kicadfont.h"
 

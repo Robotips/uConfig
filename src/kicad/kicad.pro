@@ -11,9 +11,13 @@ CONFIG += optimize_full c++11
 
 TARGET = kicad
 TEMPLATE = lib
-DESTDIR = "$$PWD/../../bin"
 
-DEFINES += KICAD_EXPORT_LIB
+PROJECT_ROOT = $$PWD/../..
+SOURCE_ROOT = $$PWD/..
+
+DESTDIR = "$$PROJECT_ROOT/bin"
+INCLUDEPATH += $$SOURCE_ROOT
+DEFINES += KICAD_EXPORT=Q_DECL_EXPORT
 
 SOURCES += \
     $$PWD/model/kicad.cpp \
@@ -65,7 +69,6 @@ SOURCES += \
     $$PWD/schematicsimport/textimporter.cpp
 
 HEADERS += \
-    $$PWD/kicad_global.h \
     $$PWD/model/kicad.h \
     $$PWD/model/lib.h \
     $$PWD/model/component.h \

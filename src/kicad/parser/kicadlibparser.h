@@ -19,8 +19,6 @@
 #ifndef KICADLIBPARSER_H
 #define KICADLIBPARSER_H
 
-#include "kicad_global.h"
-
 #include "libparser.h"
 
 #include <QTextStream>

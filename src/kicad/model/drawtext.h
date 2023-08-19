@@ -19,8 +19,6 @@
 #ifndef DRAWTEXT_H
 #define DRAWTEXT_H
 
-#include "../kicad_global.h"
-
 #include "draw.h"
 
 #include <QString>

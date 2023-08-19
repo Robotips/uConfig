@@ -19,8 +19,6 @@
 #ifndef COMPONENTSCENE_H
 #define COMPONENTSCENE_H
 
-#include "kicad_global.h"
-
 #include <QGraphicsScene>
 
 #include "componentitem.h"

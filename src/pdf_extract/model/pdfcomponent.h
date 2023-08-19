@@ -19,7 +19,7 @@
 #ifndef PDFCOMPONENT_H
 #define PDFCOMPONENT_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 class DATASHEET_EXTRACTOR_EXPORT PDFComponent
 {

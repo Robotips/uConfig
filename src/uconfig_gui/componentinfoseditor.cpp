@@ -82,12 +82,12 @@ void ComponentInfosEditor::setComponentReference()
 
 void ComponentInfosEditor::setComponentPackages()
 {
-    _project->setComponentInfo(UConfigProject::ComponentPackagesInfo, _packageEdit->toPlainText().split('\n', QString::SkipEmptyParts));
+    _project->setComponentInfo(UConfigProject::ComponentPackagesInfo, _packageEdit->toPlainText().split('\n', Qt::SkipEmptyParts));
 }
 
 void ComponentInfosEditor::setComponentAliases()
 {
-    _project->setComponentInfo(UConfigProject::ComponentAliasesInfo, _aliasesEdit->toPlainText().split('\n', QString::SkipEmptyParts));
+    _project->setComponentInfo(UConfigProject::ComponentAliasesInfo, _aliasesEdit->toPlainText().split('\n', Qt::SkipEmptyParts));
 }
 
 void ComponentInfosEditor::createWidgets()

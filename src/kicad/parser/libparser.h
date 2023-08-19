@@ -19,9 +19,7 @@
 #ifndef LIBPARSER_H
 #define LIBPARSER_H
 
-#include "kicad_global.h"
-
-#include "../model/lib.h"
+#include <model/lib.h>
 
 class KICAD_EXPORT LibParser
 {

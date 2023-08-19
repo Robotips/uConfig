@@ -20,7 +20,6 @@
 #define PINLISTEDITOR_H
 
 #include "componentpinstableview.h"
-#include "kicad_global.h"
 
 #include <QWidget>
 

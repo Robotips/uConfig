@@ -19,8 +19,6 @@
 #ifndef RULESSET_H
 #define RULESSET_H
 
-#include "kicad_global.h"
-
 #include <QList>
 #include <QString>
 

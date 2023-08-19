@@ -19,8 +19,6 @@
 #ifndef RULESPARSER_H
 #define RULESPARSER_H
 
-#include "kicad_global.h"
-
 #include <QString>
 #include <QStringList>
 

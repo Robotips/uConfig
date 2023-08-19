@@ -19,8 +19,6 @@
 #ifndef COMPONENTPINDELEGATE_H
 #define COMPONENTPINDELEGATE_H
 
-#include "kicad_global.h"
-
 #include <QItemDelegate>
 #include <QRegularExpression>
 

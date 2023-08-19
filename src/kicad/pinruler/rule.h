@@ -19,8 +19,6 @@
 #ifndef RULE_H
 #define RULE_H
 
-#include "kicad_global.h"
-
 #include <QRegularExpression>
 #include <QString>
 

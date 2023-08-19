@@ -19,8 +19,6 @@
 #ifndef KICADFONT_H
 #define KICADFONT_H
 
-#include "kicad_global.h"
-
 #include <QFont>
 #include <QPainter>
 #include <QString>

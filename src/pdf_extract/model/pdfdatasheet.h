@@ -19,7 +19,7 @@
 #ifndef PDFDATASHEET_H
 #define PDFDATASHEET_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include "pdfpage.h"
 
