@@ -19,8 +19,6 @@
 #ifndef PIN_H
 #define PIN_H
 
-#include "../kicad_global.h"
-
 #include <QPoint>
 #include <QString>
 #include <QTextStream>

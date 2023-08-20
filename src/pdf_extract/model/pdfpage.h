@@ -19,7 +19,7 @@
 #ifndef PDFPAGE_H
 #define PDFPAGE_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include "pdftextbox.h"
 

@@ -19,8 +19,6 @@
 #ifndef COMPONENTITEM_H
 #define COMPONENTITEM_H
 
-#include "kicad_global.h"
-
 #include <QGraphicsItem>
 #include <QMap>
 

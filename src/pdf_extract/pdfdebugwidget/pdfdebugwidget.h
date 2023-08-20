@@ -19,7 +19,7 @@
 #ifndef PDFDEBUGWIDGET_H
 #define PDFDEBUGWIDGET_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include <QAction>
 #include <QLabel>

@@ -19,8 +19,6 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include "../kicad_global.h"
-
 #include "component.h"
 #include <QList>
 #include <QString>

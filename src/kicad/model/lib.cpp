@@ -24,7 +24,7 @@
 #include <QFileInfo>
 #include <utility>
 
-#include "../parser/libparser.h"
+#include <parser/libparser.h>
 
 /**
  * @brief Lib constructor

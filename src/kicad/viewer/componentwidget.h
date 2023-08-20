@@ -19,8 +19,6 @@
 #ifndef COMPONENTWIDGET_H
 #define COMPONENTWIDGET_H
 
-#include "kicad_global.h"
-
 #include <QActionGroup>
 #include <QComboBox>
 #include <QToolButton>

@@ -19,7 +19,7 @@
 #ifndef PDFDEBUGITEMPIN_H
 #define PDFDEBUGITEMPIN_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include <QGraphicsItem>
 

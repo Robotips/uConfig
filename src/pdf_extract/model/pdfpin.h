@@ -19,7 +19,7 @@
 #ifndef PDFPIN_H
 #define PDFPIN_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 class DATASHEET_EXTRACTOR_EXPORT PDFPin
 {

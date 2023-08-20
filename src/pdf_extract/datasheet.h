@@ -24,7 +24,7 @@
 #include <QImage>
 #include <QObject>
 
-#include "../kicad/model/component.h"
+#include <kicad/model/component.h>
 #include "datasheetbox.h"
 #include "datasheetpackage.h"
 

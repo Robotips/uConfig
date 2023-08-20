@@ -19,8 +19,6 @@
 #ifndef DRAWCIRCLEITEM_H
 #define DRAWCIRCLEITEM_H
 
-#include "kicad_global.h"
-
 #include "drawitem.h"
 
 #include "model/drawcircle.h"

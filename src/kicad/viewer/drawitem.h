@@ -19,8 +19,6 @@
 #ifndef DRAWITEM_H
 #define DRAWITEM_H
 
-#include "kicad_global.h"
-
 #include "model/draw.h"
 #include <QGraphicsItem>
 

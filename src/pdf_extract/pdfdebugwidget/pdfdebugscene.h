@@ -19,7 +19,7 @@
 #ifndef PDFDEBUGSCENE_H
 #define PDFDEBUGSCENE_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include <QGraphicsScene>
 

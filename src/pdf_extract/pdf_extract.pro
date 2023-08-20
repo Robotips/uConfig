@@ -2,8 +2,14 @@ QT     += core gui widgets xml
 
 TARGET = pdf_extract
 TEMPLATE = lib
+
+PROJECT_ROOT = $$PWD/../..
+SOURCE_ROOT = $$PWD/..
+
+DESTDIR = "$$PROJECT_ROOT/bin"
+INCLUDEPATH += $$SOURCE_ROOT
+DEFINES += KICAD_EXPORT=Q_DECL_IMPORT
 DEFINES += DATASHEET_EXTRACTOR_EXPORT_LIB
-DESTDIR = "$$PWD/../../bin"
 
 CONFIG(release, debug|release) {
     CONFIG += optimize_full
@@ -49,12 +55,20 @@ HEADERS += \
     $$PWD/controller/pdfloader.h \
     $$PWD/controller/pdfpackagesearcher.h
 
-LIBS += -L"$$PWD/../../bin"
-LIBS += -lpoppler-qt5
-INCLUDEPATH += $$PWD/../../
+LIBS += -L"$$PROJECT_ROOT/bin"
+INCLUDEPATH += $$PROJECT_ROOT/
 LIBS += -lkicad
+
 
 macx {
     LIBS += -L /usr/local/lib
     INCLUDEPATH += /usr/local/include 
+}
+
+CONFIG += link_pkgconfig
+packagesExist(poppler-qt5) {
+  PKGCONFIG += poppler-qt5
+}
+else {
+  LIBS += -lpoppler-qt5
 }

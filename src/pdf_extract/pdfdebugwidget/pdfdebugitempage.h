@@ -19,7 +19,7 @@
 #ifndef PDFDEBUGITEMPAGE_H
 #define PDFDEBUGITEMPAGE_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include <QGraphicsItem>
 

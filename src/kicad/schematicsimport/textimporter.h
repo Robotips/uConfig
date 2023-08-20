@@ -19,8 +19,6 @@
 #ifndef TEXTIMPORTER_H
 #define TEXTIMPORTER_H
 
-#include "kicad_global.h"
-
 #include "schematicsimport/schematicsimporter.h"
 
 class KICAD_EXPORT TextImporter : public SchematicsImporter

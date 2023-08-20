@@ -19,8 +19,6 @@
 #ifndef DRAWPOLYITEM_H
 #define DRAWPOLYITEM_H
 
-#include "kicad_global.h"
-
 #include "drawitem.h"
 
 #include "model/drawpoly.h"

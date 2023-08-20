@@ -11,14 +11,20 @@ CONFIG += optimize_full c++11
 
 TARGET = test
 TEMPLATE = app
-DESTDIR = "$$PWD/../../bin"
+
+PROJECT_ROOT = $$PWD/../..
+SOURCE_ROOT = $$PWD/..
+
+DESTDIR = "$$PROJECT_ROOT/bin"
+INCLUDEPATH += $$SOURCE_ROOT
+DEFINES += KICAD_EXPORT=Q_DECL_IMPORT
 
 SOURCES += $$PWD/main.cpp \
     $$PWD/test_libkicad.cpp
 
 HEADERS  +=
 
-LIBS += -L"$$PWD/../../bin"
+LIBS += -L"$$PROJECT_ROOT/bin"
 LIBS += -lkicad -lpdf_extract
-INCLUDEPATH += $$PWD/../kicad $$PWD/../pdf_extract
-DEPENDPATH += $$PWD/../kicad $$PWD/../pdf_extract
+INCLUDEPATH += $$SOURCE_ROOT/kicad $$SOURCE_ROOT/pdf_extract
+DEPENDPATH += $$SOURCE_ROOT/kicad $$SOURCE_ROOT/pdf_extract

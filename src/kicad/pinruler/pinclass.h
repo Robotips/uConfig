@@ -19,8 +19,6 @@
 #ifndef PINCLASS_H
 #define PINCLASS_H
 
-#include "kicad_global.h"
-
 #include <QList>
 #include <QRect>
 #include <QString>

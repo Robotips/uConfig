@@ -19,8 +19,6 @@
 #ifndef PINRULE_H
 #define PINRULE_H
 
-#include "kicad_global.h"
-
 #include <QString>
 #include <QStringList>
 

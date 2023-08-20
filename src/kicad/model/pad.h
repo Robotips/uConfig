@@ -19,8 +19,6 @@
 #ifndef PAD_H
 #define PAD_H
 
-#include "../kicad_global.h"
-
 #include <QPointF>
 #include <QSizeF>
 #include <QString>

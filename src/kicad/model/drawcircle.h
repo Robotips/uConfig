@@ -19,8 +19,6 @@
 #ifndef DRAWCIRCLE_H
 #define DRAWCIRCLE_H
 
-#include "../kicad_global.h"
-
 #include "draw.h"
 
 class KICAD_EXPORT DrawCircle : public Draw

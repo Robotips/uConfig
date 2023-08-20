@@ -21,7 +21,7 @@
 
 #include "pdf_extract_common.h"
 
-#include "../kicad/model/component.h"
+#include <kicad/model/component.h>
 #include "datasheetpin.h"
 
 #include <QImage>

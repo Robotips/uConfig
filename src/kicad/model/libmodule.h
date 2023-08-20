@@ -1,7 +1,7 @@
 #ifndef LIBMODULE_H
 #define LIBMODULE_H
 
-#include "../kicad_global.h"
+#include <QtCore/qglobal.h>
 
 class KICAD_EXPORT LibModule
 {

@@ -19,7 +19,7 @@
 #ifndef PDFDEBUGVIEWER_H
 #define PDFDEBUGVIEWER_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include <QGraphicsView>
 

@@ -19,8 +19,6 @@
 #ifndef DRAWARC_H
 #define DRAWARC_H
 
-#include "../kicad_global.h"
-
 #include "draw.h"
 
 class KICAD_EXPORT DrawArc : public Draw

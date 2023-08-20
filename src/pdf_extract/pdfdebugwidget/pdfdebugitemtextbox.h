@@ -19,7 +19,7 @@
 #ifndef PDFDEBUGITEMTEXTBOX_H
 #define PDFDEBUGITEMTEXTBOX_H
 
-#include "../pdf_extract_common.h"
+#include <pdf_extract_common.h>
 
 #include <QGraphicsItem>
 

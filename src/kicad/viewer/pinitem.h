@@ -19,8 +19,6 @@
 #ifndef PINITEM_H
 #define PINITEM_H
 
-#include "kicad_global.h"
-
 #include <QGraphicsItem>
 
 #include "model/pin.h"

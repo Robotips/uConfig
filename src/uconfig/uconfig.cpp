@@ -25,13 +25,13 @@
 #include <QTextStream>
 #include <utility>
 
-#include "../pdf_extract/datasheet.h"
+#include <pdf_extract/datasheet.h>
 
-#include "../kicad/model/lib.h"
-#include "../kicad/viewer/componentviewer.h"
+#include <kicad/model/lib.h>
+#include <kicad/viewer/componentviewer.h>
 
-#include "../kicad/pinruler/pinruler.h"
-#include "../kicad/pinruler/rulesparser.h"
+#include <kicad/pinruler/pinruler.h>
+#include <kicad/pinruler/rulesparser.h>
 
 QTextStream out(stdout);
 
@@ -42,7 +42,7 @@ void processFilePdf(QString file, Lib *lib, bool debug)
     bool opened = datasheet.open(std::move(file));
     if (!opened)
     {
-        out << "error (2): input file cannot be opened" << endl;
+        out << "error (2): input file cannot be opened" << Qt::endl;
         exit(2);
     }
     datasheet.analyse();
@@ -57,7 +57,7 @@ void processFileLib(const QString &file, Lib *lib)
 {
     if (!lib->readFrom(file))
     {
-        out << "error (2): input file cannot be opened" << endl;
+        out << "error (2): input file cannot be opened" << Qt::endl;
         exit(2);
     }
 }
@@ -117,23 +117,23 @@ int main(int argc, char *argv[])
         {
             ruleFile.append(".kss");
         }
-        if (!QFileInfo(ruleFile).exists())
+        if (!QFileInfo::exists(ruleFile))
         {
             QString binPath = QFileInfo(QApplication::arguments()[0]).path() + "/";
-            if (QFileInfo(binPath + "../rules/" + ruleFile).exists())
+            if (QFileInfo::exists(binPath + "../rules/" + ruleFile))
             {
                 ruleFile = binPath + "../rules/" + ruleFile;
             }
             else
             {
-                out << "error (3): ruleFile '" << parser.value("rule") << "' does not exist" << endl;
+                out << "error (3): ruleFile '" << parser.value("rule") << "' does not exist" << Qt::endl;
                 return -3;
             }
         }
         RulesParser ruleParser(ruleFile);
         if (!ruleParser.parse(&ruleSet))
         {
-            out << "error (4): error when parsing ruleFile '" << parser.value("rule") << "' at line " << ruleParser.errorLine() << endl;
+            out << "error (4): error when parsing ruleFile '" << parser.value("rule") << "' at line " << ruleParser.errorLine() << Qt::endl;
             return -4;
         }
         ruler.setRuleSet(&ruleSet);
@@ -143,7 +143,7 @@ int main(int argc, char *argv[])
     const QStringList files = parser.positionalArguments();
     if (files.isEmpty())
     {
-        out << "error (1): input file is needed" << endl;
+        out << "error (1): input file is needed" << Qt::endl;
         parser.showHelp(-1);
     }
     const QString &file = files.at(0);
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
     // creates lib model and fill it
     qint64 d = QDateTime::currentMSecsSinceEpoch();
     Lib lib;
-    out << "> " << file << endl;
+    out << "> " << file << Qt::endl;
     if (file.endsWith(".pdf", Qt::CaseInsensitive))
     {
         processFilePdf(file, &lib, parser.isSet(debugOption));
@@ -171,10 +171,10 @@ int main(int argc, char *argv[])
     }
     else
     {
-        out << "error (2): input file cannot be opened" << endl;
+        out << "error (2): input file cannot be opened" << Qt::endl;
         exit(2);
     }
-    out << lib.componentsCount() << " packages extracted, saved in " << outFile << endl;
+    out << lib.componentsCount() << " packages extracted, saved in " << outFile << Qt::endl;
 
     // apply pinruler if needed
     for (Component *component : lib.components())
@@ -192,7 +192,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    out << "Elapsed time: " << QDateTime::currentMSecsSinceEpoch() - d << "ms" << endl;
+    out << "Elapsed time: " << QDateTime::currentMSecsSinceEpoch() - d << "ms" << Qt::endl;
     lib.saveTo(outFile);
 
     return 0;

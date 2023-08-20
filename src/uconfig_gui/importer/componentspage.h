@@ -23,7 +23,7 @@
 #include <QLabel>
 #include <QWizardPage>
 
-#include "../kicad/itemmodel/componentlibtreeview.h"
+#include <kicad/itemmodel/componentlibtreeview.h>
 
 class ComponentsPage : public QWizardPage
 {

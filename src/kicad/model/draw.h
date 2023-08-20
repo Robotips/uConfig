@@ -19,8 +19,6 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include "../kicad_global.h"
-
 #include <QPoint>
 
 class Component;

@@ -19,8 +19,6 @@
 #ifndef NUMERICALSORTFILTERPROXYMODEL_H
 #define NUMERICALSORTFILTERPROXYMODEL_H
 
-#include "kicad_global.h"
-
 #include <QSortFilterProxyModel>
 
 #include <QRegularExpression>

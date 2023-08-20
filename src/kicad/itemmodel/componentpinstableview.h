@@ -19,8 +19,6 @@
 #ifndef COMPONENTPINSTABLEVIEW_H
 #define COMPONENTPINSTABLEVIEW_H
 
-#include "kicad_global.h"
-
 #include <QAction>
 #include <QTableView>
 

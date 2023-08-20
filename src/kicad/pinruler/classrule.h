@@ -19,8 +19,6 @@
 #ifndef CLASSRULE_H
 #define CLASSRULE_H
 
-#include "kicad_global.h"
-
 #include <QString>
 #include <QStringList>
 

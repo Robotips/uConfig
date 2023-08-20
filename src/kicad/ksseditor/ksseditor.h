@@ -19,8 +19,6 @@
 #ifndef KSSEDITOR_H
 #define KSSEDITOR_H
 
-#include "kicad_global.h"
-
 #include <QPlainTextEdit>
 
 #include "ksseditormargin.h"

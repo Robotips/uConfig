@@ -19,8 +19,6 @@
 #ifndef KSSSYNTAX_H
 #define KSSSYNTAX_H
 
-#include "kicad_global.h"
-
 #include <QRegularExpression>
 #include <QSyntaxHighlighter>
 

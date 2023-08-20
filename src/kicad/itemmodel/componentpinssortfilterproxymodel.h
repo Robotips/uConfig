@@ -19,8 +19,6 @@
 #ifndef COMPONENTPINSSORTFILTERPROXYMODEL_H
 #define COMPONENTPINSSORTFILTERPROXYMODEL_H
 
-#include "kicad_global.h"
-
 #include "numericalsortfilterproxymodel.h"
 
 class KICAD_EXPORT ComponentPinsSortFilterProxyModel : public NumericalSortFilterProxyModel

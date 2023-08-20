@@ -19,8 +19,6 @@
 #ifndef PINCLASSITEM_H
 #define PINCLASSITEM_H
 
-#include "kicad_global.h"
-
 #include "model/pin.h"
 
 class KICAD_EXPORT PinClassItem
