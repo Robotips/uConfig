@@ -46,7 +46,7 @@ public:
 protected slots:
     void setTitle();
 
-    void organize(const QString &ruleSetName);
+    void organize();
     void updateRules();
     void reloadRuleSetList();
     void setActiveComponent(Component *component);

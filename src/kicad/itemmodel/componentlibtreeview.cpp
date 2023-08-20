@@ -215,6 +215,6 @@ void ComponentLibTreeView::createActions()
     _removeAction->setText(tr("Remove"));
     _removeAction->setShortcut(QKeySequence::Delete);
     _removeAction->setShortcutContext(Qt::WidgetShortcut);
-    connect(_removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
+    connect(_removeAction, &QAction::triggered, this, &ComponentLibTreeView::remove);
     addAction(_removeAction);
 }

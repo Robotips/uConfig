@@ -105,8 +105,9 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
     }
 }
 
-void UConfigMainWindow::organize(const QString &ruleSetName)
+void UConfigMainWindow::organize()
 {
+    const QString &ruleSetName = _ruleComboBox->currentText();
     disconnect(_kssEditor, &KssEditor::textChanged, this, &UConfigMainWindow::updateRules);
     if (ruleSetName == "package")
     {
@@ -324,7 +325,13 @@ void UConfigMainWindow::createToolbarsMenus()
     openFileAction->setIcon(QIcon(":/icons/img/open"));
     fileMenu->addAction(openFileAction);
     toolBar->addAction(openFileAction);
-    connect(openFileAction, SIGNAL(triggered()), _project, SLOT(openLib()));
+    connect(openFileAction,
+            &QAction::triggered,
+            this,
+            [this]()
+            {
+                _project->openLib();
+            });
 
     QAction *importFileAction = new QAction(tr("&Import components..."), this);
     importFileAction->setStatusTip(tr("Imports components from various format of files"));
@@ -332,7 +339,13 @@ void UConfigMainWindow::createToolbarsMenus()
     importFileAction->setIcon(QIcon(":/icons/img/import"));
     fileMenu->addAction(importFileAction);
     toolBar->addAction(importFileAction);
-    connect(importFileAction, SIGNAL(triggered()), _project, SLOT(importComponents()));
+    connect(importFileAction,
+            &QAction::triggered,
+            this,
+            [this]()
+            {
+                _project->importComponents();
+            });
 
     QAction *saveFileAction = new QAction(tr("&Save lib"), this);
     saveFileAction->setStatusTip(tr("Save to Kicad components lib"));
@@ -347,7 +360,13 @@ void UConfigMainWindow::createToolbarsMenus()
     saveFileAsAction->setShortcut(QKeySequence::SaveAs);
     saveFileAsAction->setIcon(QIcon(":/icons/img/save-as"));
     fileMenu->addAction(saveFileAsAction);
-    connect(saveFileAsAction, SIGNAL(triggered()), _project, SLOT(saveLibAs()));
+    connect(saveFileAsAction,
+            &QAction::triggered,
+            this,
+            [this]()
+            {
+                _project->saveLibAs();
+            });
 
     fileMenu->addSeparator();
     for (int i = 0; i < UConfigProject::MaxOldProject; i++)
@@ -355,7 +374,7 @@ void UConfigMainWindow::createToolbarsMenus()
         QAction *recentAction = new QAction(this);
         fileMenu->addAction(recentAction);
         recentAction->setVisible(false);
-        connect(recentAction, SIGNAL(triggered()), this, SLOT(openRecentFile()));
+        connect(recentAction, &QAction::triggered, this, &UConfigMainWindow::openRecentFile);
         _oldProjectsActions.append(recentAction);
     }
 
@@ -369,7 +388,7 @@ void UConfigMainWindow::createToolbarsMenus()
     // rules
     toolBar->addSeparator();
     _ruleComboBox = new QComboBox();
-    connect(_ruleComboBox, SIGNAL(currentIndexChanged(QString)), this, SLOT(organize(QString)));
+    connect(_ruleComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &UConfigMainWindow::organize);
     QLabel *labelFilter = new QLabel(tr(" pin ruler: "));
     toolBar->addWidget(labelFilter);
     labelFilter->setStyleSheet("QLabel {background: none}");
@@ -399,11 +418,17 @@ void UConfigMainWindow::createToolbarsMenus()
     QMenu *helpMenu = menuBar()->addMenu(tr("&Help"));
 
     QAction *aboutAction = new QAction(tr("&About"), this);
-    connect(aboutAction, SIGNAL(triggered(bool)), this, SLOT(about()));
+    connect(aboutAction, &QAction::triggered, this, &UConfigMainWindow::about);
     helpMenu->addAction(aboutAction);
 
     QAction *aboutQtAction = new QAction(tr("About &Qt"), this);
-    connect(aboutQtAction, SIGNAL(triggered(bool)), qApp, SLOT(aboutQt()));
+    connect(aboutQtAction,
+            &QAction::triggered,
+            this,
+            []()
+            {
+                QApplication::aboutQt();
+            });
     helpMenu->addAction(aboutQtAction);
 }
 

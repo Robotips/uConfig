@@ -65,18 +65,19 @@ void ComponentViewer::setComponent(Component *component, int layer)
 
 void ComponentViewer::selectPin(Pin *pin)
 {
-    blockSignals(true);
+    QSignalBlocker(this);
+
     scene()->clearSelection();
     if (pin == nullptr)
     {
         return;
     }
+
     PinItem *pinItem = _scene->componentItem()->pinItem(pin);
     if (pinItem != nullptr)
     {
         pinItem->setSelected(true);
     }
-    blockSignals(false);
 }
 
 void ComponentViewer::selectPins(const QList<Pin *> &pins)

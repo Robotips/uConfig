@@ -41,7 +41,7 @@ StartWizardPage::StartWizardPage(QWidget *parent)
 
     QButtonGroup *group = new QButtonGroup;
     group->setExclusive(true);
-    connect(group, SIGNAL(buttonClicked(int)), this, SLOT(buttonClic(int)));
+    connect(group, &QButtonGroup::idClicked, this, &StartWizardPage::buttonClick);
 
     QToolButton *buttonKicad = new QToolButton;
     buttonKicad->setIcon(QIcon(":/icons/img/kicad-lib"));
@@ -94,7 +94,7 @@ bool StartWizardPage::isComplete() const
     return _complete;
 }
 
-void StartWizardPage::buttonClic(int type)
+void StartWizardPage::buttonClick(int type)
 {
     dynamic_cast<PinListImporter *>(wizard())->setType((PinListImporter::ImportType)type);
     _complete = true;

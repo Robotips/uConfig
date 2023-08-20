@@ -113,7 +113,7 @@ void ComponentWidget::createWidgets()
     _toolsLayout->addWidget(new QLabel("Unit: "));
     _comboUnit = new QComboBox();
     _toolsLayout->addWidget(_comboUnit);
-    connect(_comboUnit, SIGNAL(currentIndexChanged(int)), this, SLOT(setUnit(int)));
+    connect(_comboUnit, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &ComponentWidget::setUnit);
 
     _toolsLayout->addItem(new QSpacerItem(20, 20, QSizePolicy::Expanding));
 

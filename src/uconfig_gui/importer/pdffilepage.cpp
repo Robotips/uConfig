@@ -48,7 +48,7 @@ PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
     QVBoxLayout *rangeGroupLayout = new QVBoxLayout;
 
     _allRadio = new QRadioButton(tr("Whole document (could be long)"));
-    connect(_allRadio, SIGNAL(toggled(bool)), this, SLOT(check()));
+    connect(_allRadio, &QRadioButton::toggled, this, &PDFFilePage::check);
     rangeGroupLayout->addWidget(_allRadio);
 
     _partialRadio = new QRadioButton(tr("Page range"));
@@ -56,13 +56,13 @@ PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
 
     _rangeEdit = new QLineEdit();
     _rangeEdit->setValidator(new QRegularExpressionValidator(QRegularExpression("^[0-9]+(\\-[0-9]+)?$")));
-    connect(_rangeEdit, SIGNAL(textChanged(QString)), this, SLOT(check()));
+    connect(_rangeEdit, &QLineEdit::textChanged, this, &PDFFilePage::check);
     registerField("pdfpagerange", _rangeEdit);
     rangeGroupLayout->addWidget(_rangeEdit);
 
     _forceCheckBox = new QCheckBox(tr("Force détection\n(try to build component in each page,\nvery expensive)"));
     _allRadio->setChecked(true);
-    connect(_forceCheckBox, SIGNAL(toggled(bool)), this, SLOT(check()));
+    connect(_forceCheckBox, &QCheckBox::toggled, this, &PDFFilePage::check);
     rangeGroupLayout->addWidget(_forceCheckBox);
     rangeGroupLayout->addSpacerItem(new QSpacerItem(10, 30, QSizePolicy::Expanding, QSizePolicy::Expanding));
 

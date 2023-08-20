@@ -43,11 +43,11 @@ FilePage::FilePage()
     label->setWordWrap(true);
 
     _fileEdit = new QLineEdit;
-    connect(_fileEdit, SIGNAL(textChanged(QString)), this, SLOT(checkEntry(QString)));
+    connect(_fileEdit, &QLineEdit::textChanged, this, &FilePage::checkEntry);
 
     QToolButton *fileExplore = new QToolButton;
     fileExplore->setText("...");
-    connect(fileExplore, SIGNAL(clicked()), this, SLOT(fileExplore()));
+    connect(fileExplore, &QToolButton::clicked, this, &FilePage::fileExplore);
 
     QHBoxLayout *hlayout = new QHBoxLayout;
     hlayout->addWidget(label);

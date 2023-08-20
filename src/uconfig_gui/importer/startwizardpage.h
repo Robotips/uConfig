@@ -32,7 +32,7 @@ public:
     int nextId() const override;
 
 private slots:
-    void buttonClic(int type);
+    void buttonClick(int type);
 
 private:
     bool _complete;

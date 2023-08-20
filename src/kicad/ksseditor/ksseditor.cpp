@@ -27,9 +27,9 @@ KssEditor::KssEditor(QWidget *parent)
     _syntax = new KSSSyntax(this->document());
 
     _kssEditorMargin = new KssEditorMargin(this);
-    connect(this, SIGNAL(blockCountChanged(int)), this, SLOT(updateLineNumberAreaWidth(int)));
-    connect(this, SIGNAL(updateRequest(QRect, int)), this, SLOT(updateLineNumberArea(QRect, int)));
-    connect(this, SIGNAL(cursorPositionChanged()), this, SLOT(updateExtraSelection()));
+    connect(this, &KssEditor::blockCountChanged, this, &KssEditor::updateLineNumberAreaWidth);
+    connect(this, &KssEditor::updateRequest, this, &KssEditor::updateLineNumberArea);
+    connect(this, &KssEditor::cursorPositionChanged, this, &KssEditor::updateExtraSelection);
 
     QFont font("Consolas");
     font.setPixelSize(12);

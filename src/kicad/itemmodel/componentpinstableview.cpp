@@ -209,7 +209,7 @@ void ComponentPinsTableView::createActions()
     _removeAction->setShortcut(QKeySequence::Delete);
     _removeAction->setShortcutContext(Qt::WidgetShortcut);
     _removeAction->setEnabled(false);
-    connect(_removeAction, SIGNAL(triggered(bool)), this, SLOT(remove()));
+    connect(_removeAction, &QAction::triggered, this, &ComponentPinsTableView::remove);
     addAction(_removeAction);
 
     _copyAction = new QAction(this);
@@ -217,7 +217,7 @@ void ComponentPinsTableView::createActions()
     _copyAction->setShortcut(QKeySequence::Copy);
     _copyAction->setShortcutContext(Qt::WidgetShortcut);
     _copyAction->setEnabled(false);
-    connect(_copyAction, SIGNAL(triggered(bool)), this, SLOT(copy()));
+    connect(_copyAction, &QAction::triggered, this, &ComponentPinsTableView::copy);
     addAction(_copyAction);
 }
 
