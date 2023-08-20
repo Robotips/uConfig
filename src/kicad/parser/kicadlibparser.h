@@ -46,6 +46,13 @@ protected:
     Pin *readPin();
     Draw *readDraw(char c);
     DrawText *readLabel();
+
+    QString pinDirectionString(Pin::Direction direction) const;
+    QString pinTypeString(Pin::PinType pinType) const;
+    QString pinElectricalTypeString(Pin::ElectricalType electricalType) const;
+    Pin::PinType pinType(const QString &pinTypeString) const;
+    Pin::ElectricalType pinElectricalType(char electricalTypeChar) const;
+    Pin::Direction pinDirection(char directionChar);
 };
 
 #endif  // KICADLIBPARSER_H

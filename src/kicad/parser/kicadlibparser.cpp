@@ -225,17 +225,17 @@ void KicadLibParser::writePin(Pin *pin)
     _stream << " " << pin->padName() << " "                     // pad name
             << pin->pos().x() << " " << -pin->pos().y() << " "  // x y position
             << pin->length() << " "                             // lenght
-            << pin->directionString() << " "                    // pin direction (up/down/left/right)
+            << pinDirectionString(pin->direction()) << " "      // pin direction (up/down/left/right)
             << "50"
             << " "  // name text size
             << "50"
             << " "  // pad name text size
             << pin->layer() << " "
             << "1"
-            << " " << pin->electricalTypeString();
+            << " " << pinElectricalTypeString(pin->electricalType());
     if (pin->pinType() != Pin::Normal)
     {
-        _stream << " " << pin->pinTypeString();
+        _stream << " " << pinTypeString(pin->pinType());
     }
 }
 
@@ -620,10 +620,10 @@ Pin *KicadLibParser::readPin()
     pin->setLength(lenght);
 
     // orientation
-    char direction;
+    char directionChar;
     _stream.skipWhiteSpace();
-    _stream >> direction;
-    pin->setDirection(direction);
+    _stream >> directionChar;
+    pin->setDirection(pinDirection(directionChar));
 
     // text size
     int textNameSize;
@@ -648,14 +648,14 @@ Pin *KicadLibParser::readPin()
     _stream >> dummy;
 
     // elec type
-    char elec_type;
+    char electricalTypeChar;
     _stream.skipWhiteSpace();
-    _stream >> elec_type;
-    pin->setElectricalType(elec_type);
+    _stream >> electricalTypeChar;
+    pin->setElectricalType(pinElectricalType(electricalTypeChar));
 
     // pin type
-    QString pinType = _stream.readLine();
-    pin->setPinType(pinType.trimmed());
+    QString pinTypeStr = _stream.readLine();
+    pin->setPinType(pinType(pinTypeStr.trimmed()));
 
     return pin;
 }
@@ -937,4 +937,187 @@ DrawText *KicadLibParser::readLabel()
 
     _stream.readLine();
     return draw;
+}
+
+QString KicadLibParser::pinDirectionString(Pin::Direction direction) const
+{
+    switch (direction)
+    {
+        case Pin::Down:
+            return "D";
+        case Pin::Left:
+            return "L";
+        case Pin::Up:
+            return "U";
+        case Pin::Right:
+            return "R";
+    }
+    return "R";
+}
+
+QString KicadLibParser::pinTypeString(Pin::PinType pinType) const
+{
+    switch (pinType)
+    {
+        case Pin::Normal:
+            return "";
+        case Pin::NotVisible:
+            return "N";
+        case Pin::Invert:
+            return "I";
+        case Pin::Clock:
+            return "C";
+        case Pin::InvertedClock:
+            return "IC";
+        case Pin::LowIn:
+            return "L";
+        case Pin::ClockLow:
+            return "CL";
+        case Pin::LowOut:
+            return "V";
+        case Pin::FallingEdge:
+            return "F";
+        case Pin::NonLogic:
+            return "NX";
+    }
+    return QLatin1String("");
+}
+
+QString KicadLibParser::pinElectricalTypeString(Pin::ElectricalType electricalType) const
+{
+    switch (electricalType)
+    {
+        case Pin::Input:
+            return "I";
+        case Pin::Output:
+            return "O";
+        case Pin::Bidir:
+            return "B";
+        case Pin::Tristate:
+            return "T";
+        case Pin::Passive:
+            return "P";
+        case Pin::Unspecified:
+            return "U";
+        case Pin::PowerIn:
+            return "W";
+        case Pin::PowerOut:
+            return "w";
+        case Pin::OpenCollector:
+            return "C";
+        case Pin::OpenEmitter:
+            return "E";
+        case Pin::NotConnected:
+            return "N";
+    }
+    return "I";
+}
+
+Pin::Direction KicadLibParser::pinDirection(char directionChar)
+{
+    Pin::Direction direction;
+    switch (directionChar)
+    {
+        case 'D':
+            direction = Pin::Down;
+            break;
+        case 'L':
+            direction = Pin::Left;
+            break;
+        case 'U':
+            direction = Pin::Up;
+            break;
+        case 'R':
+            direction = Pin::Right;
+            break;
+    }
+    return direction;
+}
+
+Pin::PinType KicadLibParser::pinType(const QString &pinTypeString) const
+{
+    Pin::PinType pinType;
+    if (pinTypeString == "N")
+    {
+        pinType = Pin::NotVisible;
+    }
+    else if (pinTypeString == "I")
+    {
+        pinType = Pin::Invert;
+    }
+    else if (pinTypeString == "C")
+    {
+        pinType = Pin::Clock;
+    }
+    else if (pinTypeString == "IC")
+    {
+        pinType = Pin::InvertedClock;
+    }
+    else if (pinTypeString == "L")
+    {
+        pinType = Pin::LowIn;
+    }
+    else if (pinTypeString == "CL")
+    {
+        pinType = Pin::ClockLow;
+    }
+    else if (pinTypeString == "V")
+    {
+        pinType = Pin::LowOut;
+    }
+    else if (pinTypeString == "F")
+    {
+        pinType = Pin::FallingEdge;
+    }
+    else if (pinTypeString == "NX")
+    {
+        pinType = Pin::NonLogic;
+    }
+    else
+    {
+        pinType = Pin::Normal;
+    }
+    return pinType;
+}
+
+Pin::ElectricalType KicadLibParser::pinElectricalType(char electricalTypeChar) const
+{
+    Pin::ElectricalType electricalType;
+    switch (electricalTypeChar)
+    {
+        case 'I':
+            electricalType = Pin::Input;
+            break;
+        case 'O':
+            electricalType = Pin::Output;
+            break;
+        case 'B':
+            electricalType = Pin::Bidir;
+            break;
+        case 'T':
+            electricalType = Pin::Tristate;
+            break;
+        case 'P':
+            electricalType = Pin::Passive;
+            break;
+        case 'U':
+            electricalType = Pin::Unspecified;
+            break;
+        case 'W':
+            electricalType = Pin::PowerIn;
+            break;
+        case 'w':
+            electricalType = Pin::PowerOut;
+            break;
+        case 'C':
+            electricalType = Pin::OpenCollector;
+            break;
+        case 'E':
+            electricalType = Pin::OpenEmitter;
+            break;
+        case 'N':
+            electricalType = Pin::NotConnected;
+            break;
+    }
+    return electricalType;
 }

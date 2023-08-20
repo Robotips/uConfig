@@ -30,8 +30,8 @@ class KICAD_EXPORT Pin
 {
 public:
     explicit Pin();
-    Pin(QString name, QString padName = QString());
-    Pin(const QString &name, int padnumber);
+    Pin(const QString &name, const QString &padName = QString());
+    Pin(const QString &name, int padNumber);
     Pin(const Pin &other);
 
     enum Direction
@@ -81,22 +81,17 @@ public:
     QString padName() const;
     void setPadName(const QString &padname);
 
+    // replace by angle
     Direction direction() const;
-    QString directionString() const;
-    void setDirection(const Direction &direction);
-    void setDirection(char c);
+    void setDirection(Direction direction);
 
     PinType pinType() const;
-    QString pinTypeString() const;
     static QString pinTypeDesc(const Pin::PinType &pinType);
     void setPinType(const PinType &pinType);
-    void setPinType(const QString &pinType);
 
     ElectricalType electricalType() const;
-    QString electricalTypeString() const;
     static QString electricalTypeDesc(const Pin::ElectricalType &electricalType);
     void setElectricalType(const ElectricalType &electricalType);
-    void setElectricalType(char c);
 
     int textNameSize() const;
     void setTextNameSize(int textNameSize);
@@ -104,7 +99,7 @@ public:
     int textPadSize() const;
     void setTextPadSize(int textPadSize);
 
-    int layer() const;
+    int layer() const;  // change to unit
     void setLayer(int layer);
 
     int length() const;
@@ -115,8 +110,6 @@ public:
 
     Component *component() const;
     void setComponent(Component *component);
-
-    bool isValid() const;
 
     friend bool operator<(const Pin &pin1, const Pin &pin);
     friend bool operator==(const Pin &pin1, const Pin &pin2);

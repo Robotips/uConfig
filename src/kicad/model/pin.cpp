@@ -18,7 +18,6 @@
 
 #include "pin.h"
 
-#include <QDebug>
 #include <utility>
 
 Pin::Pin()
@@ -33,9 +32,9 @@ Pin::Pin()
     _component = nullptr;
 }
 
-Pin::Pin(QString name, QString padName)
-    : _name(std::move(name)),
-      _padName(std::move(padName)),
+Pin::Pin(const QString &name, const QString &padName)
+    : _name(name),
+      _padName(padName),
       _direction(Pin::Right),
       _pinType(Pin::Normal),
       _electricalType(Pin::Input)
@@ -47,9 +46,9 @@ Pin::Pin(QString name, QString padName)
     _component = nullptr;
 }
 
-Pin::Pin(const QString &name, const int padnumber)
+Pin::Pin(const QString &name, const int padNumber)
+    : Pin(name, QString::number(padNumber))
 {
-    Pin(name, QString::number(padnumber));
 }
 
 Pin::Pin(const Pin &other)
@@ -107,77 +106,14 @@ Pin::Direction Pin::direction() const
     return _direction;
 }
 
-QString Pin::directionString() const
-{
-    switch (_direction)
-    {
-        case Pin::Down:
-            return "D";
-        case Pin::Left:
-            return "L";
-        case Pin::Up:
-            return "U";
-        case Pin::Right:
-            return "R";
-    }
-    return "R";
-}
-
-void Pin::setDirection(const Pin::Direction &direction)
+void Pin::setDirection(Direction direction)
 {
     _direction = direction;
-}
-
-void Pin::setDirection(char c)
-{
-    switch (c)
-    {
-        case 'D':
-            _direction = Pin::Down;
-            break;
-        case 'L':
-            _direction = Pin::Left;
-            break;
-        case 'U':
-            _direction = Pin::Up;
-            break;
-        case 'R':
-            _direction = Pin::Right;
-            break;
-    }
 }
 
 Pin::PinType Pin::pinType() const
 {
     return _pinType;
-}
-
-QString Pin::pinTypeString() const
-{
-    switch (_pinType)
-    {
-        case Pin::Normal:
-            return "";
-        case Pin::NotVisible:
-            return "N";
-        case Pin::Invert:
-            return "I";
-        case Pin::Clock:
-            return "C";
-        case Pin::InvertedClock:
-            return "IC";
-        case Pin::LowIn:
-            return "L";
-        case Pin::ClockLow:
-            return "CL";
-        case Pin::LowOut:
-            return "V";
-        case Pin::FallingEdge:
-            return "F";
-        case Pin::NonLogic:
-            return "NX";
-    }
-    return "";
 }
 
 QString Pin::pinTypeDesc(const Pin::PinType &pinType)
@@ -205,7 +141,7 @@ QString Pin::pinTypeDesc(const Pin::PinType &pinType)
         case Pin::NonLogic:
             return QStringLiteral("non logic");
     }
-    return QStringLiteral("");
+    return QLatin1String("");
 }
 
 void Pin::setPinType(const Pin::PinType &pinType)
@@ -213,83 +149,9 @@ void Pin::setPinType(const Pin::PinType &pinType)
     _pinType = pinType;
 }
 
-void Pin::setPinType(const QString &pinType)
-{
-    if (pinType == "N")
-    {
-        _pinType = Pin::NotVisible;
-    }
-    else if (pinType == "I")
-    {
-        _pinType = Pin::Invert;
-    }
-    else if (pinType == "C")
-    {
-        _pinType = Pin::Clock;
-    }
-    else if (pinType == "IC")
-    {
-        _pinType = Pin::InvertedClock;
-    }
-    else if (pinType == "L")
-    {
-        _pinType = Pin::LowIn;
-    }
-    else if (pinType == "CL")
-    {
-        _pinType = Pin::ClockLow;
-    }
-    else if (pinType == "V")
-    {
-        _pinType = Pin::LowOut;
-    }
-    else if (pinType == "F")
-    {
-        _pinType = Pin::FallingEdge;
-    }
-    else if (pinType == "NX")
-    {
-        _pinType = Pin::NonLogic;
-    }
-    else
-    {
-        _pinType = Pin::Normal;
-    }
-}
-
 Pin::ElectricalType Pin::electricalType() const
 {
     return _electricalType;
-}
-
-QString Pin::electricalTypeString() const
-{
-    switch (_electricalType)
-    {
-        case Pin::Input:
-            return "I";
-        case Pin::Output:
-            return "O";
-        case Pin::Bidir:
-            return "B";
-        case Pin::Tristate:
-            return "T";
-        case Pin::Passive:
-            return "P";
-        case Pin::Unspecified:
-            return "U";
-        case Pin::PowerIn:
-            return "W";
-        case Pin::PowerOut:
-            return "w";
-        case Pin::OpenCollector:
-            return "C";
-        case Pin::OpenEmitter:
-            return "E";
-        case Pin::NotConnected:
-            return "N";
-    }
-    return "I";
 }
 
 QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
@@ -325,46 +187,6 @@ QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
 void Pin::setElectricalType(const ElectricalType &electricalType)
 {
     _electricalType = electricalType;
-}
-
-void Pin::setElectricalType(char c)
-{
-    switch (c)
-    {
-        case 'I':
-            _electricalType = Pin::Input;
-            break;
-        case 'O':
-            _electricalType = Pin::Output;
-            break;
-        case 'B':
-            _electricalType = Pin::Bidir;
-            break;
-        case 'T':
-            _electricalType = Pin::Tristate;
-            break;
-        case 'P':
-            _electricalType = Pin::Passive;
-            break;
-        case 'U':
-            _electricalType = Pin::Unspecified;
-            break;
-        case 'W':
-            _electricalType = Pin::PowerIn;
-            break;
-        case 'w':
-            _electricalType = Pin::PowerOut;
-            break;
-        case 'C':
-            _electricalType = Pin::OpenCollector;
-            break;
-        case 'E':
-            _electricalType = Pin::OpenEmitter;
-            break;
-        case 'N':
-            _electricalType = Pin::NotConnected;
-            break;
-    }
 }
 
 int Pin::textNameSize() const
