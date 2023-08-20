@@ -19,9 +19,11 @@
 #ifndef SCHEMATICSIMPORTER_H
 #define SCHEMATICSIMPORTER_H
 
+#include <QtCore/qglobal.h>
+
 #include "model/component.h"
 
-class SchematicsImporter
+class KICAD_EXPORT SchematicsImporter
 {
 public:
     SchematicsImporter();

@@ -21,7 +21,7 @@
 
 #include <QtCore/qglobal.h>
 
-#include "schematicsimport/schematicsimporter.h"
+#include "schematicsimporter.h"
 
 class KICAD_EXPORT TextImporter : public SchematicsImporter
 {
