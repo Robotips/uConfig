@@ -111,5 +111,7 @@ void ComponentInfosEditor::createWidgets()
     _packageEdit->setMaximumHeight(100);
     layout->addRow(tr("Package(s)"), _packageEdit);
 
+    layout->addItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+
     setLayout(layout);
 }
