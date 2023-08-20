@@ -19,6 +19,7 @@
 #ifndef PINRULER_H
 #define PINRULER_H
 
+#include <QtCore/qglobal.h>
 #include <QString>
 
 #include "model/component.h"

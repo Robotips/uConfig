@@ -19,6 +19,7 @@
 #ifndef COMPONENTWIDGET_H
 #define COMPONENTWIDGET_H
 
+#include <QtCore/qglobal.h>
 #include <QActionGroup>
 #include <QComboBox>
 #include <QToolButton>

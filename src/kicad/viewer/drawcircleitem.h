@@ -19,6 +19,8 @@
 #ifndef DRAWCIRCLEITEM_H
 #define DRAWCIRCLEITEM_H
 
+#include <QtCore/qglobal.h>
+
 #include "drawitem.h"
 
 #include "model/drawcircle.h"

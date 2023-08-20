@@ -20,6 +20,7 @@
 #define ABSTRACTLIBPARSER_H
 
 #include <QtCore/qglobal.h>
+#include <QtCore/qglobal.h>
 
 #include "../model/lib.h"
 

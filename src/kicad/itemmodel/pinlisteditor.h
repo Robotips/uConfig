@@ -19,11 +19,11 @@
 #ifndef PINLISTEDITOR_H
 #define PINLISTEDITOR_H
 
-#include "componentpinstableview.h"
-
+#include <QtCore/qglobal.h>
 #include <QWidget>
-
 #include <QLineEdit>
+
+#include "componentpinstableview.h"
 
 class KICAD_EXPORT PinListEditor : public QWidget
 {

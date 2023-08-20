@@ -19,9 +19,11 @@
 #ifndef DRAWTEXT_H
 #define DRAWTEXT_H
 
+#include <QtCore/qglobal.h>
+#include <QString>
+
 #include "draw.h"
 
-#include <QString>
 
 class KICAD_EXPORT DrawText : public Draw
 {

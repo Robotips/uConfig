@@ -19,6 +19,8 @@
 #ifndef PINCLASSITEM_H
 #define PINCLASSITEM_H
 
+#include <QtCore/qglobal.h>
+
 #include "model/pin.h"
 
 class KICAD_EXPORT PinClassItem

@@ -19,6 +19,7 @@
 #ifndef RULESSET_H
 #define RULESSET_H
 
+#include <QtCore/qglobal.h>
 #include <QList>
 #include <QString>
 

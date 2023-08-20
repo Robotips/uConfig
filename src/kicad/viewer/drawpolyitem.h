@@ -19,6 +19,8 @@
 #ifndef DRAWPOLYITEM_H
 #define DRAWPOLYITEM_H
 
+#include <QtCore/qglobal.h>
+
 #include "drawitem.h"
 
 #include "model/drawpoly.h"

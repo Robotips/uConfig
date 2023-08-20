@@ -19,6 +19,7 @@
 #ifndef PINCLASS_H
 #define PINCLASS_H
 
+#include <QtCore/qglobal.h>
 #include <QList>
 #include <QRect>
 #include <QString>

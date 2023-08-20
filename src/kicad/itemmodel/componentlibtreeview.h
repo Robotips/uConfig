@@ -19,8 +19,8 @@
 #ifndef COMPONENTLIBTREEVIEW_H
 #define COMPONENTLIBTREEVIEW_H
 
+#include <QtCore/qglobal.h>
 #include <QTreeView>
-
 #include <QAction>
 
 #include "componentlibitemmodel.h"

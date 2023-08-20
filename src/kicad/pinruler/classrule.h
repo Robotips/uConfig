@@ -19,6 +19,7 @@
 #ifndef CLASSRULE_H
 #define CLASSRULE_H
 
+#include <QtCore/qglobal.h>
 #include <QString>
 #include <QStringList>
 

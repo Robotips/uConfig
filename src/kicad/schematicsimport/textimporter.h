@@ -19,6 +19,8 @@
 #ifndef TEXTIMPORTER_H
 #define TEXTIMPORTER_H
 
+#include <QtCore/qglobal.h>
+
 #include "schematicsimport/schematicsimporter.h"
 
 class KICAD_EXPORT TextImporter : public SchematicsImporter

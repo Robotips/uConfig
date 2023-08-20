@@ -19,9 +19,10 @@
 #ifndef KICADLIBPARSER_H
 #define KICADLIBPARSER_H
 
-#include "abstractlibparser.h"
-
+#include <QtCore/qglobal.h>
 #include <QTextStream>
+
+#include "abstractlibparser.h"
 
 class KICAD_EXPORT KicadLibParser : public AbstractLibParser
 {
