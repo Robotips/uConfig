@@ -33,6 +33,8 @@
 #include <kicad/pinruler/pinruler.h>
 #include <kicad/pinruler/rulesparser.h>
 
+#include <kicad/schematicsimport/textimporter.h>
+
 QTextStream out(stdout);
 
 void processFilePdf(QString file, Lib *lib, bool debug)
@@ -62,10 +64,26 @@ void processFileLib(const QString &file, Lib *lib)
     }
 }
 
+void processFileCSV(const QString &file, Lib *lib)
+{
+    TextImporter imp;
+    if (!imp.import(file))
+    {
+        out << "error (2): input file cannot be opened" << Qt::endl;
+        exit(2);
+    }
+
+    for (Component *component : qAsConst(imp.components()))
+    {
+        lib->addComponent(component);
+    }
+}
+
 enum UConfigSource
 {
     FromPdf,
-    FromLib
+    FromLib,
+    FromCSV
 } source;
 
 int main(int argc, char *argv[])
@@ -119,7 +137,7 @@ int main(int argc, char *argv[])
         }
         if (!QFileInfo::exists(ruleFile))
         {
-            QString binPath = QFileInfo(QApplication::arguments()[0]).path() + "/";
+            QString binPath = QCoreApplication::applicationDirPath() + "/";
             if (QFileInfo::exists(binPath + "../rules/" + ruleFile))
             {
                 ruleFile = binPath + "../rules/" + ruleFile;
@@ -168,6 +186,11 @@ int main(int argc, char *argv[])
     {
         processFileLib(file, &lib);
         source = FromLib;
+    }
+    else if (file.endsWith(".csv", Qt::CaseInsensitive) || file.endsWith(".txt", Qt::CaseInsensitive))
+    {
+        processFileCSV(file, &lib);
+        source = FromCSV;
     }
     else
     {
