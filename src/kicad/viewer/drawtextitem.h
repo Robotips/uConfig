@@ -19,6 +19,8 @@
 #ifndef DRAWTEXTITEM_H
 #define DRAWTEXTITEM_H
 
+#include <QtCore/qglobal.h>
+
 #include "drawitem.h"
 #include "kicadfont.h"
 

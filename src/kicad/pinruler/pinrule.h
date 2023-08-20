@@ -19,6 +19,7 @@
 #ifndef PINRULE_H
 #define PINRULE_H
 
+#include <QtCore/qglobal.h>
 #include <QString>
 #include <QStringList>
 

@@ -19,9 +19,11 @@
 #ifndef DRAWPOLY_H
 #define DRAWPOLY_H
 
+#include <QtCore/qglobal.h>
+#include <QList>
+
 #include "draw.h"
 
-#include <QList>
 
 class KICAD_EXPORT DrawPoly : public Draw
 {

@@ -19,9 +19,10 @@
 #ifndef DRAWRECT_H
 #define DRAWRECT_H
 
-#include "draw.h"
-
+#include <QtCore/qglobal.h>
 #include <QRect>
+
+#include "draw.h"
 
 class KICAD_EXPORT DrawRect : public Draw
 {

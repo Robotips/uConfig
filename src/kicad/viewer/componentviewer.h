@@ -19,6 +19,7 @@
 #ifndef MODULEVIEWER_H
 #define MODULEVIEWER_H
 
+#include <QtCore/qglobal.h>
 #include <QGraphicsView>
 #include <QList>
 

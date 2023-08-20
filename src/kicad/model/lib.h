@@ -19,9 +19,11 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include "component.h"
+#include <QtCore/qglobal.h>
 #include <QList>
 #include <QString>
+
+#include "component.h"
 
 class KICAD_EXPORT Lib
 {

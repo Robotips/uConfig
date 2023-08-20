@@ -19,6 +19,8 @@
 #ifndef DRAWRECTITEM_H
 #define DRAWRECTITEM_H
 
+#include <QtCore/qglobal.h>
+
 #include "drawitem.h"
 
 #include "model/drawrect.h"

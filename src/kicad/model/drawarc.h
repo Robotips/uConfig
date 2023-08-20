@@ -19,6 +19,8 @@
 #ifndef DRAWARC_H
 #define DRAWARC_H
 
+#include <QtCore/qglobal.h>
+
 #include "draw.h"
 
 class KICAD_EXPORT DrawArc : public Draw

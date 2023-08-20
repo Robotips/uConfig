@@ -19,6 +19,8 @@
 #ifndef DRAWCIRCLE_H
 #define DRAWCIRCLE_H
 
+#include <QtCore/qglobal.h>
+
 #include "draw.h"
 
 class KICAD_EXPORT DrawCircle : public Draw

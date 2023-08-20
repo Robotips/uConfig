@@ -19,6 +19,7 @@
 #ifndef PINITEM_H
 #define PINITEM_H
 
+#include <QtCore/qglobal.h>
 #include <QGraphicsItem>
 
 #include "model/pin.h"

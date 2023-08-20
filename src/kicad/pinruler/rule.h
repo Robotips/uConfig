@@ -19,6 +19,7 @@
 #ifndef RULE_H
 #define RULE_H
 
+#include <QtCore/qglobal.h>
 #include <QRegularExpression>
 #include <QString>
 

@@ -19,8 +19,10 @@
 #ifndef DRAWITEM_H
 #define DRAWITEM_H
 
-#include "model/draw.h"
+#include <QtCore/qglobal.h>
 #include <QGraphicsItem>
+
+#include "model/draw.h"
 
 class KICAD_EXPORT DrawItem : public QGraphicsItem
 {
