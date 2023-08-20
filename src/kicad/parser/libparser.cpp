@@ -24,13 +24,15 @@ Lib *LibParser::loadLib(Lib *lib, const QString &fileName, LibParser::Format for
 {
     switch (format)
     {
-        case LibParser::Kicad:
+        case LibParser::KicadLib:
         {
             KicadLibParser parser;
             return parser.loadLib(fileName, lib);
         }
         default:
+        {
             return nullptr;
+        }
     }
 }
 
@@ -38,12 +40,14 @@ bool LibParser::saveLib(Lib *lib, const QString &fileName, LibParser::Format for
 {
     switch (format)
     {
-        case LibParser::Kicad:
+        case LibParser::KicadLib:
         {
             KicadLibParser parser;
             return parser.saveLib(fileName, lib);
         }
         default:
+        {
             return false;
+        }
     }
 }

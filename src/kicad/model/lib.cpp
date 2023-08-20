@@ -164,7 +164,7 @@ void Lib::clear()
  */
 bool Lib::saveTo(const QString &fileName)
 {
-    return LibParser::saveLib(this, fileName, LibParser::Kicad);
+    return LibParser::saveLib(this, fileName, LibParser::KicadLib);
 }
 
 /**
@@ -174,5 +174,5 @@ bool Lib::saveTo(const QString &fileName)
  */
 bool Lib::readFrom(const QString &fileName)
 {
-    return LibParser::loadLib(this, fileName, LibParser::Kicad) != nullptr;
+    return LibParser::loadLib(this, fileName, LibParser::KicadLib) != nullptr;
 }

@@ -173,7 +173,7 @@ void KicadLibParser::writeComponent(Component *component)
     if (!component->footPrints().isEmpty())
     {
         _stream << "$FPLIST" << '\n';
-        for (const QString &footPrint : component->footPrints())
+        for (const QString &footPrint : qAsConst(component->footPrints()))
         {
             _stream << " " << footPrint << '\n';
         }
@@ -187,14 +187,16 @@ void KicadLibParser::writeComponent(Component *component)
     }
 
     _stream << "DRAW" << '\n';
+
     // draw
-    for (Draw *draw : component->draws())
+    for (Draw *draw : qAsConst(component->draws()))
     {
         writeDraw(draw);
         _stream << '\n';
     }
+
     // pins
-    for (Pin *pin : component->pins())
+    for (Pin *pin : qAsConst(component->pins()))
     {
         writePin(pin);
         _stream << '\n';

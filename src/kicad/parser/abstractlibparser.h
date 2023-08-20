@@ -16,22 +16,20 @@
  ** along with this program. If not, see <http://www.gnu.org/licenses/>.
  **/
 
-#ifndef LIBPARSER_H
-#define LIBPARSER_H
+#ifndef ABSTRACTLIBPARSER_H
+#define ABSTRACTLIBPARSER_H
 
-#include <model/lib.h>
+#include <QtCore/qglobal.h>
 
-class KICAD_EXPORT LibParser
+#include "../model/lib.h"
+
+class KICAD_EXPORT AbstractLibParser
 {
 public:
-    enum Format
-    {
-        KicadLib,
-        KicadSym,
-    };
+    AbstractLibParser();
 
-    static Lib *loadLib(Lib *lib, const QString &fileName, Format format);
-    static bool saveLib(Lib *lib, const QString &fileName, Format format);
+    virtual Lib *loadLib(const QString &fileName, Lib *lib = nullptr) = 0;
+    virtual bool saveLib(const QString &fileName, Lib *lib) = 0;
 };
 
-#endif  // LIBPARSER_H
+#endif // ABSTRACTLIBPARSER_H

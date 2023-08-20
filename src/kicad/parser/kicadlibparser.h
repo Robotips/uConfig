@@ -19,17 +19,17 @@
 #ifndef KICADLIBPARSER_H
 #define KICADLIBPARSER_H
 
-#include "libparser.h"
+#include "abstractlibparser.h"
 
 #include <QTextStream>
 
-class KicadLibParser
+class KICAD_EXPORT KicadLibParser : public AbstractLibParser
 {
 public:
     KicadLibParser();
 
-    virtual Lib *loadLib(const QString &fileName, Lib *lib = nullptr);
-    virtual bool saveLib(const QString &fileName, Lib *lib);
+    Lib *loadLib(const QString &fileName, Lib *lib = nullptr) override;
+    bool saveLib(const QString &fileName, Lib *lib) override;
 
 protected:
     QTextStream _stream;
