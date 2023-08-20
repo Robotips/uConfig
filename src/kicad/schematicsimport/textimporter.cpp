@@ -110,7 +110,7 @@ bool TextImporter::import(const QString &fileName)
 
         QString pinNumber = columns[_pinColumn];
         QStringList pinNameColumns;
-        for (int column : _pinNameColumns)
+        for (int column : qAsConst(_pinNameColumns))
         {
             pinNameColumns.append(columns[column]);
         }
@@ -118,8 +118,6 @@ bool TextImporter::import(const QString &fileName)
 
         Pin *pin = new Pin(pinName, pinNumber);
         component->addPin(pin);
-
-        // qDebug() << pin << pinNameColumns;
     }
 
     component->reorganizeToPackageStyle();

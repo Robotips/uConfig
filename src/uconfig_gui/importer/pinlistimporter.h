@@ -40,7 +40,7 @@ public:
     {
         CSV,
         PDF,
-        Table,
+        // Table,
         Kicad
     };
     ImportType type();

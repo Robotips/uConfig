@@ -60,6 +60,12 @@ PinListImporter::PinListImporter(const QString &fileName, QWidget *parent)
         setStartId(PageComponents);
         _type = Kicad;
     }
+    else if (fileName.endsWith(".csv", Qt::CaseInsensitive))
+    {
+        setField("file", fileName);
+        setStartId(PageComponents);
+        _type = CSV;
+    }
     setOption(QWizard::DisabledBackButtonOnLastPage, true);
 }
 

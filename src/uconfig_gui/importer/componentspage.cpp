@@ -26,6 +26,7 @@
 #include "pinlistimporter.h"
 
 #include <kicad/model/lib.h>
+#include <kicad/schematicsimport/textimporter.h>
 
 ComponentsPage::ComponentsPage()
     : QWizardPage(nullptr)
@@ -42,7 +43,7 @@ ComponentsPage::ComponentsPage()
     _componentTreeView = new ComponentLibTreeView();
     _componentTreeView->setSelectedMode(true);
     layout->addWidget(_componentTreeView);
-    connect(_checkAllBox, SIGNAL(clicked()), _componentTreeView, SLOT(selectAll()));
+    connect(_checkAllBox, &QCheckBox::clicked, _componentTreeView, &ComponentLibTreeView::selectAll);
 
     setLayout(layout);
 }
@@ -54,24 +55,48 @@ int ComponentsPage::nextId() const
 
 void ComponentsPage::initializePage()
 {
-    QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
     PinListImporter::ImportType type = dynamic_cast<PinListImporter *>(wizard())->type();
     _lib = new Lib();
-    if (type == PinListImporter::Kicad)
+    switch (type)
     {
-        QString file = field("file").toString();
-        dynamic_cast<PinListImporter *>(wizard())->setFilePath(file);
-        components.clear();
-        if (!_lib->readFrom(file))
+        case PinListImporter::Kicad:
         {
-            _statusLabel->setText(tr("Cannot parse library file"));
+            QString file = field("file").toString();
+            dynamic_cast<PinListImporter *>(wizard())->setFilePath(file);
+
+            if (!_lib->readFrom(file))
+            {
+                _statusLabel->setText(tr("Cannot parse library file"));
+            }
+            break;
         }
-    }
-    else
-    {
-        for (Component *component : components)
+        case PinListImporter::CSV:
         {
-            _lib->addComponent(component);
+            QString file = field("file").toString();
+            dynamic_cast<PinListImporter *>(wizard())->setFilePath(file);
+
+            TextImporter imp;
+            if (!imp.import(file))
+            {
+                _statusLabel->setText(tr("Cannot parse CSV file"));
+            }
+            else
+            {
+                for (Component *component : qAsConst(imp.components()))
+                {
+                    _lib->addComponent(component);
+                }
+            }
+            break;
+        }
+        case PinListImporter::PDF:
+        {
+            const QList<Component *> &components = dynamic_cast<PinListImporter *>(wizard())->components();
+            for (Component *component : components)
+            {
+                _lib->addComponent(component);
+            }
+            break;
         }
     }
     _componentTreeView->setLib(_lib);

@@ -70,14 +70,13 @@ StartWizardPage::StartWizardPage(QWidget *parent)
     buttonCsv->setToolTip("CSV file");
     buttonCsv->setIconSize(QSize(64, 64));
     buttonCsv->setCheckable(true);
-    buttonCsv->setEnabled(false);
     group->addButton(buttonCsv, PinListImporter::CSV);
 
     QFormLayout *formLayout = new QFormLayout;
     formLayout->addRow(buttonKicad, new QLabel("Kicad library\nImports components from existing kicad library"));
     formLayout->addRow(buttonPdf, new QLabel("PDF datasheet\nExtracts components from PDF datasheet"));
     // formLayout->addRow(buttonTable, new QLabel("Table excel"));
-    formLayout->addRow(buttonCsv, new QLabel("CSV coma separator (soon)"));
+    formLayout->addRow(buttonCsv, new QLabel("CSV coma separator"));
 
     QVBoxLayout *layout = new QVBoxLayout;
     layout->addWidget(label);

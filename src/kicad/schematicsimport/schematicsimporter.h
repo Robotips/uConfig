@@ -28,7 +28,7 @@ public:
 
     virtual bool import(const QString &fileName);
 
-    QList<Component *> components() const;
+    const QList<Component *> &components() const;
 
 protected:
     QList<Component *> _components;

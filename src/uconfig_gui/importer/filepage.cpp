@@ -69,11 +69,13 @@ int FilePage::nextId() const
         case PinListImporter::Kicad:
             return PinListImporter::PageComponents;
         case PinListImporter::CSV:
-            return PinListImporter::PagePDFProcess;
+            return PinListImporter::PageComponents;
         case PinListImporter::PDF:
             return PinListImporter::PagePDFFile;
-        case PinListImporter::Table:
-            return PinListImporter::PagePDFProcess;
+            /*
+            case PinListImporter::Table:
+                return PinListImporter::PagePDFProcess;
+            */
     }
     return 0;
 }
@@ -83,22 +85,25 @@ void FilePage::initializePage()
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
         case PinListImporter::Kicad:
-            _fileTitle = "Kicad lib";
+            _fileTitle = "Kicad lib (.lib)";
             _suffixes << "lib";
             break;
         case PinListImporter::CSV:
-            _fileTitle = "coma separator";
-            _suffixes << "csv";
+            _fileTitle = "coma separator (.csv|.txt)";
+            _suffixes << "csv"
+                      << "txt";
             break;
         case PinListImporter::PDF:
-            _fileTitle = "pdf datasheet";
+            _fileTitle = "pdf datasheet (.pdf)";
             _suffixes << "pdf";
             break;
-        case PinListImporter::Table:
-            _fileTitle = "excel sheet";
-            _suffixes << "xls"
-                      << "xlsx";
-            break;
+            /*
+            case PinListImporter::Table:
+                _fileTitle = "excel sheet";
+                _suffixes << "xls"
+                          << "xlsx";
+                break;
+            */
     }
 
     setTitle(QString("Choose a %1 file").arg(_fileTitle));
@@ -125,7 +130,7 @@ void FilePage::dropEvent(QDropEvent *event)
 QMap<PinListImporter::ImportType, QString> FilePage::_importTypeSettingsKeymap = {
     {PinListImporter::Kicad, "Kicad"},
     {PinListImporter::PDF, "PDF"},
-    {PinListImporter::Table, "Table"},
+    //{PinListImporter::Table, "Table"},
     {PinListImporter::CSV, "CSV"},
 };
 

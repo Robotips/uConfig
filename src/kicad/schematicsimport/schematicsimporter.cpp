@@ -29,7 +29,7 @@ bool SchematicsImporter::import(const QString &fileName)
     return false;
 }
 
-QList<Component *> SchematicsImporter::components() const
+const QList<Component *> &SchematicsImporter::components() const
 {
     return _components;
 }
