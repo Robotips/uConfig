@@ -19,8 +19,8 @@
 #ifndef DRAWITEM_H
 #define DRAWITEM_H
 
-#include <QtCore/qglobal.h>
 #include <QGraphicsItem>
+#include <QtCore/qglobal.h>
 
 #include "model/draw.h"
 

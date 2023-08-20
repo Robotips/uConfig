@@ -24,9 +24,9 @@
 #include <QImage>
 #include <QObject>
 
-#include <kicad/model/component.h>
 #include "datasheetbox.h"
 #include "datasheetpackage.h"
+#include <kicad/model/component.h>
 
 namespace Poppler
 {

@@ -19,9 +19,9 @@
 #ifndef RULESPARSER_H
 #define RULESPARSER_H
 
-#include <QtCore/qglobal.h>
 #include <QString>
 #include <QStringList>
+#include <QtCore/qglobal.h>
 
 #include "rulesset.h"
 

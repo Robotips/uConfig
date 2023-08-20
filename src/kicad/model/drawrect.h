@@ -19,8 +19,8 @@
 #ifndef DRAWRECT_H
 #define DRAWRECT_H
 
-#include <QtCore/qglobal.h>
 #include <QRect>
+#include <QtCore/qglobal.h>
 
 #include "draw.h"
 

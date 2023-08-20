@@ -19,8 +19,8 @@
 #ifndef PINRULER_H
 #define PINRULER_H
 
-#include <QtCore/qglobal.h>
 #include <QString>
+#include <QtCore/qglobal.h>
 
 #include "model/component.h"
 #include "pinclass.h"

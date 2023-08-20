@@ -19,10 +19,10 @@
 #ifndef KICADFONT_H
 #define KICADFONT_H
 
-#include <QtCore/qglobal.h>
 #include <QFont>
 #include <QPainter>
 #include <QString>
+#include <QtCore/qglobal.h>
 
 class KICAD_EXPORT KicadFont
 {

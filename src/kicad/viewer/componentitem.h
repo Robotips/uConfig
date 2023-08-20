@@ -19,9 +19,9 @@
 #ifndef COMPONENTITEM_H
 #define COMPONENTITEM_H
 
-#include <QtCore/qglobal.h>
 #include <QGraphicsItem>
 #include <QMap>
+#include <QtCore/qglobal.h>
 
 #include "model/component.h"
 #include "pinitem.h"

@@ -19,9 +19,9 @@
 #ifndef COMPONENTLIBTREEVIEW_H
 #define COMPONENTLIBTREEVIEW_H
 
-#include <QtCore/qglobal.h>
-#include <QTreeView>
 #include <QAction>
+#include <QTreeView>
+#include <QtCore/qglobal.h>
 
 #include "componentlibitemmodel.h"
 #include "numericalsortfilterproxymodel.h"

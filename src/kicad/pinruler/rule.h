@@ -19,9 +19,9 @@
 #ifndef RULE_H
 #define RULE_H
 
-#include <QtCore/qglobal.h>
 #include <QRegularExpression>
 #include <QString>
+#include <QtCore/qglobal.h>
 
 class KICAD_EXPORT Rule
 {

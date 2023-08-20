@@ -19,10 +19,10 @@
 #ifndef PIN_H
 #define PIN_H
 
-#include <QtCore/qglobal.h>
 #include <QPoint>
 #include <QString>
 #include <QTextStream>
+#include <QtCore/qglobal.h>
 
 class Component;
 

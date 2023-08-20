@@ -19,9 +19,9 @@
 #ifndef PINLISTEDITOR_H
 #define PINLISTEDITOR_H
 
-#include <QtCore/qglobal.h>
-#include <QWidget>
 #include <QLineEdit>
+#include <QWidget>
+#include <QtCore/qglobal.h>
 
 #include "componentpinstableview.h"
 

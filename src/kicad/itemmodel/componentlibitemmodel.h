@@ -19,8 +19,8 @@
 #ifndef COMPONENTLIBITEMMODEL_H
 #define COMPONENTLIBITEMMODEL_H
 
-#include <QtCore/qglobal.h>
 #include <QAbstractItemModel>
+#include <QtCore/qglobal.h>
 
 #include "model/lib.h"
 

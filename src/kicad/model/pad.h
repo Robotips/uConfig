@@ -19,11 +19,11 @@
 #ifndef PAD_H
 #define PAD_H
 
-#include <QtCore/qglobal.h>
 #include <QPointF>
 #include <QSizeF>
 #include <QString>
 #include <QTextStream>
+#include <QtCore/qglobal.h>
 
 class KICAD_EXPORT Pad
 {

@@ -19,9 +19,9 @@
 #ifndef RULESSET_H
 #define RULESSET_H
 
-#include <QtCore/qglobal.h>
 #include <QList>
 #include <QString>
+#include <QtCore/qglobal.h>
 
 #include "classrule.h"
 #include "pinrule.h"

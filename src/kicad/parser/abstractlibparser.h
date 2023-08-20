@@ -20,7 +20,6 @@
 #define ABSTRACTLIBPARSER_H
 
 #include <QtCore/qglobal.h>
-#include <QtCore/qglobal.h>
 
 #include "../model/lib.h"
 
@@ -33,4 +32,4 @@ public:
     virtual bool saveLib(const QString &fileName, Lib *lib) = 0;
 };
 
-#endif // ABSTRACTLIBPARSER_H
+#endif  // ABSTRACTLIBPARSER_H

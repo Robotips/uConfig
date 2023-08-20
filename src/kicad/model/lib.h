@@ -19,9 +19,9 @@
 #ifndef LIB_H
 #define LIB_H
 
-#include <QtCore/qglobal.h>
 #include <QList>
 #include <QString>
+#include <QtCore/qglobal.h>
 
 #include "component.h"
 

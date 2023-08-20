@@ -19,9 +19,9 @@
 #ifndef COMPONENTPINDELEGATE_H
 #define COMPONENTPINDELEGATE_H
 
-#include <QtCore/qglobal.h>
 #include <QItemDelegate>
 #include <QRegularExpression>
+#include <QtCore/qglobal.h>
 
 class KICAD_EXPORT ComponentPinDelegate : public QItemDelegate
 {

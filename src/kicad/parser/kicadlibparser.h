@@ -19,8 +19,8 @@
 #ifndef KICADLIBPARSER_H
 #define KICADLIBPARSER_H
 
-#include <QtCore/qglobal.h>
 #include <QTextStream>
+#include <QtCore/qglobal.h>
 
 #include "abstractlibparser.h"
 

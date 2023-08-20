@@ -19,8 +19,8 @@
 #ifndef DRAW_H
 #define DRAW_H
 
-#include <QtCore/qglobal.h>
 #include <QPoint>
+#include <QtCore/qglobal.h>
 
 class Component;
 

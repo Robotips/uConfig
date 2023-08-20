@@ -19,8 +19,8 @@
 #ifndef COMPONENTSCENE_H
 #define COMPONENTSCENE_H
 
-#include <QtCore/qglobal.h>
 #include <QGraphicsScene>
+#include <QtCore/qglobal.h>
 
 #include "componentitem.h"
 #include "model/component.h"
