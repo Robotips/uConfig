@@ -21,10 +21,10 @@
 #include <utility>
 
 Pin::Pin()
-    : _direction(Pin::Right),
-      _pinType(Pin::Normal),
+    : _pinType(Pin::Normal),
       _electricalType(Pin::Input)
 {
+    _angle = 0;
     _unit = 1;
     _length = 300;
     _textNameSize = 50;
@@ -35,10 +35,10 @@ Pin::Pin()
 Pin::Pin(const QString &name, const QString &padName)
     : _name(name),
       _padName(padName),
-      _direction(Pin::Right),
       _pinType(Pin::Normal),
       _electricalType(Pin::Input)
 {
+    _angle = 0;
     _unit = 1;
     _length = 300;
     _textNameSize = 50;
@@ -56,7 +56,7 @@ Pin::Pin(const Pin &other)
     _name = other._name;
     _pos = other._pos;
     _padName = other._padName;
-    _direction = other._direction;
+    _angle = other._angle;
     _pinType = other._pinType;
     _electricalType = other._electricalType;
     _unit = other._unit;
@@ -91,6 +91,52 @@ void Pin::setPos(int x, int y)
     _pos = QPoint(x, y);
 }
 
+Pin::Direction Pin::direction() const
+{
+    if (_angle > 315 || _angle <= 45)
+    {
+        return Right;
+    }
+    if (_angle > 45 && _angle <= 135)
+    {
+        return Up;
+    }
+    if (_angle > 135 && _angle <= 225)
+    {
+        return Left;
+    }
+    return Down;
+}
+
+void Pin::setDirection(Direction direction)
+{
+    switch (direction)
+    {
+        case Right:
+            _angle = 0;
+            break;
+        case Up:
+            _angle = 90;
+            break;
+        case Left:
+            _angle = 180;
+            break;
+        case Down:
+            _angle = 270;
+            break;
+    }
+}
+
+int Pin::angle() const
+{
+    return _angle;
+}
+
+void Pin::setAngle(int angle)
+{
+    _angle = angle;
+}
+
 QString Pin::padName() const
 {
     return _padName;
@@ -99,16 +145,6 @@ QString Pin::padName() const
 void Pin::setPadName(const QString &padname)
 {
     _padName = padname;
-}
-
-Pin::Direction Pin::direction() const
-{
-    return _direction;
-}
-
-void Pin::setDirection(Direction direction)
-{
-    _direction = direction;
 }
 
 Pin::PinType Pin::pinType() const

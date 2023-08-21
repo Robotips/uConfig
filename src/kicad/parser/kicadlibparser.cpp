@@ -225,7 +225,7 @@ void KicadLibParser::writePin(Pin *pin)
     _stream << " " << pin->padName() << " "                     // pad name
             << pin->pos().x() << " " << -pin->pos().y() << " "  // x y position
             << pin->length() << " "                             // lenght
-            << pinDirectionString(pin->direction()) << " "      // pin direction (up/down/left/right)
+            << pinDirectionString(pin->angle()) << " "      // pin direction (up/down/left/right)
             << "50"
             << " "  // name text size
             << "50"
@@ -623,7 +623,7 @@ Pin *KicadLibParser::readPin()
     char directionChar;
     _stream.skipWhiteSpace();
     _stream >> directionChar;
-    pin->setDirection(pinDirection(directionChar));
+    pin->setAngle(pinAngle(directionChar));
 
     // text size
     int textNameSize;
@@ -939,20 +939,21 @@ DrawText *KicadLibParser::readLabel()
     return draw;
 }
 
-QString KicadLibParser::pinDirectionString(Pin::Direction direction) const
+QString KicadLibParser::pinDirectionString(int angle) const
 {
-    switch (direction)
+    if (angle > 315 || angle <= 45)
     {
-        case Pin::Down:
-            return "D";
-        case Pin::Left:
-            return "L";
-        case Pin::Up:
-            return "U";
-        case Pin::Right:
-            return "R";
+        return "R";
     }
-    return "R";
+    if (angle > 45 && angle <= 135)
+    {
+        return "U";
+    }
+    if (angle > 135 && angle <= 225)
+    {
+        return "L";
+    }
+    return "D";
 }
 
 QString KicadLibParser::pinTypeString(Pin::PinType pinType) const
@@ -1013,25 +1014,26 @@ QString KicadLibParser::pinElectricalTypeString(Pin::ElectricalType electricalTy
     return "I";
 }
 
-Pin::Direction KicadLibParser::pinDirection(char directionChar)
+int KicadLibParser::pinAngle(char directionChar)
 {
-    Pin::Direction direction;
+    int angle;
     switch (directionChar)
     {
-        case 'D':
-            direction = Pin::Down;
-            break;
-        case 'L':
-            direction = Pin::Left;
+        default:
+        case 'R':
+            angle = 0;
             break;
         case 'U':
-            direction = Pin::Up;
+            angle = 90;
             break;
-        case 'R':
-            direction = Pin::Right;
+        case 'L':
+            angle = 180;
+            break;
+        case 'D':
+            angle = 270;
             break;
     }
-    return direction;
+    return angle;
 }
 
 Pin::PinType KicadLibParser::pinType(const QString &pinTypeString) const

@@ -73,13 +73,13 @@ void test_libkicad()
         if (pin->name() == "GND")
         {
             pin->setPos(gndpos);
-            pin->setDirection(Pin::Left);
+            pin->setAngle(180);
             gndpos += QPoint(0, 100);
         }
         else if (pin->name().startsWith("VCC"))
         {
             pin->setPos(vccpos);
-            pin->setDirection(Pin::Left);
+            pin->setAngle(180);
             vccpos += QPoint(0, 100);
         }
         else
@@ -88,7 +88,7 @@ void test_libkicad()
             if (bank >= 0 && bank < 8)
             {
                 pin->setPos(points[bank]);
-                pin->setDirection(Pin::Left);
+                pin->setAngle(180);
                 points[bank] += QPoint(0, 100);
             }
         }

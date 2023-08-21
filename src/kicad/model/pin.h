@@ -78,12 +78,13 @@ public:
     void setPos(const QPoint &pos);
     void setPos(int x, int y);
 
+    int angle() const;
+    void setAngle(int angle);
+    Direction direction() const;
+    void setDirection(Pin::Direction direction);
+
     QString padName() const;
     void setPadName(const QString &padname);
-
-    // replace by angle
-    Direction direction() const;
-    void setDirection(Direction direction);
 
     PinType pinType() const;
     static QString pinTypeDesc(Pin::PinType pinType);
@@ -117,8 +118,8 @@ public:
 private:
     QString _name;
     QPoint _pos;
+    int _angle;
     QString _padName;
-    Direction _direction;
     PinType _pinType;
     ElectricalType _electricalType;
     int _textNameSize;

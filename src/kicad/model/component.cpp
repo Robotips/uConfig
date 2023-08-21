@@ -563,7 +563,7 @@ void Component::reorganizeToPackageStyle()
     {
         Pin *pin = _pins[i];
 
-        pin->setDirection(Pin::Right);
+        pin->setAngle(0);
         pin->setPos(pos);
         pos += QPoint(0, 100);
     }
@@ -572,7 +572,7 @@ void Component::reorganizeToPackageStyle()
     {
         Pin *pin = _pins[i];
 
-        pin->setDirection(Pin::Left);
+        pin->setAngle(180);
         pin->setPos(pos);
         pos += QPoint(0, -100);
     }

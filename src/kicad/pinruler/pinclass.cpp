@@ -193,28 +193,28 @@ void PinClass::setPos(const QPoint &basePos)
     QPoint pinPos = basePos;
     QPoint offset;
     QPoint translate;
-    Pin::Direction direction;
+    int angle;
 
     switch (_position)
     {
         case ClassRule::PositionTop:
-            direction = Pin::Down;
+            angle = 270;
             offset = QPoint(100, 0);
             translate = QPoint(0, -_length);
             break;
         case ClassRule::PositionBottom:
-            direction = Pin::Up;
+            angle = 90;
             offset = QPoint(100, 0);
             translate = QPoint(0, _length);
             break;
         case ClassRule::PositionLeft:
-            direction = Pin::Right;
+            angle = 0;
             offset = QPoint(0, 100);
             translate = QPoint(-_length, 0);
             break;
         case ClassRule::PositionRight:
         case ClassRule::PositionASide:
-            direction = Pin::Left;
+            angle = 180;
             offset = QPoint(0, 100);
             translate = QPoint(_length, 0);
             break;
@@ -222,7 +222,7 @@ void PinClass::setPos(const QPoint &basePos)
     sortPins();
     for (PinClassItem *pinItem : _pins)
     {
-        pinItem->pin()->setDirection(direction);
+        pinItem->pin()->setAngle(angle);
         pinItem->pin()->setPos(pinPos + translate);
         pinItem->pin()->setLength(_length);
         if (visibilityValue() != VisibilityVisible)
