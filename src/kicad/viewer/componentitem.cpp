@@ -27,9 +27,9 @@
 
 const int ComponentItem::ratio = 5;
 
-ComponentItem::ComponentItem(Component *component, int layer)
+ComponentItem::ComponentItem(Component *component, int unit)
 {
-    setComponent(component, layer);
+    setComponent(component, unit);
     _showElectricalType = true;
 }
 
@@ -50,16 +50,16 @@ Component *ComponentItem::component() const
     return _component;
 }
 
-void ComponentItem::setComponent(Component *component, int layer)
+void ComponentItem::setComponent(Component *component, int unit)
 {
     prepareGeometryChange();
     _component = component;
     _pinItemMap.clear();
-    _layer = layer;
+    _unit = unit;
 
     for (Pin *pin : component->pins())
     {
-        if (pin->layer() == _layer || pin->layer() == 0)
+        if (pin->unit() == _unit || pin->unit() == 0)
         {
             PinItem *pinItem = new PinItem(pin);
             pinItem->setParentItem(this);
@@ -68,7 +68,7 @@ void ComponentItem::setComponent(Component *component, int layer)
     }
     for (Draw *draw : component->draws())
     {
-        if (draw->unit() == _layer || draw->unit() == 0)
+        if (draw->unit() == _unit || draw->unit() == 0)
         {
             DrawItem *drawItem = DrawItem::fromDraw(draw);
             if (drawItem != nullptr)

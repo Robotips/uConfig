@@ -25,7 +25,7 @@ Pin::Pin()
       _pinType(Pin::Normal),
       _electricalType(Pin::Input)
 {
-    _layer = 1;
+    _unit = 1;
     _length = 300;
     _textNameSize = 50;
     _textPadSize = 50;
@@ -39,7 +39,7 @@ Pin::Pin(const QString &name, const QString &padName)
       _pinType(Pin::Normal),
       _electricalType(Pin::Input)
 {
-    _layer = 1;
+    _unit = 1;
     _length = 300;
     _textNameSize = 50;
     _textPadSize = 50;
@@ -59,7 +59,7 @@ Pin::Pin(const Pin &other)
     _direction = other._direction;
     _pinType = other._pinType;
     _electricalType = other._electricalType;
-    _layer = other._layer;
+    _unit = other._unit;
     _length = other._length;
 
     _textNameSize = other._textNameSize;
@@ -215,16 +215,16 @@ void Pin::setTextPadSize(int textPadSize)
     }
 }
 
-int Pin::layer() const
+int Pin::unit() const
 {
-    return _layer;
+    return _unit;
 }
 
-void Pin::setLayer(int layer)
+void Pin::setUnit(int unit)
 {
-    if (layer > 0)
+    if (unit > 0)
     {
-        _layer = layer;
+        _unit = unit;
     }
 }
 

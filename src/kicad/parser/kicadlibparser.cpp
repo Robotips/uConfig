@@ -230,7 +230,7 @@ void KicadLibParser::writePin(Pin *pin)
             << " "  // name text size
             << "50"
             << " "  // pad name text size
-            << pin->layer() << " "
+            << pin->unit() << " "
             << "1"
             << " " << pinElectricalTypeString(pin->electricalType());
     if (pin->pinType() != Pin::Normal)
@@ -641,7 +641,7 @@ Pin *KicadLibParser::readPin()
         delete pin;
         return nullptr;
     }
-    pin->setLayer(layer);
+    pin->setUnit(layer);
 
     QString dummy;
     _stream.skipWhiteSpace();

@@ -31,7 +31,7 @@ class PinItem;
 class KICAD_EXPORT ComponentItem : public QGraphicsItem
 {
 public:
-    ComponentItem(Component *component = nullptr, int layer = 1);
+    ComponentItem(Component *component = nullptr, int unit = 1);
 
     enum
     {
@@ -46,7 +46,7 @@ public:
     QRectF boundingRect() const override;
 
     Component *component() const;
-    void setComponent(Component *component, int layer = 1);
+    void setComponent(Component *component, int unit = 1);
 
     PinItem *pinItem(Pin *pin);
     void removePin(Pin *pin);
@@ -58,7 +58,7 @@ public:
 
 private:
     Component *_component;
-    int _layer;
+    int _unit;
     bool _showElectricalType;
 
     QRectF _numRect;

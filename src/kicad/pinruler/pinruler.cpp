@@ -70,7 +70,7 @@ void PinRuler::organize(Component *component)
         }
         else
         {
-            pin->setLayer(1);
+            pin->setUnit(1);
             QString className;  // = rules.first()->className(pin->name());
             for (PinRule *rule : rules)
             {

@@ -99,8 +99,8 @@ public:
     int textPadSize() const;
     void setTextPadSize(int textPadSize);
 
-    int layer() const;  // change to unit
-    void setLayer(int layer);
+    int unit() const;
+    void setUnit(int unit);
 
     int length() const;
     void setLength(int length);
@@ -123,7 +123,7 @@ private:
     ElectricalType _electricalType;
     int _textNameSize;
     int _textPadSize;
-    int _layer;
+    int _unit;
     int _length;
 
     QString _className;
