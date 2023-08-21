@@ -116,7 +116,7 @@ Pin::PinType Pin::pinType() const
     return _pinType;
 }
 
-QString Pin::pinTypeDesc(const Pin::PinType &pinType)
+QString Pin::pinTypeDesc(PinType pinType)
 {
     switch (pinType)
     {
@@ -154,7 +154,7 @@ Pin::ElectricalType Pin::electricalType() const
     return _electricalType;
 }
 
-QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
+QString Pin::electricalTypeDesc(ElectricalType electricalType)
 {
     switch (electricalType)
     {
@@ -184,7 +184,7 @@ QString Pin::electricalTypeDesc(const Pin::ElectricalType &electricalType)
     return QStringLiteral("input");
 }
 
-void Pin::setElectricalType(const ElectricalType &electricalType)
+void Pin::setElectricalType(ElectricalType electricalType)
 {
     _electricalType = electricalType;
 }

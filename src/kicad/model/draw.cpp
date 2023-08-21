@@ -51,7 +51,7 @@ Draw::DrawFill Draw::filled() const
     return _filled;
 }
 
-void Draw::setFilled(const DrawFill &filled)
+void Draw::setFilled(DrawFill filled)
 {
     _filled = filled;
 }

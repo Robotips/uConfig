@@ -55,7 +55,7 @@ DrawText::Direction DrawText::direction() const
     return _direction;
 }
 
-void DrawText::setDirection(const Direction &direction)
+void DrawText::setDirection(Direction direction)
 {
     _direction = direction;
 }
@@ -65,7 +65,7 @@ uint DrawText::textSize() const
     return _textSize;
 }
 
-void DrawText::setTextSize(const uint &textSize)
+void DrawText::setTextSize(uint textSize)
 {
     _textSize = textSize;
 }
@@ -75,7 +75,7 @@ DrawText::TextStyles DrawText::textStyle() const
     return _textStyle;
 }
 
-void DrawText::setTextStyle(const TextStyles &textStyle)
+void DrawText::setTextStyle(TextStyles textStyle)
 {
     _textStyle = textStyle;
 }
@@ -95,7 +95,7 @@ DrawText::TextHJustify DrawText::textHJustify() const
     return _textHJustify;
 }
 
-void DrawText::setTextHJustify(const TextHJustify &textHJustify)
+void DrawText::setTextHJustify(TextHJustify textHJustify)
 {
     _textHJustify = textHJustify;
 }
@@ -105,7 +105,7 @@ DrawText::TextVJustify DrawText::textVJustify() const
     return _textVJustify;
 }
 
-void DrawText::setTextVJustify(const TextVJustify &textVJustify)
+void DrawText::setTextVJustify(TextVJustify textVJustify)
 {
     _textVJustify = textVJustify;
 }

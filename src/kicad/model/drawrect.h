@@ -37,8 +37,8 @@ public:
     const QPoint &endPos() const;
     void setEndPos(const QPoint &endPos);
 
-    void setRect(const QRect &rect);
     QRect rect();
+    void setRect(const QRect &rect);
 
 protected:
     QPoint _endPos;

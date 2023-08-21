@@ -37,7 +37,7 @@ uint DrawCircle::radius() const
     return _radius;
 }
 
-void DrawCircle::setRadius(const uint &radius)
+void DrawCircle::setRadius(uint radius)
 {
     _radius = radius;
 }

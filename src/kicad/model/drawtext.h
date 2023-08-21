@@ -41,10 +41,10 @@ public:
         DirectionVertital
     };
     Direction direction() const;
-    void setDirection(const Direction &direction);
+    void setDirection(Direction direction);
 
     uint textSize() const;
-    void setTextSize(const uint &textSize);
+    void setTextSize(uint textSize);
 
     enum TextStyle
     {
@@ -54,7 +54,7 @@ public:
     };
     Q_DECLARE_FLAGS(TextStyles, TextStyle)
     DrawText::TextStyles textStyle() const;
-    void setTextStyle(const TextStyles &textStyle);
+    void setTextStyle(TextStyles textStyle);
 
     bool isVisible() const;
     void setVisible(bool visible);
@@ -66,7 +66,7 @@ public:
         TextHRight
     };
     TextHJustify textHJustify() const;
-    void setTextHJustify(const TextHJustify &textHJustify);
+    void setTextHJustify(TextHJustify textHJustify);
 
     enum TextVJustify
     {
@@ -75,7 +75,7 @@ public:
         TextVTop
     };
     TextVJustify textVJustify() const;
-    void setTextVJustify(const TextVJustify &textVJustify);
+    void setTextVJustify(TextVJustify textVJustify);
 
 protected:
     QString _text;

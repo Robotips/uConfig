@@ -37,7 +37,7 @@ uint DrawArc::radius() const
     return _radius;
 }
 
-void DrawArc::setRadius(const uint &radius)
+void DrawArc::setRadius(uint radius)
 {
     _radius = radius;
 }

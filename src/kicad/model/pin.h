@@ -86,12 +86,12 @@ public:
     void setDirection(Direction direction);
 
     PinType pinType() const;
-    static QString pinTypeDesc(const Pin::PinType &pinType);
+    static QString pinTypeDesc(Pin::PinType pinType);
     void setPinType(const PinType &pinType);
 
     ElectricalType electricalType() const;
-    static QString electricalTypeDesc(const Pin::ElectricalType &electricalType);
-    void setElectricalType(const ElectricalType &electricalType);
+    static QString electricalTypeDesc(Pin::ElectricalType electricalType);
+    void setElectricalType(ElectricalType electricalType);
 
     int textNameSize() const;
     void setTextNameSize(int textNameSize);

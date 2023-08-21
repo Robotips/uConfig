@@ -52,7 +52,7 @@ public:
         DrawFilledBackGround
     };
     DrawFill filled() const;
-    void setFilled(const DrawFill &filled);
+    void setFilled(DrawFill filled);
 
     int unit() const;
     void setUnit(int unit);

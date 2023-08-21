@@ -32,7 +32,7 @@ public:
     TypeDraw type() const override;
 
     uint radius() const;
-    void setRadius(const uint &radius);
+    void setRadius(uint radius);
 
     int startAngle() const;
     void setStartAngle(int startAngle);

@@ -54,13 +54,13 @@ void DrawRect::setEndPos(const QPoint &endPos)
     _endPos = endPos;
 }
 
+QRect DrawRect::rect()
+{
+    return QRect(pos(), endPos());
+}
+
 void DrawRect::setRect(const QRect &rect)
 {
     setPos(rect.topLeft());
     setEndPos(rect.bottomRight());
-}
-
-QRect DrawRect::rect()
-{
-    return QRect(pos(), endPos());
 }
