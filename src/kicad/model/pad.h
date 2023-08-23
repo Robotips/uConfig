@@ -83,17 +83,17 @@ public:
     void setName(const QString &name);
 
     // pad
-    QPointF pos() const;
+    const QPointF &pos() const;
     void setPos(const QPointF &pos);
 
-    QSizeF size() const;
+    const QSizeF &size() const;
     void setSize(const QSizeF &size);
 
     Shape shape() const;
     QString shapeString() const;
     void setShape(const Shape &shape);
 
-    QSizeF sizeIncrease() const;
+    const QSizeF &sizeIncrease() const;
     void setSizeIncrease(const QSizeF &sizeIncrease);
 
     double angle() const;
@@ -103,7 +103,7 @@ public:
     double drillDiameter() const;
     void setDrillDiameter(double drillDiameter);
 
-    QPointF drillOffset() const;
+    const QPointF &drillOffset() const;
     void setDrillOffset(const QPointF &drillOffset);
 
     // attributes

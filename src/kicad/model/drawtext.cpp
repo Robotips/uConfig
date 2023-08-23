@@ -40,7 +40,7 @@ Draw::TypeDraw DrawText::type() const
     return TypeDrawText;
 }
 
-QString DrawText::text() const
+const QString &DrawText::text() const
 {
     return _text;
 }

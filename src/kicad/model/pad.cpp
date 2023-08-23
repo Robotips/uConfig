@@ -35,7 +35,7 @@ void Pad::setName(const QString &name)
     _name = name;
 }
 
-QPointF Pad::pos() const
+const QPointF &Pad::pos() const
 {
     return _pos;
 }
@@ -45,7 +45,7 @@ void Pad::setPos(const QPointF &pos)
     _pos = pos;
 }
 
-QSizeF Pad::size() const
+const QSizeF &Pad::size() const
 {
     return _size;
 }
@@ -81,7 +81,7 @@ void Pad::setShape(const Shape &shape)
     _shape = shape;
 }
 
-QSizeF Pad::sizeIncrease() const
+const QSizeF &Pad::sizeIncrease() const
 {
     return _sizeIncrease;
 }
@@ -101,7 +101,7 @@ void Pad::setDrillDiameter(double drillDiameter)
     _drillDiameter = drillDiameter;
 }
 
-QPointF Pad::drillOffset() const
+const QPointF &Pad::drillOffset() const
 {
     return _drillOffset;
 }

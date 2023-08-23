@@ -32,7 +32,7 @@ public:
 
     TypeDraw type() const override;
 
-    QString text() const;
+    const QString &text() const;
     void setText(const QString &text);
 
     enum Direction

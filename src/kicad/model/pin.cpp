@@ -66,7 +66,7 @@ Pin::Pin(const Pin &other)
     _textPadSize = other._textPadSize;
 }
 
-QString Pin::name() const
+const QString &Pin::name() const
 {
     return _name;
 }
@@ -76,7 +76,7 @@ void Pin::setName(const QString &name)
     _name = name;
 }
 
-QPoint Pin::pos() const
+const QPoint &Pin::pos() const
 {
     return _pos;
 }
@@ -137,7 +137,7 @@ void Pin::setAngle(int angle)
     _angle = angle;
 }
 
-QString Pin::padName() const
+const QString &Pin::padName() const
 {
     return _padName;
 }
@@ -180,7 +180,7 @@ QString Pin::pinTypeDesc(PinType pinType)
     return QLatin1String("");
 }
 
-void Pin::setPinType(const Pin::PinType &pinType)
+void Pin::setPinType(PinType pinType)
 {
     _pinType = pinType;
 }
@@ -277,7 +277,7 @@ void Pin::setLength(int length)
     }
 }
 
-QString Pin::className() const
+const QString &Pin::className() const
 {
     return _className;
 }

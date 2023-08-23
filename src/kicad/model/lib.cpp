@@ -63,7 +63,7 @@ Lib::~Lib()
  * @brief Lib name getter
  * @return name
  */
-QString Lib::name() const
+const QString &Lib::name() const
 {
     return _name;
 }

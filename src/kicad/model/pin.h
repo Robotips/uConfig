@@ -71,10 +71,10 @@ public:
         NonLogic
     };
 
-    QString name() const;
+    const QString &name() const;
     void setName(const QString &name);
 
-    QPoint pos() const;
+    const QPoint &pos() const;
     void setPos(const QPoint &pos);
     void setPos(int x, int y);
 
@@ -83,12 +83,12 @@ public:
     Direction direction() const;
     void setDirection(Pin::Direction direction);
 
-    QString padName() const;
+    const QString &padName() const;
     void setPadName(const QString &padname);
 
     PinType pinType() const;
     static QString pinTypeDesc(Pin::PinType pinType);
-    void setPinType(const PinType &pinType);
+    void setPinType(PinType pinType);
 
     ElectricalType electricalType() const;
     static QString electricalTypeDesc(Pin::ElectricalType electricalType);
@@ -106,13 +106,13 @@ public:
     int length() const;
     void setLength(int length);
 
-    QString className() const;
+    const QString &className() const;
     void setClassName(const QString &className);
 
     Component *component() const;
     void setComponent(Component *component);
 
-    friend bool operator<(const Pin &pin1, const Pin &pin);
+    friend bool operator<(const Pin &pin1, const Pin &pin2);
     friend bool operator==(const Pin &pin1, const Pin &pin2);
 
 private:
