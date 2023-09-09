@@ -21,7 +21,7 @@
 #include <QDebug>
 #include <qmath.h>
 
-#include "model/drawrect.h"
+#include <model/drawrect.h>
 
 PinRuler::PinRuler(RulesSet *ruleSet)
     : _ruleSet(ruleSet)

@@ -22,7 +22,7 @@
 #include <qmath.h>
 #include <utility>
 
-#include "viewer/kicadfont.h"
+#include <viewer/kicadfont.h>
 
 PinClass::PinClass(QString className)
     : _className(std::move(className)),

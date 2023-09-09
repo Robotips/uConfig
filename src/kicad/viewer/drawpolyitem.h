@@ -23,7 +23,7 @@
 
 #include "drawitem.h"
 
-#include "model/drawpoly.h"
+#include <model/drawpoly.h>
 
 class KICAD_EXPORT DrawPolyItem : public DrawItem
 {

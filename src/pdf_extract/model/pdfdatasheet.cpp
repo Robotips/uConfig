@@ -20,7 +20,7 @@
 
 #include <utility>
 
-#include "controller/pdfloader.h"
+#include <controller/pdfloader.h>
 
 PDFDatasheet::PDFDatasheet(QString fileName)
     : _pageCount(0),

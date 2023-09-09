@@ -21,7 +21,7 @@
 
 #include <QtCore/qglobal.h>
 
-#include "model/component.h"
+#include <model/component.h>
 
 class KICAD_EXPORT SchematicsImporter
 {

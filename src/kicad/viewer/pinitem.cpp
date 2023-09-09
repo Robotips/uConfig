@@ -24,7 +24,7 @@
 #include <QDebug>
 #include <QPainter>
 
-#include "model/component.h"
+#include <model/component.h>
 
 PinItem::PinItem(Pin *pin)
     : _pin(nullptr),

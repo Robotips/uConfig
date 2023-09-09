@@ -39,9 +39,9 @@
 
 #include <QDebug>
 
-#include "pinruler/pinruler.h"
-#include "pinruler/rulesparser.h"
-#include "pinruler/rulesset.h"
+#include <pinruler/pinruler.h>
+#include <pinruler/rulesparser.h>
+#include <pinruler/rulesset.h>
 
 UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
     : _project(project),
