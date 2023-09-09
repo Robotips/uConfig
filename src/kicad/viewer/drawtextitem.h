@@ -24,7 +24,7 @@
 #include "drawitem.h"
 #include "kicadfont.h"
 
-#include "model/drawtext.h"
+#include <model/drawtext.h>
 
 class KICAD_EXPORT DrawTextItem : public DrawItem
 {

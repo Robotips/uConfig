@@ -22,10 +22,10 @@
 #include <QDebug>
 #include <QFileInfo>
 
-#include "model/drawcircle.h"
-#include "model/drawpoly.h"
-#include "model/drawrect.h"
-#include "model/drawtext.h"
+#include <model/drawcircle.h>
+#include <model/drawpoly.h>
+#include <model/drawrect.h>
+#include <model/drawtext.h>
 
 KicadLibParser::KicadLibParser()
 {

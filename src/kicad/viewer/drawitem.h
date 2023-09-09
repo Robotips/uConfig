@@ -22,7 +22,7 @@
 #include <QGraphicsItem>
 #include <QtCore/qglobal.h>
 
-#include "model/draw.h"
+#include <model/draw.h>
 
 class KICAD_EXPORT DrawItem : public QGraphicsItem
 {

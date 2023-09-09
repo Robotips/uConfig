@@ -24,7 +24,7 @@
 #include <QRegularExpression>
 #include <QSettings>
 
-#include "importer/pinlistimporter.h"
+#include <importer/pinlistimporter.h>
 
 const int UConfigProject::MaxOldProject = 8;
 

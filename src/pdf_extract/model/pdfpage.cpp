@@ -17,7 +17,7 @@
  **/
 
 #include "pdfpage.h"
-#include "controller/pdfloader.h"
+#include <controller/pdfloader.h>
 #include "pdfdatasheet.h"
 
 #include <poppler/qt5/poppler-qt5.h>
