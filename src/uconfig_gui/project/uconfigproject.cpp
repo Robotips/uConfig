@@ -29,11 +29,12 @@
 const int UConfigProject::MaxOldProject = 8;
 
 UConfigProject::UConfigProject(QWidget *window)
+    : _lib(nullptr),
+      _activeComponent(nullptr),
+      _window(nullptr)
 {
     setWindow(window);
     readSettings();
-    _lib = nullptr;
-    _activeComponent = nullptr;
 }
 
 UConfigProject::~UConfigProject()
@@ -212,7 +213,7 @@ bool UConfigProject::closeLib()
     }
     int ret = QMessageBox::question(_window,
                                     tr("Saves lib?"),
-                                    tr("Do you want to save '%1' library? Modifications will be losted.").arg(_lib->name()),
+                                    tr("Do you want to save '%1' library? Modifications will be lost.").arg(_lib->name()),
                                     QMessageBox::Yes | QMessageBox::Default,
                                     QMessageBox::No,
                                     QMessageBox::Cancel);

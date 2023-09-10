@@ -22,18 +22,17 @@
 #include <QFont>
 
 ComponentLibItemModel::ComponentLibItemModel(Lib *lib, QObject *parent)
-    : QAbstractItemModel(parent)
+    : QAbstractItemModel(parent),
+      _lib(nullptr),
+      _activeComponent(nullptr),
+      _selectedMode(false)
 {
-    if (lib != nullptr)
+    if (lib == nullptr)
     {
-        _lib = lib;
+        lib = new Lib();
     }
-    else
-    {
-        _lib = new Lib();
-    }
-    _selectedMode = false;
-    _activeComponent = nullptr;
+
+    _lib = lib;
 }
 
 Lib *ComponentLibItemModel::lib() const
@@ -47,7 +46,10 @@ void ComponentLibItemModel::setLib(Lib *lib)
     _activeComponent = nullptr;
     beginResetModel();
     resetInternalData();
-    // delete _lib;
+    if(lib != nullptr)
+    {
+       delete _lib;
+    }
     _lib = lib;
     endResetModel();
     emit layoutChanged();

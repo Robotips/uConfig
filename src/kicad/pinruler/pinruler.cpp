@@ -24,8 +24,8 @@
 #include "model/drawrect.h"
 
 PinRuler::PinRuler(RulesSet *ruleSet)
+    : _ruleSet(ruleSet)
 {
-    _ruleSet = ruleSet;
 }
 
 bool nameGreaterThan(PinClass *c1, PinClass *c2)
@@ -53,8 +53,8 @@ bool prioGreaterThan(PinClass *c1, PinClass *c2)
 
 void PinRuler::organize(Component *component)
 {
-    int x;
-    int y;
+    int x = -1;
+    int y = -1;
 
     component->clearDraws();
 
@@ -340,6 +340,7 @@ void PinRuler::organize(Component *component)
     for (PinClass *mpinClass : _pinClasses)
     {
         delete mpinClass;
+        mpinClass = nullptr;
     }
     _pinClasses.clear();
 }
@@ -351,7 +352,10 @@ RulesSet *PinRuler::ruleSet() const
 
 void PinRuler::setRuleSet(RulesSet *ruleSet)
 {
-    delete _ruleSet;
+    if(_ruleSet != nullptr)
+    {
+        delete _ruleSet;
+    }
     _ruleSet = ruleSet;
 }
 

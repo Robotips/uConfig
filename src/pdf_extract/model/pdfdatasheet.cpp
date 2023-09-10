@@ -23,14 +23,20 @@
 #include "controller/pdfloader.h"
 
 PDFDatasheet::PDFDatasheet(QString fileName)
-    : _fileName(std::move(fileName))
+    : _pageCount(0),
+      _fileName(std::move(fileName)),
+      _pdfLoader(nullptr)
 {
     _pdfLoader = new PDFLoader(this);
 }
 
 PDFDatasheet::~PDFDatasheet()
 {
+  if(_pdfLoader != nullptr)
+  {
     delete _pdfLoader;
+    _pdfLoader = nullptr;
+  }
 }
 
 const QString &PDFDatasheet::fileName() const

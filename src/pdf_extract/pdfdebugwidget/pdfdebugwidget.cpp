@@ -24,16 +24,27 @@
 
 PdfDebugWidget::PdfDebugWidget(QWidget *parent)
     : QWidget(parent),
-      _datasheet(nullptr)
+      _datasheet(nullptr),
+      _currentPage(nullptr),
+      _viewer(nullptr),
+      _ationPrev(nullptr),
+      _ationNext(nullptr),
+      _pageLineEdit(nullptr),
+      _pageLabel(nullptr)
 {
-    _currentPage = nullptr;
     createWidgets();
 }
 
 PdfDebugWidget::PdfDebugWidget(PDFDatasheet *datasheet, QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      _datasheet(nullptr),
+      _currentPage(nullptr),
+      _viewer(nullptr),
+      _ationPrev(nullptr),
+      _ationNext(nullptr),
+      _pageLineEdit(nullptr),
+      _pageLabel(nullptr)
 {
-    _currentPage = nullptr;
     createWidgets();
     setDatasheet(datasheet);
 }

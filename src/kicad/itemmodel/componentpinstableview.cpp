@@ -25,7 +25,12 @@
 #include <QMouseEvent>
 
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
-    : QTableView(parent)
+    : QTableView(parent),
+      _model(nullptr),
+      _delegate(nullptr),
+      _sortProxy(nullptr),
+      _removeAction(nullptr),
+      _copyAction(nullptr)
 {
     _model = new ComponentPinsItemModel(component);
 

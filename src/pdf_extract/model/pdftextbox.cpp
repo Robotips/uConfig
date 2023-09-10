@@ -22,11 +22,11 @@
 
 PDFTextBox::PDFTextBox(QString text, const QRectF &boundingRect)
     : _text(std::move(text)),
-      _boundingRect(boundingRect)
+      _boundingRect(boundingRect),
+      _type(Text),
+      _page(nullptr),
+      _parentBox(nullptr)
 {
-    _page = nullptr;
-    _parentBox = nullptr;
-    _type = Text;
 }
 
 PDFTextBox::~PDFTextBox()
@@ -54,7 +54,7 @@ const QRectF &PDFTextBox::boundingRect() const
 
 bool PDFTextBox::isPadName() const
 {
-    bool okNumber;
+    bool okNumber = false;
     _text.toInt(&okNumber);
     if (okNumber)
     {

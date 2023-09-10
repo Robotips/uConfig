@@ -24,7 +24,8 @@
 #include <QPainter>
 
 DrawCircleItem::DrawCircleItem(DrawCircle *draw)
-    : DrawItem(draw)
+    : DrawItem(draw),
+      _drawCircle(nullptr)
 {
     setDraw(draw);
     setZValue(-1);

@@ -27,11 +27,12 @@
 #include "model/component.h"
 
 PinItem::PinItem(Pin *pin)
+    : _pin(nullptr),
+      _fontPad(nullptr),
+      _fontName(nullptr),
+      _fontType(nullptr),
+      _showElectricalType(false)
 {
-    _fontPad = nullptr;
-    _fontName = nullptr;
-    _fontType = nullptr;
-
     setPin(pin);
     setFlag(QGraphicsItem::ItemIsSelectable);
     setCursor(Qt::CrossCursor);
@@ -40,9 +41,21 @@ PinItem::PinItem(Pin *pin)
 
 PinItem::~PinItem()
 {
-    delete _fontPad;
-    delete _fontName;
-    delete _fontType;
+    if(_fontPad != nullptr)
+    {
+        delete _fontPad;
+        _fontPad = nullptr;
+    }
+    if(_fontName != nullptr)
+    {
+        delete _fontName;
+        _fontName = nullptr;
+    }
+    if(_fontType != nullptr)
+    {
+      delete _fontType;
+      _fontType = nullptr;
+    }
 }
 
 void PinItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
@@ -299,13 +312,18 @@ void PinItem::setPin(Pin *pin)
     QString type = Pin::electricalTypeDesc(_pin->electricalType());
     type[0] = type[0].toUpper();
 
-    delete _fontPad;
+    if(_fontPad != nullptr)
+        delete _fontPad;
     _fontPad = new KicadFont(_pin->textPadSize() / ComponentItem::ratio);
     QFontMetrics metricsPad(_fontPad->font());
-    delete _fontName;
+
+    if(_fontName != nullptr)
+        delete _fontName;
     _fontName = new KicadFont(_pin->textNameSize() / ComponentItem::ratio);
     QFontMetrics metricsName(_fontName->font());
-    delete _fontType;
+
+    if(_fontType != nullptr)
+        delete _fontType;
     _fontType = new KicadFont(25.0 / ComponentItem::ratio);
     QFontMetrics metricsType(_fontType->font());
 

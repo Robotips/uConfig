@@ -28,7 +28,8 @@
 #include "pinlistimporter.h"
 
 ResultsPage::ResultsPage()
-    : QWizardPage(nullptr)
+    : QWizardPage(nullptr),
+      _resultLabel(nullptr)
 {
     QVBoxLayout *layout = new QVBoxLayout;
     _resultLabel = new QLabel();
