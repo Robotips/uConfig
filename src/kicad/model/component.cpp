@@ -585,8 +585,9 @@ void Component::reorganizeToPackageStyle()
     // set position of ref and name text
     _nameText->setPos(QPoint(rect.right(), rect.top() - 50));
     _nameText->setTextHJustify(DrawText::TextHRight);
-    _nameText->setDirection(DrawText::DirectionHorizontal);
+    _nameText->setAngle(0.0);
     _refText->setPos(QPoint(rect.left(), rect.bottom() + 50));
     _refText->setTextHJustify(DrawText::TextHLeft);
-    _refText->setDirection(DrawText::DirectionHorizontal);
+    _refText->setAngle(0.0);
+    ;
 }

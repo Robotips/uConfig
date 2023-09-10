@@ -41,6 +41,7 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
+    Q_ASSERT(_fontText != nullptr);
 
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::TextAntialiasing);
@@ -64,17 +65,14 @@ void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *opti
     }
     painter->setFont(font);
 
-    if (_drawText->direction() == DrawText::DirectionVertital)
-    {
-        painter->rotate(-90);
-    }
+    painter->rotate(_drawText->angle());
 
     _fontText->drawText(painter, _textRect, Qt::AlignLeft, _drawText->text());
 }
 
 QRectF DrawTextItem::boundingRect() const
 {
-    return _rect.adjusted(-20, -20, 20, 20);
+    return QTransform().rotate(_drawText->angle()).mapRect(_rect).adjusted(-20, -20, 20, 20);
 }
 
 void DrawTextItem::setDraw(DrawText *draw)
@@ -126,12 +124,6 @@ void DrawTextItem::setDraw(DrawText *draw)
     }
 
     _textRect = _rect;
-    if (_drawText->direction() == DrawText::DirectionVertital)
-    {
-        int swap = _rect.size().width();
-        _rect.setWidth(_rect.height());
-        _rect.setHeight(swap);
-    }
 
     setPos(draw->pos() / ComponentItem::ratio);
     update();

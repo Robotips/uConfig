@@ -20,7 +20,7 @@
 
 DrawText::DrawText(const QString &text, const QPoint &pos)
 {
-    _direction = DirectionHorizontal;
+    _angle = 0.0;
     _textSize = 50;
     _textStyle = TextNormal;
     _visible = true;
@@ -50,14 +50,14 @@ void DrawText::setText(const QString &text)
     _text = text;
 }
 
-DrawText::Direction DrawText::direction() const
+qreal DrawText::angle(void) const
 {
-    return _direction;
+    return _angle;
 }
 
-void DrawText::setDirection(Direction direction)
+void DrawText::setAngle(qreal angle)
 {
-    _direction = direction;
+    _angle = angle;
 }
 
 uint DrawText::textSize() const
