@@ -25,9 +25,9 @@
 #include "viewer/kicadfont.h"
 
 PinClass::PinClass(QString className)
-    : _className(std::move(className))
+    : _className(std::move(className)),
+      _brect(false)
 {
-    _brect = false;
 }
 
 QString PinClass::className() const
@@ -193,7 +193,7 @@ void PinClass::setPos(const QPoint &basePos)
     QPoint pinPos = basePos;
     QPoint offset;
     QPoint translate;
-    int angle;
+    int angle = 0;
 
     switch (_position)
     {

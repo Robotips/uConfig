@@ -124,6 +124,7 @@ void Lib::removeComponent(Component *component)
     if (_components.removeOne(component))
     {
         delete component;
+        component = nullptr;
     }
 }
 
@@ -153,6 +154,7 @@ void Lib::clear()
     for (auto &component : _components)
     {
         delete component;
+        component = nullptr;
     }
     _components.clear();
 }

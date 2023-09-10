@@ -32,10 +32,10 @@
 using namespace Poppler;
 
 Datasheet::Datasheet()
+    : _doc(nullptr),
+      _debug(false),
+      _force(false)
 {
-    _doc = nullptr;
-    _debug = false;
-    _force = false;
 }
 
 Datasheet::~Datasheet()
@@ -74,8 +74,11 @@ bool Datasheet::open(const QString &fileName)
 
 void Datasheet::close()
 {
-    delete _doc;
-    _doc = nullptr;
+    if(_doc != nullptr)
+    {
+      delete _doc;
+      _doc = nullptr;
+    }
 }
 
 void Datasheet::pinSearch(int numPage)
@@ -216,6 +219,7 @@ void Datasheet::pinSearch(int numPage)
         {
             badcount++;
             delete package;
+            package = nullptr;
             continue;
         }
         // package pin 1 very far to pin 2 are deleted
@@ -224,6 +228,7 @@ void Datasheet::pinSearch(int numPage)
         {
             badcount++;
             delete package;
+            package = nullptr;
             continue;
         }
         count++;
@@ -420,7 +425,11 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
                 else if (box->text.size() > 10 && (!box->text.contains("/") && !box->text.contains("_") && !box->text.contains(",")))
                 {
                     // qDebug()<<"filter long label"<<box->text;
-                    delete box;
+                    if(box != nullptr)
+                    {
+                        delete box;
+                        box = nullptr;
+                    }
                     box = new DatasheetBox();
                     box->page = numPage;
                 }
@@ -434,6 +443,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             prev = false;
         }
         delete textBox;
+        textBox = nullptr;
     }
 
     // pairing label and number to pin
@@ -493,6 +503,7 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
     }
 
     delete page;
+    page = nullptr;
     return pins;
 }
 
@@ -558,6 +569,7 @@ void Datasheet::clean()
     for (DatasheetPackage *box : _packages)
     {
         delete box;
+        box = nullptr;
     }
     _packages.clear();
 }
@@ -646,14 +658,18 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
                 }
             }
             delete textBox;
+            textBox = nullptr;
 
             if (labelOk && (vssOk || vddOk))
             {
                 delete page;
+                page = nullptr;
                 return i;
             }
         }
         delete page;
+        page = nullptr;
+
         QCoreApplication::processEvents();
     }
 

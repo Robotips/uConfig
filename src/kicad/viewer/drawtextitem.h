@@ -47,6 +47,9 @@ public:
     void setDraw(DrawText *draw);
 
 protected:
+    void deleteFontText();
+
+protected:
     DrawText *_drawText;
     QRectF _rect;
     QRectF _textRect;

@@ -35,8 +35,10 @@ PDFPage::~PDFPage()
     for (PDFTextBox *textBox : _textBoxes)
     {
         delete textBox;
+        textBox = nullptr;
     }
     delete _page;
+    _page = nullptr;
 }
 
 PDFDatasheet *PDFPage::datasheet() const

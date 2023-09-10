@@ -24,7 +24,8 @@
 #include <QDebug>
 
 PDFLoader::PDFLoader(PDFDatasheet *pdfDatasheet)
-    : _pdfDatasheet(pdfDatasheet)
+    : _document(nullptr),
+      _pdfDatasheet(pdfDatasheet)
 {
     _document = Poppler::Document::load(_pdfDatasheet->_fileName);
     _pdfDatasheet->_pageCount = _document->numPages();
@@ -37,7 +38,11 @@ PDFLoader::PDFLoader(PDFDatasheet *pdfDatasheet)
 
 PDFLoader::~PDFLoader()
 {
-    delete _document;
+    if(_document != nullptr)
+    {
+      delete _document;
+      _document = nullptr;
+    }
 }
 
 bool PDFLoader::loadPage(PDFPage *pdfPage)
@@ -126,6 +131,7 @@ void PDFLoader::loadBoxes(PDFPage *pdfPage)
             }
         }
         delete ptextBox;
+        ptextBox = nullptr;
     }
     pdfPage->_boxesLoaded = true;
 }

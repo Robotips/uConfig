@@ -29,7 +29,14 @@
 
 PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
     : QWizardPage(nullptr),
-      _datasheetThread(datasheetThread)
+      _datasheetThread(datasheetThread),
+      _complete(false),
+      _pagePreviewLabel(nullptr),
+      _allRadio(nullptr),
+      _partialRadio(nullptr),
+      _rangeEdit(nullptr),
+      _forceCheckBox(nullptr),
+      _pageCountLabel(nullptr)
 {
     _complete = false;
 

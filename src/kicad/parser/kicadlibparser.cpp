@@ -47,6 +47,7 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
         if (mylib)
         {
             delete lib;
+            lib = nullptr;
         }
         return nullptr;
     }
@@ -55,7 +56,7 @@ Lib *KicadLibParser::loadLib(const QString &fileName, Lib *lib)
     _stream.readLine();
     lib->clear();
 
-    Component *component;
+    Component *component = nullptr;
     do
     {
         component = readComponent();
@@ -241,8 +242,8 @@ void KicadLibParser::writePin(Pin *pin)
 
 void KicadLibParser::writeDraw(Draw *draw)
 {
-    DrawRect *drawRect;
-    DrawText *drawText;
+    DrawRect *drawRect = nullptr;
+    DrawText *drawText = nullptr;
 
     switch (draw->type())
     {
@@ -566,6 +567,7 @@ Component *KicadLibParser::readComponent()
     } while (!_stream.atEnd());
 
     delete component;
+    component = nullptr;
     return nullptr;
 }
 
@@ -584,6 +586,7 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
+        pin = nullptr;
         return nullptr;
     }
     pin->setName(name);
@@ -594,51 +597,55 @@ Pin *KicadLibParser::readPin()
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
+        pin = nullptr;
         return nullptr;
     }
     pin->setPadName(padName);
 
     // position
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
     _stream >> x >> y;
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
+        pin = nullptr;
         return nullptr;
     }
     pin->setPos(x, -y);
 
     // lenght
-    int lenght;
+    int lenght = 0;
     _stream >> lenght;
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
+        pin = nullptr;
         return nullptr;
     }
     pin->setLength(lenght);
 
     // orientation
-    char directionChar;
+    char directionChar = 0;
     _stream.skipWhiteSpace();
     _stream >> directionChar;
     pin->setAngle(pinAngle(directionChar));
 
     // text size
-    int textNameSize;
-    int textPadSize;
+    int textNameSize = 0;
+    int textPadSize = 0;
     _stream >> textPadSize;
     _stream >> textNameSize;
     pin->setTextNameSize(textNameSize);
     pin->setTextPadSize(textPadSize);
 
     // layer
-    int layer;
+    int layer = 0;
     _stream >> layer;
     if (_stream.status() != QTextStream::Ok)
     {
         delete pin;
+        pin = nullptr;
         return nullptr;
     }
     pin->setUnit(layer);
@@ -662,8 +669,8 @@ Pin *KicadLibParser::readPin()
 
 Draw *KicadLibParser::readDraw(char c)
 {
-    int n;
-    char nc;
+    int n = 0;
+    char nc = 0;
     QString text;
     _stream.resetStatus();
 
@@ -1016,7 +1023,7 @@ QString KicadLibParser::pinElectricalTypeString(Pin::ElectricalType electricalTy
 
 int KicadLibParser::pinAngle(char directionChar)
 {
-    int angle;
+    int angle = 0;
     switch (directionChar)
     {
         default:
@@ -1084,7 +1091,7 @@ Pin::PinType KicadLibParser::pinType(const QString &pinTypeString) const
 
 Pin::ElectricalType KicadLibParser::pinElectricalType(char electricalTypeChar) const
 {
-    Pin::ElectricalType electricalType;
+    Pin::ElectricalType electricalType = Pin::NotConnected;
     switch (electricalTypeChar)
     {
         case 'I':

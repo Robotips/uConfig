@@ -49,18 +49,19 @@ QStringList PinRule::pinTypeEnumStr = QStringList() << "norm"
                                                     << "nologic";
 
 PinRule::PinRule(const QString &selector)
-    : Rule(selector)
+    : Rule(selector),
+
+      _classSet(false),
+
+      _elecType(Pin::Input),
+      _elecTypeSet(false),
+
+      _pinType(Pin::Normal),
+      _pinTypeSet(false),
+
+      _priority(0),
+      _prioritySet(false)
 {
-    _classSet = false;
-
-    _elecType = Pin::Input;
-    _elecTypeSet = false;
-
-    _pinType = Pin::Normal;
-    _pinTypeSet = false;
-
-    _priority = 0;
-    _prioritySet = false;
 }
 
 Rule::Type PinRule::type() const

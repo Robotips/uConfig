@@ -28,7 +28,8 @@
 #include <QAbstractButton>
 
 PinListImporter::PinListImporter(const QString &fileName, QWidget *parent)
-    : QWizard(parent)
+    : QWizard(parent),
+      _type(Undefined)
 {
     setPage(PageStart, new StartWizardPage());
     setPage(PageFile, new FilePage());

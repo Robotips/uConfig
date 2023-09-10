@@ -24,11 +24,12 @@
 #include <QDebug>
 
 ComponentPinsItemModel::ComponentPinsItemModel(Component *component, QObject *parent)
-    : QAbstractItemModel(parent)
+    : QAbstractItemModel(parent),
+      _component(nullptr),
+      _isExpendable(true)
 {
     setComponent(component);
-    _isExpendable = true;
-    _higherPin = QString();
+    _higherPin.clear();
 }
 
 Component *ComponentPinsItemModel::component() const
@@ -317,8 +318,8 @@ QString ComponentPinsItemModel::toNumeric(const QString &str)
 
 void ComponentPinsItemModel::updateHigherPin()
 {
-    _higherPin = QString();
-    QString higherNumPin = QString();
+    QString higherNumPin;
+    _higherPin.clear();
     if (_component != nullptr)
     {
         for (Pin *pin : _component->pins())

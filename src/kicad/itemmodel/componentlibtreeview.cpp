@@ -24,16 +24,18 @@
 #include <QMouseEvent>
 
 ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent)
-    : QTreeView(parent)
+    : QTreeView(parent),
+      _model(nullptr),
+      _sortProxy(nullptr),
+      _editMode(false),
+      _removeAction(nullptr)
 {
-    if (lib != nullptr)
+    if (lib == nullptr)
     {
-        _model = new ComponentLibItemModel(lib);
+        lib = new Lib();
     }
-    else
-    {
-        _model = new ComponentLibItemModel(new Lib());
-    }
+
+    _model = new ComponentLibItemModel(lib);
 
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     _editMode = false;

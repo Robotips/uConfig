@@ -22,7 +22,7 @@
 
 Pin::Pin()
     : _pinType(Pin::Normal),
-      _electricalType(Pin::Input)
+      _electricalType(Pin::Unspecified)
 {
     _angle = 0;
     _unit = 1;
@@ -36,7 +36,7 @@ Pin::Pin(const QString &name, const QString &padName)
     : _name(name),
       _padName(padName),
       _pinType(Pin::Normal),
-      _electricalType(Pin::Input)
+      _electricalType(Pin::Unspecified)
 {
     _angle = 0;
     _unit = 1;

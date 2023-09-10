@@ -28,9 +28,9 @@
 #include "pinlistimporter.h"
 
 StartWizardPage::StartWizardPage(QWidget *parent)
-    : QWizardPage(parent)
+    : QWizardPage(parent),
+      _complete(false)
 {
-    _complete = false;
     setAcceptDrops(true);
 
     setTitle("Choose import format");

@@ -21,11 +21,11 @@
 #include <QDebug>
 
 DataSheetThread::DataSheetThread(Datasheet *datasheet)
+    : _datasheet(datasheet),
+      _pageBegin(-1),
+      _pageEnd(-1)
 {
-    _datasheet = datasheet;
     _datasheet->moveToThread(this);
-    _pageBegin = -1;
-    _pageEnd = -1;
 }
 
 DataSheetThread::~DataSheetThread()
@@ -36,6 +36,7 @@ DataSheetThread::~DataSheetThread()
         terminate();
     }
     delete _datasheet;
+    _datasheet = nullptr;
 }
 
 bool DataSheetThread::open(const QString &fileName)

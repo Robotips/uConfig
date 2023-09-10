@@ -23,11 +23,11 @@
 #include <QFileInfo>
 
 TextImporter::TextImporter()
+    : _columnSeparator('\t'),
+      _pinColumn(0),
+      _pinNameColumnsSeparator('/')
 {
-    _columnSeparator = '\t';
-    _pinColumn = 0;
     _pinNameColumns = {1};
-    _pinNameColumnsSeparator = '/';
 }
 
 QChar TextImporter::columnSeparator() const
