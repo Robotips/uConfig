@@ -57,13 +57,12 @@ Lib *ComponentLibTreeView::lib() const
 
 void ComponentLibTreeView::setLib(Lib *lib)
 {
-    _model->setLib(lib);
-    if (lib == _model->lib())
+    if (lib != _model->lib())
     {
-        return;
+        _model->setLib(lib);
+        resizeColumnToContents(0);
+        resizeColumnToContents(1);
     }
-    resizeColumnToContents(0);
-    resizeColumnToContents(1);
 }
 
 void ComponentLibTreeView::setActiveComponent(Component *component)
