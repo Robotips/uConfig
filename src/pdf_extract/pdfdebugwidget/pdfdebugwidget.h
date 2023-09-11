@@ -47,7 +47,6 @@ signals:
 
 public slots:
     void showPage(int page);
-    void showPage(PDFPage *page);
 
     void previous();
     void next();

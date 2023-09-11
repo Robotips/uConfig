@@ -21,48 +21,30 @@
 
 #include <pdf_extract_common.h>
 
+#include <memory>
+#include <poppler/qt5/poppler-qt5.h>
+
 #include "pdftextbox.h"
 
 #include <QImage>
 #include <QList>
 #include <QRect>
 
-namespace Poppler
-{
-class Page;
-}
-
-class PDFDatasheet;
-
-class DATASHEET_EXTRACTOR_EXPORT PDFPage
+class DATASHEET_EXTRACTOR_EXPORT PDFPage : public std::unique_ptr<Poppler::Page>
 {
 public:
-    PDFPage(PDFDatasheet *datasheet, int numPage = 0);
+    PDFPage(Poppler::Page *page);
     ~PDFPage();
 
-    PDFDatasheet *datasheet() const;
-
     int numPage() const;
-    const QRect &pageRect() const;
-    const QImage &image() const;
+    QRect pageRect() const;
 
-    Poppler::Page *page() const;
-
-    void loadBoxes();
-    bool boxesLoaded() const;
     const QList<PDFTextBox *> &textBoxes() const;
 
 protected:
-    PDFDatasheet *_datasheet;
-    int _numPage;
-    QRect _pageRect;
-    QImage _image;
+    void loadBoxes();
 
-    bool _boxesLoaded;
     QList<PDFTextBox *> _textBoxes;
-
-    friend class PDFLoader;
-    Poppler::Page *_page;
 };
 
 #endif  // PDFPAGE_H

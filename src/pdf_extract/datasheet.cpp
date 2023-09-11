@@ -21,12 +21,11 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
-#include <QDomNamedNodeMap>
+//#include <QDomNamedNodeMap>
 #include <QFile>
 #include <QPainter>
 #include <QRegularExpression>
 
-#include <poppler/qt5/poppler-form.h>
 #include <poppler/qt5/poppler-qt5.h>
 
 using namespace Poppler;

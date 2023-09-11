@@ -18,25 +18,20 @@
 
 #include "pdfdatasheet.h"
 
-#include <utility>
-
-#include <controller/pdfloader.h>
-
-PDFDatasheet::PDFDatasheet(QString fileName)
-    : _pageCount(0),
-      _fileName(std::move(fileName)),
-      _pdfLoader(nullptr)
+PDFDatasheet::PDFDatasheet(const QString& fileName)
+    : std::unique_ptr<Poppler::Document>(Poppler::Document::load(fileName)),
+    _fileName(fileName)
 {
-    _pdfLoader = new PDFLoader(this);
+    if(*this)
+    {
+        get()->setRenderBackend(Poppler::Document::ArthurBackend);
+        get()->setRenderHint(Poppler::Document::Antialiasing, true);
+        get()->setRenderHint(Poppler::Document::TextAntialiasing, true);
+    }
 }
 
 PDFDatasheet::~PDFDatasheet()
 {
-  if(_pdfLoader != nullptr)
-  {
-    delete _pdfLoader;
-    _pdfLoader = nullptr;
-  }
 }
 
 const QString &PDFDatasheet::fileName() const
@@ -44,30 +39,32 @@ const QString &PDFDatasheet::fileName() const
     return _fileName;
 }
 
-const QString &PDFDatasheet::title() const
+QString PDFDatasheet::title() const
 {
-    return _title;
+    return get()->info("Title");
 }
 
 bool PDFDatasheet::loadPage(int numPage)
 {
-    if (numPage >= _pageCount || numPage < 0)
+    if (numPage >= pageCount() || numPage < 0)
     {
         return false;
     }
-    if (page(numPage) != nullptr)
+
+    PDFPage *pdfPage = page(numPage);
+
+    if (pdfPage == nullptr)
     {
-        return true;
+        pdfPage = new PDFPage(get()->page(numPage));
+        _pagesLoaded.insert(numPage, pdfPage);
     }
 
-    PDFPage *page = new PDFPage(this, numPage);
-    _pagesLoaded.insert(numPage, page);
-    return _pdfLoader->loadPage(page);
+    return pdfPage->numPage() < pageCount();
 }
 
 int PDFDatasheet::pageCount() const
 {
-    return _pageCount;
+    return get()->numPages();
 }
 
 int PDFDatasheet::loadedPageCount() const
@@ -83,9 +80,4 @@ PDFPage *PDFDatasheet::page(int numPage)
         return nullptr;
     }
     return *itFind;
-}
-
-PDFLoader *PDFDatasheet::pdfLoader() const
-{
-    return _pdfLoader;
 }

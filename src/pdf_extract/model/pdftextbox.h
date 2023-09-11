@@ -21,8 +21,6 @@
 
 #include <pdf_extract_common.h>
 
-class PDFPage;
-
 #include <QList>
 #include <QRect>
 #include <QString>
@@ -30,7 +28,7 @@ class PDFPage;
 class DATASHEET_EXTRACTOR_EXPORT PDFTextBox
 {
 public:
-    PDFTextBox(QString text, const QRectF &boundingRect);
+    PDFTextBox(const QString& text, const QRectF &boundingRect);
     ~PDFTextBox();
 
     const QString &text() const;
@@ -46,18 +44,12 @@ public:
     Type type() const;
 
     const QList<PDFTextBox *> &subBoxes() const;
-    PDFTextBox *parentBox() const;
-    PDFPage *page() const;
-
 protected:
     QString _text;
     QRectF _boundingRect;
     Type _type;
 
     QList<PDFTextBox *> _subBoxes;
-    PDFPage *_page;
-    PDFTextBox *_parentBox;
-    friend class PDFLoader;
 };
 
 #endif  // PDFTEXTBOX_H
