@@ -32,7 +32,7 @@ PDFPage::PDFPage(PDFDatasheet *datasheet, int numPage)
 
 PDFPage::~PDFPage()
 {
-    for (PDFTextBox *textBox : _textBoxes)
+    for (PDFTextBox *textBox : qAsConst(_textBoxes))
     {
         delete textBox;
         textBox = nullptr;

@@ -37,7 +37,7 @@ public:
     int nextId() const override;
     void initializePage() override;
 
-    Q_PROPERTY(QString file READ file)
+    Q_PROPERTY(QString file CONSTANT READ file)
     QString file() const;
 
 protected:

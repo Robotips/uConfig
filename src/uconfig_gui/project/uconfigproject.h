@@ -60,7 +60,7 @@ public slots:
 
     void selectComponent(Component *component);
 
-    void setComponentInfo(ComponentInfoType infoType, const QVariant &value);
+    void setComponentInfo(UConfigProject::ComponentInfoType infoType, const QVariant &value);
 
 signals:
     void libChanged(Lib *lib);

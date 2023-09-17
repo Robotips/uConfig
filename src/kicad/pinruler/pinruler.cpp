@@ -59,7 +59,7 @@ void PinRuler::organize(Component *component)
     component->clearDraws();
 
     PinClass *defaultClass = pinClass("default");
-    for (Pin *pin : component->pins())
+    for (Pin *pin : qAsConst(component->pins()))
     {
         PinClassItem *pinClassItem = new PinClassItem(pin);
         const QList<PinRule *> &rules = _ruleSet->rulesForPin(pin->name());
@@ -131,7 +131,7 @@ void PinRuler::organize(Component *component)
     QSize leftSize = QSize(0, 0);
     QSize rightSize = QSize(0, 0);
     QSize removedSize = QSize(0, 0);
-    for (PinClass *mpinClass : _pinClasses)
+    for (PinClass *mpinClass : qAsConst(_pinClasses))
     {
         if (mpinClass->pins().count() == 0)
         {
@@ -337,7 +337,7 @@ void PinRuler::organize(Component *component)
     component->refText()->setTextHJustify(DrawText::TextHLeft);
     component->refText()->setDirection(DrawText::DirectionHorizontal);
 
-    for (PinClass *mpinClass : _pinClasses)
+    for (PinClass *mpinClass : qAsConst(_pinClasses))
     {
         delete mpinClass;
         mpinClass = nullptr;

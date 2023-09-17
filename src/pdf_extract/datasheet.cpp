@@ -110,7 +110,7 @@ void Datasheet::pinSearch(int numPage)
     QCoreApplication::processEvents();
 
     // painring pin to find package
-    for (DatasheetPin *pin : pins)
+    for (DatasheetPin *pin : qAsConst(pins))
     {
         if (pin->pin == 1 && pin->page == numPage)
         {
@@ -155,7 +155,7 @@ void Datasheet::pinSearch(int numPage)
     QCoreApplication::processEvents();
 
     // unasociated label
-    for (DatasheetBox *label : _labels)
+    for (DatasheetBox *label : qAsConst(_labels))
     {
         if (label->associated)
         {
@@ -197,7 +197,7 @@ void Datasheet::pinSearch(int numPage)
     {
         QRectF rect;
         QRectF rectNum;
-        for (DatasheetPin *pin : package->pins)
+        for (DatasheetPin *pin : qAsConst(package->pins))
         {
             rect = rect.united(pin->pos);
             rectNum = rectNum.united(pin->numPos);
@@ -250,11 +250,11 @@ void Datasheet::pinSearch(int numPage)
         dir.mkdir(_name);
 
         painter.setPen(QPen(Qt::yellow, 2, Qt::DotLine));
-        for (DatasheetBox *number : _numbers)
+        for (DatasheetBox *number : qAsConst(_numbers))
         {
             painter.drawRect(QRect((number->pos.topLeft() - rect.topLeft()).toPoint() * res, number->pos.size().toSize() * res));
         }
-        for (DatasheetBox *label : _labels)
+        for (DatasheetBox *label : qAsConst(_labels))
         {
             if (!label->associated)
             {
@@ -296,6 +296,10 @@ QRectF Datasheet::toGlobalPos(const QRectF &rect, Poppler::Page *page, int pageN
 
 QList<DatasheetPin *> Datasheet::extractPins(int numPage)
 {
+    static QRegularExpression number_in_parens("\\([0-9]+\\)");
+    static QRegularExpression only_number_in_parens("^\\([0-9]+\\)$");
+    static QRegularExpression excess_spacing(" +");
+
     QList<DatasheetPin *> pins;
 
     emit log(QString("+ find pins at page: %1").arg(numPage + 1));
@@ -320,13 +324,14 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
     bool prev = false;
     DatasheetBox *box = new DatasheetBox();
     box->page = numPage;
-    for (TextBox *textBox : page->textList())
+    const auto& textBoxes = page->textList();
+    for (TextBox *textBox : textBoxes)
     {
         bool okNumber;
 
         if (textBox->text().startsWith("•"))
         {
-            textBox->text().mid(1).toInt(&okNumber);
+            textBox->text().midRef(1).toInt(&okNumber);
         }
         else
         {
@@ -395,12 +400,12 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             }
 
             // remove notes
-            box->text.replace(QRegularExpression("\\([0-9]+\\)"), "");
+            box->text.remove(number_in_parens);
 
             // classify boxes
             if (!okNumber || prev)
             {
-                if (box->text.isEmpty() || box->text.contains("Note", Qt::CaseInsensitive) || box->text.contains(QRegularExpression("^\\([0-9]+\\)$")))
+                if (box->text.isEmpty() || box->text.contains("Note", Qt::CaseInsensitive) || box->text.contains(only_number_in_parens))
                 {
                     // none
                 }
@@ -447,9 +452,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
     }
 
     // pairing label and number to pin
-    for (DatasheetBox *number : _numbers)
+    for (DatasheetBox *number : qAsConst(_numbers))
     {
-        DatasheetPin *pin = new DatasheetPin();
         qreal dist = 999999999999;
         QPointF center = number->pos.center();
         DatasheetBox *assocLabel = nullptr;
@@ -483,6 +487,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
 
         if (assocLabel != nullptr)
         {
+            DatasheetPin *pin = new DatasheetPin();
+
             assocLabel->associated = true;
             number->associated = true;
 
@@ -491,8 +497,8 @@ QList<DatasheetPin *> Datasheet::extractPins(int numPage)
             pin->numberBox = number;
 
             pin->name = assocLabel->text;
-            pin->name.remove(QRegularExpression("\\([0-9]+\\)"));
-            pin->name.remove(QRegularExpression(" +"));
+            pin->name.remove(number_in_parens);
+            pin->name.remove(excess_spacing);
             pin->nameBox = assocLabel;
 
             pin->page = number->page;
@@ -539,13 +545,11 @@ int Datasheet::pageCount() const
 QImage Datasheet::pageThumbnail(int numPage) const
 {
     QImage image;
-    if (_doc == nullptr)
+    if (_doc != nullptr)
     {
-        return QImage();
+        image = _doc->page(numPage)->renderToImage(20, 20, 0, 0, -1, -1);
     }
-
-    Poppler::Page *page = _doc->page(numPage);
-    return page->renderToImage(20, 20, 0, 0, -1, -1);
+    return image;
 }
 
 void Datasheet::clean()
@@ -566,7 +570,7 @@ void Datasheet::clean()
         if (!box->associated)
             delete box;*/
     _pack_labels.clear();
-    for (DatasheetPackage *box : _packages)
+    for (DatasheetPackage *box : qAsConst(_packages))
     {
         delete box;
         box = nullptr;
@@ -625,7 +629,8 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
         bool vssOk = false;
         bool vddOk = false;
         bool labelOk = false;
-        for (TextBox *textBox : page->textList())
+        const auto& textBoxes = page->textList();
+        for (TextBox *textBox : textBoxes)
         {
             QString text = textBox->text();
             if (textBox->nextWord() != nullptr)
@@ -649,7 +654,7 @@ int Datasheet::pagePinDiagram(int pageStart, int pageEnd, bool *bgaStyle)
              *bgaStyle=true;*/
             *bgaStyle = false;
 
-            for (const QString &keyWord : keyWords)
+            for (const QString &keyWord : qAsConst(keyWords))
             {
                 if (text.contains(keyWord, Qt::CaseInsensitive))
                 {
@@ -736,7 +741,7 @@ const QList<DatasheetPackage *> &Datasheet::packages() const
 QList<Component *> Datasheet::components()
 {
     QList<Component *> components;
-    for (DatasheetPackage *package : _packages)
+    for (DatasheetPackage *package : qAsConst(_packages))
     {
         Component *component = package->toComponent();
         component->reorganizeToPackageStyle();

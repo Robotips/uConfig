@@ -166,7 +166,8 @@ void ComponentViewer::selectedItem()
 {
     QList<Pin *> selectedPins;
 
-    for (QGraphicsItem *item : scene()->selectedItems())
+    const auto& selected = scene()->selectedItems();
+    for (QGraphicsItem *item : selected)
     {
         PinItem *pinItem = qgraphicsitem_cast<PinItem *>(item);
         selectedPins.append(pinItem->pin());

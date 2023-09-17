@@ -87,7 +87,7 @@ void UConfigProject::openLib(const QString &libFileName)
         }
         if (fileDialog.exec() != 0)
         {
-            mlibFileName = fileDialog.selectedFiles().first();
+            mlibFileName = fileDialog.selectedFiles().constFirst();
         }
         if (mlibFileName.isEmpty())
         {
@@ -126,6 +126,7 @@ void UConfigProject::saveLib()
 
 void UConfigProject::saveLibAs(const QString &fileName)
 {
+    static QRegularExpression pdf_or_cvs("(.*)\\.(pdf|csv)");
     QString libFileName;
 
     if (fileName.isEmpty())
@@ -138,12 +139,12 @@ void UConfigProject::saveLibAs(const QString &fileName)
         if (!_importedPathLib.isEmpty())
         {
             libFileName = _importedPathLib;
-            libFileName.replace(QRegularExpression("(.*)\\.(pdf|csv)"), "\\1.lib");
+            libFileName.replace(pdf_or_cvs, "\\1.lib");
             fileDialog.selectFile(libFileName);
         }
         if (fileDialog.exec() != 0)
         {
-            libFileName = fileDialog.selectedFiles().first();
+            libFileName = fileDialog.selectedFiles().constFirst();
         }
         if (libFileName.isEmpty())
         {
@@ -187,7 +188,8 @@ void UConfigProject::importComponents(const QString &fileName)
         return;
     }
 
-    for (Component *component : importer.components())
+    const auto& component_list = importer.components();
+    for (Component *component : component_list)
     {
         _lib->addComponent(component);
     }
