@@ -57,7 +57,7 @@ void ComponentItem::setComponent(Component *component, int unit)
     _pinItemMap.clear();
     _unit = unit;
 
-    for (Pin *pin : component->pins())
+    for (Pin *pin : qAsConst(component->pins()))
     {
         if (pin->unit() == _unit || pin->unit() == 0)
         {
@@ -66,7 +66,7 @@ void ComponentItem::setComponent(Component *component, int unit)
             _pinItemMap.insert(pin, pinItem);
         }
     }
-    for (Draw *draw : component->draws())
+    for (Draw *draw : qAsConst(component->draws()))
     {
         if (draw->unit() == _unit || draw->unit() == 0)
         {
@@ -115,7 +115,7 @@ void ComponentItem::setShowElectricalType(bool showElectricalType)
 {
     if (showElectricalType != _showElectricalType)
     {
-        for (PinItem *pinItem : _pinItemMap)
+        for (PinItem *pinItem : qAsConst(_pinItemMap))
         {
             pinItem->setShowElectricalType(showElectricalType);
         }

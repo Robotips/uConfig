@@ -147,7 +147,7 @@ void FilePage::fileExplore()
     }
 
     QString fileName = QFileDialog::getOpenFileName(
-        this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle).arg("*." + _suffixes.join(" *.")));
+        this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle, "*." + _suffixes.join(" *.")));
     if (!fileName.isEmpty())
     {
         setFile(fileName);

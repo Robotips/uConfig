@@ -31,7 +31,7 @@ PDFTextBox::PDFTextBox(QString text, const QRectF &boundingRect)
 
 PDFTextBox::~PDFTextBox()
 {
-    for (PDFTextBox *textBox : _subBoxes)
+    for (PDFTextBox *textBox : qAsConst(_subBoxes))
     {
         delete textBox;
     }

@@ -39,7 +39,7 @@ void test_libkicad()
         QStringList items = line.split(";");
 
         int i = 0;
-        for (const QString &item : items)
+        for (const QString &item : qAsConst(items))
         {
             if (i > 0 && !item.isEmpty())
             {
@@ -68,7 +68,7 @@ void test_libkicad()
         points.append(QPoint(1000 + 300 * i, 0));
     }
 
-    for (auto pin : component->pins())
+    for (auto pin : qAsConst(component->pins()))
     {
         if (pin->name() == "GND")
         {

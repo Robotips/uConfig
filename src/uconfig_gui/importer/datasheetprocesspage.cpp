@@ -109,7 +109,8 @@ void DatasheetProcessPage::finish()
 
     qDeleteAll(components);
     components.clear();
-    for (Component *component : _thread->datasheet()->components())
+    const auto& component_list = _thread->datasheet()->components();
+    for (Component *component : component_list)
     {
         components.append(component);
     }

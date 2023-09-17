@@ -299,7 +299,7 @@ QString ComponentPinsItemModel::toNumeric(const QString &str)
 {
     QString sortPatern = str;
 
-    QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
 
     QRegularExpressionMatchIterator numMatchIt = numPattern.globalMatch(str);
     if (numMatchIt.hasNext())
@@ -321,7 +321,7 @@ void ComponentPinsItemModel::updateHigherPin()
     QString higherNumPin = QString();
     if (_component != nullptr)
     {
-        for (Pin *pin : _component->pins())
+        for (Pin *pin : qAsConst(_component->pins()))
         {
             QString numPin = toNumeric(pin->padName());
             if (numPin > higherNumPin)
@@ -330,7 +330,7 @@ void ComponentPinsItemModel::updateHigherPin()
                 higherNumPin = numPin;
             }
         }
-        QRegularExpression higherNumPinPattern("([A-Z]*0*)([1-9][0-9]*)", QRegularExpression::CaseInsensitiveOption);
+        static QRegularExpression higherNumPinPattern("([A-Z]*0*)([1-9][0-9]*)", QRegularExpression::CaseInsensitiveOption);
         QRegularExpressionMatchIterator higherNumPinMatchIt = higherNumPinPattern.globalMatch(_higherPin);
         if (higherNumPinMatchIt.hasNext())
         {

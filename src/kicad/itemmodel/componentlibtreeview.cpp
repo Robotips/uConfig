@@ -129,7 +129,7 @@ void ComponentLibTreeView::remove()
             return;
         }
         QList<QPersistentModelIndex> pindex;
-        for (QModelIndex selected : selection)
+        for (QModelIndex selected : qAsConst(selection))
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid() || indexComponent.column() != 0)
