@@ -17,17 +17,11 @@
  **/
 
 #include "pdfpage.h"
-#include <controller/pdfloader.h>
-#include "pdfdatasheet.h"
 
-#include <poppler/qt5/poppler-qt5.h>
-
-PDFPage::PDFPage(PDFDatasheet *datasheet, int numPage)
-    : _datasheet(datasheet),
-      _numPage(numPage),
-      _boxesLoaded(false),
-      _page(nullptr)
+PDFPage::PDFPage(Poppler::Page *page)
+    : std::unique_ptr<Poppler::Page>(page)
 {
+    loadBoxes();
 }
 
 PDFPage::~PDFPage()
@@ -37,46 +31,53 @@ PDFPage::~PDFPage()
         delete textBox;
         textBox = nullptr;
     }
-    delete _page;
-    _page = nullptr;
-}
-
-PDFDatasheet *PDFPage::datasheet() const
-{
-    return _datasheet;
 }
 
 int PDFPage::numPage() const
 {
-    return _numPage;
+    return get()->index();
 }
 
-const QRect &PDFPage::pageRect() const
+QRect PDFPage::pageRect() const
 {
-    return _pageRect;
-}
-
-const QImage &PDFPage::image() const
-{
-    return _image;
-}
-
-Poppler::Page *PDFPage::page() const
-{
-    return _page;
+    return QRect(QPoint(0, 0), get()->pageSize());
 }
 
 void PDFPage::loadBoxes()
 {
-    if (!_boxesLoaded)
+    QString fullText;
+    QRectF  fullBoundingRect;
+    const auto& texts = get()->textList();
+    for (Poppler::TextBox *ptextBox : texts)
     {
-        _datasheet->pdfLoader()->loadBoxes(this);
-    }
-}
+        bool isNumber = false;
+        QString text = ptextBox->text();
+        text.toInt(&isNumber);
 
-bool PDFPage::boxesLoaded() const
-{
-    return _boxesLoaded;
+        if(fullText.isEmpty() || isNumber)
+        {
+            _textBoxes.append(new PDFTextBox(text, ptextBox->boundingBox()));
+        }
+        else
+        {
+            fullBoundingRect = fullBoundingRect.united(ptextBox->boundingBox());
+            fullText += text;
+
+            if(ptextBox->nextWord() != nullptr)
+            {
+                if(!ptextBox->hasSpaceAfter())
+                    fullText.append(QChar(' '));
+            }
+            else
+            {
+                _textBoxes.append(new PDFTextBox(fullText, fullBoundingRect.adjusted(-1, -1, 1, 1)));
+                fullText.clear();
+                fullBoundingRect = QRectF();
+            }
+        }
+        delete ptextBox;
+        ptextBox = nullptr;
+    }
 }
 
 const QList<PDFTextBox *> &PDFPage::textBoxes() const

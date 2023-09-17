@@ -1,4 +1,12 @@
-QT     += core gui widgets xml
+QT += core gui widgets
+CONFIG += c++11 strict_c++
+CONFIG(release, debug|release):CONFIG += optimize_full
+
+# For Appveyor because it dumps includes in the project root
+APPVEYOR_BUILD_FOLDER=$$(APPVEYOR_BUILD_FOLDER)
+!isEmpty(APPVEYOR_BUILD_FOLDER) {
+    INCLUDEPATH += $$APPVEYOR_BUILD_FOLDER
+}
 
 TARGET = pdf_extract
 TEMPLATE = lib
@@ -10,11 +18,6 @@ DESTDIR = "$$PROJECT_ROOT/bin"
 INCLUDEPATH += $$SOURCE_ROOT
 DEFINES += KICAD_EXPORT=Q_DECL_IMPORT
 DEFINES += DATASHEET_EXTRACTOR_EXPORT_LIB
-
-CONFIG(release, debug|release) {
-    CONFIG += optimize_full
-}
-CONFIG += c++11
 
 SOURCES += \
     $$PWD/datasheet.cpp \
@@ -30,10 +33,6 @@ SOURCES += \
     $$PWD/model/pdfdatasheet.cpp \
     $$PWD/model/pdfpage.cpp \
     $$PWD/model/pdftextbox.cpp \
-    $$PWD/model/pdfpin.cpp \
-    $$PWD/model/pdfcomponent.cpp \
-    $$PWD/controller/pdfloader.cpp \
-    $$PWD/controller/pdfpackagesearcher.cpp
 
 HEADERS += \
     $$PWD/pdf_extract_common.h \
@@ -49,11 +48,7 @@ HEADERS += \
     $$PWD/pdfdebugwidget/pdfdebugitemtextbox.h \
     $$PWD/model/pdfdatasheet.h \
     $$PWD/model/pdfpage.h \
-    $$PWD/model/pdftextbox.h \
-    $$PWD/model/pdfpin.h \
-    $$PWD/model/pdfcomponent.h \
-    $$PWD/controller/pdfloader.h \
-    $$PWD/controller/pdfpackagesearcher.h
+    $$PWD/model/pdftextbox.h
 
 LIBS += -L"$$PROJECT_ROOT/bin"
 INCLUDEPATH += $$PROJECT_ROOT/

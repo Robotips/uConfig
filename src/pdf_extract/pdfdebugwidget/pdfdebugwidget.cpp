@@ -80,23 +80,9 @@ void PdfDebugWidget::showPage(int page)
     {
         return;
     }
-    showPage(pdfPage);
-}
 
-void PdfDebugWidget::showPage(PDFPage *page)
-{
-    if (page->datasheet() != _datasheet)
-    {
-        setDatasheet(page->datasheet());
-    }
-
-    if (!page->boxesLoaded())
-    {
-        page->loadBoxes();
-    }
-
-    _currentPage = page;
-    _viewer->setPage(page);
+    _currentPage = pdfPage;
+    _viewer->setPage(pdfPage);
     _pageLineEdit->setText(QString::number(_currentPage->numPage() + 1));
     emit pageChanged(_currentPage->numPage());
 }
