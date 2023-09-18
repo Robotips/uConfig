@@ -313,22 +313,22 @@ DrawText *PinClass::getDrawText() const
         case ClassRule::PositionTop:
             height = qCeil(boundingRect().height() / 100.0) * 100 - 100;
             drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() + 50 + height));
-            drawClassLabel->setDirection(DrawText::DirectionHorizontal);
+            drawClassLabel->setAngle(0.0);
             break;
         case ClassRule::PositionBottom:
             height = qCeil(boundingRect().height() / 100.0) * 100 - 100;
             drawClassLabel->setPos(QPoint(_pos.x() + boundingRect().width() / 2 - 50, _pos.y() - 50 - height));
-            drawClassLabel->setDirection(DrawText::DirectionHorizontal);
+            drawClassLabel->setAngle(0.0);
             break;
         case ClassRule::PositionLeft:
             width = qCeil(boundingRect().width() / 100.0) * 100 - 100;
             drawClassLabel->setPos(QPoint(_pos.x() + width + 50, _pos.y() - 50 + boundingRect().height() / 2));
-            drawClassLabel->setDirection(DrawText::DirectionVertital);
+            drawClassLabel->setAngle(90.0);
             break;
         case ClassRule::PositionRight:
             width = qCeil(boundingRect().width() / 100.0) * 100 - 100;
             drawClassLabel->setPos(QPoint(_pos.x() - width - 50, _pos.y() - 50 + boundingRect().height() / 2));
-            drawClassLabel->setDirection(DrawText::DirectionVertital);
+            drawClassLabel->setAngle(90.0);
             break;
         case ClassRule::PositionASide:
             break;
