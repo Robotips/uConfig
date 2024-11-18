@@ -30,6 +30,7 @@ const int KicadFont::charWidthTable[] = {35, 20, 28, 38, 35, 42, 45, 20, 26, 26,
                                          34, 20, 20, 30, 22, 48, 34, 34, 34, 33, 25, 30, 23, 34, 29, 39, 31, 29, 31, 26, 35, 26};
 
 KicadFont::KicadFont(double size)
+    : _size(0.0)
 {
     setSize(size);
 }
@@ -45,7 +46,7 @@ double KicadFont::charWidth(QChar c) const
 
 double KicadFont::textWidth(const QString &text) const
 {
-    double width = 0;
+    double width = 0.0;
     for (QChar c : text)
     {
         width += charWidth(c);

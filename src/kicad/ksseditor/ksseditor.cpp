@@ -22,7 +22,10 @@
 #include <QPainter>
 
 KssEditor::KssEditor(QWidget *parent)
-    : QPlainTextEdit(parent)
+    : QPlainTextEdit(parent),
+      _syntax(nullptr),
+      _kssEditorMargin(nullptr),
+      _lineError(-1)
 {
     _syntax = new KSSSyntax(this->document());
 
@@ -36,7 +39,6 @@ KssEditor::KssEditor(QWidget *parent)
     font.setStyleHint(QFont::Monospace);
     setFont(font);
 
-    _lineError = -1;
     updateExtraSelection();
 }
 

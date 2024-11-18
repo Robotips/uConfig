@@ -28,9 +28,8 @@
 #include "pdfdebugitemtextbox.h"
 
 PdfDebugItemPage::PdfDebugItemPage(PDFPage *page)
+    : _page(page)
 {
-    _page = page;
-
     for (PDFTextBox *textBox : _page->textBoxes())
     {
         new PdfDebugItemTextBox(textBox, this);
@@ -56,7 +55,7 @@ void PdfDebugItemPage::paint(QPainter *painter, const QStyleOptionGraphicsItem *
 
     painter->setPen(Qt::black);
 
-    _page->page()->renderToPainter(painter, 72.0, 72.0, 0, 0, _page->pageRect().width(), _page->pageRect().width(), Poppler::Page::Rotate0);
+    _page->get()->renderToPainter(painter, 72.0, 72.0, 0, 0, _page->pageRect().width(), _page->pageRect().width(), Poppler::Page::Rotate0);
 
     // const qreal lod = option->levelOfDetailFromTransform(painter->worldTransform());
     // QImage image = _page->page()->renderToImage(72.0 * lod, 72.0 * lod, 0 ,0);

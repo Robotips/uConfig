@@ -53,10 +53,12 @@ RulesSet::~RulesSet()
     for (auto &classRule : _classRules)
     {
         delete classRule;
+        classRule = nullptr;
     }
     for (auto &pinRule : _pinRules)
     {
         delete pinRule;
+        pinRule = nullptr;
     }
 }
 

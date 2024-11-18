@@ -19,13 +19,23 @@
 #include "datasheetpin.h"
 
 DatasheetPin::DatasheetPin()
+    : numberBox(nullptr),
+      nameBox(nullptr)
 {
 }
 
 DatasheetPin::~DatasheetPin()
 {
-    delete numberBox;
-    delete nameBox;
+    if(numberBox != nullptr)
+    {
+        delete numberBox;
+        numberBox = nullptr;
+    }
+    if(nameBox != nullptr)
+    {
+        delete nameBox;
+        nameBox = nullptr;
+    }
 }
 
 qreal DatasheetPin::distanceToPoint(const QPointF &center) const

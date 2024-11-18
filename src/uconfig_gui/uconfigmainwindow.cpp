@@ -39,12 +39,23 @@
 
 #include <QDebug>
 
-#include "pinruler/pinruler.h"
-#include "pinruler/rulesparser.h"
-#include "pinruler/rulesset.h"
+#include <pinruler/pinruler.h>
+#include <pinruler/rulesparser.h>
+#include <pinruler/rulesset.h>
 
 UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
-    : _project(project)
+    : _project(project),
+      _splitter(nullptr),
+      _componentsTreeView(nullptr),
+      _componentInfosEditor(nullptr),
+      _pinListEditor(nullptr),
+      _componentWidget(nullptr),
+      _ruleComboBox(nullptr),
+      _pdfDebug(nullptr),
+      _splitterEditor(nullptr),
+      _kssEditor(nullptr),
+      _componentsListDock(nullptr),
+      _componentInfosDock(nullptr)
 {
     setWindowIcon(QIcon(":/icons/img/uConfig.ico"));
     createWidgets();

@@ -23,7 +23,7 @@
 
 #include <QGraphicsItem>
 
-#include "model/pdfpage.h"
+#include <model/pdfpage.h>
 
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemPage : public QGraphicsItem
 {

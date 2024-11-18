@@ -21,8 +21,13 @@
 #include <QFormLayout>
 
 ComponentInfosEditor::ComponentInfosEditor(UConfigProject *project)
+    : _project(project),
+      _component(nullptr),
+      _nameEdit(nullptr),
+      _packageEdit(nullptr),
+      _referenceEdit(nullptr),
+      _aliasesEdit(nullptr)
 {
-    _project = project;
     createWidgets();
     setComponent(nullptr);
 }

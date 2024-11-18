@@ -22,7 +22,7 @@
 #include <QString>
 #include <QtCore/qglobal.h>
 
-#include "model/component.h"
+#include <model/component.h>
 #include "pinclass.h"
 #include "rulesset.h"
 

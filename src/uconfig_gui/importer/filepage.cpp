@@ -33,10 +33,10 @@
 #include "pinlistimporter.h"
 
 FilePage::FilePage()
-    : QWizardPage(nullptr)
+    : QWizardPage(nullptr),
+      _complete(false),
+      _fileEdit(nullptr)
 {
-    _complete = false;
-
     setAcceptDrops(true);
 
     QLabel *label = new QLabel("File:");
@@ -66,6 +66,9 @@ int FilePage::nextId() const
 {
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
+        case PinListImporter::Undefined:
+            qFatal("not a valid type");
+            break;
         case PinListImporter::Kicad:
             return PinListImporter::PageComponents;
         case PinListImporter::CSV:
@@ -84,6 +87,9 @@ void FilePage::initializePage()
 {
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
+        case PinListImporter::Undefined:
+            qFatal("not a valid type");
+            break;
         case PinListImporter::Kicad:
             _fileTitle = "Kicad lib (.lib)";
             _suffixes << "lib";

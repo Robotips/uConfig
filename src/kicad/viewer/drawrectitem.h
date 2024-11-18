@@ -23,7 +23,7 @@
 
 #include "drawitem.h"
 
-#include "model/drawrect.h"
+#include <model/drawrect.h>
 
 class KICAD_EXPORT DrawRectItem : public DrawItem
 {

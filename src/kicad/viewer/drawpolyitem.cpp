@@ -24,7 +24,8 @@
 #include <QPainter>
 
 DrawPolyItem::DrawPolyItem(DrawPoly *draw)
-    : DrawItem(draw)
+    : DrawItem(draw),
+      _drawPoly(nullptr)
 {
     setDraw(draw);
     setZValue(-1);

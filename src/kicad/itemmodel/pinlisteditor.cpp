@@ -22,7 +22,9 @@
 #include <QVBoxLayout>
 
 PinListEditor::PinListEditor(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      _componentPinsTableView(nullptr),
+      _nameFilterEdit(nullptr)
 {
     createWidgets();
 }

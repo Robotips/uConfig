@@ -22,7 +22,7 @@
 #include <QAbstractItemModel>
 #include <QtCore/qglobal.h>
 
-#include "model/lib.h"
+#include <model/lib.h>
 
 class KICAD_EXPORT ComponentLibItemModel : public QAbstractItemModel
 {

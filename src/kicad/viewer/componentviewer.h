@@ -24,7 +24,7 @@
 #include <QtCore/qglobal.h>
 
 #include "componentscene.h"
-#include "model/component.h"
+#include <model/component.h>
 
 class ComponentScene;
 class ComponentItem;

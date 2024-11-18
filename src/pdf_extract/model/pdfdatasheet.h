@@ -21,21 +21,22 @@
 
 #include <pdf_extract_common.h>
 
+#include <memory>
+#include <poppler/qt5/poppler-qt5.h>
+
 #include "pdfpage.h"
 
 #include <QMap>
 #include <QString>
 
-class PDFLoader;
-
-class DATASHEET_EXTRACTOR_EXPORT PDFDatasheet
+class DATASHEET_EXTRACTOR_EXPORT PDFDatasheet : protected std::unique_ptr<Poppler::Document>
 {
 public:
-    PDFDatasheet(QString fileName);
+    PDFDatasheet(const QString& fileName);
     ~PDFDatasheet();
 
     const QString &fileName() const;
-    const QString &title() const;
+    QString title() const;
 
     bool loadPage(int numPage);
 
@@ -43,16 +44,9 @@ public:
     int loadedPageCount() const;
     PDFPage *page(int numPage);
 
-    PDFLoader *pdfLoader() const;
-
 protected:
-    int _pageCount;
     QMap<int, PDFPage *> _pagesLoaded;
     QString _fileName;
-    QString _title;
-
-    friend class PDFLoader;
-    PDFLoader *_pdfLoader;
 };
 
 #endif  // PDFDATASHEET_H

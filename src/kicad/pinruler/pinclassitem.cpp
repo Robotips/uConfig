@@ -21,9 +21,9 @@
 #include <QCollator>
 
 PinClassItem::PinClassItem(Pin *pin)
-    : _pin(pin)
+    : _pin(pin),
+      _priority(0)
 {
-    _priority = 0;
 }
 
 Pin *PinClassItem::pin() const

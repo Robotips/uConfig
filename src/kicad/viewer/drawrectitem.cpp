@@ -24,7 +24,8 @@
 #include <QPainter>
 
 DrawRectItem::DrawRectItem(DrawRect *draw)
-    : DrawItem(draw)
+    : DrawItem(draw),
+      _drawRect(nullptr)
 {
     setDraw(draw);
     setZValue(-1);

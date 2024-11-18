@@ -1,9 +1,9 @@
 #include <QCoreApplication>
 #include <QtTest>
 
-#include "datasheet.h"
+#include <datasheet.h>
 
-#include "model/lib.h"
+#include <model/lib.h>
 
 class PdfExtract : public QObject
 {

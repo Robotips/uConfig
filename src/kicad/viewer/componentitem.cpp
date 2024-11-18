@@ -28,9 +28,11 @@
 const int ComponentItem::ratio = 5;
 
 ComponentItem::ComponentItem(Component *component, int unit)
+    : _component(nullptr),
+      _unit(0),
+      _showElectricalType(true)
 {
     setComponent(component, unit);
-    _showElectricalType = true;
 }
 
 void ComponentItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)

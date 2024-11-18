@@ -21,7 +21,7 @@
 
 #include <QtCore/qglobal.h>
 
-#include "model/pin.h"
+#include <model/pin.h>
 
 class KICAD_EXPORT PinClassItem
 {

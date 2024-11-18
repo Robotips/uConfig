@@ -23,10 +23,17 @@
 #include <QLayout>
 
 ComponentWidget::ComponentWidget(QWidget *parent)
-    : QWidget(parent)
+    : QWidget(parent),
+      _component(nullptr),
+      _viewer(nullptr),
+      _gridGroup(nullptr),
+      _actionNoGrid(nullptr),
+      _actionGrid(nullptr),
+      _actionGridFront(nullptr),
+      _actionElecType(nullptr),
+      _comboUnit(nullptr)
 {
     Q_INIT_RESOURCE(imgviewer);
-    _component = nullptr;
     createWidgets();
 }
 

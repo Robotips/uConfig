@@ -25,8 +25,10 @@
 #include <QRegularExpression>
 
 RulesParser::RulesParser(const QString &fileName)
+    : _id(-1),
+      _line(-1),
+      _errorLine(-1)
 {
-    _errorLine = -1;
     _fileName = fileName;
     if (!fileName.isEmpty())
     {
@@ -82,6 +84,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             _errorLine = _line;
             delete rule;
+            rule = nullptr;
             return false;  // error
         }
         QString propertyValue;
@@ -105,6 +108,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             _errorLine = _line;
             delete rule;
+            rule = nullptr;
             return false;  // error
         }
 

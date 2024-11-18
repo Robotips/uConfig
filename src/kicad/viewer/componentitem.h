@@ -23,7 +23,7 @@
 #include <QMap>
 #include <QtCore/qglobal.h>
 
-#include "model/component.h"
+#include <model/component.h>
 #include "pinitem.h"
 
 class PinItem;

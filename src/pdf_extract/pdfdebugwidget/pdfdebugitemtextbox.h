@@ -23,7 +23,7 @@
 
 #include <QGraphicsItem>
 
-#include "model/pdftextbox.h"
+#include <model/pdftextbox.h>
 
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugItemTextBox : public QGraphicsItem
 {

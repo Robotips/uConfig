@@ -23,7 +23,7 @@
 #include <QStringList>
 #include <QtCore/qglobal.h>
 
-#include "model/pin.h"
+#include <model/pin.h>
 #include "rule.h"
 
 class KICAD_EXPORT PinRule : public Rule

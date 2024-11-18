@@ -31,10 +31,10 @@
 #include "project/uconfigproject.h"
 
 #include "componentinfoseditor.h"
-#include "itemmodel/componentlibtreeview.h"
-#include "itemmodel/pinlisteditor.h"
-#include "ksseditor/ksseditor.h"
-#include "viewer/componentwidget.h"
+#include <itemmodel/componentlibtreeview.h>
+#include <itemmodel/pinlisteditor.h>
+#include <ksseditor/ksseditor.h>
+#include <viewer/componentwidget.h>
 
 class UConfigMainWindow : public QMainWindow
 {

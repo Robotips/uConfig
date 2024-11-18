@@ -112,6 +112,9 @@ int main(int argc, char *argv[])
     //    PDFDatasheet pdf("../src/autotest/ATmega328P_pins.pdf");
     // PDFDatasheet pdf("C:/Users/seb/Seafile/UniSwarm/DataSheets/Microchip/PIC16b/dsPIC33EP/PIC24-dsPIC33-EPxxxGP-MC-20x-50x_revH.pdf");
 
+    Q_ASSERT(pdf.pageCount() > 0);
+    qDebug("page count: %u", pdf.pageCount());
+
     PdfDebugWidget viewer(&pdf);
     viewer.showPage(0);
     viewer.show();

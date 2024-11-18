@@ -19,6 +19,7 @@
 #include "drawcircle.h"
 
 DrawCircle::DrawCircle()
+    : _radius(0)
 {
 }
 

@@ -30,7 +30,9 @@
 #include <qmath.h>
 
 ComponentViewer::ComponentViewer(QWidget *parent)
-    : QGraphicsView(parent)
+    : QGraphicsView(parent),
+      _scene(nullptr),
+      _currentZoomLevel(0.0)
 {
     _scene = new ComponentScene(-5000, -5000, 10000, 10000);
     setScene(_scene);

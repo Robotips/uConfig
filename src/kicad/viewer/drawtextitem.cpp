@@ -25,22 +25,33 @@
 
 DrawTextItem::DrawTextItem(DrawText *draw, bool internal)
     : DrawItem(draw),
+      _drawText(nullptr),
+      _fontText(nullptr),
       _internal(internal)
 {
-    _fontText = nullptr;
     setDraw(draw);
     setZValue(10);
 }
 
 DrawTextItem::~DrawTextItem()
 {
-    delete _fontText;
+    deleteFontText();
+}
+
+void DrawTextItem::deleteFontText()
+{
+    if(_fontText != nullptr)
+    {
+        delete _fontText;
+        _fontText = nullptr;
+    }
 }
 
 void DrawTextItem::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget)
 {
     Q_UNUSED(option)
     Q_UNUSED(widget)
+    Q_ASSERT(_fontText != nullptr);
 
     painter->setRenderHint(QPainter::Antialiasing);
     painter->setRenderHint(QPainter::TextAntialiasing);
@@ -81,7 +92,7 @@ void DrawTextItem::setDraw(DrawText *draw)
 {
     _drawText = draw;
 
-    delete _fontText;
+    deleteFontText();
     _fontText = new KicadFont(_drawText->textSize() / ComponentItem::ratio);
 
     QFont font = _fontText->font();

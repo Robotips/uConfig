@@ -19,6 +19,9 @@
 #include "drawarc.h"
 
 DrawArc::DrawArc()
+    : _radius(0),
+      _startAngle(0),
+      _endAngle(0)
 {
 }
 

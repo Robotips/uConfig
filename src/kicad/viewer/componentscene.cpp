@@ -22,12 +22,15 @@
 #include <QPrinter>
 
 ComponentScene::ComponentScene(qreal x, qreal y, qreal w, qreal h)
-    : QGraphicsScene(x, y, w, h)
-{
-    _grid = true;
-    _gridFront = false;
-    _prevGridSize = 0;
+    : QGraphicsScene(x, y, w, h),
 
+      _grid(true),
+      _gridFront(false),
+      _prevGridSize(0),
+      _elecType(false),
+      _component(nullptr),
+      _componentItem(nullptr)
+{
     setComponent(nullptr);
 }
 

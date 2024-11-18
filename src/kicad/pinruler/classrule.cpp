@@ -45,31 +45,30 @@ QStringList ClassRule::boolEnumStr = QStringList() << "false"
                                                    << "true";
 
 ClassRule::ClassRule(const QString &selector)
-    : Rule(selector)
+    : Rule(selector),
+      _position(PositionASide),
+      _positionSet(false),
+
+      _sort(SortAsc),
+      _sortSet(false),
+
+      _sortPattern(".*"),
+      _sortPatternSet(false),
+
+      _length(200),
+      _lengthSet(false),
+
+      _priority(0),
+      _prioritySet(false),
+
+      _visibility(VisibilityVisible),
+      _visibilitySet(false),
+
+      _labelSet(false),
+
+      _rect(0),
+      _rectSet(false)
 {
-    _position = PositionASide;
-    _positionSet = false;
-
-    _sort = SortAsc;
-    _sortSet = false;
-
-    _sortPattern = ".*";
-    _sortPatternSet = false;
-
-    _length = 200;
-    _lengthSet = false;
-
-    _priority = 0;
-    _prioritySet = false;
-
-    _visibility = VisibilityVisible;
-    _visibilitySet = false;
-
-    _label = "";
-    _labelSet = false;
-
-    _rect = 0;
-    _rectSet = false;
 }
 
 Rule::Type ClassRule::type() const

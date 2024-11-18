@@ -29,11 +29,15 @@
  * @param name optionally specify the component name at the creation
  */
 Component::Component(const QString &name)
-    : _prefix("U")
+    : _prefix("U"),
+      _showPinName(true),
+      _showPadName(true),
+      _unitCount(1),
+      _refText(nullptr),
+      _nameText(nullptr),
+      _packageText(nullptr),
+      _docText(nullptr)
 {
-    _showPinName = true;
-    _showPadName = true;
-    _unitCount = 1;
     _refText = new DrawText("U");
     _nameText = new DrawText();
     _packageText = new DrawText();
@@ -80,15 +84,24 @@ Component::~Component()
     for (auto &pin : _pins)
     {
         delete pin;
+        pin = nullptr;
     }
     for (auto &draw : _draws)
     {
         delete draw;
+        draw = nullptr;
     }
     delete _refText;
+    _refText = nullptr;
+
     delete _nameText;
+    _nameText = nullptr;
+
     delete _packageText;
+    _packageText = nullptr;
+
     delete _docText;
+    _docText = nullptr;
 }
 
 /**
@@ -149,6 +162,7 @@ void Component::removePin(Pin *pin)
     if (_pins.removeOne(pin))
     {
         delete pin;
+        pin = nullptr;
     }
 }
 
@@ -160,6 +174,7 @@ void Component::clearPins()
     for (auto &pin : _pins)
     {
         delete pin;
+        pin = nullptr;
     }
     _pins.clear();
 }
@@ -211,6 +226,7 @@ void Component::removeDraw(Draw *draw)
     if (_draws.removeOne(draw))
     {
         delete draw;
+        draw = nullptr;
     }
 }
 
@@ -222,6 +238,7 @@ void Component::clearDraws()
     for (auto &draw : _draws)
     {
         delete draw;
+        draw = nullptr;
     }
     _draws.clear();
 }

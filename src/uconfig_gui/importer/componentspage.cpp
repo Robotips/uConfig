@@ -29,7 +29,11 @@
 #include <kicad/schematicsimport/textimporter.h>
 
 ComponentsPage::ComponentsPage()
-    : QWizardPage(nullptr)
+    : QWizardPage(nullptr),
+      _checkAllBox(nullptr),
+      _statusLabel(nullptr),
+      _componentTreeView(nullptr),
+      _lib(nullptr)
 {
     QVBoxLayout *layout = new QVBoxLayout;
 
@@ -59,6 +63,10 @@ void ComponentsPage::initializePage()
     _lib = new Lib();
     switch (type)
     {
+        case PinListImporter::Undefined:
+            qFatal("not a valid type");
+            break;
+
         case PinListImporter::Kicad:
         {
             QString file = field("file").toString();
@@ -120,7 +128,12 @@ bool ComponentsPage::validatePage()
         _lib->takeComponent(component);
     }
     _componentTreeView->setLib(nullptr);
-    delete _lib;
+
+    if(_lib != nullptr)
+    {
+        delete _lib;
+        _lib = nullptr;
+    }
 
     return true;
 }

@@ -21,9 +21,10 @@
 #include <QDebug>
 
 Rule::Rule(const QString &selector)
-    : _selector(selector, QRegularExpression::CaseInsensitiveOption)
+    : _selector(selector, QRegularExpression::CaseInsensitiveOption),
+      _enabled(true),
+      _line(-1)
 {
-    _enabled = true;
 }
 
 Rule::~Rule()

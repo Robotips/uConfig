@@ -29,8 +29,8 @@
 #include "drawtextitem.h"
 
 DrawItem::DrawItem(Draw *draw)
+    : _draw(draw)
 {
-    _draw = draw;
     setZValue(-1);
 }
 

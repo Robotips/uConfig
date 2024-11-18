@@ -38,6 +38,7 @@ public:
      */
     enum ImportType
     {
+        Undefined = 0,
         CSV,
         PDF,
         // Table,

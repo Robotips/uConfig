@@ -23,7 +23,7 @@
 
 #include "drawitem.h"
 
-#include "model/drawcircle.h"
+#include <model/drawcircle.h>
 
 class KICAD_EXPORT DrawCircleItem : public DrawItem
 {

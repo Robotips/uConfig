@@ -46,7 +46,6 @@ public:
     static bool isAlign(const DatasheetBox &label, const DatasheetBox &number);
 
     static int created;
-    static int deleted;
 };
 
 #endif  // DATASHEETBOX_H

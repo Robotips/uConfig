@@ -23,7 +23,7 @@
 #include <QtCore/qglobal.h>
 
 #include "componentitem.h"
-#include "model/component.h"
+#include <model/component.h>
 
 class KICAD_EXPORT ComponentScene : public QGraphicsScene
 {
