@@ -22,12 +22,27 @@
 #include <QFile>
 #include <QFileInfo>
 
+static const QMap<QString, Pin::ElectricalType> pinElectricalTypeMap = {
+    {"Input", Pin::ElectricalType::Input},
+    {"Output", Pin::ElectricalType::Output},
+    {"Bidir", Pin::ElectricalType::Bidir},
+    {"Tristate", Pin::ElectricalType::Tristate},
+    {"Passive", Pin::ElectricalType::Passive},
+    {"Unspecified", Pin::ElectricalType::Unspecified},
+    {"PowerIn", Pin::ElectricalType::PowerIn},
+    {"PowerOut", Pin::ElectricalType::PowerOut},
+    {"OpenCollector", Pin::ElectricalType::OpenCollector},
+    {"OpenEmitter", Pin::ElectricalType::OpenEmitter},
+    {"NotConnected", Pin::ElectricalType::NotConnected}
+};
+
 TextImporter::TextImporter()
 {
     _columnSeparator = '\t';
     _pinColumn = 0;
     _pinNameColumns = {1};
     _pinNameColumnsSeparator = '/';
+    _pinElectricalTypeColumn = 2;
 }
 
 QChar TextImporter::columnSeparator() const
@@ -68,6 +83,16 @@ int TextImporter::pinColumn() const
 void TextImporter::setPinColumn(int pinColumn)
 {
     _pinColumn = pinColumn;
+}
+
+int TextImporter::pinElectricalTypeColumn() const
+{
+    return _pinElectricalTypeColumn;
+}
+
+void TextImporter::setPinElectricalTypeColumn(int pinElectricalTypeColumn)
+{
+    _pinElectricalTypeColumn = pinElectricalTypeColumn;
 }
 
 bool TextImporter::import(const QString &fileName)
@@ -115,8 +140,19 @@ bool TextImporter::import(const QString &fileName)
             pinNameColumns.append(columns[column]);
         }
         QString pinName = pinNameColumns.join(_pinNameColumnsSeparator);
+        QString pinElectricalType = columns[_pinElectricalTypeColumn];
+
+        Pin::ElectricalType electricalType = Pin::ElectricalType::Unspecified;
+
+        if (pinElectricalTypeMap.contains(pinElectricalType))
+        {
+            electricalType = pinElectricalTypeMap.value(pinElectricalType);
+        }
 
         Pin *pin = new Pin(pinName, pinNumber);
+
+        pin->setElectricalType(electricalType);
+
         component->addPin(pin);
     }
 

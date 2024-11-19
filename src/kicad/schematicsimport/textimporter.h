@@ -40,11 +40,15 @@ public:
     QChar pinNameColumnsSeparator() const;
     void setPinNameColumnsSeparator(const QChar &pinNameColumnsSeparator);
 
+    int pinElectricalTypeColumn() const;
+    void setPinElectricalTypeColumn(int pinColumn);
+
 protected:
     QChar _columnSeparator;
     int _pinColumn;
     QList<int> _pinNameColumns;
     QChar _pinNameColumnsSeparator;
+    int _pinElectricalTypeColumn;
 
     // SchematicsImporter interface
 public:
