@@ -20,6 +20,7 @@
 #define DRAWTEXT_H
 
 #include <QString>
+#include <QTransform>
 #include <QtCore/qglobal.h>
 
 #include "draw.h"
@@ -35,13 +36,10 @@ public:
     const QString &text() const;
     void setText(const QString &text);
 
-    enum Direction
-    {
-        DirectionHorizontal,
-        DirectionVertital
-    };
-    Direction direction() const;
-    void setDirection(Direction direction);
+    qreal angle(void) const;
+    void setAngle(qreal angle);
+
+    QTransform transform() const;
 
     uint textSize() const;
     void setTextSize(uint textSize);
@@ -79,7 +77,8 @@ public:
 
 protected:
     QString _text;
-    Direction _direction;
+    QTransform _transform;
+    qreal _angle;
     uint _textSize;
     TextStyles _textStyle;
     bool _visible;

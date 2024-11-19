@@ -332,10 +332,10 @@ void PinRuler::organize(Component *component)
     component->prependDraw(rectDraw);
     component->nameText()->setPos(QPoint(rect.right(), rect.bottom() + 50));
     component->nameText()->setTextHJustify(DrawText::TextHRight);
-    component->nameText()->setDirection(DrawText::DirectionHorizontal);
+    component->nameText()->setAngle(0.0);
     component->refText()->setPos(QPoint(rect.left(), rect.bottom() + 50));
     component->refText()->setTextHJustify(DrawText::TextHLeft);
-    component->refText()->setDirection(DrawText::DirectionHorizontal);
+    component->refText()->setAngle(0.0);
 
     for (PinClass *mpinClass : _pinClasses)
     {
