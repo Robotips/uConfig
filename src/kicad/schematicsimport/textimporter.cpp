@@ -134,24 +134,26 @@ bool TextImporter::import(const QString &fileName)
         }
 
         QString pinNumber = columns[_pinColumn];
+
         QStringList pinNameColumns;
         for (int column : qAsConst(_pinNameColumns))
         {
             pinNameColumns.append(columns[column]);
         }
         QString pinName = pinNameColumns.join(_pinNameColumnsSeparator);
-        QString pinElectricalType = columns[_pinElectricalTypeColumn];
-
-        Pin::ElectricalType electricalType = Pin::ElectricalType::Unspecified;
-
-        if (pinElectricalTypeMap.contains(pinElectricalType))
-        {
-            electricalType = pinElectricalTypeMap.value(pinElectricalType);
-        }
 
         Pin *pin = new Pin(pinName, pinNumber);
 
-        pin->setElectricalType(electricalType);
+        if (_pinElectricalTypeColumn < columns.size())
+        {
+            QString pinElectricalType = columns[_pinElectricalTypeColumn];
+            Pin::ElectricalType electricalType = Pin::ElectricalType::Unspecified;
+            if (pinElectricalTypeMap.contains(pinElectricalType))
+            {
+                electricalType = pinElectricalTypeMap.value(pinElectricalType);
+            }
+            pin->setElectricalType(electricalType);
+        }
 
         component->addPin(pin);
     }
