@@ -29,7 +29,14 @@
 
 PDFFilePage::PDFFilePage(DataSheetThread *datasheetThread)
     : QWizardPage(nullptr),
-      _datasheetThread(datasheetThread)
+      _datasheetThread(datasheetThread),
+      _complete(false),
+      _pagePreviewLabel(nullptr),
+      _allRadio(nullptr),
+      _partialRadio(nullptr),
+      _rangeEdit(nullptr),
+      _forceCheckBox(nullptr),
+      _pageCountLabel(nullptr)
 {
     _complete = false;
 
@@ -112,7 +119,7 @@ void PDFFilePage::check()
         {
             int start = -1;
             int stop = -1;
-            QRegularExpression reg("^([0-9]+)(\\-[0-9]+)?$");
+            static QRegularExpression reg("^([0-9]+)(\\-[0-9]+)?$");
             QRegularExpressionMatch match = reg.match(_rangeEdit->text());
             start = match.captured(1).toInt() - 1;
             if (start >= _datasheetThread->datasheet()->pageCount() || start < 0)

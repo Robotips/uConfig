@@ -33,10 +33,10 @@
 #include "pinlistimporter.h"
 
 FilePage::FilePage()
-    : QWizardPage(nullptr)
+    : QWizardPage(nullptr),
+      _complete(false),
+      _fileEdit(nullptr)
 {
-    _complete = false;
-
     setAcceptDrops(true);
 
     QLabel *label = new QLabel("File:");
@@ -66,6 +66,9 @@ int FilePage::nextId() const
 {
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
+        case PinListImporter::Undefined:
+            qFatal("not a valid type");
+            break;
         case PinListImporter::Kicad:
             return PinListImporter::PageComponents;
         case PinListImporter::CSV:
@@ -84,6 +87,9 @@ void FilePage::initializePage()
 {
     switch (dynamic_cast<PinListImporter *>(wizard())->type())
     {
+        case PinListImporter::Undefined:
+            qFatal("not a valid type");
+            break;
         case PinListImporter::Kicad:
             _fileTitle = "Kicad lib (.lib)";
             _suffixes << "lib";
@@ -147,7 +153,7 @@ void FilePage::fileExplore()
     }
 
     QString fileName = QFileDialog::getOpenFileName(
-        this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle).arg("*." + _suffixes.join(" *.")));
+        this, QString("Choose a %1 file").arg(_fileTitle), lastPath, QString("%1 (%2)").arg(_fileTitle, "*." + _suffixes.join(" *.")));
     if (!fileName.isEmpty())
     {
         setFile(fileName);

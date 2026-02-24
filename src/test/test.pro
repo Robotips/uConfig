@@ -1,13 +1,12 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2014-08-06T09:40:31
-#
-#-------------------------------------------------
+QT += core gui widgets
+CONFIG += c++11 strict_c++
+CONFIG(release, debug|release):CONFIG += optimize_full
 
-QT       += core gui printsupport
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
-
-CONFIG += optimize_full c++11
+# For Appveyor because it dumps includes in the project root
+APPVEYOR_BUILD_FOLDER=$$(APPVEYOR_BUILD_FOLDER)
+!isEmpty(APPVEYOR_BUILD_FOLDER) {
+    INCLUDEPATH += $$APPVEYOR_BUILD_FOLDER
+}
 
 TARGET = test
 TEMPLATE = app

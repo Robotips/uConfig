@@ -30,7 +30,9 @@
 #include <qmath.h>
 
 ComponentViewer::ComponentViewer(QWidget *parent)
-    : QGraphicsView(parent)
+    : QGraphicsView(parent),
+      _scene(nullptr),
+      _currentZoomLevel(0.0)
 {
     _scene = new ComponentScene(-5000, -5000, 10000, 10000);
     setScene(_scene);
@@ -164,7 +166,8 @@ void ComponentViewer::selectedItem()
 {
     QList<Pin *> selectedPins;
 
-    for (QGraphicsItem *item : scene()->selectedItems())
+    const auto& selected = scene()->selectedItems();
+    for (QGraphicsItem *item : selected)
     {
         PinItem *pinItem = qgraphicsitem_cast<PinItem *>(item);
         selectedPins.append(pinItem->pin());

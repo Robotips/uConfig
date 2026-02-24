@@ -1,13 +1,15 @@
-#-------------------------------------------------
-#
-# Project created by QtCreator 2014-08-05T17:49:45
-#
-#-------------------------------------------------
+QT += core gui widgets
+QT += printsupport
+# printer support is for PDF output
 
-QT       += gui printsupport
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+CONFIG += c++11 strict_c++
+CONFIG(release, debug|release):CONFIG += optimize_full
 
-CONFIG += optimize_full c++11
+# For Appveyor because it dumps includes in the project root
+APPVEYOR_BUILD_FOLDER=$$(APPVEYOR_BUILD_FOLDER)
+!isEmpty(APPVEYOR_BUILD_FOLDER) {
+    INCLUDEPATH += $$APPVEYOR_BUILD_FOLDER
+}
 
 TARGET = kicad
 TEMPLATE = lib

@@ -21,7 +21,7 @@
 
 #include <QAbstractItemModel>
 
-#include "model/component.h"
+#include <model/component.h>
 
 class KICAD_EXPORT ComponentPinsItemModel : public QAbstractItemModel
 {

@@ -25,7 +25,12 @@
 #include <QMouseEvent>
 
 ComponentPinsTableView::ComponentPinsTableView(Component *component, QWidget *parent)
-    : QTableView(parent)
+    : QTableView(parent),
+      _model(nullptr),
+      _delegate(nullptr),
+      _sortProxy(nullptr),
+      _removeAction(nullptr),
+      _copyAction(nullptr)
 {
     _model = new ComponentPinsItemModel(component);
 
@@ -126,7 +131,7 @@ void ComponentPinsTableView::remove()
     if (!selection.empty())
     {
         QList<QPersistentModelIndex> pindex;
-        for (QModelIndex selected : selection)
+        for (QModelIndex selected : qAsConst(selection))
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid())
@@ -174,7 +179,8 @@ void ComponentPinsTableView::updateSelect(const QItemSelection &selected, const 
     Q_UNUSED(deselected)
 
     QSet<Pin *> selectedPins;
-    for (const QModelIndex &index : selectionModel()->selectedIndexes())
+    const auto& selected_idx = selectionModel()->selectedIndexes();
+    for (const QModelIndex &index : selected_idx)
     {
         if (!index.isValid())
         {

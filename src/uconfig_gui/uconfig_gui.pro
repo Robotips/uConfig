@@ -1,6 +1,12 @@
-QT       += core gui xml widgets
+QT += core gui widgets
+CONFIG += c++11 strict_c++
+CONFIG(release, debug|release):CONFIG += optimize_full
 
-CONFIG += optimize_full c++11
+# For Appveyor because it dumps includes in the project root
+APPVEYOR_BUILD_FOLDER=$$(APPVEYOR_BUILD_FOLDER)
+!isEmpty(APPVEYOR_BUILD_FOLDER) {
+    INCLUDEPATH += $$APPVEYOR_BUILD_FOLDER
+}
 
 TARGET = uconfig_gui
 TEMPLATE = app
@@ -42,7 +48,7 @@ HEADERS  += \
 RESOURCES += \
         $$PWD/img.qrc
 
-unix:{
+unix {
     QMAKE_LFLAGS_RPATH=
     QMAKE_LFLAGS += "-Wl,-rpath,\'\$$ORIGIN\'"
 }
@@ -52,4 +58,4 @@ LIBS += -lkicad -lpdf_extract
 INCLUDEPATH += $$SOURCE_ROOT/kicad
 DEPENDPATH += $$SOURCE_ROOT/kicad
 
-win32 : RC_FILE = uconfig_gui.rc
+win32:RC_FILE = uconfig_gui.rc

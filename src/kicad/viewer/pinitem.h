@@ -22,7 +22,7 @@
 #include <QGraphicsItem>
 #include <QtCore/qglobal.h>
 
-#include "model/pin.h"
+#include <model/pin.h>
 
 #include "kicadfont.h"
 

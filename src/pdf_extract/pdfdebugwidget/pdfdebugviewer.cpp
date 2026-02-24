@@ -22,7 +22,8 @@
 #include <qmath.h>
 
 PdfDebugViewer::PdfDebugViewer(QWidget *parent)
-    : QGraphicsView(parent)
+    : QGraphicsView(parent),
+      _page(nullptr)
 {
     setScene(new QGraphicsScene(this));
 

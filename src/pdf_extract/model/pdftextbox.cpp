@@ -18,20 +18,20 @@
 
 #include "pdftextbox.h"
 
-#include <utility>
-
-PDFTextBox::PDFTextBox(QString text, const QRectF &boundingRect)
-    : _text(std::move(text)),
-      _boundingRect(boundingRect)
+PDFTextBox::PDFTextBox(const QString& text, const QRectF &boundingRect)
+    : _text(text),
+      _boundingRect(boundingRect),
+      _type(Text)
 {
-    _page = nullptr;
-    _parentBox = nullptr;
-    _type = Text;
+  if(isPadName())
+  {
+    _type = PDFTextBox::Pad;
+  }
 }
 
 PDFTextBox::~PDFTextBox()
 {
-    for (PDFTextBox *textBox : _subBoxes)
+    for (PDFTextBox *textBox : qAsConst(_subBoxes))
     {
         delete textBox;
     }
@@ -54,7 +54,7 @@ const QRectF &PDFTextBox::boundingRect() const
 
 bool PDFTextBox::isPadName() const
 {
-    bool okNumber;
+    bool okNumber = false;
     _text.toInt(&okNumber);
     if (okNumber)
     {
@@ -67,14 +67,4 @@ bool PDFTextBox::isPadName() const
 PDFTextBox::Type PDFTextBox::type() const
 {
     return _type;
-}
-
-PDFTextBox *PDFTextBox::parentBox() const
-{
-    return _parentBox;
-}
-
-PDFPage *PDFTextBox::page() const
-{
-    return _page;
 }

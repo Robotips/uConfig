@@ -25,8 +25,10 @@
 #include <QRegularExpression>
 
 RulesParser::RulesParser(const QString &fileName)
+    : _id(-1),
+      _line(-1),
+      _errorLine(-1)
 {
-    _errorLine = -1;
     _fileName = fileName;
     if (!fileName.isEmpty())
     {
@@ -82,6 +84,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             _errorLine = _line;
             delete rule;
+            rule = nullptr;
             return false;  // error
         }
         QString propertyValue;
@@ -105,6 +108,7 @@ bool RulesParser::parse(RulesSet *ruleSet)
         {
             _errorLine = _line;
             delete rule;
+            rule = nullptr;
             return false;  // error
         }
 
@@ -172,8 +176,8 @@ void RulesParser::skipSpaceAndComments()
 
 QString RulesParser::getSelector()
 {
-    QRegularExpression rule(R"((\.?[a-zA-Z\(\[\.][/a-zA-Z0-9\+\-\[\]\(\)\_\|\\\*\.\^$\?:]*))");
-    QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
+    static QRegularExpression rule(R"((\.?[a-zA-Z\(\[\.][/a-zA-Z0-9\+\-\[\]\(\)\_\|\\\*\.\^$\?:]*))");
+    static QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
     {
         return QString();
@@ -205,7 +209,7 @@ QString RulesParser::getSelector()
 
 QString RulesParser::getPropertyName()
 {
-    QRegularExpression rule("([a-zA-Z][a-zA-Z0-9\\_\\-]*)[\t ]*:[\t ]*", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
+    static QRegularExpression rule("([a-zA-Z][a-zA-Z0-9\\_\\-]*)[\t ]*:[\t ]*", QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)
     {
@@ -217,7 +221,7 @@ QString RulesParser::getPropertyName()
 
 QString RulesParser::getPropertyValue()
 {
-    QRegularExpression rule(R"lit("?([a-zA-Z0-9/^\?\$\|:\_\-\+\\\[\]\(\)\.\* ]*)"?;?)lit",
+    static QRegularExpression rule(R"lit("?([a-zA-Z0-9/^\?\$\|:\_\-\+\\\[\]\(\)\.\* ]*)"?;?)lit",
                             QRegularExpression::MultilineOption | QRegularExpression::DotMatchesEverythingOption);
     QRegularExpressionMatch ruleMath = rule.match(_data.mid(_id));
     if (ruleMath.hasMatch() && ruleMath.capturedStart() != 0)

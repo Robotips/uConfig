@@ -24,7 +24,7 @@
 #include "drawitem.h"
 #include "kicadfont.h"
 
-#include "model/drawtext.h"
+#include <model/drawtext.h>
 
 class KICAD_EXPORT DrawTextItem : public DrawItem
 {
@@ -45,6 +45,9 @@ public:
     QRectF boundingRect() const override;
 
     void setDraw(DrawText *draw);
+
+protected:
+    void deleteFontText();
 
 protected:
     DrawText *_drawText;

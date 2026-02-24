@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
     mainWindow.show();
     if (QApplication::arguments().size() > 1)
     {
-        QString fileArg = QApplication::arguments()[1];
+        QString fileArg = QApplication::arguments().at(1);
         if (fileArg.endsWith(".lib", Qt::CaseInsensitive))
         {
             project.openLib(fileArg);

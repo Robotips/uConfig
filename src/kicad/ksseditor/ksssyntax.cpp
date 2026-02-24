@@ -46,7 +46,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
                     << "label"
                     << "rect"
                     << "priority";
-    for (const QString &pattern : keywordPatterns)
+    for (const QString &pattern : qAsConst(keywordPatterns))
     {
         rule.pattern.setPattern("\\b(" + pattern + ")\\b");
         rule.format = keywordFormat;
@@ -89,7 +89,7 @@ KSSSyntax::KSSSyntax(QTextDocument *parent)
                        << "faledge"
                        << "nologic";
 
-    for (const QString &pattern : enumvaluesPatterns)
+    for (const QString &pattern : qAsConst(enumvaluesPatterns))
     {
         rule.pattern.setPattern("\\b(" + pattern + ")\\b");
         rule.format = enumvaluesFormat;
@@ -117,7 +117,7 @@ void KSSSyntax::highlightBlock(const QString &text)
     PartToHighlight highlight;
 
     partsToHighlight.clear();
-    for (const HighlightingRule &rule : highlightingRules)
+    for (const HighlightingRule &rule : qAsConst(highlightingRules))
     {
         QRegularExpressionMatch match = rule.pattern.match(text);
         if (match.hasMatch())

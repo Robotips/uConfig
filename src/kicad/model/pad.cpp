@@ -21,7 +21,11 @@
 #include <QDebug>
 
 Pad::Pad()
-    : _angle(0)
+    : _shape(Pad::Rect),
+      _angle(0.0),
+      _drillDiameter(0.0),
+      _type(Pad::Std),
+      _layers(0)
 {
 }
 
@@ -118,7 +122,7 @@ Pad::Type Pad::type() const
 
 QString Pad::typeString() const
 {
-    switch (_shape)
+    switch (_type)
     {
         case Pad::Std:
             return "STD";

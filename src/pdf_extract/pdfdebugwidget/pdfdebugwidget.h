@@ -26,7 +26,7 @@
 #include <QLineEdit>
 #include <QWidget>
 
-#include "model/pdfdatasheet.h"
+#include <model/pdfdatasheet.h>
 #include "pdfdebugviewer.h"
 
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugWidget : public QWidget
@@ -47,7 +47,6 @@ signals:
 
 public slots:
     void showPage(int page);
-    void showPage(PDFPage *page);
 
     void previous();
     void next();

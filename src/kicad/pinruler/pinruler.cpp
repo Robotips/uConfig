@@ -21,11 +21,11 @@
 #include <QDebug>
 #include <qmath.h>
 
-#include "model/drawrect.h"
+#include <model/drawrect.h>
 
 PinRuler::PinRuler(RulesSet *ruleSet)
+    : _ruleSet(ruleSet)
 {
-    _ruleSet = ruleSet;
 }
 
 bool nameGreaterThan(PinClass *c1, PinClass *c2)
@@ -53,13 +53,13 @@ bool prioGreaterThan(PinClass *c1, PinClass *c2)
 
 void PinRuler::organize(Component *component)
 {
-    int x;
-    int y;
+    int x = -1;
+    int y = -1;
 
     component->clearDraws();
 
     PinClass *defaultClass = pinClass("default");
-    for (Pin *pin : component->pins())
+    for (Pin *pin : qAsConst(component->pins()))
     {
         PinClassItem *pinClassItem = new PinClassItem(pin);
         const QList<PinRule *> &rules = _ruleSet->rulesForPin(pin->name());
@@ -131,7 +131,7 @@ void PinRuler::organize(Component *component)
     QSize leftSize = QSize(0, 0);
     QSize rightSize = QSize(0, 0);
     QSize removedSize = QSize(0, 0);
-    for (PinClass *mpinClass : _pinClasses)
+    for (PinClass *mpinClass : qAsConst(_pinClasses))
     {
         if (mpinClass->pins().count() == 0)
         {
@@ -337,9 +337,10 @@ void PinRuler::organize(Component *component)
     component->refText()->setTextHJustify(DrawText::TextHLeft);
     component->refText()->setDirection(DrawText::DirectionHorizontal);
 
-    for (PinClass *mpinClass : _pinClasses)
+    for (PinClass *mpinClass : qAsConst(_pinClasses))
     {
         delete mpinClass;
+        mpinClass = nullptr;
     }
     _pinClasses.clear();
 }
@@ -351,7 +352,10 @@ RulesSet *PinRuler::ruleSet() const
 
 void PinRuler::setRuleSet(RulesSet *ruleSet)
 {
-    delete _ruleSet;
+    if(_ruleSet != nullptr)
+    {
+        delete _ruleSet;
+    }
     _ruleSet = ruleSet;
 }
 

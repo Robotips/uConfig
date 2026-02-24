@@ -23,7 +23,7 @@
 
 #include <QGraphicsView>
 
-#include "model/pdfpage.h"
+#include <model/pdfpage.h>
 #include "pdfdebugitempage.h"
 
 class DATASHEET_EXTRACTOR_EXPORT PdfDebugViewer : public QGraphicsView

@@ -134,7 +134,6 @@ bool TextImporter::import(const QString &fileName)
         }
 
         QString pinNumber = columns[_pinColumn];
-
         QStringList pinNameColumns;
         for (int column : qAsConst(_pinNameColumns))
         {

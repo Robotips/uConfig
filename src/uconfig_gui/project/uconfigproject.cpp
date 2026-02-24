@@ -24,16 +24,17 @@
 #include <QRegularExpression>
 #include <QSettings>
 
-#include "importer/pinlistimporter.h"
+#include <importer/pinlistimporter.h>
 
 const int UConfigProject::MaxOldProject = 8;
 
 UConfigProject::UConfigProject(QWidget *window)
+    : _lib(nullptr),
+      _activeComponent(nullptr),
+      _window(nullptr)
 {
     setWindow(window);
     readSettings();
-    _lib = nullptr;
-    _activeComponent = nullptr;
 }
 
 UConfigProject::~UConfigProject()
@@ -86,7 +87,7 @@ void UConfigProject::openLib(const QString &libFileName)
         }
         if (fileDialog.exec() != 0)
         {
-            mlibFileName = fileDialog.selectedFiles().first();
+            mlibFileName = fileDialog.selectedFiles().constFirst();
         }
         if (mlibFileName.isEmpty())
         {
@@ -125,6 +126,7 @@ void UConfigProject::saveLib()
 
 void UConfigProject::saveLibAs(const QString &fileName)
 {
+    static QRegularExpression pdf_or_cvs("(.*)\\.(pdf|csv)");
     QString libFileName;
 
     if (fileName.isEmpty())
@@ -137,12 +139,12 @@ void UConfigProject::saveLibAs(const QString &fileName)
         if (!_importedPathLib.isEmpty())
         {
             libFileName = _importedPathLib;
-            libFileName.replace(QRegularExpression("(.*)\\.(pdf|csv)"), "\\1.lib");
+            libFileName.replace(pdf_or_cvs, "\\1.lib");
             fileDialog.selectFile(libFileName);
         }
         if (fileDialog.exec() != 0)
         {
-            libFileName = fileDialog.selectedFiles().first();
+            libFileName = fileDialog.selectedFiles().constFirst();
         }
         if (libFileName.isEmpty())
         {
@@ -186,7 +188,8 @@ void UConfigProject::importComponents(const QString &fileName)
         return;
     }
 
-    for (Component *component : importer.components())
+    const auto& component_list = importer.components();
+    for (Component *component : component_list)
     {
         _lib->addComponent(component);
     }
@@ -212,7 +215,7 @@ bool UConfigProject::closeLib()
     }
     int ret = QMessageBox::question(_window,
                                     tr("Saves lib?"),
-                                    tr("Do you want to save '%1' library? Modifications will be losted.").arg(_lib->name()),
+                                    tr("Do you want to save '%1' library? Modifications will be lost.").arg(_lib->name()),
                                     QMessageBox::Yes | QMessageBox::Default,
                                     QMessageBox::No,
                                     QMessageBox::Cancel);

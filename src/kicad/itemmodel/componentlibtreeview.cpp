@@ -24,16 +24,18 @@
 #include <QMouseEvent>
 
 ComponentLibTreeView::ComponentLibTreeView(Lib *lib, QWidget *parent)
-    : QTreeView(parent)
+    : QTreeView(parent),
+      _model(nullptr),
+      _sortProxy(nullptr),
+      _editMode(false),
+      _removeAction(nullptr)
 {
-    if (lib != nullptr)
+    if (lib == nullptr)
     {
-        _model = new ComponentLibItemModel(lib);
+        lib = new Lib();
     }
-    else
-    {
-        _model = new ComponentLibItemModel(new Lib());
-    }
+
+    _model = new ComponentLibItemModel(lib);
 
     setSelectionMode(QAbstractItemView::ExtendedSelection);
     _editMode = false;
@@ -55,13 +57,12 @@ Lib *ComponentLibTreeView::lib() const
 
 void ComponentLibTreeView::setLib(Lib *lib)
 {
-    _model->setLib(lib);
-    if (lib == _model->lib())
+    if (lib != _model->lib())
     {
-        return;
+        _model->setLib(lib);
+        resizeColumnToContents(0);
+        resizeColumnToContents(1);
     }
-    resizeColumnToContents(0);
-    resizeColumnToContents(1);
 }
 
 void ComponentLibTreeView::setActiveComponent(Component *component)
@@ -129,7 +130,7 @@ void ComponentLibTreeView::remove()
             return;
         }
         QList<QPersistentModelIndex> pindex;
-        for (QModelIndex selected : selection)
+        for (QModelIndex selected : qAsConst(selection))
         {
             const QModelIndex &indexComponent = _sortProxy->mapToSource(selected);
             if (!indexComponent.isValid() || indexComponent.column() != 0)

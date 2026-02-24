@@ -22,12 +22,12 @@
 #include <qmath.h>
 #include <utility>
 
-#include "viewer/kicadfont.h"
+#include <viewer/kicadfont.h>
 
 PinClass::PinClass(QString className)
-    : _className(std::move(className))
+    : _className(std::move(className)),
+      _brect(false)
 {
-    _brect = false;
 }
 
 QString PinClass::className() const
@@ -122,10 +122,10 @@ void PinClass::sortPins()
         return;
     }
 
-    QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
-    QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression pattern(_sortPattern, QRegularExpression::CaseInsensitiveOption);
+    static QRegularExpression numPattern("([^0-9]*)([0-9]+)([^0-9]*)", QRegularExpression::CaseInsensitiveOption);
 
-    for (PinClassItem *pinItem : _pins)
+    for (PinClassItem *pinItem : qAsConst(_pins))
     {
         QString sortPatern;
         QString pinName = pinItem->pin()->name();
@@ -193,7 +193,7 @@ void PinClass::setPos(const QPoint &basePos)
     QPoint pinPos = basePos;
     QPoint offset;
     QPoint translate;
-    int angle;
+    int angle = 0;
 
     switch (_position)
     {
@@ -220,7 +220,7 @@ void PinClass::setPos(const QPoint &basePos)
             break;
     }
     sortPins();
-    for (PinClassItem *pinItem : _pins)
+    for (PinClassItem *pinItem : qAsConst(_pins))
     {
         pinItem->pin()->setAngle(angle);
         pinItem->pin()->setPos(pinPos + translate);

@@ -39,12 +39,23 @@
 
 #include <QDebug>
 
-#include "pinruler/pinruler.h"
-#include "pinruler/rulesparser.h"
-#include "pinruler/rulesset.h"
+#include <pinruler/pinruler.h>
+#include <pinruler/rulesparser.h>
+#include <pinruler/rulesset.h>
 
 UConfigMainWindow::UConfigMainWindow(UConfigProject *project)
-    : _project(project)
+    : _project(project),
+      _splitter(nullptr),
+      _componentsTreeView(nullptr),
+      _componentInfosEditor(nullptr),
+      _pinListEditor(nullptr),
+      _componentWidget(nullptr),
+      _ruleComboBox(nullptr),
+      _pdfDebug(nullptr),
+      _splitterEditor(nullptr),
+      _kssEditor(nullptr),
+      _componentsListDock(nullptr),
+      _componentInfosDock(nullptr)
 {
     setWindowIcon(QIcon(":/icons/img/uConfig.ico"));
     createWidgets();
@@ -98,7 +109,8 @@ void UConfigMainWindow::dropEvent(QDropEvent *event)
 {
     event->accept();
 
-    for (const QUrl &url : event->mimeData()->urls())
+    const auto& urls = event->mimeData()->urls();
+    for (const QUrl &url : urls)
     {
         QString fileName = url.toLocalFile();
         _project->importComponents(fileName);
@@ -182,7 +194,8 @@ void UConfigMainWindow::reloadRuleSetList()
     _ruleComboBox->clear();
     _ruleComboBox->addItem(tr("package"));
     QDir dir(qApp->applicationDirPath() + "/../rules/");
-    for (const QFileInfo &ruleInfo : dir.entryInfoList(QStringList() << "*.kss", QDir::NoDotAndDotDot | QDir::Files))
+    const auto& entry_list = dir.entryInfoList(QStringList() << "*.kss", QDir::NoDotAndDotDot | QDir::Files);
+    for (const QFileInfo &ruleInfo : entry_list)
     {
         _ruleComboBox->addItem(ruleInfo.baseName());
     }
@@ -292,7 +305,7 @@ void UConfigMainWindow::updateOldProjects()
 {
     for (int i = 0; i < _project->oldProjects().size(); i++)
     {
-        QString path = _project->oldProjects()[i];
+        QString path = _project->oldProjects().at(i);
         _oldProjectsActions[i]->setVisible(true);
         _oldProjectsActions[i]->setData(path);
         _oldProjectsActions[i]->setText(QString("&%1. %2").arg(i + 1).arg(path));
