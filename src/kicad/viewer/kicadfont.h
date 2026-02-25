@@ -35,7 +35,7 @@ public:
     double charWidth(QChar c) const;
     double textWidth(const QString &text) const;
 
-    QFont font();
+    QFont font() const;
     static QFont font(double size);
     void drawText(QPainter *painter, const QRectF &rect, int flags, const QString &text) const;
 

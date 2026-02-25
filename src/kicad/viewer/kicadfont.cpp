@@ -53,7 +53,7 @@ double KicadFont::textWidth(const QString &text) const
     return width;
 }
 
-QFont KicadFont::font()
+QFont KicadFont::font() const
 {
     return _font;
 }

@@ -21,6 +21,7 @@
 #include <QDateTime>
 #include <QDebug>
 #include <QFileInfo>
+#include <QtMath>
 
 #include "model/drawcircle.h"
 #include "model/drawpoly.h"
@@ -225,7 +226,7 @@ void KicadLibParser::writePin(Pin *pin)
     _stream << " " << pin->padName() << " "                     // pad name
             << pin->pos().x() << " " << -pin->pos().y() << " "  // x y position
             << pin->length() << " "                             // lenght
-            << pinDirectionString(pin->angle()) << " "      // pin direction (up/down/left/right)
+            << pinDirectionString(pin->angle()) << " "          // pin direction (up/down/left/right)
             << "50"
             << " "  // name text size
             << "50"
@@ -275,14 +276,8 @@ void KicadLibParser::writeDraw(Draw *draw)
             // T direction posx posy text_size text_type unit convert text text_italic text_bold text_hjustify text_vjustify
             drawText = dynamic_cast<DrawText *>(draw);
             _stream << "T ";
-            if (drawText->direction() == DrawText::DirectionHorizontal)
-            {
-                _stream << "0 ";
-            }
-            else
-            {
-                _stream << "900 ";
-            }
+
+            _stream << uint(qFloor((drawText->angle() * 10) + 0.5)) << " ";
 
             _stream << drawText->pos().x() << " " << -drawText->pos().y() << " " << drawText->textSize() << " "
                     << "0 " << drawText->unit() << " " << drawText->convert() << " "
@@ -345,7 +340,7 @@ void KicadLibParser::writeLabel(DrawText *draw)
 
     _stream << draw->pos().x() << " " << -draw->pos().y() << " " << draw->textSize() << " ";
 
-    if (draw->direction() == DrawText::DirectionHorizontal)
+    if (draw->angle() < 45.0)
     {
         _stream << "H ";
     }
@@ -708,14 +703,7 @@ Draw *KicadLibParser::readDraw(char c)
         {
             DrawText *draw = new DrawText();
             _stream >> n;
-            if (n == 0)
-            {
-                draw->setDirection(DrawText::DirectionHorizontal);
-            }
-            else
-            {
-                draw->setDirection(DrawText::DirectionVertital);
-            }
+            draw->setAngle(qreal(n) / 10);
 
             _stream >> n;
             draw->pos().setX(n);
@@ -881,11 +869,11 @@ DrawText *KicadLibParser::readLabel()
     _stream >> nc;
     if (nc == 'H')
     {
-        draw->setDirection(DrawText::DirectionHorizontal);
+        draw->setAngle(0.0);
     }
     else
     {
-        draw->setDirection(DrawText::DirectionVertital);
+        draw->setAngle(90.0);
     }
 
     _stream.skipWhiteSpace();
